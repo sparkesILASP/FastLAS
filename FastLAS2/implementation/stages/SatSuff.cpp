@@ -86,7 +86,7 @@ void FastLAS::compute_sat_sufficient() {
     bool first = true;
     for(auto eg : eg_group) {
       // check wrt caching and groups
-      if(eg->positive) {
+      if(eg->ex_type == ExampleType::pos) {
         ss << "positive." << endl;
       } else {
         ss << "negative." << endl;
@@ -176,7 +176,7 @@ void FastLAS::compute_sat_sufficient() {
             partial_disjs[inc_name].insert(d);
             // must reset positive cache before setting useful.
             for(auto eg : eg_group) {
-              if(eg->positive) {
+              if(eg->ex_type == ExampleType::pos) {
                 if(FastLAS::any_cache) {
                   d->reset_positive_cache();
                 }
@@ -199,7 +199,7 @@ void FastLAS::compute_sat_sufficient() {
               }
             }
             for(auto eg : eg_group) {
-              if(!eg->positive) {
+              if(eg->ex_type == ExampleType::neg) {
                 d->set_violating();
                 if(FastLAS::any_cache) {
                   d->reset_violating_cache();
@@ -212,7 +212,7 @@ void FastLAS::compute_sat_sufficient() {
         if(!inclusion) {
           for(auto d : disjunction) {
             for(auto eg : eg_group) {
-              if(!eg->positive) {
+              if(eg->ex_type == ExampleType::neg) {
                 if(FastLAS::any_cache) {
                   d->reset_positive_cache();
                 }
@@ -233,7 +233,7 @@ void FastLAS::compute_sat_sufficient() {
               }
             }
             for(auto eg : eg_group) {
-              if(eg->positive) {
+              if(eg->ex_type == ExampleType::pos) {
                 d->set_violating();
                 if(FastLAS::any_cache) {
                   d->reset_violating_cache();

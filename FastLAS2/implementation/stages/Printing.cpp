@@ -105,7 +105,7 @@ void FastLAS::print_s_m() {
   set<Schema::RuleSchema*> ds;
   for(auto eg : examples)
     for(auto sub_eg : eg->get_possibilities())
-      if(sub_eg->positive)
+      if(sub_eg->ex_type == ExampleType::pos)
         for(auto disj : sub_eg->get_optimised_rule_disjunctions())
           for(auto d : disj)
             ds.insert(d);

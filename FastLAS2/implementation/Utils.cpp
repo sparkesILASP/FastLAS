@@ -241,8 +241,8 @@ void FastLAS::Clingo::operator()(const std::function<void()>& final_fn) const {
   remove(outpipe.c_str());
 }
 
-
-void FastLAS::add_example(const string& id, set<NAtom*>*& incs, set<NAtom*>*& excs, vector<NRule>& ctx, int penalty, bool positive, bool prediction) {
+// Add WCDPI example
+void FastLAS::add_example(const string& id, set<NAtom*>*& incs, set<NAtom*>*& excs, vector<NRule>& ctx, int penalty, ExampleType ex_type, bool prediction) {
   if(cached_examples.find(id) == cached_examples.end()) {
     set<string> string_incs, string_excs;
     for(auto inc : *incs) string_incs.insert(inc->to_string());
@@ -268,10 +268,17 @@ void FastLAS::add_example(const string& id, set<NAtom*>*& incs, set<NAtom*>*& ex
       for(auto exc : *excs) delete exc;
     }
     if(!prediction) {
-      examples.insert(new Example(id, string_incs, string_excs, ctx, penalty, positive));
+      examples.insert(new Example(id, string_incs, string_excs, ctx, penalty, ex_type));
     } else {
       examples.insert(new PredictionExample(id, string_incs, string_excs, ctx));
     }
+  }
+}
+
+// Add bound example
+void FastLAS::add_example(const string& id, int bound, vector<NRule>& bound_prog, vector<NRule>& ctx, ExampleType ex_type, bool prediction) {
+  if(cached_examples.find(id) == cached_examples.end()) {
+      examples.insert(new Example(id, bound, bound_prog, ctx, ex_type));
   }
 }
 

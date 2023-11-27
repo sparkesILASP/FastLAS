@@ -92,7 +92,7 @@ void FastLAS::solve() {
       ss << "n_cov(" << sub_eg->id << ") :- disj(" << index << ")." << endl;
     }
 
-    if(eg->positive) {
+    if(eg->ex_type == ExampleType::pos) {
       ss << "n_cov(" << eg->id << ") :- #true";
       for(auto sub_eg : eg->get_possibilities()) ss << ", n_cov(" << sub_eg->id << ")";
       ss << "." << endl;

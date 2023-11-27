@@ -30,6 +30,7 @@
 #include <thread>
 #include <mutex>
 #include <atomic>
+#include "Example.h"
 #include "Node.h"
 #include <unistd.h>
 
@@ -41,7 +42,11 @@ namespace FastLAS {
   std::string get_tmp_file(bool fifo=true);
   int get_language_index(const std::string&);
   std::string get_language(const int&);
-  void add_example(const std::string& id, std::set<NAtom*>*& incs, std::set<NAtom*>*& excs, std::vector<NRule>& ctx, int penalty, bool positive, bool prediction=false);
+  // Add WCDPI example
+  // Called by the parser, specifically in parser.y
+  void add_example(const std::string& id, std::set<NAtom*>*& incs, std::set<NAtom*>*& excs, std::vector<NRule>& ctx, int penalty, ExampleType ex_type, bool prediction=false);
+  // Add bound example
+  void add_example(const std::string& id, int bound, std::vector<NRule>& bound_prog, std::vector<NRule>& ctx, ExampleType ex_type, bool prediction=false);
   std::string remove_quotes(const std::string& str);
   std::string object_level_print(const int&);
 
