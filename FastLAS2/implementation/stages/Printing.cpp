@@ -106,12 +106,12 @@ void FastLAS::print_s_m() {
   for(auto eg : examples)
     for(auto sub_eg : eg->get_possibilities()) {
       switch (sub_eg->ex_type) {
-        case ExampleType::pos:
+        case Example::ExType::pos:
           for(auto disj : sub_eg->get_optimised_rule_disjunctions())
           for(auto d : disj)
             ds.insert(d);
           break;
-        case ExampleType::neg:
+        case Example::ExType::neg:
           for(auto v : sub_eg->get_optimised_rule_violations())
           ds.insert(v);
           break;

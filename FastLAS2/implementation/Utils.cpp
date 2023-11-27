@@ -242,7 +242,7 @@ void FastLAS::Clingo::operator()(const std::function<void()>& final_fn) const {
 }
 
 // Add WCDPI example
-void FastLAS::add_example(const string& id, set<NAtom*>*& incs, set<NAtom*>*& excs, vector<NRule>& ctx, int penalty, ExampleType ex_type, bool prediction) {
+void FastLAS::add_example(const string& id, set<NAtom*>*& incs, set<NAtom*>*& excs, vector<NRule>& ctx, int penalty, Example::ExType ex_type, bool prediction) {
   if(cached_examples.find(id) == cached_examples.end()) {
     set<string> string_incs, string_excs;
     for(auto inc : *incs) string_incs.insert(inc->to_string());
@@ -276,7 +276,7 @@ void FastLAS::add_example(const string& id, set<NAtom*>*& incs, set<NAtom*>*& ex
 }
 
 // Add bound example
-void FastLAS::add_example(const string& id, int bound, vector<NRule>& bound_prog, vector<NRule>& ctx, ExampleType ex_type, bool prediction) {
+void FastLAS::add_example(const string& id, int bound, vector<NRule>& bound_prog, vector<NRule>& ctx, Example::ExType ex_type, bool prediction) {
   if(cached_examples.find(id) == cached_examples.end()) {
       examples.insert(new Example(id, bound, bound_prog, ctx, ex_type));
   }

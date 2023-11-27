@@ -51,9 +51,9 @@ namespace FastLAS {
   std::string get_language(const int&);
   // Add WCDPI example
   // Called by the parser, specifically in parser.y
-  void add_example(const std::string& id, std::set<NAtom*>*& incs, std::set<NAtom*>*& excs, std::vector<NRule>& ctx, int penalty, ExampleType ex_type, bool prediction=false);
+  void add_example(const std::string& id, std::set<NAtom*>*& incs, std::set<NAtom*>*& excs, std::vector<NRule>& ctx, int penalty, Example::ExType ex_type, bool prediction=false);
   // Add bound example
-  void add_example(const std::string& id, int bound, std::vector<NRule>& bound_prog, std::vector<NRule>& ctx, ExampleType ex_type, bool prediction=false);
+  void add_example(const std::string& id, int bound, std::vector<NRule>& bound_prog, std::vector<NRule>& ctx, Example::ExType ex_type, bool prediction=false);
   std::string remove_quotes(const std::string& str);
   std::string object_level_print(const int&);
 

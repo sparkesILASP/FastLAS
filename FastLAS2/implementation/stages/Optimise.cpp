@@ -97,12 +97,12 @@ void write_global_file(const string& global_pipe, int head=-1) {
 
   for(auto eg : examples) {
     for(auto sub_eg : eg->get_possibilities()) {
-      if(sub_eg->ex_type == ExampleType::pos) {
+      if(sub_eg->ex_type == Example::ExType::pos) {
         auto eg_rvs = sub_eg->get_rule_violations();
         all_violations.insert(eg_rvs.begin(), eg_rvs.end());
       }
     }
-    if(eg->ex_type == ExampleType::pos) {
+    if(eg->ex_type == Example::ExType::pos) {
       auto guar_eg_rvs = eg->get_guaranteed_rule_violations();
       for(Schema* s : guar_eg_rvs) {
         v_ids.insert(s->id);

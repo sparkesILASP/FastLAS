@@ -87,10 +87,10 @@ void FastLAS::compute_sat_sufficient() {
     for(auto eg : eg_group) {
       // check wrt caching and groups
       switch (eg->ex_type) {
-        case ExampleType::pos:
+        case Example::ExType::pos:
           ss << "positive." << endl;
           break;
-        case ExampleType::neg:
+        case Example::ExType::neg:
           ss << "negative." << endl;
           break;
         default:
@@ -182,7 +182,7 @@ void FastLAS::compute_sat_sufficient() {
             partial_disjs[inc_name].insert(d);
             // must reset positive cache before setting useful.
             for(auto eg : eg_group) {
-              if(eg->ex_type == ExampleType::pos) {
+              if(eg->ex_type == Example::ExType::pos) {
                 if(FastLAS::any_cache) {
                   d->reset_positive_cache();
                 }
@@ -205,7 +205,7 @@ void FastLAS::compute_sat_sufficient() {
               }
             }
             for(auto eg : eg_group) {
-              if(eg->ex_type == ExampleType::neg) {
+              if(eg->ex_type == Example::ExType::neg) {
                 d->set_violating();
                 if(FastLAS::any_cache) {
                   d->reset_violating_cache();
@@ -218,7 +218,7 @@ void FastLAS::compute_sat_sufficient() {
         if(!inclusion) {
           for(auto d : disjunction) {
             for(auto eg : eg_group) {
-              if(eg->ex_type == ExampleType::neg) {
+              if(eg->ex_type == Example::ExType::neg) {
                 if(FastLAS::any_cache) {
                   d->reset_positive_cache();
                 }
@@ -239,7 +239,7 @@ void FastLAS::compute_sat_sufficient() {
               }
             }
             for(auto eg : eg_group) {
-              if(eg->ex_type == ExampleType::pos) {
+              if(eg->ex_type == Example::ExType::pos) {
                 d->set_violating();
                 if(FastLAS::any_cache) {
                   d->reset_violating_cache();

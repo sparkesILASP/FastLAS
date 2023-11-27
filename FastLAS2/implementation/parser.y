@@ -178,7 +178,7 @@ example : T_BE T_L_PAREN identifier T_L_BRACK T_INT[bound] T_COMMA T_L_BRACE asp
   // clean up the id
   id.erase(remove_if(id.begin(), id.end(), ::isspace), id.end());
   // not sure why pointers…
-  FastLAS::add_example(id, std::stoi(*$bound), *$bound_prog, *$ctx, ExampleType::bound);
+  FastLAS::add_example(id, std::stoi(*$bound), *$bound_prog, *$ctx, Example::ExType::bnd);
   delete $3;
   delete $bound;
   delete $bound_prog;
@@ -188,7 +188,7 @@ example : T_BE T_L_PAREN identifier T_L_BRACK T_INT[bound] T_COMMA T_L_BRACE asp
 example : T_POS T_L_PAREN identifier atom_set[incs] T_COMMA atom_set[excs] T_COMMA T_L_BRACE asp_program[ctx] T_R_BRACE T_R_PAREN T_DOT {
           std::string id = $3->first;
           id.erase(remove_if(id.begin(), id.end(), ::isspace), id.end());
-          FastLAS::add_example(id, $incs, $excs, *$ctx, $3->second, ExampleType::pos);
+          FastLAS::add_example(id, $incs, $excs, *$ctx, $3->second, Example::ExType::pos);
           delete $3;
           delete $incs;
           delete $excs;
@@ -196,7 +196,7 @@ example : T_POS T_L_PAREN identifier atom_set[incs] T_COMMA atom_set[excs] T_COM
         } | T_NEG T_L_PAREN identifier atom_set[incs] T_COMMA atom_set[excs] T_COMMA T_L_BRACE asp_program[ctx] T_R_BRACE T_R_PAREN T_DOT {
           std::string id = $3->first;
           id.erase(remove_if(id.begin(), id.end(), ::isspace), id.end());
-          FastLAS::add_example(id, $incs, $excs, *$ctx, $3->second, ExampleType::neg);
+          FastLAS::add_example(id, $incs, $excs, *$ctx, $3->second, Example::ExType::neg);
           delete $3;
           delete $incs;
           delete $excs;
@@ -209,7 +209,7 @@ example : T_POS T_L_PAREN identifier atom_set[incs] T_COMMA atom_set[excs] T_COM
           }
           prediction_task = true;
           id.erase(remove_if(id.begin(), id.end(), ::isspace), id.end());
-          FastLAS::add_example(id, $incs, $excs, *$ctx, -1, ExampleType::pos, true);
+          FastLAS::add_example(id, $incs, $excs, *$ctx, -1, Example::ExType::pos, true);
           delete $3;
           delete $incs;
           delete $excs;
@@ -220,7 +220,7 @@ example : T_POS T_L_PAREN identifier atom_set[incs] T_COMMA atom_set[excs] T_R_P
           std::string id = $3->first;
           std::vector<NRule> empty_prg;
           id.erase(remove_if(id.begin(), id.end(), ::isspace), id.end());
-          FastLAS::add_example(id, $incs, $excs, empty_prg, $3->second, ExampleType::pos);
+          FastLAS::add_example(id, $incs, $excs, empty_prg, $3->second, Example::ExType::pos);
           delete $3;
           delete $incs;
           delete $excs;
@@ -233,7 +233,7 @@ example : T_POS T_L_PAREN identifier atom_set[incs] T_COMMA atom_set[excs] T_R_P
           prediction_task = true;
           std::vector<NRule> empty_prg;
           id.erase(remove_if(id.begin(), id.end(), ::isspace), id.end());
-          FastLAS::add_example(id, $incs, $excs, empty_prg, -1, ExampleType::pos, true);
+          FastLAS::add_example(id, $incs, $excs, empty_prg, -1, Example::ExType::pos, true);
           delete $3;
           delete $incs;
           delete $excs;
@@ -500,7 +500,7 @@ cached_examples: {};
 cached_examples: cached_examples T_L_BRACE cached_example_statements[ces] T_R_BRACE T_SEMI_COLON {
   std::vector<NRule> empty_ctx;
   std::set<std::string> empty_set;
-  auto eg = new Example(std::get<0>(*$ces), empty_set, empty_set, empty_ctx, std::get<1>(*$ces), ExampleType::pos, false);
+  auto eg = new Example(std::get<0>(*$ces), empty_set, empty_set, empty_ctx, std::get<1>(*$ces), Example::ExType::pos, false);
   for(auto poss : std::get<2>(*$ces)) {
     Example* p;
     if(poss.unique) {

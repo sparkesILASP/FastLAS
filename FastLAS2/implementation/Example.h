@@ -33,24 +33,27 @@
 
 // Example type implemented to allow for various example types…
 // Previously was boolean, and so places in code may default to negative example if not positive example
-enum ExampleType {
-  pos,
-  neg,
-  bound,
-};
+
 
 class Possibility;
 
 class Example {
 
   public:
+
+    enum ExType {
+      pos,
+      neg,
+      bnd,
+    };
+
     // WCDPI
-    Example(std::string id, std::set<std::string>& inclusions, std::set<std::string>& exclusions, std::vector<NRule>& context, int penalty, ExampleType ex_type, bool possibility=false);
+    Example(std::string id, std::set<std::string>& inclusions, std::set<std::string>& exclusions, std::vector<NRule>& context, int penalty, ExType ex_type, bool possibility=false);
     // ?
-    Example(std::string id, int penalty, ExampleType ex_type, bool possibility=false);
+    Example(std::string id, int penalty, ExType ex_type, bool possibility=false);
     // Bound example
     // WCDPI without W & PI and with bound and bound program
-    Example(std::string id, int bound, std::vector<NRule>& bound_prog, std::vector<NRule>& context, ExampleType ex_type, bool possibility=false);
+    Example(std::string id, int bound, std::vector<NRule>& bound_prog, std::vector<NRule>& context, ExType ex_type, bool possibility=false);
     
 
     virtual std::string meta_representation() const;
@@ -94,7 +97,7 @@ class Example {
     virtual std::tuple<std::set<std::pair<int, std::set<int>>>, std::set<int>, bool> to_context_comparison_representation() const;
 
     const std::string id;
-    const ExampleType ex_type;
+    const ExType ex_type;
 
   protected:
 
@@ -134,7 +137,7 @@ class PredictionExample : public Example {
   public:
 
     PredictionExample(std::string id, std::set<std::string>& inclusions, std::set<std::string>& exclusions, std::vector<NRule>& context)
-      : Example(id, inclusions, exclusions, context, -1, ExampleType::pos, true) {};
+      : Example(id, inclusions, exclusions, context, -1, ExType::pos, true) {};
 
     bool prediction() const;
 

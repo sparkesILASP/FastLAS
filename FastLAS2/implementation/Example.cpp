@@ -38,7 +38,7 @@ map<string, Example*> Example::example_map, Example::possibility_map;
 set<Schema*> Example::prediction_extra_violations;
 
 // ? Example
-Example::Example(string id, int penalty, ExampleType ex_type, bool possibility)
+Example::Example(string id, int penalty, Example::ExType ex_type, bool possibility)
   : id(id), penalty(penalty), ex_type(ex_type) {
     if(possibility) {
       possibility_map.insert(make_pair(id, this));
@@ -48,7 +48,7 @@ Example::Example(string id, int penalty, ExampleType ex_type, bool possibility)
   }
 
 // WCDPI
-Example::Example(string id, set<string>& inclusions, set<string>& exclusions, vector<NRule>& context, int penalty, ExampleType ex_type, bool possibility)
+Example::Example(string id, set<string>& inclusions, set<string>& exclusions, vector<NRule>& context, int penalty, Example::ExType ex_type, bool possibility)
   : id(id), inclusions(inclusions), exclusions(exclusions), context(context), penalty(penalty), ex_type(ex_type) {
     if(possibility) {
       possibility_map.insert(make_pair(id, this));
@@ -57,7 +57,7 @@ Example::Example(string id, set<string>& inclusions, set<string>& exclusions, ve
     }
   }
 // Bound example
-Example::Example(string id, int bound, vector<NRule>& bound_prog, vector<NRule>& context, ExampleType ex_type, bool possibility) : id(id), context(context), bound_prog(bound_prog), bound(bound), ex_type(ex_type) {
+Example::Example(string id, int bound, vector<NRule>& bound_prog, vector<NRule>& context, Example::ExType ex_type, bool possibility) : id(id), context(context), bound_prog(bound_prog), bound(bound), ex_type(ex_type) {
       if(possibility) {
       possibility_map.insert(make_pair(id, this));
     } else {
@@ -78,20 +78,20 @@ string Example::to_string() const {
   stringstream ss;
 
   switch (ex_type) {
-    case ExampleType::pos:
+    case Example::ExType::pos:
       ss << "#pos(" << id << ", {";
       break;
-    case ExampleType::neg:
+    case Example::ExType::neg:
       ss << "#neg(" << id << ", {";
       break;
-    case ExampleType::bound:
+    case Example::ExType::bnd:
       ss << "#be(" << id << "," << endl;
       break;
     default:
       break;
   }
 
-  if (ex_type == ExampleType::pos || ex_type == ExampleType::neg) {
+  if (ex_type == Example::ExType::pos || ex_type == Example::ExType::neg) {
 
     bool first = true;
     for(auto inc : inclusions) {
@@ -119,7 +119,7 @@ string Example::to_string() const {
 
   }
 
-  if (ex_type == ExampleType::bound) {
+  if (ex_type == Example::ExType::bnd) {
     ss << "\t[" << endl;
     ss << "\t " << bound;
     ss << "," << endl << "\t{" << endl;
@@ -358,10 +358,10 @@ string Possibility::meta_representation() const {
 string Possibility::to_string() const {
   stringstream ss;
   switch (ex_type) {
-    case ExampleType::pos:
+    case Example::ExType::pos:
       ss << "#pos(" << id << ", {";
       break;
-    case ExampleType::neg:
+    case Example::ExType::neg:
       ss << "#neg(" << id << ", {";
       break;
     default:
@@ -518,13 +518,13 @@ GenPossibility::GenPossibility(Example* eg, const string& id, const set<set<int>
 string GenPossibility::to_string() const {
   stringstream ss;
   switch (ex_type) {
-    case ExampleType::pos:
+    case Example::ExType::pos:
       ss << "#pos(" << id << ", {}, {}, {" << endl;
       break;
-    case ExampleType::neg:
+    case Example::ExType::neg:
       ss << "#neg(" << id << ", {}, {}, {" << endl;
       break;
-    case ExampleType::bound:
+    case Example::ExType::bnd:
       ss << "#be(";
       break;
     default:
