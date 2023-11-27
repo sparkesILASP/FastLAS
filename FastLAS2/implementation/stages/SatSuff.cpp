@@ -86,11 +86,17 @@ void FastLAS::compute_sat_sufficient() {
     bool first = true;
     for(auto eg : eg_group) {
       // check wrt caching and groups
-      if(eg->ex_type == ExampleType::pos) {
-        ss << "positive." << endl;
-      } else {
-        ss << "negative." << endl;
+      switch (eg->ex_type) {
+        case ExampleType::pos:
+          ss << "positive." << endl;
+          break;
+        case ExampleType::neg:
+          ss << "negative." << endl;
+          break;
+        default:
+          break;
       }
+
       if(first) {
         first = false;
         ss << "pos(" << eg->id << ")." << endl;

@@ -92,13 +92,18 @@ void FastLAS::solve() {
       ss << "n_cov(" << sub_eg->id << ") :- disj(" << index << ")." << endl;
     }
 
-    if(eg->ex_type == ExampleType::pos) {
-      ss << "n_cov(" << eg->id << ") :- #true";
-      for(auto sub_eg : eg->get_possibilities()) ss << ", n_cov(" << sub_eg->id << ")";
-      ss << "." << endl;
-    } else {
-      for(auto sub_eg : eg->get_possibilities())
+    switch (eg->ex_type) {
+      case ExampleType::pos:
+        ss << "n_cov(" << eg->id << ") :- #true";
+        for(auto sub_eg : eg->get_possibilities()) ss << ", n_cov(" << sub_eg->id << ")";
+        ss << "." << endl;
+        break;
+      case ExampleType::neg:
+        for(auto sub_eg : eg->get_possibilities())
         ss << "n_cov(" << eg->id << ") :- not n_cov(" << sub_eg->id << ")." << endl;
+        break;
+      default:
+        break;
     }
 
     if(eg->prediction())
