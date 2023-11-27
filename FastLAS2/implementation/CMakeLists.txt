@@ -5,6 +5,8 @@ project (FastLAS)
 link_directories(/usr/lib)
 link_directories(/usr/local/lib)
 include_directories(/usr/local/include)
+link_directories(~/.brew)
+link_directories(~/.brew/lib)
 
 
 if(${APPLE})
