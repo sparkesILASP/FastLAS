@@ -37,6 +37,13 @@
 
 namespace FastLAS {
 
+  // modes
+  enum Mode {
+    opl,
+    nopl,
+    bound,
+  };
+
   // utility functions
 
   std::string get_tmp_file(bool fifo=true);
@@ -91,7 +98,7 @@ namespace FastLAS {
 
   extern int thread_num;
   extern bool output_solve_program;
-  extern bool run_fast_las_2;
+  extern Mode run_fast_las_2;
   extern bool limit_rules;
   extern bool force_safety;
   extern bool score_only;

@@ -104,15 +104,21 @@ void FastLAS::print_s_m() {
   stringstream ss;
   set<Schema::RuleSchema*> ds;
   for(auto eg : examples)
-    for(auto sub_eg : eg->get_possibilities())
-      if(sub_eg->ex_type == ExampleType::pos)
-        for(auto disj : sub_eg->get_optimised_rule_disjunctions())
+    for(auto sub_eg : eg->get_possibilities()) {
+      switch (sub_eg->ex_type) {
+        case ExampleType::pos:
+          for(auto disj : sub_eg->get_optimised_rule_disjunctions())
           for(auto d : disj)
             ds.insert(d);
-      else
-        for(auto v : sub_eg->get_optimised_rule_violations())
+          break;
+        case ExampleType::neg:
+          for(auto v : sub_eg->get_optimised_rule_violations())
           ds.insert(v);
-
+          break;
+        default:
+          break;
+      }
+    }
   for(Schema::RuleSchema* rs : ds) {
     //ss << "  " << "[" << rs->id << "] " << rs->get_score();
     ss << rs->print_intermediate_representation();
