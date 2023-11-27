@@ -31,14 +31,27 @@
 #include "Node.h"
 #include "RuleSchema.h"
 
+// Example type implemented to allow for various example types…
+// Previously was boolean, and so places in code may default to negative example if not positive example
+enum ExampleType {
+  pos,
+  neg,
+  bound,
+};
+
 class Possibility;
 
 class Example {
 
   public:
-
-    Example(std::string id, std::set<std::string>& inclusions, std::set<std::string>& exclusions, std::vector<NRule>& context, int penalty, bool positive, bool possibility=false);
-    Example(std::string id, int penalty, bool positive, bool possibility=false);
+    // WCDPI
+    Example(std::string id, std::set<std::string>& inclusions, std::set<std::string>& exclusions, std::vector<NRule>& context, int penalty, ExampleType ex_type, bool possibility=false);
+    // ?
+    Example(std::string id, int penalty, ExampleType ex_type, bool possibility=false);
+    // Bound example
+    // WCDPI without W & PI and with bound and bound program
+    Example(std::string id, int bound, std::vector<NRule>& bound_prog, std::vector<NRule>& context, ExampleType ex_type, bool possibility=false);
+    
 
     virtual std::string meta_representation() const;
     std::string constant_representation() const;
@@ -81,7 +94,7 @@ class Example {
     virtual std::tuple<std::set<std::pair<int, std::set<int>>>, std::set<int>, bool> to_context_comparison_representation() const;
 
     const std::string id;
-    const bool positive;
+    const ExampleType ex_type;
 
   protected:
 
@@ -93,6 +106,9 @@ class Example {
     std::vector<NRule> context;
 
     int penalty;
+
+    std::vector<NRule> bound_prog;
+    int bound;
 
     std::set<Example*> possibilities;
 
@@ -118,7 +134,7 @@ class PredictionExample : public Example {
   public:
 
     PredictionExample(std::string id, std::set<std::string>& inclusions, std::set<std::string>& exclusions, std::vector<NRule>& context)
-      : Example(id, inclusions, exclusions, context, -1, true) {};
+      : Example(id, inclusions, exclusions, context, -1, ExampleType::pos, true) {};
 
     bool prediction() const;
 

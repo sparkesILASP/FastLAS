@@ -37,8 +37,9 @@ extern vector<NRule> background;
 map<string, Example*> Example::example_map, Example::possibility_map;
 set<Schema*> Example::prediction_extra_violations;
 
-Example::Example(string id, int penalty, bool positive, bool possibility)
-  : id(id), penalty(penalty), positive(positive) {
+// ? Example
+Example::Example(string id, int penalty, ExampleType ex_type, bool possibility)
+  : id(id), penalty(penalty), ex_type(ex_type) {
     if(possibility) {
       possibility_map.insert(make_pair(id, this));
     } else {
@@ -46,14 +47,23 @@ Example::Example(string id, int penalty, bool positive, bool possibility)
     }
   }
 
-Example::Example(string id, set<string>& inclusions, set<string>& exclusions, vector<NRule>& context, int penalty, bool positive, bool possibility)
-  : id(id), inclusions(inclusions), exclusions(exclusions), context(context), penalty(penalty), positive(positive) {
+// WCDPI
+Example::Example(string id, set<string>& inclusions, set<string>& exclusions, vector<NRule>& context, int penalty, ExampleType ex_type, bool possibility)
+  : id(id), inclusions(inclusions), exclusions(exclusions), context(context), penalty(penalty), ex_type(ex_type) {
     if(possibility) {
       possibility_map.insert(make_pair(id, this));
     } else {
       example_map.insert(make_pair(id, this));
     }
   }
+// Bound example
+Example::Example(string id, int bound, vector<NRule>& bound_prog, vector<NRule>& context, ExampleType ex_type, bool possibility) : id(id), context(context), bound_prog(bound_prog), bound(bound), ex_type(ex_type) {
+      if(possibility) {
+      possibility_map.insert(make_pair(id, this));
+    } else {
+      example_map.insert(make_pair(id, this));
+    }
+}
 
 string Example::meta_representation() const {
   stringstream ss;
@@ -67,7 +77,7 @@ string Example::meta_representation() const {
 string Example::to_string() const {
   stringstream ss;
 
-  if(positive) {
+  if(ex_type == ExampleType::pos) {
     ss << "#pos(";
   } else {
     ss << "#neg(";
@@ -296,12 +306,12 @@ const vector<NRule>& Example::get_context() const {
 }
 
 Possibility::Possibility(Example* eg, const string& id)
-  : Example(id, -1, eg->positive) {
+  : Example(id, -1, eg->ex_type) {
   this->c_rep = eg->c_rep;
 }
 
 Possibility::Possibility(Example* eg, const string& id, const set<int>& incs, const set<int>& excs, const set<int>& ctx)
-  : Example(id, -1, eg->positive),
+  : Example(id, -1, eg->ex_type),
     inc_ids(incs),
     exc_ids(excs),
     ctx_ids(ctx) {
@@ -326,7 +336,7 @@ string Possibility::meta_representation() const {
 
 string Possibility::to_string() const {
   stringstream ss;
-  if(positive) {
+  if(ex_type == ExampleType::pos) {
     ss << "#pos(" << id << ", {";
   } else {
     ss << "#neg(" << id << ", {";
@@ -449,11 +459,11 @@ tuple<set<pair<int, set<int>>>, set<int>, bool> Example::to_context_comparison_r
   for(int i = 0; i < context.size(); i++) {
     rules.insert(context[i].to_cache_representation());
   }
-  return make_tuple(rules, set<int>(), positive);
+  return make_tuple(rules, set<int>(), ex_type);
 }
 
 tuple<set<pair<int, set<int>>>, set<int>, bool> Possibility::to_context_comparison_representation() const {
-  return make_tuple(set<pair<int, set<int>>>(), ctx_ids, positive);
+  return make_tuple(set<pair<int, set<int>>>(), ctx_ids, ex_type);
 }
 
 set<string> Possibility::get_inclusions() const {
@@ -480,7 +490,7 @@ GenPossibility::GenPossibility(Example* eg, const string& id, const set<set<int>
 
 string GenPossibility::to_string() const {
   stringstream ss;
-  if(positive) {
+  if(ex_type == ExampleType::pos) {
     ss << "#pos(" << id << ", {}, {}, {" << endl;
   } else {
     ss << "#neg(" << id << ", {}, {}, {" << endl;
