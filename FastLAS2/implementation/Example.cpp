@@ -77,43 +77,64 @@ string Example::meta_representation() const {
 string Example::to_string() const {
   stringstream ss;
 
-  if(ex_type == ExampleType::pos) {
-    ss << "#pos(";
-  } else {
-    ss << "#neg(";
+  switch (ex_type) {
+    case ExampleType::pos:
+      ss << "#pos(" << id << ", {";
+      break;
+    case ExampleType::neg:
+      ss << "#neg(" << id << ", {";
+      break;
+    case ExampleType::bound:
+      ss << "#be(" << id << "," << endl;
+      break;
+    default:
+      break;
   }
 
-  ss << id << ", {";
+  if (ex_type == ExampleType::pos || ex_type == ExampleType::neg) {
 
-  bool first = true;
-  for(auto inc : inclusions) {
-    if(first) {
-      first = false;
-    } else {
-      ss << ", ";
+    bool first = true;
+    for(auto inc : inclusions) {
+      if(first) {
+        first = false;
+      } else {
+        ss << ", ";
+      }
+      ss << inc;
     }
-    ss << inc;
-  }
 
-  ss << "}, {";
+    ss << "}";
 
-  first = true;
-  for(auto exc : exclusions) {
-    if(first) {
-      first = false;
-    } else {
-      ss << ", ";
+    first = true;
+    for(auto exc : exclusions) {
+      if(first) {
+        first = false;
+      } else {
+        ss << ", ";
+      }
+      ss << exc;
     }
-    ss << exc;
+
+    ss << "}" << endl;
+
   }
 
-  ss << "}, {" << endl;
+  if (ex_type == ExampleType::bound) {
+    ss << "\t[" << endl;
+    ss << "\t " << bound;
+    ss << "," << endl << "\t{" << endl;
+    for(auto c : bound_prog) {
+      ss << "\t " << c.to_string();
+    }
+    ss << "\t}" << endl << "\t]";
+  }
 
+  ss << "," << endl << "\t{";
   for(auto c : context) {
     ss << "  " << c.to_string();
   }
 
-  ss << "})." << endl;
+  ss << "\t})." << endl;
 
   return ss.str();
 }
@@ -336,11 +357,17 @@ string Possibility::meta_representation() const {
 
 string Possibility::to_string() const {
   stringstream ss;
-  if(ex_type == ExampleType::pos) {
-    ss << "#pos(" << id << ", {";
-  } else {
-    ss << "#neg(" << id << ", {";
+  switch (ex_type) {
+    case ExampleType::pos:
+      ss << "#pos(" << id << ", {";
+      break;
+    case ExampleType::neg:
+      ss << "#neg(" << id << ", {";
+      break;
+    default:
+      break;
   }
+
   bool first = true;
   for(auto inc : inc_ids) {
     if(first) first = false;
@@ -490,10 +517,18 @@ GenPossibility::GenPossibility(Example* eg, const string& id, const set<set<int>
 
 string GenPossibility::to_string() const {
   stringstream ss;
-  if(ex_type == ExampleType::pos) {
-    ss << "#pos(" << id << ", {}, {}, {" << endl;
-  } else {
-    ss << "#neg(" << id << ", {}, {}, {" << endl;
+  switch (ex_type) {
+    case ExampleType::pos:
+      ss << "#pos(" << id << ", {}, {}, {" << endl;
+      break;
+    case ExampleType::neg:
+      ss << "#neg(" << id << ", {}, {}, {" << endl;
+      break;
+    case ExampleType::bound:
+      ss << "#be(";
+      break;
+    default:
+      break;
   }
   for(auto disj : disjunctions) {
     ss << "    :- ";
