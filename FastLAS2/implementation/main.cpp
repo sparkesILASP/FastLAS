@@ -40,7 +40,7 @@ extern FILE* yyin;
 extern bool prediction_task, cache;
 extern std::set<Example*> examples;
 
-std::string usage_str = "ERROR: usage:  FastLAS [ --opl | --nopl ] file_name";
+std::string usage_str = "ERROR: usage:  FastLAS [ --opl | --nopl | --bound ] file_name";
 std::string version_info = "FastLAS version 2.1.0 (release built on " + std::string(__DATE__) + ")." + R"ESC(
 
 For updates and information on FastLAS, please see https://spike-imperial.github.io/FastLAS/.)ESC";
@@ -58,6 +58,7 @@ int main(int argc, char **argv) {
     ("delay-generalisation", "experimental optimisation approach.")
     ("nopl", "run the new phases of the FastNonOPL algorithm, needed for non-observational predicate learning.")
     ("opl", "do not run the new phases of the FastNonOPL algorithm, needed for non-observational predicate learning.")
+    ("bound", "run with boundary type examples.")
     ("output-solve-program", "perform the main steps of the FastLAS algorithm, then write out the final ASP program used to search for an optimal solution.")
     ("file_names", po::value<vector<string>>(), "input files.")
     ("read-cache", po::value<string>(), "location to read cached data from.")
@@ -98,7 +99,8 @@ int main(int argc, char **argv) {
     return 1;
   }
 
-  if (vm.count("nopl") == vm.count("opl")) {
+  int mode_count = vm.count("nopl") + vm.count("opl") + vm.count("bound");
+  if (mode_count == 0 || mode_count > 1) {
     cerr << usage_str << endl;
     return 1;
   }
@@ -111,8 +113,9 @@ int main(int argc, char **argv) {
   if(vm.count("debug")) debug = true;
   if(vm.count("threads")) FastLAS::thread_num = vm["threads"].as<int>();
   if(vm.count("timeout")) FastLAS::timeout = vm["timeout"].as<int>();
-  if(vm.count("nopl")) FastLAS::run_fast_las_2 = true;
-  if(vm.count("opl")) FastLAS::run_fast_las_2 = false;
+  if(vm.count("nopl")) FastLAS::mode = FastLAS::Mode::nopl;
+  if(vm.count("opl")) FastLAS::mode = FastLAS::Mode::opl;
+  if(vm.count("bound")) FastLAS::mode = FastLAS::Mode::bound;
   if(vm.count("force-safety")) FastLAS::force_safety = true;
   if(vm.count("score-only")) FastLAS::score_only = true;
 
@@ -144,8 +147,18 @@ int main(int argc, char **argv) {
     fclose(file);
   }
 
+  // Viewing examples
+  cout << "Examples: " << endl;
+  for (auto eg : examples) {
+    cout << eg->to_string() << endl;
+  }
 
-  if(!FastLAS::run_fast_las_2) {
+  if(FastLAS::mode == FastLAS::Mode::bound) {
+    cout << "Hullo" << endl;
+  }
+
+  // Abduce possibilities, when set
+  if(FastLAS::mode == FastLAS::Mode::opl) {
     for(auto eg : examples)
       eg->set_unique_possibility();
   } else {
@@ -159,6 +172,8 @@ int main(int argc, char **argv) {
     }
   }
 
+  // SAT-sufficient subsets
+  // Additional atoms are written to FastLAS::language here
   if(debug) cout << "Computing SAT-sufficient subset..." << endl << endl;
 
   FastLAS::compute_sat_sufficient();
@@ -175,6 +190,8 @@ int main(int argc, char **argv) {
     FastLAS::write_cache(vm["write-cache"].as<string>());
   }
 
+
+  // Generalise
   if (vm.count("delay-generalisation")) {
     if(debug) cout << "Computing opt-sufficient subset..." << endl << endl;
 
@@ -209,6 +226,7 @@ int main(int argc, char **argv) {
 
   FastLAS::solve();
 
+  
   if(!prediction_task) {
     if(FastLAS::score_only) {
       FastLAS::print_score();

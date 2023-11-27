@@ -120,7 +120,7 @@ void FastLAS::compute_sat_sufficient() {
       ss << mb.body_representation() << endl;
     }
 
-    if(FastLAS::run_fast_las_2 == FastLAS::Mode::opl) {
+    if(FastLAS::mode == FastLAS::Mode::opl) {
       for(auto r : background)                ss << r.meta_representation();
     }
     for(int i = 0; i < bias->maxv; i++)       ss << "var(v_a_r" << i << ")." << endl;

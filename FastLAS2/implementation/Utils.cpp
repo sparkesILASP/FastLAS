@@ -43,7 +43,7 @@ namespace FastLAS {
   int max_conditions = 1;
   int timeout = -1;
   bool output_solve_program = false;
-  Mode run_fast_las_2 = Mode::opl;
+  Mode mode = Mode::opl;
   bool limit_rules = false;
   bool force_safety = false;
   bool score_only = false;
@@ -247,7 +247,7 @@ void FastLAS::add_example(const string& id, set<NAtom*>*& incs, set<NAtom*>*& ex
     set<string> string_incs, string_excs;
     for(auto inc : *incs) string_incs.insert(inc->to_string());
     for(auto exc : *excs) string_excs.insert(exc->to_string());
-    if(run_fast_las_2 == Mode::nopl) {
+    if(mode == Mode::nopl) {
       shared_ptr<NRuleHead> head_atom(new NConstraintHead());
       for(auto inc : *incs) {
         vector<shared_ptr<NLiteral>> body;
