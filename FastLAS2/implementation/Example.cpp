@@ -32,6 +32,8 @@
 #include "LanguageBias.h"
 #include "Utils.h"
 #include "nodes/NAtom.h"
+#include "stages/Penalty.h"
+#include <boost/json.hpp> // For penalty possibilities
 
 using namespace std;
 
@@ -161,6 +163,7 @@ std::string Example::to_bound_pen_prog() {
   }
   // Penalty
   prog_str += "#minimise { X, Y : pen(X,Y) }.";
+  prog_str += Penalty::make_lua_possibility_script_for(bound);
   return prog_str;
 }
 
@@ -607,14 +610,10 @@ set<string> GenPossibility::get_exclusions() const {
 void pen_poss(Example *example) {
 
     std::cout << "Calling clingo: " << std::endl;
-    std::cout << "pen: " << example->bound << endl;
-    cout << "prog: " << endl << example->to_bound_pen_prog() << endl;
+    // cout << "prog: " << endl << example->to_bound_pen_prog() << endl;
     std::string args = ((FastLAS::timeout < 0)
                        ? ""
-                       : " --time=" + std::to_string(FastLAS::timeout))
-                       + " --models=0"
-                       + " --opt-mode=enum," + std::to_string(example->bound);
-    cout << args << endl;
-    FastLAS::Clingo(2, example->to_bound_pen_prog(), args)
-    ([&]() { });
+                       : " --time=" + std::to_string(FastLAS::timeout));
+    FastLAS::Clingo(3, example->to_bound_pen_prog(), args)
+    ([&]() {  });
   };

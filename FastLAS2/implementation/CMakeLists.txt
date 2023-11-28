@@ -29,7 +29,6 @@ FLEX_TARGET(Scanner tokens.l .tokens.cpp)
 ADD_FLEX_BISON_DEPENDENCY(Scanner Parser)
 
 link_directories(/usr/local/lib)
-link_directories(/usr/local/opt/)
 include_directories(/usr/local/include)
 
 set(Boost_USE_STATIC_LIBS ON)
@@ -65,6 +64,7 @@ add_library(
   stages/Optimise.cpp
   stages/OptimiseSym.cpp
   stages/Solve.cpp
+	stages/Penalty.cpp
 
   stages/Printing.cpp
 

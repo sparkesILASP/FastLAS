@@ -215,12 +215,12 @@ void FastLAS::Clingo::operator()(const std::function<void()>& final_fn) const {
   stringstream full_string;
 
   while (proc >> buffer) {
-    cout << buffer;
+    // cout << buffer;
     full_string << buffer << " ";
     incremental_buffer += (buffer + " ");
     if(incremental_buffer[incremental_buffer.size() - 2] == '|') {
       char ch = incremental_buffer[0];
-      cout << ch << endl;
+      // cout << ch << endl;
       if(ch == ';') {
         final_fn();
       } else {
