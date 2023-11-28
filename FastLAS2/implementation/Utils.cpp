@@ -220,7 +220,6 @@ void FastLAS::Clingo::operator()(const std::function<void()>& final_fn) const {
     incremental_buffer += (buffer + " ");
     if(incremental_buffer[incremental_buffer.size() - 2] == '|') {
       char ch = incremental_buffer[0];
-      // cout << ch << endl;
       if(ch == ';') {
         final_fn();
       } else {
@@ -240,7 +239,8 @@ void FastLAS::Clingo::operator()(const std::function<void()>& final_fn) const {
 
   mtx.unlock();
 
-  cout << full_string.str() << endl;
+  // cout << "full" << endl << endl;
+  // cout << full_string.str() << endl;
 
   proc.close();
   remove(inpipe.c_str());

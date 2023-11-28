@@ -34,6 +34,7 @@
 #include "nodes/NAtom.h"
 #include "stages/Penalty.h"
 #include <boost/json.hpp> // For penalty possibilities
+#include <vector>
 
 using namespace std;
 
@@ -607,13 +608,52 @@ set<string> GenPossibility::get_exclusions() const {
   return exc_strings;
 }
 
+/*
+Generate possibilities as standard examples for now.
+Consider each AS of the bound penalty program.
+For each run collect plus and minus into sets.
+Minus contains all penalties, so get exclusions by difference.
+*/
 void pen_poss(Example *example) {
 
-    std::cout << "Calling clingo: " << std::endl;
-    // cout << "prog: " << endl << example->to_bound_pen_prog() << endl;
-    std::string args = ((FastLAS::timeout < 0)
-                       ? ""
-                       : " --time=" + std::to_string(FastLAS::timeout));
-    FastLAS::Clingo(3, example->to_bound_pen_prog(), args)
-    ([&]() {  });
+  std::vector<string> possibility_strings{};
+  int poss_count{0};
+
+  std::set<string> plus{};
+  std::set<string> minus{};
+  std::string penalty{};
+
+  std::cout << "Calling clingo: " << std::endl;
+  cout << "prog: " << endl << example->to_bound_pen_prog() << endl;
+  std::string args = ((FastLAS::timeout < 0)
+                      ? ""
+                      : " --time=" + std::to_string(FastLAS::timeout));
+  FastLAS::Clingo(3, example->to_bound_pen_prog(), args)
+  ('$', [&](const string& atom) {
+    penalty = atom;
+  })
+  ('+', [&](const string& atom) {
+    plus.insert(atom);
+  })
+  ('-', [&](const string& atom) {
+    minus.insert(atom);
+  })
+  ([&]() { 
+    std::set<string> exc{};
+    std::set_difference(minus.begin(), minus.end(), plus.begin(), plus.end(), std::inserter(exc, exc.begin()));
+    std::string poss_string = "#pos(";
+    poss_string += example->id + std::to_string(poss_count++);
+    poss_string += ", ";
+    poss_string += penalty;
+    poss_string += ", {}, {}, {";
+    for (auto a : plus) { poss_string += a + ". ";}
+    for (auto a : exc) { poss_string += ":- " + a + ". ";}
+    poss_string += "}).";
+    possibility_strings.push_back(poss_string);
+
+    // Clear plus and minus for next possibility
+    plus.clear();
+    minus.clear();
+    cout << poss_string << endl;
+   });
   };
