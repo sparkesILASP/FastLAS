@@ -24,10 +24,14 @@
  */
 
 #include "Example.h"
+#include <exception>
+#include <iostream>
 #include <sstream>
 #include <algorithm>
+#include <string>
 #include "LanguageBias.h"
 #include "Utils.h"
+#include "nodes/NAtom.h"
 
 using namespace std;
 
@@ -137,6 +141,27 @@ string Example::to_string() const {
   ss << "\t})." << endl;
 
   return ss.str();
+}
+
+std::string Example::to_bound_pen_prog() {
+
+  std::string prog_str{};
+
+  // Do nothing on other example types
+  if (!(ex_type == Example::ExType::bnd)) {
+    return prog_str;
+  }
+  // Collect all the rules
+  for(auto bp: bound_prog) {
+    prog_str += bp.to_string();
+  }
+  // Collect the context
+  for(auto c : context) {
+    prog_str += c.to_string();
+  }
+  // Penalty
+  prog_str += "#minimise { X, Y : pen(X,Y) }.";
+  return prog_str;
 }
 
 string to_id(string s) {
@@ -579,3 +604,17 @@ set<string> GenPossibility::get_exclusions() const {
   return exc_strings;
 }
 
+void pen_poss(Example *example) {
+
+    std::cout << "Calling clingo: " << std::endl;
+    std::cout << "pen: " << example->bound << endl;
+    cout << "prog: " << endl << example->to_bound_pen_prog() << endl;
+    std::string args = ((FastLAS::timeout < 0)
+                       ? ""
+                       : " --time=" + std::to_string(FastLAS::timeout))
+                       + " --models=0"
+                       + " --opt-mode=enum," + std::to_string(example->bound);
+    cout << args << endl;
+    FastLAS::Clingo(2, example->to_bound_pen_prog(), args)
+    ([&]() { });
+  };

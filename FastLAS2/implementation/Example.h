@@ -97,7 +97,9 @@ class Example {
     virtual std::tuple<std::set<std::pair<int, std::set<int>>>, std::set<int>, bool> to_context_comparison_representation() const;
 
     const std::string id;
+    int bound;
     const ExType ex_type;
+    std::string to_bound_pen_prog();
 
   protected:
 
@@ -111,7 +113,7 @@ class Example {
     int penalty;
 
     std::vector<NRule> bound_prog;
-    int bound;
+    
 
     std::set<Example*> possibilities;
 
@@ -183,5 +185,6 @@ class GenPossibility : public Possibility {
     std::set<std::set<int>> disjunctions;
 };
 
+void pen_poss(Example *example);
 
 #endif

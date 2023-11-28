@@ -174,45 +174,14 @@ int main(int argc, char **argv) {
 
   // Testing bound things
   if (FastLAS::mode == FastLAS::Mode::bound) {
-    stringstream ss;
-    stringstream solution_ss;
-    bool sat = false;
-    int i{1};
-
+    
     cout << "Hullo" << endl;
-    // cout << "Examples: " << endl;
-    // for (auto eg : examples) {
-    //   if (eg->ex_type == Example::ExType::bnd) {
-    //     cout << eg->to_string() << endl;
-    //   }
-    // }
-
-    std::string prog = "pen(1,a) :- a.\n pen(3,b) :- not b.\n pen(2,c) :- c.\n pen(2,d) :- not d.\n pen(1,e) :- e.\n 0{a;b;c;d;e}5.\n #minimise { X, Y : pen(X,Y) }.\n";
-
-
-
-    ss << prog << endl;
-    // cout << ss.str();
-    cout << "Rule schemas start:" << endl;
-    for (auto rs: Schema::all_schemas) {
-        cout << rs << endl;
+    cout << "Examples: " << endl;
+    for (auto eg : examples) {
+      if (eg->ex_type == Example::ExType::bnd) {
+        pen_poss(eg);
+      }
     }
-    cout << "Rule schemas end" << endl;
-
-    vector<set<Schema::RuleSchema *>> int_to_disj;
-    FastLAS::hypothesis_length = 0;
-    FastLAS::sat_disjs.clear();
-    cout << "Calling clingo: " << endl;
-    std::string args = ((FastLAS::timeout < 0)
-                       ? " "
-                       : "--time=" + std::to_string(FastLAS::timeout) + " ") 
-                       + "--models=0 "
-                       + "--opt-mode=enum,10"; // Note, to be given as part of the example
-    cout << args << endl;                       
-    FastLAS::Clingo(2, ss.str(), args)
-    ([&]() { sat = true; });
-    cout << "After: " << endl;
-    cout << solution_ss.str() << endl;
 
     cout << "Exiting" << endl;
     exit(0);
@@ -303,3 +272,4 @@ int main(int argc, char **argv) {
 
   _exit(0);
 };
+
