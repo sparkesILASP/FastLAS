@@ -181,7 +181,7 @@ void FastLAS::optimise_sym() {
     set<string> intermediate_sf_facts;
     map<string, string> types;
 
-    Clingo(ss.str(), "--enum=domrec --heuristic=domain  -n0")
+    Clingo(3, ss.str(), "--enum=domrec --heuristic=domain  -n0")
       ('i', [&](const string& atom) {
         rule_body.insert(stoi(atom));
       }) ('n', [&](const string& atom) {

@@ -198,7 +198,7 @@ set<pair<pair<set<int>, set<int>>, set<set<int>>>> FastLAS::anti_abduce(const se
   //exit(2);
 
 
-  Clingo(ss.str(), "--enum-mode=domrec --heuristic=domain -n 0")
+  Clingo(3, ss.str(), "--enum-mode=domrec --heuristic=domain -n 0")
     ('i', [&](const string& atom) {
       exception.insert(get_language_index(atom));
     }) ('d', [&](const string& atom) {
@@ -266,7 +266,7 @@ set<pair<set<int>, set<int>>> FastLAS::repair(const set<pair<string, int>>& hyp_
   set<int> rep;
   int delta;
 
-  Clingo(ss.str(), "--enum-mode=domrec --heuristic=domain -n 0")
+  Clingo(3, ss.str(), "--enum-mode=domrec --heuristic=domain -n 0")
     ('i', [&](const string& atom) {
       rep.insert(get_language_index(atom));
     }) ('d', [&](const string& atom) {
@@ -324,7 +324,7 @@ void FastLAS::abduce() {
 
     set<int> ctx, incs;
     set<set<int>> all_incs;
-    Clingo(get_bottom_representation(hyp_dependent_predictates, eg), "--enum-mode=domrec --heuristic=domain --dom-mod=5,16 -n 0")
+    Clingo(3, get_bottom_representation(hyp_dependent_predictates, eg), "--enum-mode=domrec --heuristic=domain --dom-mod=5,16 -n 0")
       ('i', [&](const string& atom) {
         ctx.insert(get_language_index(atom));
       }) ('t', [&](const string& atom) {

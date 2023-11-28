@@ -24,6 +24,8 @@
  */
 
 #include "Utils.h"
+#include <iostream>
+#include <string>
 #include <sys/stat.h>
 #include <sys/wait.h>
 #include <mutex>
@@ -43,6 +45,7 @@ namespace FastLAS {
   int max_conditions = 1;
   int timeout = -1;
   bool output_solve_program = false;
+  // Default to opl like before Mode was introduced
   Mode mode = Mode::opl;
   bool limit_rules = false;
   bool force_safety = false;
@@ -151,7 +154,7 @@ end
   set<set<int>> dnf;
   set<int> conj;
 
-  Clingo(ss.str(), "-n 0")
+  Clingo(3, ss.str(), "-n 0")
     ('t', [&](const string& atom) {
       conj.insert(stoi(atom));
     }) ([&]() {
@@ -164,8 +167,9 @@ end
 }
 
 
-FastLAS::Clingo::Clingo(const std::string& program, const std::string& args, bool debug)
-  : program(program), args(args), debug(debug) {}
+FastLAS::Clingo::Clingo(int outf, const std::string& program, const std::string& args, bool debug)
+  : outf(outf), program(program), args(args), debug(debug) {
+  }
 
 FastLAS::Clingo& FastLAS::Clingo::operator()(const char& ch, const std::function<void(const std::string&)>& fn) {
   fns.insert(make_pair(ch, fn));
@@ -175,7 +179,6 @@ FastLAS::Clingo& FastLAS::Clingo::operator()(const char& ch, const std::function
 void FastLAS::Clingo::operator()(const std::function<void()>& final_fn) const {
   string inpipe = get_tmp_file(false), outpipe = get_tmp_file(false);
   static mutex mtx;
-
   ofstream infile(inpipe);
   infile << program << endl;
   infile.close();
@@ -186,7 +189,6 @@ void FastLAS::Clingo::operator()(const std::function<void()>& final_fn) const {
     infile2.close();
     exit(2);
   }
-
 #ifdef __APPLE__
   mtx.lock();
   auto pid = fork();
@@ -194,15 +196,17 @@ void FastLAS::Clingo::operator()(const std::function<void()>& final_fn) const {
     cerr << "Fork error." << endl;
     exit(2);
   } else if(pid == 0) {
-    auto ret = system(string("clingo --outf=3 " + args + " " + inpipe + " > " + outpipe + " 2> /dev/null").c_str());
+    auto ret = system(string("clingo --outf=" + std::to_string(outf) + " " + args + " " + inpipe + " > " + outpipe + " 2> /dev/null").c_str());
     exit(0);
   } else {
     mtx.unlock();
     waitpid(pid, NULL, 0);
   }
 #else
-  auto ret = system(string("clingo --outf=3 " + args + " " + inpipe + " > " + outpipe + " 2> /dev/null").c_str());
+  auto ret = system(string("clingo --outf=" + std::to_string(outf) + " " + args + " " + inpipe + " > " + outpipe + " 2> /dev/null").c_str());
 #endif
+
+  // From here, processing
 
   mtx.lock();
 
@@ -211,10 +215,12 @@ void FastLAS::Clingo::operator()(const std::function<void()>& final_fn) const {
   stringstream full_string;
 
   while (proc >> buffer) {
+    cout << buffer;
     full_string << buffer << " ";
     incremental_buffer += (buffer + " ");
     if(incremental_buffer[incremental_buffer.size() - 2] == '|') {
       char ch = incremental_buffer[0];
+      cout << ch << endl;
       if(ch == ';') {
         final_fn();
       } else {
@@ -234,11 +240,12 @@ void FastLAS::Clingo::operator()(const std::function<void()>& final_fn) const {
 
   mtx.unlock();
 
-  //cout << full_string.str() << endl;
+  cout << full_string.str() << endl;
 
   proc.close();
   remove(inpipe.c_str());
   remove(outpipe.c_str());
+  cout << "Clingo end" << endl;
 }
 
 // Add WCDPI example

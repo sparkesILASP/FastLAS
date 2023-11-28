@@ -148,7 +148,7 @@ void FastLAS::compute_sat_sufficient() {
     //cerr << ss.str() << endl;
     //exit(2);
 
-    Clingo(ss.str(), "--project --enum-mode=domRec --heuristic=domain -n 0")
+    Clingo(3, ss.str(), "--project --enum-mode=domRec --heuristic=domain -n 0")
       ('i', [&](const std::string& atom) {
         rule_body.insert(get_language_index(atom));
       }) ('h', [&](const std::string& atom) {

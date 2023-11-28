@@ -194,7 +194,7 @@ void FastLAS::optimise() {
           //cerr << "%%%%%%%%%%%%%%" << endl;
           //exit(2);
 
-          Clingo(ss.str(), global_pipe + " --heuristic=Domain ")
+          Clingo(3, ss.str(), global_pipe + " --heuristic=Domain ")
             ('i', [&](const string& atom) {
               rule_body.insert(stoi(atom));
             }) ('n', [&](const string& atom) {

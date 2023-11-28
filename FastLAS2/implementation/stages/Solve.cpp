@@ -160,20 +160,24 @@ void FastLAS::solve_final_task(string program) {
     exit(0);
   }
 
-  Clingo(ss.str(),
+  Clingo(3, ss.str(),
     ((FastLAS::timeout < 0) ? " " : "--time=" + std::to_string(FastLAS::timeout) + " ")
       + "--opt-strat=usc,stratify")
     ('i', [&](const string& atom) {
       auto rule = Schema::RuleSchema::get_schema(stoi(atom));
       hypothesis_length += rule->get_score();
       solution_ss << rule->print() << endl;
-    }) ('b', [&](const string& atom) {
+    })
+    ('b', [&](const string& atom) {
       hypothesis_length += stoi(atom);
-    }) ('d', [&](const string& atom) {
+    }) 
+    ('d', [&](const string& atom) {
       sat_disjs.insert(int_to_disj[stoi(atom)]);
-    }) ('p', [&](const string& atom) {
+    }) 
+    ('p', [&](const string& atom) {
       sat_intermediate_facts.insert(atom);
-    }) ([&]() {
+    }) 
+    ([&]() {
       sat = true;
     }
   );
