@@ -2,25 +2,29 @@
 #include <string>
 
 
-
+/*
+lua script to return a string of form:
+penalty|{+X | X is used atom}|{-X | X is atom in a penalty}
+Figure out negative by diff of + from - set.
+*/
 std::string Penalty::make_lua_possibility_script_for(int bound) {
   return R"(#script (lua)
 
 function customPrint(m)
-model_string = ""
+model_string = "$"
 model_string = model_string..m.cost[1].."|"
 atoms = m:symbols{shown=true}
 
 for i, atom in ipairs(atoms) do
 		atom_string = tostring(atom)
-		penalty_match = atom_string:match('pen%(%d+,([^)]+)')
+		penalty_match = atom_string:match('pen%(%d+,(.+)%)')
 		if penalty_match then
-				model_string = model_string.."-"..penalty_match.."|"
+				model_string = model_string.." -"..penalty_match.."|"
 		else
-        model_string = model_string.."+"..atom_string.."|"
+        model_string = model_string.." +"..atom_string.."|"
 		end
 end
-print(model_string)
+print(model_string.." ;|")
 end
 
 function main(prg)
