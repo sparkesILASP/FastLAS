@@ -28,7 +28,7 @@
 #include "../Example.h"
 #include "../LanguageBias.h"
 #include "../meta_programs/Abduce.h"
-#include "../Solvers/Clingo.h"
+#include "../Solvers/Solvers.h"
 
 using namespace std;
 

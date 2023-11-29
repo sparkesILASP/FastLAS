@@ -34,7 +34,7 @@
 #include "nodes/NAtom.h"
 #include "stages/Penalty.h"
 #include <vector>
-#include "Solvers/Clingo.h"
+#include "Solvers/Solvers.h"
 
 using namespace std;
 

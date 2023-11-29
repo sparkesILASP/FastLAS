@@ -32,7 +32,7 @@
 #include <iostream>
 #include <mutex>
 #include <sstream>
-#include "../Solvers/Clingo.h"
+#include "../Solvers/Solvers.h"
 
 using namespace std;
 

@@ -1,8 +1,4 @@
-#include "./Clingo.h"
-#include "../Utils.h"
-#include <fstream>
-#include <mutex>
-#include <string>
+#include "./Solvers.h"
 
 /*
 To use, kind of like message passing:

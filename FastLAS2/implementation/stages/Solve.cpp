@@ -30,7 +30,7 @@
 #include "../meta_programs/Solve.h"
 #include "Printing.h"
 #include <boost/algorithm/string.hpp>
-#include "../Solvers/Clingo.h"
+#include "../Solvers/Solvers.h"
 
 using namespace std;
 

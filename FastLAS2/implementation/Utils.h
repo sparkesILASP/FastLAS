@@ -63,17 +63,7 @@ namespace FastLAS {
 
 
   
-  class ILASP {
 
-    public:
-
-      ILASP(const std::string&, const std::string&);
-      void operator()(const std::function<void(const std::string&)>&) const;
-
-    private:
-
-      std::string program, args;
-  };
 
 
   // shared data structures

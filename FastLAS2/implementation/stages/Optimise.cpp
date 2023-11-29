@@ -32,7 +32,7 @@
 #include "../LanguageBias.h"
 #include "../Example.h"
 #include "../meta_programs/Optimise.h"
-#include "../Solvers/Clingo.h"
+#include "../Solvers/Solvers.h"
 
 using namespace std;
 

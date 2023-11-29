@@ -32,7 +32,7 @@
 #include <shared_mutex>
 #include <fstream>
 #include "Example.h"
-#include "Solvers/Clingo.h"
+#include "Solvers/Solvers.h"
 
 using namespace std;
 
@@ -245,51 +245,6 @@ string FastLAS::remove_quotes(const string& str) {
     return str;
   }
 }
-
-FastLAS::ILASP::ILASP(const string& program, const string& args)
-  : program(program), args(args) {}
-
-
-void FastLAS::ILASP::operator()(const std::function<void(const string&)>& final_fn) const {
-  string inpipe = get_tmp_file(false), outpipe = get_tmp_file(false);
-  static mutex mtx;
-
-  ofstream infile(inpipe);
-  infile << program << endl;
-  infile.close();
-
-#ifdef __APPLE__
-  mtx.lock();
-  auto pid = fork();
-  if(pid < 0) {
-    cerr << "Fork error." << endl;
-    exit(2);
-  } else if(pid == 0) {
-    auto ret = system(string("ILASP-release " + args + " " + inpipe + " > " + outpipe + " 2> /dev/null").c_str());
-    exit(0);
-  } else {
-    mtx.unlock();
-    waitpid(pid, NULL, 0);
-  }
-#else
-  auto ret = system(string("ILASP " + args + " " + inpipe + " > " + outpipe + " 2> /dev/null").c_str());
-#endif
-
-  string buffer, incremental_buffer = "";
-  ifstream proc(outpipe);
-  stringstream full_string;
-
-  while (getline(proc, buffer)) {
-    if(buffer.size() > 0) {
-      final_fn(buffer);
-    }
-  }
-
-  proc.close();
-  remove(inpipe.c_str());
-  remove(outpipe.c_str());
-}
-
 
 string FastLAS::object_level_print(const int& index) {
   auto raw = language[index];
