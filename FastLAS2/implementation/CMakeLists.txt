@@ -58,6 +58,8 @@ add_library(
   Example.cpp
   Utils.cpp
 
+  Solvers/Clingo.cpp
+
   stages/Abduce.cpp
   stages/SatSuff.cpp
   stages/Generalise.cpp

@@ -32,6 +32,7 @@
 #include "../LanguageBias.h"
 #include "../Example.h"
 #include "../meta_programs/Optimise.h"
+#include "../Solvers/Clingo.h"
 
 using namespace std;
 
@@ -194,7 +195,7 @@ void FastLAS::optimise() {
           //cerr << "%%%%%%%%%%%%%%" << endl;
           //exit(2);
 
-          Clingo(3, ss.str(), global_pipe + " --heuristic=Domain ")
+          Solver::Clingo(3, ss.str(), global_pipe + " --heuristic=Domain ")
             ('i', [&](const string& atom) {
               rule_body.insert(stoi(atom));
             }) ('n', [&](const string& atom) {

@@ -33,6 +33,7 @@
 #include "../LanguageBias.h"
 #include "../Example.h"
 #include "../meta_programs/OptimiseSym.h"
+#include "../Solvers/Clingo.h"
 
 using namespace std;
 
@@ -50,6 +51,7 @@ void FastLAS::optimise_sym() {
 
   set<int> heads;
 
+  // Get heads
   for(auto eg : examples) {
     for(auto sub_eg : eg->get_possibilities()) {
       for(auto disj : sub_eg->get_rule_disjunctions()) {
@@ -60,6 +62,7 @@ void FastLAS::optimise_sym() {
     }
   }
 
+  // Figure out bodies
   for(auto head : heads) {
     stringstream ss;
 
@@ -87,6 +90,8 @@ void FastLAS::optimise_sym() {
         }
       }
     }
+    // Choice over body literals
+    // Along with literal in body
     for(auto bl : body_literals) {
       ss << "0 { in(" << bl << ") } 1." << endl;
       bool positive = false;
@@ -181,7 +186,7 @@ void FastLAS::optimise_sym() {
     set<string> intermediate_sf_facts;
     map<string, string> types;
 
-    Clingo(3, ss.str(), "--enum=domrec --heuristic=domain  -n0")
+    Solver::Clingo(3, ss.str(), "--enum=domrec --heuristic=domain  -n0")
       ('i', [&](const string& atom) {
         rule_body.insert(stoi(atom));
       }) ('n', [&](const string& atom) {

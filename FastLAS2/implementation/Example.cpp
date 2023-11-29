@@ -33,8 +33,8 @@
 #include "Utils.h"
 #include "nodes/NAtom.h"
 #include "stages/Penalty.h"
-#include <boost/json.hpp> // For penalty possibilities
 #include <vector>
+#include "Solvers/Clingo.h"
 
 using namespace std;
 
@@ -617,6 +617,7 @@ Minus contains all penalties, so get exclusions by difference.
 void pen_poss(Example *example) {
 
   std::vector<string> possibility_strings{};
+  // For generating unique IDs per possibility
   int poss_count{0};
 
   std::set<string> plus{};
@@ -624,11 +625,11 @@ void pen_poss(Example *example) {
   std::string penalty{};
 
   std::cout << "Calling clingo: " << std::endl;
-  cout << "prog: " << endl << example->to_bound_pen_prog() << endl;
+  // cout << "prog: " << endl << example->to_bound_pen_prog() << endl;
   std::string args = ((FastLAS::timeout < 0)
                       ? ""
                       : " --time=" + std::to_string(FastLAS::timeout));
-  FastLAS::Clingo(3, example->to_bound_pen_prog(), args)
+  Solver::Clingo(3, example->to_bound_pen_prog(), args)
   ('$', [&](const string& atom) {
     penalty = atom;
   })
@@ -645,7 +646,7 @@ void pen_poss(Example *example) {
     poss_string += example->id + std::to_string(poss_count++);
     poss_string += ", ";
     poss_string += penalty;
-    poss_string += ", {}, {}, {";
+    poss_string += ", {}, {}, { ";
     for (auto a : plus) { poss_string += a + ". ";}
     for (auto a : exc) { poss_string += ":- " + a + ". ";}
     poss_string += "}).";

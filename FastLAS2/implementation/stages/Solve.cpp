@@ -24,66 +24,70 @@
  */
 
 #include "Solve.h"
-#include <boost/algorithm/string.hpp>
-#include "../Utils.h"
-#include "../LanguageBias.h"
 #include "../Example.h"
+#include "../LanguageBias.h"
+#include "../Utils.h"
 #include "../meta_programs/Solve.h"
 #include "Printing.h"
-
+#include <boost/algorithm/string.hpp>
+#include "../Solvers/Clingo.h"
 
 using namespace std;
 
-extern LanguageBias* bias;
+extern LanguageBias *bias;
 extern bool prediction_task;
-extern set<Example*> examples;
+extern set<Example *> examples;
 extern vector<NRule> background;
 
-
 namespace FastLAS {
-  void solve_final_task(string);
+void solve_final_task(string);
 
-  int hypothesis_length = 0;
-  int penalty_paid = 0;
-  set<set<Schema::RuleSchema*>> sat_disjs;
-  string solution;
-  bool sat;
-  set<string> sat_intermediate_facts;
+int hypothesis_length = 0;
+int penalty_paid = 0;
+set<set<Schema::RuleSchema *>> sat_disjs;
+string solution;
+bool sat;
+set<string> sat_intermediate_facts;
 
-  set<Schema::RuleSchema*> ds;
-  map<set<Schema::RuleSchema*>, int> cached_disjs;
-  vector<set<Schema::RuleSchema*>> int_to_disj;
-};
+set<Schema::RuleSchema *> ds;
+map<set<Schema::RuleSchema *>, int> cached_disjs;
+vector<set<Schema::RuleSchema *>> int_to_disj;
+}; // namespace FastLAS
 
 void FastLAS::solve() {
   stringstream ss;
-  for(auto eg : examples) {
+  // For each example
+  for (auto eg : examples) {
     ss << "% " << eg->id << endl;
-    for(auto sub_eg : eg->get_possibilities()) {
+    // Get each possibility
+    for (auto sub_eg : eg->get_possibilities()) {
       ss << "% " << eg->id << " : " << sub_eg->id << endl;
-      for(auto disj : sub_eg->get_optimised_rule_disjunctions()) {
+      // And insert the optimised rule disjunctions
+      for (auto disj : sub_eg->get_optimised_rule_disjunctions()) {
         int index = cached_disjs.size();
         auto it = cached_disjs.find(disj);
-        if(it == cached_disjs.end()) {
+        if (it == cached_disjs.end()) {
           cached_disjs[disj] = index;
           int_to_disj.push_back(disj);
-          for(auto d : disj) {
+          for (auto d : disj) {
             ss << "disj(" << index << ") :- in_h(" << d->id << ")." << endl;
           }
         } else {
           index = it->second;
         }
-        ss << "n_cov(" << sub_eg->id << ") :- not disj(" << index << ")." << endl;
-        ds.insert(disj.begin(), disj.end()); // cannot only be done with caching in case violation occurs first;
+        ss << "n_cov(" << sub_eg->id << ") :- not disj(" << index << ")."
+           << endl;
+        ds.insert(disj.begin(), disj.end()); // cannot only be done with caching
+                                             // in case violation occurs first;
       }
 
       auto disj = sub_eg->get_optimised_rule_violations();
       int index = cached_disjs.size();
       auto it = cached_disjs.find(disj);
-      if(it == cached_disjs.end()) {
+      if (it == cached_disjs.end()) {
         cached_disjs[disj] = index;
         int_to_disj.push_back(disj);
-        for(auto d : disj) {
+        for (auto d : disj) {
           ss << "disj(" << index << ") :- in_h(" << d->id << ")." << endl;
         }
       } else {
@@ -93,37 +97,43 @@ void FastLAS::solve() {
     }
 
     switch (eg->ex_type) {
-      case Example::ExType::pos:
-        ss << "n_cov(" << eg->id << ") :- #true";
-        for(auto sub_eg : eg->get_possibilities()) ss << ", n_cov(" << sub_eg->id << ")";
-        ss << "." << endl;
-        break;
-      case Example::ExType::neg:
-        for(auto sub_eg : eg->get_possibilities())
-        ss << "n_cov(" << eg->id << ") :- not n_cov(" << sub_eg->id << ")." << endl;
-        break;
-      default:
-        break;
+    case Example::ExType::pos:
+      ss << "n_cov(" << eg->id << ") :- #true";
+      for (auto sub_eg : eg->get_possibilities()) {
+        ss << ", n_cov(" << sub_eg->id << ")";
+      }
+      ss << "." << endl;
+      break;
+    case Example::ExType::neg:
+      for (auto sub_eg : eg->get_possibilities()) {
+        ss << "n_cov(" << eg->id << ") :- not n_cov(" << sub_eg->id << ")."
+           << endl;
+      }
+      break;
+    default:
+      break;
     }
 
-    if(eg->prediction())
+    if (eg->prediction())
       ss << "prediction_false :- n_cov(" << eg->id << ")." << endl;
-    else if(eg->get_penalty() > 0)
-      ss << ":~ n_cov(" << eg->id << ").[" << eg->get_penalty() << "@0, eg(" << eg->id << ")]" << endl;
+    else if (eg->get_penalty() > 0)
+      ss << ":~ n_cov(" << eg->id << ").[" << eg->get_penalty() << "@0, eg("
+         << eg->id << ")]" << endl;
     else
       ss << ":- n_cov(" << eg->id << ")." << endl;
   }
 
-  for(auto d : ds) {
-    ss << "0 {in_h(" << d->id << ")} 1. :~ in_h(" << d->id << ").[" << d->get_score() << "@0, hyp(" << d->id << ")]" << endl;
+  for (auto d : ds) {
+    ss << "0 {in_h(" << d->id << ")} 1. :~ in_h(" << d->id << ").["
+       << d->get_score() << "@0, hyp(" << d->id << ")]" << endl;
     ss << d->intermediate_meta_representation();
   }
-  if(FastLAS::space_size) {
+  if (FastLAS::space_size) {
     cout << "% SPACE SIZE: " << ds.size() << endl;
   }
 
-  if(prediction_task) {
-    if(score_only) {
+  if (prediction_task) {
+    if (score_only) {
       FastLAS::solve_final_task(ss.str() + ":- prediction_false.");
       print_score();
       cout << ';' << flush;
@@ -136,7 +146,10 @@ void FastLAS::solve() {
       print_stats();
 
       FastLAS::solve_final_task(ss.str() + ":- not prediction_false.");
-      cout << endl << endl << "% Optimal hypothesis not satisfying the prediction:" << endl << endl;
+      cout << endl
+           << endl
+           << "% Optimal hypothesis not satisfying the prediction:" << endl
+           << endl;
       print_stats();
     }
   } else {
@@ -155,34 +168,28 @@ void FastLAS::solve_final_task(string program) {
   ss << bias->final_bias_constraints << endl;
   ss << final_solving_program << endl;
 
-  if(output_solve_program) {
+  if (output_solve_program) {
     cout << ss.str() << endl;
     exit(0);
   }
 
-  Clingo(3, ss.str(),
-    ((FastLAS::timeout < 0) ? " " : "--time=" + std::to_string(FastLAS::timeout) + " ")
-      + "--opt-strat=usc,stratify")
-    ('i', [&](const string& atom) {
-      auto rule = Schema::RuleSchema::get_schema(stoi(atom));
-      hypothesis_length += rule->get_score();
-      solution_ss << rule->print() << endl;
-    })
-    ('b', [&](const string& atom) {
-      hypothesis_length += stoi(atom);
-    }) 
-    ('d', [&](const string& atom) {
-      sat_disjs.insert(int_to_disj[stoi(atom)]);
-    }) 
-    ('p', [&](const string& atom) {
-      sat_intermediate_facts.insert(atom);
-    }) 
-    ([&]() {
-      sat = true;
-    }
-  );
+  Solver::Clingo(3, ss.str(),
+         ((FastLAS::timeout < 0)
+              ? " "
+              : "--time=" + std::to_string(FastLAS::timeout) + " ") +
+             "--opt-strat=usc,stratify")('i', [&](const string &atom) {
+    auto rule = Schema::RuleSchema::get_schema(stoi(atom));
+    hypothesis_length += rule->get_score();
+    solution_ss << rule->print() << endl;
+  })('b', [&](const string &atom) {
+    hypothesis_length += stoi(atom);
+  })('d', [&](const string &atom) {
+    sat_disjs.insert(int_to_disj[stoi(atom)]);
+  })('p', [&](const string &atom) {
+    sat_intermediate_facts.insert(atom);
+  })([&]() { sat = true; });
 
-  if(!sat) {
+  if (!sat) {
     solution = "UNSATISFIABLE";
   } else {
     solution = solution_ss.str();
