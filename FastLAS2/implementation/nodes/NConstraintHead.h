@@ -26,6 +26,7 @@
 #ifndef N_CONSTRAINT_HEAD
 #define N_CONSTRAINT_HEAD
 
+#include "NRuleHead.h"
 class NConstraintHead : public NRuleHead {
 
 public:

@@ -25,7 +25,8 @@
 
 #ifndef NRULE_H
 #define NRULE_H
-#include "../Node.h"
+#include "NLiteral.h"
+#include "NRuleHead.h"
 #include <map>
 #include <regex>
 #include <set>

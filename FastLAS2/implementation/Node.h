@@ -26,28 +26,26 @@
 #ifndef NODE_H
 #define NODE_H
 
+#include <iostream>
+#include <map>
+#include <regex>
 #include <string>
 #include <vector>
-#include <map>
-#include <iostream>
-#include <regex>
-
-
 
 #include "nodes/BasicNode.h"
-#include "nodes/NTerm.h"
-#include "nodes/NString.h"
-#include "nodes/NBinOp.h"
 #include "nodes/NArithmeticExpr.h"
+#include "nodes/NBinOp.h"
 #include "nodes/NComplexExpr.h"
+#include "nodes/NString.h"
+#include "nodes/NTerm.h"
 
-#include "nodes/NRuleHead.h"
 #include "nodes/NConstraintHead.h"
 #include "nodes/NLiteral.h"
+#include "nodes/NRuleHead.h"
 
 #include "nodes/NAtom.h"
-#include "nodes/NNafLiteral.h"
 #include "nodes/NChoice.h"
+#include "nodes/NNafLiteral.h"
 
 #include "nodes/NRule.h"
 

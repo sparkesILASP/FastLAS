@@ -37,8 +37,8 @@ std::set<NRule> NRule::flip() {
   std::set<NRule> outset{};
   for (std::shared_ptr<NLiteral> bod_lit : body) {
 
-    // NRule flipped = NRule(bod_lit, head) cout << bod_lit->to_string() << endl;
-    // cout << head->to_string() << endl;
+    // NRule flipped = NRule(bod_lit, head) cout << bod_lit->to_string() <<
+    // endl; cout << head->to_string() << endl;
   }
 
   return outset;

@@ -20,7 +20,43 @@ The output is assumed to be formatted via some lua or python script run within c
 
 The general form of this information is ¥X| where ¥ is some single character identifier which is used to call a function, X is information from clingo and | is a separator.
 
-## Program
+## The Abduce program
+
+This is the only palce in the existing FastLAS code saturation is used.
+
+Quickly, the idea of abduction is to expand the bottom part of a program with a minimal representation of each way learnt rules may introduce atoms consistent with the top part of the program.
+
+So, each possibility is a CDPI.
+And, intuitively, this is equivalent to some answer set obtained from some ruleset generated from the mode.
+This is now very much like the OPL case, where the idea is now to learn the optimal ruleset from the result of any ruleset.
+Any ruleset learnt must be a ruleset used to generate the examples it covers, and must do better than any other possible ruleset given it is optimal.
+
+## FastLAS::Solve
+
+## Nodes
+
+Existing structure is:
+
+- Node
+  - NTerm
+	- NString
+	- NArithmeticExpr
+	- NComplexExpr
+  - NRule
+  - NRuleHead
+	- NAtom
+	- NChoice
+	- NConstraintHead
+  - NLiteral
+	- NNafLiteral
+  - NBinOp
+
+Not all sub-classes are used.
+E.g., NBinOp.
+
+An NRule is a NRuleHead paired with a set of NLiterals
+
+
 
 # Changes to base FastLAS
 

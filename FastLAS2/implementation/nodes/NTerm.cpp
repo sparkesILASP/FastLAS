@@ -23,7 +23,7 @@
  * IN THE SOFTWARE.
  */
 
-#include "../Node.h"
+#include "NTerm.h"
 #include <sstream>
 
 using namespace std;

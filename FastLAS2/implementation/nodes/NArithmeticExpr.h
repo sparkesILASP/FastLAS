@@ -25,7 +25,8 @@
 
 #ifndef NARITHMETIC_EXPRESSION_H
 #define NARITHMETIC_EXPRESSION_H
-#include "../Node.h"
+
+#include "NTerm.h"
 #include <set>
 #include <string>
 

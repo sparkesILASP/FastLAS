@@ -25,6 +25,10 @@
 
 #ifndef NTERM_H
 #define NTERM_H
+
+#include "BasicNode.h"
+#include <map>
+#include <regex>
 #include <set>
 #include <string>
 #include <vector>

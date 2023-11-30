@@ -23,7 +23,8 @@
  * IN THE SOFTWARE.
  */
 
-#include "../Node.h"
+#include "NAtom.h"
+#include "NTerm.h"
 
 using namespace std;
 

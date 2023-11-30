@@ -26,8 +26,9 @@
 #ifndef N_CHOICE___H
 #define N_CHOICE___H
 
-#include "../Node.h"
-
+#include "NLiteral.h"
+#include "NRuleHead.h"
+#include "NTerm.h"
 class NChoice : public NRuleHead {
 
 public:

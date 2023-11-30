@@ -26,6 +26,8 @@
 #ifndef NBIN_OP_H
 #define NBIN_OP_H
 
+#include "BasicNode.h"
+#include <string>
 class NBinOp : public Node {
 
 public:

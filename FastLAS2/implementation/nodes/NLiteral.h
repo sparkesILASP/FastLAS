@@ -25,7 +25,9 @@
 
 #ifndef NLITERAL_H
 #define NLITERAL_H
+#include "BasicNode.h"
 #include <iostream>
+#include <set>
 
 class NLiteral : public Node {
 

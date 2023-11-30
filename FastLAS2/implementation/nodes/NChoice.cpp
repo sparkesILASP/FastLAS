@@ -24,7 +24,7 @@
  */
 
 #include "NChoice.h"
-
+#include "NNafLiteral.h"
 
 using namespace std;
 

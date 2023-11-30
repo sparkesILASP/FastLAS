@@ -26,6 +26,9 @@
 #ifndef NSTRING_H
 #define NSTRING_H
 
+#include "NAtom.h"
+#include "NTerm.h"
+#include <map>
 class NString : public NTerm {
 
 public:

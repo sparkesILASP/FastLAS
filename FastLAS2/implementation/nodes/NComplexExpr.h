@@ -25,7 +25,8 @@
 
 #ifndef NCOMPLEX_EXPR_H
 #define NCOMPLEX_EXPR_H
-#include "../Node.h"
+
+#include "NTerm.h"
 #include <set>
 #include <string>
 #include <vector>

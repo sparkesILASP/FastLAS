@@ -26,6 +26,10 @@
 #ifndef NNAF_LITERAL_H
 #define NNAF_LITERAL_H
 
+#include "NAtom.h"
+#include "NLiteral.h"
+#include "NRuleHead.h"
+
 class NNafLiteral : public NLiteral {
 public:
   NNafLiteral(bool sign, std::shared_ptr<NAtom> atom)

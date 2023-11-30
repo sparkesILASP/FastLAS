@@ -26,6 +26,10 @@
 #ifndef NRULE_HEAD_H
 #define NRULE_HEAD_H
 
+#include "BasicNode.h"
+#include <iostream>
+#include <set>
+#include <string>
 class NAtom;
 
 class NRuleHead : public Node {

@@ -25,6 +25,8 @@
 
 #ifndef NATOM_H
 #define NATOM_H
+#include "NRuleHead.h"
+#include "NTerm.h"
 #include <sstream>
 #include <vector>
 
