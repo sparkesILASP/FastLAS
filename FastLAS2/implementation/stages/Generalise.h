@@ -28,8 +28,9 @@
 
 namespace FastLAS {
 
-void generalise();
+  void generalise();
 
 };
+
 
 #endif

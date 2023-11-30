@@ -29,31 +29,35 @@
 
 class ModeDeclaration {
 
-public:
-  ModeDeclaration(int recall, NAtom &atom, bool positive)
-      : recall(recall), atom(atom), positive(positive){};
+  public:
 
-  std::string to_string() const;
-  std::string head_representation() const;
-  std::string body_representation() const;
-  std::string abduce_head_representation() const;
-  std::string abduce_body_representation() const;
-  std::string analyse_head_representation() const;
-  std::string analyse_body_representation() const;
-  std::string occurance_representation(bool head) const;
-  std::string sym_representation(bool, bool) const;
+    ModeDeclaration(int recall, NAtom& atom, bool positive)
+      : recall(recall), atom(atom), positive(positive) {};
 
-  std::string dependency_representation(const std::string &) const;
 
-  bool matches_schema(const std::pair<std::string, int> &schema) const;
+    std::string to_string() const;
+    std::string head_representation() const;
+    std::string body_representation() const;
+    std::string abduce_head_representation() const;
+    std::string abduce_body_representation() const;
+    std::string analyse_head_representation() const;
+    std::string analyse_body_representation() const;
+    std::string occurance_representation(bool head) const;
+    std::string sym_representation(bool, bool) const;
 
-  const NAtom &get_atom() const { return atom; }
+    std::string dependency_representation(const std::string&) const;
 
-  const int recall;
-  const bool positive;
+    bool matches_schema(const std::pair<std::string, int>& schema) const;
 
-private:
-  NAtom atom;
+    const NAtom& get_atom() const { return atom; }
+
+    const int recall;
+    const bool positive;
+
+  private:
+
+    NAtom atom;
+
 };
 
 #endif

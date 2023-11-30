@@ -4,7 +4,10 @@
 #include <string>
 
 namespace Penalty {
-std::string make_lua_possibility_script_for(int bound);
+    std::string make_lua_possibility_script_for(int bound);
 }
 
+
+
 #endif
+

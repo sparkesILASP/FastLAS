@@ -174,7 +174,7 @@ int main(int argc, char **argv) {
 
   // Testing bound things
   if (FastLAS::mode == FastLAS::Mode::bound) {
-
+    
     cout << "Hullo" << endl;
     cout << "Examples: " << endl;
     for (auto eg : examples) {
@@ -223,10 +223,9 @@ int main(int argc, char **argv) {
 
   // Generalise
   if (vm.count("delay-generalisation")) {
-    if (debug) {
+    if (debug)
       cout << "Computing opt-sufficient subset..." << endl << endl;
-    }
-    //
+
     FastLAS::optimise_sym();
   } else {
     if (debug)
@@ -273,3 +272,4 @@ int main(int argc, char **argv) {
 
   _exit(0);
 };
+

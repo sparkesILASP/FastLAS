@@ -68,6 +68,7 @@ bottom2(A) :- bottom(A).
 
 )";
 
+
 std::string categorical_abduce_as = R"(
 
 { abduce(A) } :- abducible(A).
@@ -370,5 +371,6 @@ function main(prg)
 end
 #end.
 )";
+
 
 #endif
