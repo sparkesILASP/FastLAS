@@ -28,29 +28,19 @@
 
 class NConstraintHead : public NRuleHead {
 
-  public:
+public:
+  NConstraintHead() : NRuleHead(){};
 
-    NConstraintHead() : NRuleHead() {};
+  std::string to_string() const { return ""; }
 
-    std::string to_string() const {
-      return "";
-    }
+  std::string abduce_representation() const { return ""; }
 
-    std::string abduce_representation() const {
-      return "";
-    }
+  std::string meta_representation(const std::string &) const { return ""; }
+  std::string reduct_representation(const std::string &) const { return ""; }
+  void populate_constants(std::set<std::string> &consts) const {};
 
-    std::string meta_representation(const std::string&) const {
-      return "";
-    }
-    std::string reduct_representation(const std::string&) const {
-      return "";
-    }
-    void populate_constants(std::set<std::string>& consts) const { };
-
-    std::set<NAtom*> get_heads() { return std::set<NAtom*>(); };
-    std::string get_lower_bound() { return "1"; };
-    std::string get_upper_bound() { return "1"; };
-
+  std::set<NAtom *> get_heads() { return std::set<NAtom *>(); };
+  std::string get_lower_bound() { return "1"; };
+  std::string get_upper_bound() { return "1"; };
 };
 #endif

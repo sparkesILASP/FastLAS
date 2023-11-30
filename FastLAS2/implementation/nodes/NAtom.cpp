@@ -27,35 +27,37 @@
 
 using namespace std;
 
-
-string NAtom::generalise(const std::string& var_name, const bool& rewrite) const {
+string NAtom::generalise(const std::string &var_name,
+                         const bool &rewrite) const {
   stringstream ss;
   int index = 0;
-  if(is_comparison() && arguments.size() == 2) {
+  if (is_comparison() && arguments.size() == 2) {
     auto arg1 = arguments[0]->generalise(var_name, index, rewrite);
     auto arg2 = arguments[1]->generalise(var_name, index, rewrite);
-    if(rewrite) {
-      ss << "binop(\"" << predicate_name << "\", " << arg1 << ", " << arg2 << ")";
+    if (rewrite) {
+      ss << "binop(\"" << predicate_name << "\", " << arg1 << ", " << arg2
+         << ")";
     } else {
       ss << arg1;
       ss << predicate_name;
       ss << arg2;
       auto vars = get_place_holders();
-      for(int i = 0; i < vars.size(); i++) {
-        ss << ", eq(ARG" << i << ", " << vars[i].second << ", ARG_VAL" << i << ")";
+      for (int i = 0; i < vars.size(); i++) {
+        ss << ", eq(ARG" << i << ", " << vars[i].second << ", ARG_VAL" << i
+           << ")";
       }
     }
   } else {
     ss << predicate_name;
-    for(int i = 0; i < arguments.size(); i++) {
-      if(i == 0) {
+    for (int i = 0; i < arguments.size(); i++) {
+      if (i == 0) {
         ss << "(";
       } else {
         ss << ",";
       }
       ss << arguments[i]->generalise(var_name, index, rewrite);
     }
-    if(arguments.size() > 0) {
+    if (arguments.size() > 0) {
       ss << ")";
     }
   }

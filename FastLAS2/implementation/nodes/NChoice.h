@@ -26,29 +26,29 @@
 #ifndef N_CHOICE___H
 #define N_CHOICE___H
 
+#include "../Node.h"
+
 class NChoice : public NRuleHead {
 
-  public:
+public:
+  NChoice(NTerm *lb, const std::vector<std::shared_ptr<NLiteral>> &atoms,
+          NTerm *ub);
 
-    NChoice(NTerm* lb, const std::vector<std::shared_ptr<NLiteral>>& atoms, NTerm* ub);
+  std::string to_string() const;
+  std::string meta_representation(const std::string &) const;
+  std::string abduce_representation() const;
+  std::string reduct_representation(const std::string &) const;
+  void populate_constants(std::set<std::string> &consts) const;
 
-    std::string to_string() const;
-    std::string meta_representation(const std::string&) const;
-    std::string abduce_representation() const;
-    std::string reduct_representation(const std::string&) const;
-    void populate_constants(std::set<std::string>& consts) const;
+  std::set<NAtom *> get_heads();
+  std::string get_lower_bound() { return lb->to_string(); };
+  std::string get_upper_bound() { return ub->to_string(); };
 
-    std::set<NAtom*> get_heads();
-    std::string get_lower_bound() { return lb->to_string(); };
-    std::string get_upper_bound() { return ub->to_string(); };
+private:
+  NTerm *lb;
+  NTerm *ub;
 
-  private:
-
-    NTerm* lb;
-    NTerm* ub;
-
-    std::vector<std::shared_ptr<NLiteral>> atoms;
-
+  std::vector<std::shared_ptr<NLiteral>> atoms;
 };
 
 #endif

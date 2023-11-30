@@ -26,78 +26,72 @@
 #ifndef NNAF_LITERAL_H
 #define NNAF_LITERAL_H
 
-
 class NNafLiteral : public NLiteral {
-  public:
+public:
+  NNafLiteral(bool sign, std::shared_ptr<NAtom> atom)
+      : sign(sign), atom(atom){};
 
-    NNafLiteral(bool sign, std::shared_ptr<NAtom> atom)
-      : sign(sign), atom(atom) {};
+  virtual std::string to_string() const {
+    return std::string(sign ? "" : "not ") + atom->to_string();
+  }
 
-
-    virtual std::string to_string() const {
-      return std::string(sign ? "" : "not ") + atom->to_string();
+  virtual std::string meta_representation(const std::string &id) const {
+    if (atom->is_comparison()) {
+      return to_string();
+    } else {
+      return std::string(sign ? "" : "not ") + atom->meta_representation(id);
     }
+  }
 
-    virtual std::string meta_representation(const std::string& id) const {
-      if(atom->is_comparison()) {
-        return to_string();
-      } else {
-        return std::string(sign ? "" : "not ") + atom->meta_representation(id);
-      }
+  virtual std::string abduce_representation() const {
+    if (atom->is_comparison()) {
+      return to_string();
+    } else {
+      return std::string(sign ? "" : "not ") + atom->abduce_representation();
     }
+  }
 
-    virtual std::string abduce_representation() const {
-      if(atom->is_comparison()) {
-        return to_string();
-      } else {
-        return std::string(sign ? "" : "not ") + atom->abduce_representation();
-      }
-    }
-
-    virtual bool positive() const {
-      return sign;
-    }
-    std::string reduct_representation(const std::string& id) const {
-      auto s = atom->to_string();
-      if(atom->is_comparison()) {
-        return s;
-      } else {
-        if(sign) {
-          if(s[0] == '-') {
-            return std::string("-mmr(") + id + std::string(", ") + s.substr(1, s.length() - 1) + std::string(")");
-          } else {
-            return std::string("mmr(") + id + std::string(", ") + s + std::string(")");
-          }
+  virtual bool positive() const { return sign; }
+  std::string reduct_representation(const std::string &id) const {
+    auto s = atom->to_string();
+    if (atom->is_comparison()) {
+      return s;
+    } else {
+      if (sign) {
+        if (s[0] == '-') {
+          return std::string("-mmr(") + id + std::string(", ") +
+                 s.substr(1, s.length() - 1) + std::string(")");
         } else {
-          if(s[0] == '-') {
-            return std::string("not -ctx(") + id + std::string(", ") + s.substr(1, s.length() - 1) + std::string(")");
-          } else {
-            return std::string("not ctx(") + id + std::string(", ") + s + std::string(")");
-          }
+          return std::string("mmr(") + id + std::string(", ") + s +
+                 std::string(")");
+        }
+      } else {
+        if (s[0] == '-') {
+          return std::string("not -ctx(") + id + std::string(", ") +
+                 s.substr(1, s.length() - 1) + std::string(")");
+        } else {
+          return std::string("not ctx(") + id + std::string(", ") + s +
+                 std::string(")");
         }
       }
     }
+  }
 
-    void populate_constants(std::set<std::string>& consts) const {
-      atom->populate_constants(consts);
-    }
+  void populate_constants(std::set<std::string> &consts) const {
+    atom->populate_constants(consts);
+  }
 
-    bool is_comparison() const {
-      return atom->is_comparison();
-    }
+  bool is_comparison() const { return atom->is_comparison(); }
 
-    std::pair<std::string, int> get_predicate_schema() const {
-      return atom->get_schema();
-    }
+  std::pair<std::string, int> get_predicate_schema() const {
+    return atom->get_schema();
+  }
 
-    NAtom* get_atom() {
-      return atom.get();
-    }
+  NAtom *get_atom() { return atom.get(); }
 
-  private:
-
-    std::shared_ptr<NAtom> atom;
-    bool sign;
+private:
+  std::shared_ptr<NAtom> atom;
+  bool sign;
 };
 
 #endif

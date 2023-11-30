@@ -30,25 +30,25 @@ class NAtom;
 
 class NRuleHead : public Node {
 
-  public:
+public:
+  NRuleHead(){};
 
-    NRuleHead() {};
-
-    virtual std::string to_string() const = 0;
-    virtual std::string meta_representation(const std::string& id) const = 0;
-    virtual std::string abduce_representation() const = 0;
-    virtual std::string reduct_representation(const std::string& id) const {
-      std::cerr << "ERROR: reduct_representation not defined for general NRuleHeads." << std::endl;
-      exit(2);
-    }
-    virtual std::set<NAtom*> get_heads() = 0;
-    virtual std::string get_lower_bound() = 0;
-    virtual std::string get_upper_bound() = 0;
-    virtual void populate_constants(std::set<std::string>& consts) const = 0;
-    virtual std::pair<std::string, int> get_schema() const {
-      return std::make_pair("", 0);
-    }
-
+  virtual std::string to_string() const = 0;
+  virtual std::string meta_representation(const std::string &id) const = 0;
+  virtual std::string abduce_representation() const = 0;
+  virtual std::string reduct_representation(const std::string &id) const {
+    std::cerr
+        << "ERROR: reduct_representation not defined for general NRuleHeads."
+        << std::endl;
+    exit(2);
+  }
+  virtual std::set<NAtom *> get_heads() = 0;
+  virtual std::string get_lower_bound() = 0;
+  virtual std::string get_upper_bound() = 0;
+  virtual void populate_constants(std::set<std::string> &consts) const = 0;
+  virtual std::pair<std::string, int> get_schema() const {
+    return std::make_pair("", 0);
+  }
 };
 
 #endif

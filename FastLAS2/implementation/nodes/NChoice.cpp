@@ -23,19 +23,20 @@
  * IN THE SOFTWARE.
  */
 
-#include "../Node.h"
 #include "NChoice.h"
+
 
 using namespace std;
 
-NChoice::NChoice(NTerm* lb, const vector<shared_ptr<NLiteral>>& atoms, NTerm* ub)
-  : lb(lb), ub(ub), atoms(atoms) {};
+NChoice::NChoice(NTerm *lb, const vector<shared_ptr<NLiteral>> &atoms,
+                 NTerm *ub)
+    : lb(lb), ub(ub), atoms(atoms){};
 
 string NChoice::to_string() const {
   stringstream ss;
   ss << lb->to_string() << " { ";
-  for(int i = 0; i < atoms.size(); i++) {
-    if(i > 0)
+  for (int i = 0; i < atoms.size(); i++) {
+    if (i > 0)
       ss << "; ";
     ss << atoms[i]->to_string();
   }
@@ -43,18 +44,19 @@ string NChoice::to_string() const {
   return ss.str();
 }
 
-void NChoice::populate_constants(set<string>& consts) const {
+void NChoice::populate_constants(set<string> &consts) const {
   lb->populate_constants(consts);
-  for(auto a : atoms)
+  for (auto a : atoms)
     a->populate_constants(consts);
   ub->populate_constants(consts);
 }
 
-string NChoice::meta_representation(const string& id) const {
+string NChoice::meta_representation(const string &id) const {
   stringstream ss;
   ss << lb->to_string() << " { ";
-  for(int i = 0; i < atoms.size(); i++) {
-    if(i > 0) ss << "; ";
+  for (int i = 0; i < atoms.size(); i++) {
+    if (i > 0)
+      ss << "; ";
     ss << atoms[i]->meta_representation(id);
   }
   ss << " } " << ub->to_string();
@@ -64,27 +66,29 @@ string NChoice::meta_representation(const string& id) const {
 string NChoice::abduce_representation() const {
   stringstream ss;
   ss << lb->to_string() << " { ";
-  for(int i = 0; i < atoms.size(); i++) {
-    if(i > 0) ss << "; ";
+  for (int i = 0; i < atoms.size(); i++) {
+    if (i > 0)
+      ss << "; ";
     ss << atoms[i]->abduce_representation();
   }
   ss << " } " << ub->to_string();
   return ss.str();
 }
 
-string NChoice::reduct_representation(const string& id) const {
+string NChoice::reduct_representation(const string &id) const {
   auto s = to_string();
-  if(s[0] == '-') {
-    return std::string("-mmr(") + id + std::string(",") + s.substr(1, s.length()) + std::string(")");
+  if (s[0] == '-') {
+    return std::string("-mmr(") + id + std::string(",") +
+           s.substr(1, s.length()) + std::string(")");
   } else {
     return std::string("mmr(") + id + std::string(",") + s + std::string(")");
   }
 }
 
-set<NAtom*> NChoice::get_heads() {
-  auto s = set<NAtom*>();
-  for(auto lit : atoms) {
-    auto naf_lit = dynamic_cast<NNafLiteral*>(lit.get());
+set<NAtom *> NChoice::get_heads() {
+  auto s = set<NAtom *>();
+  for (auto lit : atoms) {
+    auto naf_lit = dynamic_cast<NNafLiteral *>(lit.get());
     s.insert(naf_lit->get_atom());
   }
   return s;

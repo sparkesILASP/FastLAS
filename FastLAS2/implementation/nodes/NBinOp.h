@@ -26,23 +26,16 @@
 #ifndef NBIN_OP_H
 #define NBIN_OP_H
 
-
 class NBinOp : public Node {
 
-  public:
+public:
+  NBinOp(std::string op) : op(op){};
+  NBinOp(const NBinOp &other) : op(other.op){};
 
-    NBinOp(std::string op) : op(op) {};
-    NBinOp(const NBinOp& other) : op(other.op) {};
+  std::string to_string() const { return op; }
 
-    std::string to_string() const {
-      return op;
-    }
-
-  private:
-
-    std::string op;
-
+private:
+  std::string op;
 };
-
 
 #endif

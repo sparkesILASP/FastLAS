@@ -26,88 +26,81 @@
 #ifndef NCOMPLEX_EXPR_H
 #define NCOMPLEX_EXPR_H
 #include "../Node.h"
-#include <vector>
 #include <set>
 #include <string>
+#include <vector>
 
 class NComplexExpr : public NTerm {
 
-  public:
-    NComplexExpr(std::shared_ptr<NTerm> arg1, std::string op, std::shared_ptr<NTerm> arg2)
-      : arg1(arg1), arg2(arg2), op(op) {};
+public:
+  NComplexExpr(std::shared_ptr<NTerm> arg1, std::string op,
+               std::shared_ptr<NTerm> arg2)
+      : arg1(arg1), arg2(arg2), op(op){};
 
-    virtual std::string to_string() const {
-      return "(" + arg1->to_string() + " " + op + " " + arg2->to_string() + ")";
-    }
+  virtual std::string to_string() const {
+    return "(" + arg1->to_string() + " " + op + " " + arg2->to_string() + ")";
+  }
 
-    virtual bool is_functional_term() const {
-      return false;
-    }
+  virtual bool is_functional_term() const { return false; }
 
-    virtual std::shared_ptr<NTerm> fill_in_captures(const std::smatch& sm) const {
-      auto a1 = arg1->fill_in_captures(sm);
-      auto a2 = arg2->fill_in_captures(sm);
-      std::shared_ptr<NTerm> t(new NComplexExpr(a1, op, a2));
-      return t;
-    }
+  virtual std::shared_ptr<NTerm> fill_in_captures(const std::smatch &sm) const {
+    auto a1 = arg1->fill_in_captures(sm);
+    auto a2 = arg2->fill_in_captures(sm);
+    std::shared_ptr<NTerm> t(new NComplexExpr(a1, op, a2));
+    return t;
+  }
 
-    virtual std::shared_ptr<NTerm> substitute(const std::map<std::string, std::string>& sm) const {
-      auto a1 = arg1->substitute(sm);
-      auto a2 = arg2->substitute(sm);
-      std::shared_ptr<NTerm> t(new NComplexExpr(a1, op, a2));
-      return t;
-    }
+  virtual std::shared_ptr<NTerm>
+  substitute(const std::map<std::string, std::string> &sm) const {
+    auto a1 = arg1->substitute(sm);
+    auto a2 = arg2->substitute(sm);
+    std::shared_ptr<NTerm> t(new NComplexExpr(a1, op, a2));
+    return t;
+  }
 
-    virtual std::string generalise(const std::string&, int&, const bool&) const;
+  virtual std::string generalise(const std::string &, int &,
+                                 const bool &) const;
 
-    virtual void populate_constants(std::set<std::string>& consts) const {
-      arg1->populate_constants(consts);
-      arg2->populate_constants(consts);
-    }
+  virtual void populate_constants(std::set<std::string> &consts) const {
+    arg1->populate_constants(consts);
+    arg2->populate_constants(consts);
+  }
 
-    std::vector<std::pair<std::string, std::string>> get_place_holders() const;
+  std::vector<std::pair<std::string, std::string>> get_place_holders() const;
 
-  private:
-
-    std::shared_ptr<NTerm> arg1, arg2;
-    std::string op;
-
+private:
+  std::shared_ptr<NTerm> arg1, arg2;
+  std::string op;
 };
 
 class NAbsVal : public NTerm {
 
-  public:
-    NAbsVal(std::shared_ptr<NTerm> arg)
-      : arg(arg) {};
+public:
+  NAbsVal(std::shared_ptr<NTerm> arg) : arg(arg){};
 
-    virtual std::string to_string() const {
-      return "|" + arg->to_string() + "|";
-    }
+  virtual std::string to_string() const { return "|" + arg->to_string() + "|"; }
 
-    virtual bool is_functional_term() const {
-      return false;
-    }
+  virtual bool is_functional_term() const { return false; }
 
-    virtual std::shared_ptr<NTerm> fill_in_captures(const std::smatch& sm) const {
-      auto a = arg->fill_in_captures(sm);
-      std::shared_ptr<NTerm> t(new NAbsVal(a));
-      return t;
-    }
+  virtual std::shared_ptr<NTerm> fill_in_captures(const std::smatch &sm) const {
+    auto a = arg->fill_in_captures(sm);
+    std::shared_ptr<NTerm> t(new NAbsVal(a));
+    return t;
+  }
 
-    virtual std::shared_ptr<NTerm> substitute(const std::map<std::string, std::string>& sm) const {
-      auto a = arg->substitute(sm);
-      std::shared_ptr<NTerm> t(new NAbsVal(a));
-      return t;
-    }
+  virtual std::shared_ptr<NTerm>
+  substitute(const std::map<std::string, std::string> &sm) const {
+    auto a = arg->substitute(sm);
+    std::shared_ptr<NTerm> t(new NAbsVal(a));
+    return t;
+  }
 
-    virtual void populate_constants(std::set<std::string>& consts) const {
-      arg->populate_constants(consts);
-    }
+  virtual void populate_constants(std::set<std::string> &consts) const {
+    arg->populate_constants(consts);
+  }
 
-  private:
-
-    std::shared_ptr<NTerm> arg;
-
+private:
+  std::shared_ptr<NTerm> arg;
 };
 
 #endif
