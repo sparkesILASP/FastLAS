@@ -27,12 +27,12 @@
 #include "../Example.h"
 #include "../LanguageBias.h"
 #include "../RuleSchema.h"
+#include "../Solvers/Solvers.h"
 #include "../Utils.h"
 #include "../meta_programs/SatSuff.h"
 #include <iostream>
 #include <mutex>
 #include <sstream>
-#include "../Solvers/Solvers.h"
 
 using namespace std;
 
@@ -154,7 +154,7 @@ void FastLAS::compute_sat_sufficient() {
         // exit(2);
 
         Solver::Clingo(3, ss.str(),
-               "--project --enum-mode=domRec --heuristic=domain -n 0")(
+                       "--project --enum-mode=domRec --heuristic=domain -n 0")(
             'i', [&](const std::string &atom) {
               rule_body.insert(get_language_index(atom));
             })('h', [&](const std::string &atom) {

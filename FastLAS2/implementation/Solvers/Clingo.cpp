@@ -12,13 +12,12 @@ some single character identifier which is used to call a function, X is
 information from clingo and | is a separator.
 */
 
-Solver::Clingo::Clingo(int outf, const std::string &program, const std::string &args,
-               bool debug)
+Solver::Clingo::Clingo(int outf, const std::string &program,
+                       const std::string &args, bool debug)
     : outf(outf), program(program), args(args), debug(debug) {}
 
-Solver::Clingo &
-Solver::Clingo::Clingo::operator()(const char &ch,
-                           const std::function<void(const std::string &)> &fn) {
+Solver::Clingo &Solver::Clingo::Clingo::operator()(
+    const char &ch, const std::function<void(const std::string &)> &fn) {
   fns.insert(make_pair(ch, fn));
   return *this;
 }

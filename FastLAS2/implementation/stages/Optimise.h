@@ -29,10 +29,10 @@
 
 namespace FastLAS {
 
-  bool extends(Schema* sc, Schema::RuleSchema* rule);
+bool extends(Schema *sc, Schema::RuleSchema *rule);
 
-  void optimise();
+void optimise();
 
-};
+}; // namespace FastLAS
 
 #endif

@@ -26,11 +26,11 @@
 #include "Solve.h"
 #include "../Example.h"
 #include "../LanguageBias.h"
+#include "../Solvers/Solvers.h"
 #include "../Utils.h"
 #include "../meta_programs/Solve.h"
 #include "Printing.h"
 #include <boost/algorithm/string.hpp>
-#include "../Solvers/Solvers.h"
 
 using namespace std;
 
@@ -174,10 +174,10 @@ void FastLAS::solve_final_task(string program) {
   }
 
   Solver::Clingo(3, ss.str(),
-         ((FastLAS::timeout < 0)
-              ? " "
-              : "--time=" + std::to_string(FastLAS::timeout) + " ") +
-             "--opt-strat=usc,stratify")('i', [&](const string &atom) {
+                 ((FastLAS::timeout < 0)
+                      ? " "
+                      : "--time=" + std::to_string(FastLAS::timeout) + " ") +
+                     "--opt-strat=usc,stratify")('i', [&](const string &atom) {
     auto rule = Schema::RuleSchema::get_schema(stoi(atom));
     hypothesis_length += rule->get_score();
     solution_ss << rule->print() << endl;

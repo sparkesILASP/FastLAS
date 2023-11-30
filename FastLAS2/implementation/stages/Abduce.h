@@ -28,7 +28,7 @@
 
 namespace FastLAS {
 
-  void abduce();
+void abduce();
 
 };
 

@@ -36,11 +36,13 @@ struct CachedPossibility {
 };
 
 namespace std {
-  template<> struct less<CachedPossibility> {
-    bool operator() (const CachedPossibility& lhs, const CachedPossibility& rhs) const {
-      return lhs.id < rhs.id; // There will never be two possibilities with the same id.
-    }
-  };
-}
+template <> struct less<CachedPossibility> {
+  bool operator()(const CachedPossibility &lhs,
+                  const CachedPossibility &rhs) const {
+    return lhs.id <
+           rhs.id; // There will never be two possibilities with the same id.
+  }
+};
+} // namespace std
 
 #endif

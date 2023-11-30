@@ -28,7 +28,7 @@
 
 namespace FastLAS {
 
-  void optimise_sym();
+void optimise_sym();
 
 };
 

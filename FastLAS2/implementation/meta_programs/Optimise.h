@@ -26,8 +26,9 @@
 #ifndef OPTIMISE_META_PROGRAM__H_
 #define OPTIMISE_META_PROGRAM__H_
 
-//intermediate_constraint = ", #false : intermediate(X)"
-//intermediate_constraint = intermediate_constraint..", "..tostring(atom):sub(14,-2).." != X"
+// intermediate_constraint = ", #false : intermediate(X)"
+// intermediate_constraint = intermediate_constraint..",
+// "..tostring(atom):sub(14,-2).." != X"
 
 std::string optimise_meta_prg = R"ESC(
 1 { rule(R) : rule_p(R) } 1.

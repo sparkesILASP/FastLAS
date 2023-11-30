@@ -24,19 +24,19 @@
  */
 
 #include "Printing.h"
+#include "../Example.h"
+#include "Solve.h"
 #include <boost/algorithm/string.hpp>
 #include <iostream>
-#include "Solve.h"
-#include "../Example.h"
 
 using namespace std;
 
-extern set<Example*> examples;
+extern set<Example *> examples;
 
 void FastLAS::print_possibilities() {
   stringstream ss;
-  for(auto eg : examples) {
-    for(auto p : eg->get_possibilities())
+  for (auto eg : examples) {
+    for (auto p : eg->get_possibilities())
       ss << "  " << p->to_string();
     ss << endl;
   }
@@ -47,33 +47,35 @@ void FastLAS::print_possibilities() {
 
 void FastLAS::print_c_plus() {
   stringstream characterisation;
-  for(auto schema : Schema::RuleSchema::all_rule_schemas) {
-    if(schema->is_useful()) {
-      characterisation << "  " << "[" << schema->id << "] " << schema->print() << schema->print_useful_assignments();
-      //characterisation << " " << schema->to_cache_string();
+  for (auto schema : Schema::RuleSchema::all_rule_schemas) {
+    if (schema->is_useful()) {
+      characterisation << "  "
+                       << "[" << schema->id << "] " << schema->print()
+                       << schema->print_useful_assignments();
+      // characterisation << " " << schema->to_cache_string();
       characterisation << endl;
     }
   }
   characterisation << endl;
-  //characterisation << "Disjunctions:" << endl;
-  //for(auto eg : examples) {
-  //  characterisation << "  EG {" << endl;
-  //  for(auto sub_eg : eg->get_possibilities()) {
-  //    characterisation << "    POSS {";
-  //    for(auto disj : sub_eg->get_rule_disjunctions()) {
-  //      characterisation << "DISJ {";
-  //      for(auto sc : disj) {
-  //        characterisation << " " << sc->id << "; ";
-  //      }
-  //      characterisation << "}; ";
-  //    }
-  //    for(auto sc : sub_eg->get_rule_violations()) {
-  //      characterisation << "NOT " << sc->id << "; ";
-  //    }
-  //    characterisation << "}; " << endl;
-  //  }
-  //  characterisation << "  };" << endl;
-  //}
+  // characterisation << "Disjunctions:" << endl;
+  // for(auto eg : examples) {
+  //   characterisation << "  EG {" << endl;
+  //   for(auto sub_eg : eg->get_possibilities()) {
+  //     characterisation << "    POSS {";
+  //     for(auto disj : sub_eg->get_rule_disjunctions()) {
+  //       characterisation << "DISJ {";
+  //       for(auto sc : disj) {
+  //         characterisation << " " << sc->id << "; ";
+  //       }
+  //       characterisation << "}; ";
+  //     }
+  //     for(auto sc : sub_eg->get_rule_violations()) {
+  //       characterisation << "NOT " << sc->id << "; ";
+  //     }
+  //     characterisation << "}; " << endl;
+  //   }
+  //   characterisation << "  };" << endl;
+  // }
 
   characterisation << endl;
   string sol = characterisation.str();
@@ -85,10 +87,11 @@ void FastLAS::print_c_plus() {
 
 void FastLAS::print_c_minus() {
   stringstream characterisation;
-  for(auto schema : Schema::RuleSchema::all_rule_schemas) {
-    if(schema->is_violating()) {
-      characterisation << "  " << schema->print() << schema->print_violating_assignments();
-      //characterisation << " " << schema->to_cache_string();
+  for (auto schema : Schema::RuleSchema::all_rule_schemas) {
+    if (schema->is_violating()) {
+      characterisation << "  " << schema->print()
+                       << schema->print_violating_assignments();
+      // characterisation << " " << schema->to_cache_string();
       characterisation << endl;
     }
   }
@@ -102,25 +105,25 @@ void FastLAS::print_c_minus() {
 
 void FastLAS::print_s_m() {
   stringstream ss;
-  set<Schema::RuleSchema*> ds;
-  for(auto eg : examples)
-    for(auto sub_eg : eg->get_possibilities()) {
+  set<Schema::RuleSchema *> ds;
+  for (auto eg : examples)
+    for (auto sub_eg : eg->get_possibilities()) {
       switch (sub_eg->ex_type) {
-        case Example::ExType::pos:
-          for(auto disj : sub_eg->get_optimised_rule_disjunctions())
-          for(auto d : disj)
+      case Example::ExType::pos:
+        for (auto disj : sub_eg->get_optimised_rule_disjunctions())
+          for (auto d : disj)
             ds.insert(d);
-          break;
-        case Example::ExType::neg:
-          for(auto v : sub_eg->get_optimised_rule_violations())
+        break;
+      case Example::ExType::neg:
+        for (auto v : sub_eg->get_optimised_rule_violations())
           ds.insert(v);
-          break;
-        default:
-          break;
+        break;
+      default:
+        break;
       }
     }
-  for(Schema::RuleSchema* rs : ds) {
-    //ss << "  " << "[" << rs->id << "] " << rs->get_score();
+  for (Schema::RuleSchema *rs : ds) {
+    // ss << "  " << "[" << rs->id << "] " << rs->get_score();
     ss << rs->print_intermediate_representation();
     auto r = rs->print();
     boost::replace_all(r, "n_v_a_r", "V");
@@ -128,57 +131,56 @@ void FastLAS::print_s_m() {
     boost::replace_all(r, "naf__", "not ");
     ss << "  " << r << endl;
   }
-  //ss << "Disjunctions:" << endl;
-  //for(auto eg : examples) {
-  //  ss << "  EG {" << endl;
-  //  for(auto sub_eg : eg->get_possibilities()) {
-  //    ss << "    POSS {";
-  //    for(auto disj : sub_eg->get_optimised_rule_disjunctions()) {
-  //      ss << "DISJ {";
-  //      for(auto sc : disj) {
-  //        ss << " " << sc->id << "; ";
-  //      }
-  //      ss << "}; ";
-  //    }
-  //    for(auto sc : sub_eg->get_optimised_rule_violations()) {
-  //      ss << "NOT " << sc->id << "; ";
-  //    }
-  //    ss << "}; " << endl;
-  //  }
-  //  ss << "  };" << endl;
-  //}
+  // ss << "Disjunctions:" << endl;
+  // for(auto eg : examples) {
+  //   ss << "  EG {" << endl;
+  //   for(auto sub_eg : eg->get_possibilities()) {
+  //     ss << "    POSS {";
+  //     for(auto disj : sub_eg->get_optimised_rule_disjunctions()) {
+  //       ss << "DISJ {";
+  //       for(auto sc : disj) {
+  //         ss << " " << sc->id << "; ";
+  //       }
+  //       ss << "}; ";
+  //     }
+  //     for(auto sc : sub_eg->get_optimised_rule_violations()) {
+  //       ss << "NOT " << sc->id << "; ";
+  //     }
+  //     ss << "}; " << endl;
+  //   }
+  //   ss << "  };" << endl;
+  // }
 
   cout << ss.str() << endl << endl;
 }
 
-
-void FastLAS::print_solution() {
-  cout << solution << flush;
-}
+void FastLAS::print_solution() { cout << solution << flush; }
 
 pair<int, set<string>> get_total_penalty() {
   int total_penalty = 0;
   set<string> uncovered_example_ids;
 
-  for(auto eg : examples) {
-    if(eg->get_penalty() > 0 && !eg->prediction()) {
+  for (auto eg : examples) {
+    if (eg->get_penalty() > 0 && !eg->prediction()) {
       bool covered = false;
-      for(auto p_eg : eg->get_possibilities()) {
+      for (auto p_eg : eg->get_possibilities()) {
         covered = true;
-        for(auto disj : p_eg->get_optimised_rule_disjunctions()) {
-          if(FastLAS::sat_disjs.find(disj) == FastLAS::sat_disjs.end()) {
+        for (auto disj : p_eg->get_optimised_rule_disjunctions()) {
+          if (FastLAS::sat_disjs.find(disj) == FastLAS::sat_disjs.end()) {
             covered = false;
             break;
           }
         }
 
-        if(covered)
-          covered = FastLAS::sat_disjs.find(p_eg->get_optimised_rule_violations()) == FastLAS::sat_disjs.end();
+        if (covered)
+          covered =
+              FastLAS::sat_disjs.find(p_eg->get_optimised_rule_violations()) ==
+              FastLAS::sat_disjs.end();
 
-        if(covered)
+        if (covered)
           break;
       }
-      if(!covered) {
+      if (!covered) {
         uncovered_example_ids.insert(eg->id);
         total_penalty += eg->get_penalty();
       }
@@ -199,8 +201,8 @@ void FastLAS::print_stats() {
   cout << "  \"Noisy Example Penalty\": " << total_penalty << "," << endl;
   cout << "  \"Uncovered Examples\": [";
   bool first = true;
-  for(auto uce : uncovered_example_ids) {
-    if(first) {
+  for (auto uce : uncovered_example_ids) {
+    if (first) {
       first = false;
     } else {
       cout << ", ";
@@ -210,8 +212,8 @@ void FastLAS::print_stats() {
   cout << " ]," << endl;
   cout << "  \"Final Semi-decomposable Representation\": [";
   first = true;
-  for(auto sdcf : sat_intermediate_facts) {
-    if(first) {
+  for (auto sdcf : sat_intermediate_facts) {
+    if (first) {
       first = false;
     } else {
       cout << ", ";
