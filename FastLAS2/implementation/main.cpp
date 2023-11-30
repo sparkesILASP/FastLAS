@@ -26,11 +26,13 @@
 #include <iostream>
 #include <ostream>
 #include <sstream>
+#include <string>
 #include <vector>
 
 #include "Example.h"
 #include "RuleSchema.h"
 #include "Utils.h"
+#include "nodes/NRule.h"
 #include "stages/Abduce.h"
 #include "stages/Generalise.h"
 #include "stages/Optimise.h"
@@ -122,28 +124,17 @@ int main(int argc, char **argv) {
 
   // set config
 
-  if (vm.count("space-size"))
-    FastLAS::space_size = true;
-  if (vm.count("categorical-contexts"))
-    FastLAS::categorical_contexts = true;
-  if (vm.count("output-solve-program"))
-    FastLAS::output_solve_program = true;
-  if (vm.count("debug"))
-    debug = true;
-  if (vm.count("threads"))
-    FastLAS::thread_num = vm["threads"].as<int>();
-  if (vm.count("timeout"))
-    FastLAS::timeout = vm["timeout"].as<int>();
-  if (vm.count("nopl"))
-    FastLAS::mode = FastLAS::Mode::nopl;
-  if (vm.count("opl"))
-    FastLAS::mode = FastLAS::Mode::opl;
-  if (vm.count("bound"))
-    FastLAS::mode = FastLAS::Mode::bound;
-  if (vm.count("force-safety"))
-    FastLAS::force_safety = true;
-  if (vm.count("score-only"))
-    FastLAS::score_only = true;
+  if (vm.count("space-size")) FastLAS::space_size = true;
+  if (vm.count("categorical-contexts")) FastLAS::categorical_contexts = true;
+  if (vm.count("output-solve-program")) FastLAS::output_solve_program = true;
+  if (vm.count("debug")) debug = true;
+  if (vm.count("threads")) FastLAS::thread_num = vm["threads"].as<int>();
+  if (vm.count("timeout")) FastLAS::timeout = vm["timeout"].as<int>();
+  if (vm.count("nopl")) FastLAS::mode = FastLAS::Mode::nopl;
+  if (vm.count("opl")) FastLAS::mode = FastLAS::Mode::opl;
+  if (vm.count("bound")) FastLAS::mode = FastLAS::Mode::bound;
+  if (vm.count("force-safety")) FastLAS::force_safety = true;
+  if (vm.count("score-only")) FastLAS::score_only = true;
 
   // parse
 
@@ -174,12 +165,23 @@ int main(int argc, char **argv) {
 
   // Testing bound things
   if (FastLAS::mode == FastLAS::Mode::bound) {
-    
+
     cout << "Hullo" << endl;
     cout << "Examples: " << endl;
     for (auto eg : examples) {
       if (eg->ex_type == Example::ExType::bnd) {
-        pen_poss(eg);
+        cout << eg->to_string() << endl;
+        for (auto r : eg->bound_prog) {
+          cout << "The rule: ";
+          cout << r.to_string();
+          cout << "Flip:";
+          std::set<NRule> flip = r.flip();
+          for (auto r_f : flip) {
+            cout << r_f.to_string() << endl;
+          }
+          cout << endl;
+        }
+        // pen_poss(eg);
       }
     }
 
@@ -188,60 +190,58 @@ int main(int argc, char **argv) {
   }
 
   // Abduce possibilities, when set
-  if (FastLAS::mode == FastLAS::Mode::opl) {
-    for (auto eg : examples)
+  switch (FastLAS::mode) {
+  case FastLAS::Mode::opl:
+    for (auto eg : examples) {
       eg->set_unique_possibility();
-  } else {
-    if (debug)
-      cout << "Abducing..." << endl << endl;
-
+    }
+    break;
+  case FastLAS::Mode::nopl:
+    if (debug) {
+      cout << "Abducing…" << endl;
+    }
     FastLAS::abduce();
     if (debug) {
       cout << "Possibilities:" << endl;
       FastLAS::print_possibilities();
     }
+    break;
+  default:
+    break;
   }
 
   // SAT-sufficient subsets
   // Additional atoms are written to FastLAS::language here
-  if (debug)
-    cout << "Computing SAT-sufficient subset..." << endl << endl;
+  if (debug) cout << "Computing SAT-sufficient subset…" << endl;
 
   FastLAS::compute_sat_sufficient();
 
   if (debug) {
     cout << "C^+(T):" << endl;
     FastLAS::print_c_plus();
-
     cout << "C^-(T):" << endl;
     FastLAS::print_c_minus();
   }
 
-  if (vm.count("write-cache")) {
-    FastLAS::write_cache(vm["write-cache"].as<string>());
-  }
+  if (vm.count("write-cache")) FastLAS::write_cache(vm["write-cache"].as<string>());
 
   // Generalise
   if (vm.count("delay-generalisation")) {
-    if (debug)
-      cout << "Computing opt-sufficient subset..." << endl << endl;
+    if (debug) cout << "Computing opt-sufficient subset…" << endl;
 
     FastLAS::optimise_sym();
   } else {
-    if (debug)
-      cout << "Generalising..." << endl << endl;
+    if (debug) cout << "Generalising…" << endl;
+
     FastLAS::generalise();
+
     if (debug) {
       cout << "G^+(T):" << endl;
       FastLAS::print_c_plus();
     }
 
-    if (vm.count("write-cache")) {
-      FastLAS::write_cache(vm["write-cache"].as<string>());
-    }
-
-    if (debug)
-      cout << "Computing opt-sufficient subset..." << endl << endl;
+    if (vm.count("write-cache")) FastLAS::write_cache(vm["write-cache"].as<string>());
+    if (debug) cout << "Computing opt-sufficient subset…" << endl;
 
     FastLAS::optimise();
   }
@@ -255,8 +255,7 @@ int main(int argc, char **argv) {
     FastLAS::write_cache(vm["write-cache"].as<string>());
   }
 
-  if (debug)
-    cout << "Solving..." << endl << endl;
+  if (debug) cout << "Solving…" << endl;
 
   FastLAS::solve();
 
@@ -272,4 +271,3 @@ int main(int argc, char **argv) {
 
   _exit(0);
 };
-

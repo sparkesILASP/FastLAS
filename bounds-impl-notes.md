@@ -31,6 +31,31 @@ And, intuitively, this is equivalent to some answer set obtained from some rules
 This is now very much like the OPL case, where the idea is now to learn the optimal ruleset from the result of any ruleset.
 Any ruleset learnt must be a ruleset used to generate the examples it covers, and must do better than any other possible ruleset given it is optimal.
 
+## The language
+
+FastLAS::language is used to construct the various solving programs, I think.
+
+## (Rule) schemas
+
+### Schemas
+
+The schema class is initialised with variable assignments and types
+
+- Has a unique rule as a member.
+  There are no initialisers for a schema without supplying a rule
+- Has a collection of optimised rules.
+
+
+
+### Rule schemas
+
+A rule schema has a head, id, body etc.
+
+The extensions of a rule are graphed with extended-by and extensions sets.
+And, sets of pointers to useful_schemas and violations.
+
+- Is violating when there is some violation
+
 ## FastLAS::Solve
 
 ## Nodes
@@ -54,7 +79,16 @@ Existing structure is:
 Not all sub-classes are used.
 E.g., NBinOp.
 
-An NRule is a NRuleHead paired with a set of NLiterals
+An NRule is a NRuleHead paired with a set of NLiterals.
+
+### Idea
+
+Rewrite to head/body distinction is either
+	- A flag
+		And implement checks on functions for flag.
+	- A subclass adding only functions as necessary
+		And cast between the two classes when needed.
+
 
 
 

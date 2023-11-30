@@ -24,72 +24,74 @@
  */
 
 #include "Utils.h"
+#include "Example.h"
+#include "Solvers/Solvers.h"
+#include <fstream>
 #include <iostream>
+#include <mutex>
+#include <shared_mutex>
 #include <string>
 #include <sys/stat.h>
 #include <sys/wait.h>
-#include <mutex>
-#include <shared_mutex>
-#include <fstream>
-#include "Example.h"
-#include "Solvers/Solvers.h"
 
 using namespace std;
 
-extern set<Example*> examples;
+extern set<Example *> examples;
 extern set<string> cached_examples;
 
 namespace FastLAS {
 
-  int thread_num = 8;
-  int sample_size = 0;
-  int max_conditions = 1;
-  int timeout = -1;
-  bool output_solve_program = false;
-  // Default to opl like before Mode was introduced
-  Mode mode = Mode::opl;
-  bool limit_rules = false;
-  bool force_safety = false;
-  bool score_only = false;
-  bool space_size = false;
-  bool separate_abduction = false;
-  bool categorical_contexts = false;
-  bool any_cache = false;
+int thread_num = 8;
+int sample_size = 0;
+int max_conditions = 1;
+int timeout = -1;
+bool output_solve_program = false;
+// Default to opl like before Mode was introduced
+Mode mode = Mode::opl;
+bool limit_rules = false;
+bool force_safety = false;
+bool score_only = false;
+bool space_size = false;
+bool separate_abduction = false;
+bool categorical_contexts = false;
+bool any_cache = false;
 
-  vector<string> language({"f_triv___"});
+vector<string> language({"f_triv___"});
 
-};
+}; // namespace FastLAS
 
 namespace {
 
-  map<string, int> language_to_int{{"f_triv___", 0}};
+map<string, int> language_to_int{{"f_triv___", 0}};
 
-  int file_counter = 0;
-  mutex file_mtx;
-  shared_mutex language_mtx;
+int file_counter = 0;
+mutex file_mtx;
+shared_mutex language_mtx;
 
-};
+}; // namespace
 
 string FastLAS::get_tmp_file(bool fifo) {
   file_mtx.lock();
   file_counter++;
-  string file_name = "/tmp/fast_las_" + to_string(getpid()) + "_" + to_string(file_counter);
+  string file_name =
+      "/tmp/fast_las_" + to_string(getpid()) + "_" + to_string(file_counter);
   file_mtx.unlock();
-  if(fifo)
-    mkfifo(file_name.c_str(), 0666);
+  if (fifo) mkfifo(file_name.c_str(), 0666);
   return file_name;
 }
 
-int FastLAS::get_language_index(const string& atom) {
+int FastLAS::get_language_index(const string &atom) {
   int index;
   language_mtx.lock_shared();
   auto it = language_to_int.find(atom);
   language_mtx.unlock_shared();
-  if(it == language_to_int.end()) {
+  if (it == language_to_int.end()) {
     language_mtx.lock();
-    // must recheck, incase another thread has created it in the meantime
+    // must recheck, incase another
+    // thread has created it in the
+    // meantime
     auto it2 = language_to_int.find(atom);
-    if(it2 == language_to_int.end()) {
+    if (it2 == language_to_int.end()) {
       index = language.size();
       language_to_int[atom] = index;
       language.push_back(atom);
@@ -103,7 +105,7 @@ int FastLAS::get_language_index(const string& atom) {
   return index;
 }
 
-string FastLAS::get_language(const int& index) {
+string FastLAS::get_language(const int &index) {
   string atom;
   language_mtx.lock_shared();
   atom = language[index];
@@ -111,21 +113,21 @@ string FastLAS::get_language(const int& index) {
   return atom;
 }
 
-set<set<int>> FastLAS::cnf_to_dnf(const set<set<int>>& cnf) {
+set<set<int>> FastLAS::cnf_to_dnf(const set<set<int>> &cnf) {
 
   stringstream ss;
   set<int> ds;
 
-  for(auto d : cnf) {
+  for (auto d : cnf) {
     ss << "#false";
-    for(auto i : d) {
+    for (auto i : d) {
       ss << "; tr(" << i << ")";
       ds.insert(i);
     }
     ss << "." << endl;
   }
 
-  for(auto i : ds) {
+  for (auto i : ds) {
     ss << ":- tr(" << i << "), tr(" << -i - 1 << ")." << endl;
   }
 
@@ -155,34 +157,35 @@ end
   set<set<int>> dnf;
   set<int> conj;
 
-  Solver::Clingo(3, ss.str(), "-n 0")
-    ('t', [&](const string& atom) {
-      conj.insert(stoi(atom));
-    }) ([&]() {
-      dnf.insert(conj);
-      conj.clear();
-    }
-  );
+  Solver::Clingo(3, ss.str(), "-n 0")(
+      't', [&](const string &atom) { conj.insert(stoi(atom)); })([&]() {
+    dnf.insert(conj);
+    conj.clear();
+  });
 
   return dnf;
 }
 
 // Add WCDPI example
-void FastLAS::add_example(const string& id, set<NAtom*>*& incs, set<NAtom*>*& excs, vector<NRule>& ctx, int penalty, Example::ExType ex_type, bool prediction) {
-  if(cached_examples.find(id) == cached_examples.end()) {
+void FastLAS::add_example(const string &id, set<NAtom *> *&incs,
+                          set<NAtom *> *&excs, vector<NRule> &ctx, int penalty,
+                          Example::ExType ex_type, bool prediction) {
+  if (cached_examples.find(id) == cached_examples.end()) {
     set<string> string_incs, string_excs;
-    for(auto inc : *incs) string_incs.insert(inc->to_string());
-    for(auto exc : *excs) string_excs.insert(exc->to_string());
-    if(mode == Mode::nopl) {
+    for (auto inc : *incs)
+      string_incs.insert(inc->to_string());
+    for (auto exc : *excs)
+      string_excs.insert(exc->to_string());
+    if (mode == Mode::nopl) {
       shared_ptr<NRuleHead> head_atom(new NConstraintHead());
-      for(auto inc : *incs) {
+      for (auto inc : *incs) {
         vector<shared_ptr<NLiteral>> body;
         shared_ptr<NAtom> atom(inc);
         shared_ptr<NLiteral> lit(new NNafLiteral(false, atom));
         body.push_back(lit);
         ctx.push_back(NRule(head_atom, body));
       }
-      for(auto exc : *excs) {
+      for (auto exc : *excs) {
         vector<shared_ptr<NLiteral>> body;
         shared_ptr<NAtom> atom(exc);
         shared_ptr<NLiteral> lit(new NNafLiteral(true, atom));
@@ -190,11 +193,14 @@ void FastLAS::add_example(const string& id, set<NAtom*>*& incs, set<NAtom*>*& ex
         ctx.push_back(NRule(head_atom, body));
       }
     } else {
-      for(auto inc : *incs) delete inc;
-      for(auto exc : *excs) delete exc;
+      for (auto inc : *incs)
+        delete inc;
+      for (auto exc : *excs)
+        delete exc;
     }
-    if(!prediction) {
-      examples.insert(new Example(id, string_incs, string_excs, ctx, penalty, ex_type));
+    if (!prediction) {
+      examples.insert(
+          new Example(id, string_incs, string_excs, ctx, penalty, ex_type));
     } else {
       examples.insert(new PredictionExample(id, string_incs, string_excs, ctx));
     }
@@ -202,34 +208,38 @@ void FastLAS::add_example(const string& id, set<NAtom*>*& incs, set<NAtom*>*& ex
 }
 
 // Add bound example
-void FastLAS::add_example(const string& id, int bound, vector<NRule>& bound_prog, vector<NRule>& ctx, Example::ExType ex_type, bool prediction) {
-  if(cached_examples.find(id) == cached_examples.end()) {
-      examples.insert(new Example(id, bound, bound_prog, ctx, ex_type));
+void FastLAS::add_example(const string &id, int bound,
+                          vector<NRule> &bound_prog, vector<NRule> &ctx,
+                          Example::ExType ex_type, bool prediction) {
+  if (cached_examples.find(id) == cached_examples.end()) {
+    examples.insert(new Example(id, bound, bound_prog, ctx, ex_type));
   }
 }
 
-
-void FastLAS::write_cache(const string& path) {
+void FastLAS::write_cache(const string &path) {
   stringstream ss;
 
   ss << "#cache {" << endl;
 
   ss << "  #language: {";
-  for(auto l : language) ss << l << ";";
+  for (auto l : language)
+    ss << l << ";";
   ss << "};" << endl;
 
   ss << "  #rule_schemas: {";
-  for(auto rs : Schema::RuleSchema::all_rule_schemas) ss << rs->to_cache_string();
+  for (auto rs : Schema::RuleSchema::all_rule_schemas)
+    ss << rs->to_cache_string();
   ss << "};" << endl;
 
   ss << "  #schemas: {";
-  for(auto s : Schema::all_schemas) ss << s->to_cache_string();
+  for (auto s : Schema::all_schemas)
+    ss << s->to_cache_string();
   ss << "};" << endl;
 
   ss << "  #examples: {";
-  for(auto e : examples) ss << e->to_cache_string();
+  for (auto e : examples)
+    ss << e->to_cache_string();
   ss << "};" << endl;
-
 
   ss << "};" << endl;
 
@@ -238,19 +248,19 @@ void FastLAS::write_cache(const string& path) {
   infile2.close();
 }
 
-string FastLAS::remove_quotes(const string& str) {
-  if(str[0] == '"') {
+string FastLAS::remove_quotes(const string &str) {
+  if (str[0] == '"') {
     return str.substr(1, str.size() - 2);
   } else {
     return str;
   }
 }
 
-string FastLAS::object_level_print(const int& index) {
+string FastLAS::object_level_print(const int &index) {
   auto raw = language[index];
-  regex bin_expr_regex ("bin_exp\\(([^,]+),\\\"([^\"]+)\\\",([^\\)]+)\\)");
-  auto processed = regex_replace (raw, bin_expr_regex ,"$1 $2 $3");
-  regex bin_op_regex ("binop\\(\\\"([^\"]+)\\\",([^,]+),([^\\)]+)\\)");
-  auto final_str = regex_replace (processed, bin_op_regex ,"$2 $1 $3");
+  regex bin_expr_regex("bin_exp\\(([^,]+),\\\"([^\"]+)\\\",([^\\)]+)\\)");
+  auto processed = regex_replace(raw, bin_expr_regex, "$1 $2 $3");
+  regex bin_op_regex("binop\\(\\\"([^\"]+)\\\",([^,]+),([^\\)]+)\\)");
+  auto final_str = regex_replace(processed, bin_op_regex, "$2 $1 $3");
   return final_str;
 }

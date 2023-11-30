@@ -26,11 +26,11 @@
 #include "Solve.h"
 #include "../Example.h"
 #include "../LanguageBias.h"
+#include "../Solvers/Solvers.h"
 #include "../Utils.h"
 #include "../meta_programs/Solve.h"
 #include "Printing.h"
 #include <boost/algorithm/string.hpp>
-#include "../Solvers/Solvers.h"
 
 using namespace std;
 
@@ -54,6 +54,10 @@ map<set<Schema::RuleSchema *>, int> cached_disjs;
 vector<set<Schema::RuleSchema *>> int_to_disj;
 }; // namespace FastLAS
 
+/*
+The final solving program.
+The task here is to minimize penalties for failing to cover examples.
+*/
 void FastLAS::solve() {
   stringstream ss;
   // For each example
@@ -80,7 +84,7 @@ void FastLAS::solve() {
         ds.insert(disj.begin(), disj.end()); // cannot only be done with caching
                                              // in case violation occurs first;
       }
-
+      // If disjunction id is in the head, then examples are not covered
       auto disj = sub_eg->get_optimised_rule_violations();
       int index = cached_disjs.size();
       auto it = cached_disjs.find(disj);
@@ -95,8 +99,9 @@ void FastLAS::solve() {
       }
       ss << "n_cov(" << sub_eg->id << ") :- disj(" << index << ")." << endl;
     }
-
+    // Specify relations between possibilities and examples
     switch (eg->ex_type) {
+    // If no possiiblity is covered, then the example is not covered
     case Example::ExType::pos:
       ss << "n_cov(" << eg->id << ") :- #true";
       for (auto sub_eg : eg->get_possibilities()) {
@@ -104,10 +109,10 @@ void FastLAS::solve() {
       }
       ss << "." << endl;
       break;
+    // If some negative possibility is covered, the negative example is not covered
     case Example::ExType::neg:
       for (auto sub_eg : eg->get_possibilities()) {
-        ss << "n_cov(" << eg->id << ") :- not n_cov(" << sub_eg->id << ")."
-           << endl;
+        ss << "n_cov(" << eg->id << ") :- not n_cov(" << sub_eg->id << ")." << endl;
       }
       break;
     default:
@@ -117,15 +122,15 @@ void FastLAS::solve() {
     if (eg->prediction())
       ss << "prediction_false :- n_cov(" << eg->id << ")." << endl;
     else if (eg->get_penalty() > 0)
-      ss << ":~ n_cov(" << eg->id << ").[" << eg->get_penalty() << "@0, eg("
-         << eg->id << ")]" << endl;
+      // Soft constraint for failing to cover example when finite penalty
+      ss << ":~ n_cov(" << eg->id << ").[" << eg->get_penalty() << "@0, eg(" << eg->id << ")]" << endl;
     else
+      // If no finite penalty, hard constraint for failing to cover an example
       ss << ":- n_cov(" << eg->id << ")." << endl;
   }
 
   for (auto d : ds) {
-    ss << "0 {in_h(" << d->id << ")} 1. :~ in_h(" << d->id << ").["
-       << d->get_score() << "@0, hyp(" << d->id << ")]" << endl;
+    ss << "0 {in_h(" << d->id << ")} 1. :~ in_h(" << d->id << ").[" << d->get_score() << "@0, hyp(" << d->id << ")]" << endl;
     ss << d->intermediate_meta_representation();
   }
   if (FastLAS::space_size) {
@@ -142,7 +147,8 @@ void FastLAS::solve() {
     } else {
       FastLAS::solve_final_task(ss.str() + ":- prediction_false.");
 
-      cout << "% Optimal hypothesis satisfying the prediction:" << endl << endl;
+      cout << "% Optimal hypothesis satisfying the prediction:" << endl
+           << endl;
       print_stats();
 
       FastLAS::solve_final_task(ss.str() + ":- not prediction_false.");
@@ -173,11 +179,7 @@ void FastLAS::solve_final_task(string program) {
     exit(0);
   }
 
-  Solver::Clingo(3, ss.str(),
-         ((FastLAS::timeout < 0)
-              ? " "
-              : "--time=" + std::to_string(FastLAS::timeout) + " ") +
-             "--opt-strat=usc,stratify")('i', [&](const string &atom) {
+  Solver::Clingo(3, ss.str(), ((FastLAS::timeout < 0) ? " " : "--time=" + std::to_string(FastLAS::timeout) + " ") + "--opt-strat=usc,stratify")('i', [&](const string &atom) {
     auto rule = Schema::RuleSchema::get_schema(stoi(atom));
     hypothesis_length += rule->get_score();
     solution_ss << rule->print() << endl;

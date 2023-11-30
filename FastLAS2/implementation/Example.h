@@ -41,6 +41,8 @@ class Example {
 
   public:
 
+  std::vector<NRule> bound_prog;
+
     enum ExType {
       pos,
       neg,
@@ -112,7 +114,7 @@ class Example {
 
     int penalty;
 
-    std::vector<NRule> bound_prog;
+    
     
 
     std::set<Example*> possibilities;

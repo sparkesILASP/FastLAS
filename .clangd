@@ -1,2 +1,9 @@
 CompileFlags:
-	Add: [-std=c++17]
+	Add: '-std=c++17'
+	Add: '--compile-commands-dir=~/.brew/Cellar/boost/1.83.0/include'
+	Add: '--compile-commands-dir=~/.brew/Cellar/boost/1.83.0/lib'
+	Add: '-dir=~/.brew/Cellar/boost/1.83.0/include'
+	Add: '-dir=~/.brew/Cellar/boost/1.83.0/lib'
+	Add: '-I ~/.brew/Cellar/boost/1.83.0/include'
+	Add: '-L ~/.brew/Cellar/boost/1.83.0/lib'
+	Add: '-lboost_system'

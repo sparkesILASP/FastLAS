@@ -1,0 +1,9 @@
+---
+BasedOnStyle: LLVM
+IndentWidth: 2
+---
+Language: Cpp
+Standard: c++17
+AllowShortIfStatementsOnASingleLine: true
+ColumnLimit: 0
+---
