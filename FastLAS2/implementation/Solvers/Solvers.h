@@ -12,11 +12,9 @@ namespace Solver {
 class Clingo {
 
 public:
-  Clingo(int outf, const std::string &, const std::string &,
-         bool debug = false);
+  Clingo(int outf, const std::string &, const std::string &, bool debug = false);
 
-  Clingo &operator()(const char &,
-                     const std::function<void(const std::string &)> &);
+  Clingo &operator()(const char &, const std::function<void(const std::string &)> &);
 
   void operator()(const std::function<void()> &) const;
 

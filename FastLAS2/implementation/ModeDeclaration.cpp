@@ -83,8 +83,7 @@ string ModeDeclaration::head_representation() const {
   return ss.str();
 }
 
-string ModeDeclaration::sym_representation(bool body,
-                                           bool optimisation_phase) const {
+string ModeDeclaration::sym_representation(bool body, bool optimisation_phase) const {
   stringstream ss, ss2;
   auto vars = atom.get_place_holders();
 

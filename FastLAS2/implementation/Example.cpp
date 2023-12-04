@@ -45,8 +45,7 @@ map<string, Example *> Example::example_map, Example::possibility_map;
 set<Schema *> Example::prediction_extra_violations;
 
 // ? Example
-Example::Example(string id, int penalty, Example::ExType ex_type,
-                 bool possibility)
+Example::Example(string id, int penalty, Example::ExType ex_type, bool possibility)
     : id(id), penalty(penalty), ex_type(ex_type) {
   if (possibility) {
     possibility_map.insert(make_pair(id, this));
@@ -56,11 +55,8 @@ Example::Example(string id, int penalty, Example::ExType ex_type,
 }
 
 // WCDPI
-Example::Example(string id, set<string> &inclusions, set<string> &exclusions,
-                 vector<NRule> &context, int penalty, Example::ExType ex_type,
-                 bool possibility)
-    : id(id), inclusions(inclusions), exclusions(exclusions), context(context),
-      penalty(penalty), ex_type(ex_type) {
+Example::Example(string id, set<string> &inclusions, set<string> &exclusions, vector<NRule> &context, int penalty, Example::ExType ex_type, bool possibility)
+    : id(id), inclusions(inclusions), exclusions(exclusions), context(context), penalty(penalty), ex_type(ex_type) {
   if (possibility) {
     possibility_map.insert(make_pair(id, this));
   } else {
@@ -136,14 +132,17 @@ string Example::to_string() const {
   if (ex_type == Example::ExType::bnd) {
     ss << "\t[" << endl;
     ss << "\t " << bound;
-    ss << "," << endl << "\t{" << endl;
+    ss << "," << endl
+       << "\t{" << endl;
     for (auto c : bound_prog) {
       ss << "\t " << c.to_string();
     }
-    ss << "\t}" << endl << "\t]";
+    ss << "\t}" << endl
+       << "\t]";
   }
 
-  ss << "," << endl << "\t{";
+  ss << "," << endl
+     << "\t{";
   for (auto c : context) {
     ss << "  " << c.to_string();
   }
@@ -241,12 +240,10 @@ void Example::set_constant_representation() {
 int Example::get_penalty() const { return penalty; }
 
 const set<Schema *> &Example::get_rule_violations() const {
-  // return rule_violations;
   return recursive_rule_violations;
 }
 
 const set<set<Schema *>> &Example::get_rule_disjunctions() const {
-  // return rule_disjunctions;
   return recursive_rule_disjunctions;
 }
 
@@ -271,14 +268,6 @@ void Example::add_rule_violation(Schema *sc) {
 
 void Example::add_rule_disjunction(const set<Schema *> &disj) {
   rule_disjunctions.insert(disj);
-  recursive_rule_disjunctions.insert(disj);
-}
-
-void Example::add_recursive_rule_violation(Schema *sc) {
-  recursive_rule_violations.insert(sc);
-}
-
-void Example::add_recursive_rule_disjunction(const set<Schema *> &disj) {
   recursive_rule_disjunctions.insert(disj);
 }
 
@@ -359,8 +348,7 @@ Possibility::Possibility(Example *eg, const string &id)
   this->c_rep = eg->c_rep;
 }
 
-Possibility::Possibility(Example *eg, const string &id, const set<int> &incs,
-                         const set<int> &excs, const set<int> &ctx)
+Possibility::Possibility(Example *eg, const string &id, const set<int> &incs, const set<int> &excs, const set<int> &ctx)
     : Example(id, -1, eg->ex_type), inc_ids(incs), exc_ids(excs), ctx_ids(ctx) {
 
   // for(auto r : eg->context) {
@@ -562,9 +550,7 @@ set<string> Possibility::get_exclusions() const {
   return exc_strings;
 }
 
-GenPossibility::GenPossibility(Example *eg, const string &id,
-                               const set<set<int>> &disjunctions,
-                               const set<int> &ctx)
+GenPossibility::GenPossibility(Example *eg, const string &id, const set<set<int>> &disjunctions, const set<int> &ctx)
     : Possibility(eg, id), disjunctions(disjunctions) {
   this->ctx_ids = ctx;
 }

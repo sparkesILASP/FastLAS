@@ -26,6 +26,7 @@
 #ifndef META_PROGRAM_SOLVE__H__
 #define META_PROGRAM_SOLVE__H__
 
+#include <string>
 std::string final_solving_program = R"(
 :~ penalty(P, T).[P@0, intermediate, T]
 

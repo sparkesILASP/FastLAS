@@ -58,7 +58,8 @@ bool FastLAS::extends(Schema *sc, Schema::RuleSchema *rule) {
   }
   for (auto b : rule->body) {
     // If the body has an index and is found, return true.
-    if (b != -1 && sc->rule->body.find(b) == sc->rule->body.end()) {
+
+    if ((b != -1 && sc->rule->body.find(b) == sc->rule->body.end())) {
       // Else… check to see if geq or leq substring, otherwise false
       // Find what b is.
       auto l = FastLAS::get_language(b);
@@ -89,8 +90,7 @@ bool FastLAS::extends(Schema *sc, Schema::RuleSchema *rule) {
           if (it2 == sc->var_assignment.end()) {
             return false;
           } else {
-            double a1 =
-                stod(FastLAS::remove_quotes(FastLAS::language[it2->second]));
+            double a1 = stod(FastLAS::remove_quotes(FastLAS::language[it2->second]));
             double a2 = stod(l.substr(it + 4, l.size()));
             if (a1 > a2) {
               return false;
@@ -122,6 +122,7 @@ void write_global_file(const string &global_pipe, int head = -1) {
         all_violations.insert(eg_rvs.begin(), eg_rvs.end());
       }
     }
+    // v_ids and the ids of schemas from rule violations from possibilities
     if (eg->ex_type == Example::ExType::pos) {
       auto guar_eg_rvs = eg->get_guaranteed_rule_violations();
       for (Schema *s : guar_eg_rvs) {
@@ -129,12 +130,11 @@ void write_global_file(const string &global_pipe, int head = -1) {
       }
     }
   }
-  // Make sure no inf penalty example is violated.
+  // Make sure no chosen examples/possibilities??? are violated.
   for (int v_id : v_ids) {
     ss << ":- violated(" << v_id << ")." << endl;
   }
-  all_violations.insert(Example::prediction_extra_violations.begin(),
-                        Example::prediction_extra_violations.end());
+  all_violations.insert(Example::prediction_extra_violations.begin(), Example::prediction_extra_violations.end());
 
   for (Schema *s : all_violations) {
     if (head == -1 || s->rule->head == head) {
@@ -142,8 +142,7 @@ void write_global_file(const string &global_pipe, int head = -1) {
       for (int b : s->rule->body)
         ss << "in_v_body(" << b << ", " << s->id << ")." << endl;
       for (auto p : s->var_assignment)
-        ss << "v_assign(" << s->id << ", " << p.first << ", "
-           << FastLAS::language[p.second] << ")." << endl;
+        ss << "v_assign(" << s->id << ", " << p.first << ", " << FastLAS::language[p.second] << ")." << endl;
     }
   }
 
@@ -169,10 +168,6 @@ void write_global_file(const string &global_pipe, int head = -1) {
   // Add on the invariant part of the metaprogram
   ss << optimise_meta_prg;
 
-  // cout << "~~~" << endl
-  //      << ss.str() << endl
-  //      << "~~~" << endl;
-
   ofstream global_file(global_pipe);
   global_file << ss.str();
   global_file.close();
@@ -181,15 +176,15 @@ void write_global_file(const string &global_pipe, int head = -1) {
 /*
 Optimisation.
 
-For parallel execution over rule schemas.
+Goal is to find OPT-sufficient characteristic hypothesis space.
+So, working on rule schemas and finding an optimal rule for each rule in the genralised hypothesis space.
 */
 void FastLAS::optimise() {
 
   // string global_pipe = get_tmp_file(false);
   // write_global_file(global_pipe);
 
-  vector<pair<set<Schema::RuleSchema *>, set<Schema::RuleSchema *>>>
-      schema_group_vec = Schema::get_implication_groups();
+  vector<pair<set<Schema::RuleSchema *>, set<Schema::RuleSchema *>>> schema_group_vec = Schema::get_implication_groups();
 
   set<int> schema_group_ids;
   for (int i = 0; i < schema_group_vec.size(); i++)
@@ -207,7 +202,7 @@ void FastLAS::optimise() {
             mtx.unlock();
             /*
             For the useful schemas, these are maybe split into samples.
-            This is set in Utils and coded to 0 at the moment, so can ignore
+            Set in Utils and coded to 0 at the moment, so can ignore
             */
             // Added default empty set to skip check on whether set is present
             vector<set<Schema *>> samples{set<Schema *>{}};
@@ -244,36 +239,56 @@ void FastLAS::optimise() {
               map<string, string> types;
 
               Solver::Clingo(3, ss.str(), global_pipe + " --heuristic=Domain ")(
+                  // id_in_body
                   'i', [&](const string &atom) {
                     rule_body.insert(stoi(atom));
-                  })('n', [&](const string &atom) {
-                numerator = stoi(atom);
-              })('r', [&](const string &atom) {
-                intermediate_sf_facts.insert(atom);
-              })('h', [&](const string &atom) {
-                head = stoi(atom);
-              })('b', [&](const string &atom) {
-                bound = stoi(atom);
-              })('l', [&](const string &atom) {
-                auto it = atom.find(',');
-                rule_body.insert(get_language_index(atom.substr(0, it) + " >= " + FastLAS::remove_quotes(atom.substr(it + 1, atom.size() - it - 1))));
-              })('u', [&](const string &atom) {
-                auto it = atom.find(',');
-                rule_body.insert(get_language_index(atom.substr(0, it) + " <= " + FastLAS::remove_quotes(atom.substr(it + 1, atom.size() - it - 1))));
-              })('t', [&](const string &atom) {
-                auto it = atom.find(',');
-                types.insert(
-                    make_pair(atom.substr(0, it), atom.substr(it + 1, atom.size() - it - 1)));
-              })([&]() {
+                  })(
+                  // invert
+                  'n', [&](const string &atom) {
+                    numerator = stoi(atom);
+                  })(
+                  // intermediate
+                  'r', [&](const string &atom) {
+                    intermediate_sf_facts.insert(atom);
+                  })(
+                  // id_in_head
+                  'h', [&](const string &atom) {
+                    head = stoi(atom);
+                  })(
+                  // bound
+                  'b', [&](const string &atom) {
+                    bound = stoi(atom);
+                  })(
+                  // lb (lower bound?)
+                  'l', [&](const string &atom) {
+                    auto it = atom.find(',');
+                    rule_body.insert(get_language_index(atom.substr(0, it) + " >= " + FastLAS::remove_quotes(atom.substr(it + 1, atom.size() - it - 1))));
+                  })(
+                  // ub (upper bound?)
+                  'u', [&](const string &atom) {
+                    auto it = atom.find(',');
+                    rule_body.insert(get_language_index(atom.substr(0, it) + " <= " + FastLAS::remove_quotes(atom.substr(it + 1, atom.size() - it - 1))));
+                  })(
+                  // r_type
+                  't', [&](const string &atom) {
+                    auto it = atom.find(',');
+                    types.insert(
+                        make_pair(atom.substr(0, it), atom.substr(it + 1, atom.size() - it - 1)));
+                  })([&]() {
                 int index;
+                // ??? Why is the penalty adjusted?
                 if (numerator != -1) bound = numerator / bound;
 
+                // Need a lock as modifying schemas which are global
                 mtx.lock();
+                // A call to get_schema which makes the schema if needed.
+                // And, guess is schema is always made.
                 auto rule = Schema::RuleSchema::get_schema(head, rule_body);
                 rule->set_score(bound);
                 rule->set_types(types);
                 rule->set_intermediate_representation(intermediate_sf_facts);
 
+                // Add as an extension to every schema the rule extends
                 for (auto sc : Schema::all_schemas) {
                   if (extends(sc, rule)) sc->optimised_rules.insert(rule);
                 }

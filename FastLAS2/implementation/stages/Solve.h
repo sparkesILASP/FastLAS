@@ -25,23 +25,20 @@
 
 #ifndef SOLVE__H_
 #define SOLVE__H_
-#include <set>
 #include "../RuleSchema.h"
+#include <set>
 
 namespace FastLAS {
 
-  void solve();
+void solve();
 
-  extern int hypothesis_length;
-  extern int penalty_paid;
-  extern std::set<std::set<Schema::RuleSchema*>> sat_disjs;
-  extern std::set<std::string> sat_intermediate_facts;
-  extern std::string solution;
-  extern bool sat;
+extern int hypothesis_length;
+extern int penalty_paid;
+extern std::set<std::set<Schema::RuleSchema *>> sat_disjs;
+extern std::set<std::string> sat_intermediate_facts;
+extern std::string solution;
+extern bool sat;
 
-};
-
+}; // namespace FastLAS
 
 #endif
-
-

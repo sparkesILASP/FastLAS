@@ -208,9 +208,7 @@ void FastLAS::add_example(const string &id, set<NAtom *> *&incs,
 }
 
 // Add bound example
-void FastLAS::add_example(const string &id, int bound,
-                          vector<NRule> &bound_prog, vector<NRule> &ctx,
-                          Example::ExType ex_type, bool prediction) {
+void FastLAS::add_example(const string &id, int bound, vector<NRule> &bound_prog, vector<NRule> &ctx, Example::ExType ex_type, bool prediction) {
   if (cached_examples.find(id) == cached_examples.end()) {
     examples.insert(new Example(id, bound, bound_prog, ctx, ex_type));
   }
@@ -228,18 +226,15 @@ void FastLAS::write_cache(const string &path) {
 
   ss << "  #rule_schemas: {";
   for (auto rs : Schema::RuleSchema::all_rule_schemas)
-    ss << rs->to_cache_string();
-  ss << "};" << endl;
+    ss << rs->to_cache_string() << "};" << endl;
 
   ss << "  #schemas: {";
   for (auto s : Schema::all_schemas)
-    ss << s->to_cache_string();
-  ss << "};" << endl;
+    ss << s->to_cache_string() << "};" << endl;
 
   ss << "  #examples: {";
   for (auto e : examples)
-    ss << e->to_cache_string();
-  ss << "};" << endl;
+    ss << e->to_cache_string() << "};" << endl;
 
   ss << "};" << endl;
 

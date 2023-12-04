@@ -26,6 +26,7 @@
 #ifndef META_PROGRAMS__ABDUCE__H__
 #define META_PROGRAMS__ABDUCE__H__
 
+#include <string>
 std::string abduce_as = R"(
 
 
@@ -67,7 +68,6 @@ bottom2(A) :- bottom(A).
 #heuristic abduce(A).[1@1, false]
 
 )";
-
 
 std::string categorical_abduce_as = R"(
 
@@ -371,6 +371,5 @@ function main(prg)
 end
 #end.
 )";
-
 
 #endif

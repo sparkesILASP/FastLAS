@@ -269,5 +269,6 @@ int main(int argc, char **argv) {
     }
   }
 
+  cout << "Complete!" << endl;
   _exit(0);
 };

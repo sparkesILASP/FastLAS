@@ -63,28 +63,32 @@ void FastLAS::solve() {
   // For each example
   for (auto eg : examples) {
     ss << "% " << eg->id << endl;
-    // Get each possibility
+    // Possibility disjunction
     for (auto sub_eg : eg->get_possibilities()) {
       ss << "% " << eg->id << " : " << sub_eg->id << endl;
-      // And insert the optimised rule disjunctions
+      // Insert the optimised rule disjunctions
+      // Disjunctions are ruleschemas from characteristic ruleset.
+      // And, I think only rulesets which include the example.
       for (auto disj : sub_eg->get_optimised_rule_disjunctions()) {
-        int index = cached_disjs.size();
+        int index{};
         auto it = cached_disjs.find(disj);
         if (it == cached_disjs.end()) {
-          cached_disjs[disj] = index;
+          // Associate an integer with the disjunction
+          cached_disjs[disj] = index = cached_disjs.size();
+          // Used below to get a disjunction from an int.
           int_to_disj.push_back(disj);
           for (auto d : disj) {
+            // If establish disjunct, get disjunction
             ss << "disj(" << index << ") :- in_h(" << d->id << ")." << endl;
           }
         } else {
           index = it->second;
         }
-        ss << "n_cov(" << sub_eg->id << ") :- not disj(" << index << ")."
-           << endl;
-        ds.insert(disj.begin(), disj.end()); // cannot only be done with caching
-                                             // in case violation occurs first;
+        // Possibility is uncovered unless disjunction, for each disjunction.
+        ss << "n_cov(" << sub_eg->id << ") :- not disj(" << index << ")." << endl;
+        ds.insert(disj.begin(), disj.end()); // cannot only be done with caching in case violation occurs first;
       }
-      // If disjunction id is in the head, then examples are not covered
+      // Violation disjunction
       auto disj = sub_eg->get_optimised_rule_violations();
       int index = cached_disjs.size();
       auto it = cached_disjs.find(disj);
@@ -120,12 +124,13 @@ void FastLAS::solve() {
     }
 
     if (eg->prediction())
+      // failed predication
       ss << "prediction_false :- n_cov(" << eg->id << ")." << endl;
     else if (eg->get_penalty() > 0)
-      // Soft constraint for failing to cover example when finite penalty
+      // soft constraint for failing to cover example when finite penalty
       ss << ":~ n_cov(" << eg->id << ").[" << eg->get_penalty() << "@0, eg(" << eg->id << ")]" << endl;
     else
-      // If no finite penalty, hard constraint for failing to cover an example
+      // hard constraint for failing to cover an example
       ss << ":- n_cov(" << eg->id << ")." << endl;
   }
 
@@ -153,9 +158,7 @@ void FastLAS::solve() {
 
       FastLAS::solve_final_task(ss.str() + ":- not prediction_false.");
       cout << endl
-           << endl
-           << "% Optimal hypothesis not satisfying the prediction:" << endl
-           << endl;
+           << "% Optimal hypothesis not satisfying the prediction:" << endl;
       print_stats();
     }
   } else {
@@ -179,17 +182,25 @@ void FastLAS::solve_final_task(string program) {
     exit(0);
   }
 
-  Solver::Clingo(3, ss.str(), ((FastLAS::timeout < 0) ? " " : "--time=" + std::to_string(FastLAS::timeout) + " ") + "--opt-strat=usc,stratify")('i', [&](const string &atom) {
-    auto rule = Schema::RuleSchema::get_schema(stoi(atom));
-    hypothesis_length += rule->get_score();
-    solution_ss << rule->print() << endl;
-  })('b', [&](const string &atom) {
-    hypothesis_length += stoi(atom);
-  })('d', [&](const string &atom) {
-    sat_disjs.insert(int_to_disj[stoi(atom)]);
-  })('p', [&](const string &atom) {
-    sat_intermediate_facts.insert(atom);
-  })([&]() { sat = true; });
+  Solver::Clingo(3, ss.str(), ((FastLAS::timeout < 0) ? " " : "--time=" + std::to_string(FastLAS::timeout) + " ") + "--opt-strat=usc,stratify")(
+      // in_head
+      'i', [&](const string &atom) {
+        auto rule = Schema::RuleSchema::get_schema(stoi(atom));
+        hypothesis_length += rule->get_score();
+        solution_ss << rule->print() << endl;
+      })(
+      // intermediate_penalty
+      'b', [&](const string &atom) {
+        hypothesis_length += stoi(atom);
+      })(
+      // disj
+      'd', [&](const string &atom) {
+        sat_disjs.insert(int_to_disj[stoi(atom)]);
+      })(
+      // penalty
+      'p', [&](const string &atom) {
+        sat_intermediate_facts.insert(atom);
+      })([&]() { sat = true; });
 
   if (!sat) {
     solution = "UNSATISFIABLE";

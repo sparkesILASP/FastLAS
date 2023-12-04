@@ -23,16 +23,27 @@
  * IN THE SOFTWARE.
  */
 
+/*
+Figuring out the characteristic rulesets.
+In particular:
+- Rules which include an example.
+- Rules which exclude an example.
+
+The union of these rules is SAT-sufficient.
+
+The task of the solver is to figure out the rules.
+*/
+
 #include "SatSuff.h"
 #include "../Example.h"
 #include "../LanguageBias.h"
 #include "../RuleSchema.h"
+#include "../Solvers/Solvers.h"
 #include "../Utils.h"
 #include "../meta_programs/SatSuff.h"
 #include <iostream>
 #include <mutex>
 #include <sstream>
-#include "../Solvers/Solvers.h"
 
 using namespace std;
 
@@ -48,14 +59,12 @@ mutex mtx_ss;
 void FastLAS::compute_sat_sufficient() {
   set<set<Example *>> grouped_possibilities;
 
-  map<tuple<set<pair<int, set<int>>>, set<int>, bool>, set<Example *>>
-      grouped_possibilities_map;
+  map<tuple<set<pair<int, set<int>>>, set<int>, bool>, set<Example *>> grouped_possibilities_map;
   for (auto eg : examples) {
     if (cached_examples.find(eg->id) == cached_examples.end()) {
       auto eg_possibilities = eg->get_possibilities();
       for (auto p : eg_possibilities) {
-        grouped_possibilities_map[p->to_context_comparison_representation()]
-            .insert(p);
+        grouped_possibilities_map[p->to_context_comparison_representation()].insert(p);
       }
     }
   }
@@ -137,7 +146,7 @@ void FastLAS::compute_sat_sufficient() {
           ss << R"(
         %% ground without replacement
         :- in(A1), in(A2), A1 < A2, eq(A1, A), eq(A2, A).
-      )";
+)";
         }
 
         set<int> rule_body, heads;
@@ -153,39 +162,54 @@ void FastLAS::compute_sat_sufficient() {
         // cerr << ss.str() << endl;
         // exit(2);
 
-        Solver::Clingo(3, ss.str(),
-               "--project --enum-mode=domRec --heuristic=domain -n 0")(
+        Solver::Clingo(3, ss.str(), "--project --enum-mode=domRec --heuristic=domain -n 0")(
             'i', [&](const std::string &atom) {
               rule_body.insert(get_language_index(atom));
-            })('h', [&](const std::string &atom) {
-          heads.insert(get_language_index(atom));
-        })('n', [&](const std::string &atom) {
-          auto it = atom.find(',');
-          auto second_part = atom.substr(it + 1, atom.size() - it - 1);
-          numeric_var_assignments.insert(
-              make_pair(atom.substr(0, it), get_language_index(second_part)));
-        })('y', [&](const std::string &atom) {
-          auto it = atom.find(',');
-          auto second_part = atom.substr(it + 1, atom.size() - it - 1);
-          types.insert(make_pair(atom.substr(0, it), second_part));
-        })('t', [&](const std::string &atom) {
-          inc_name = atom;
-          inclusion = true;
-        })('v', [&](const std::string &atom) {
-          violations.insert(atom);
-        })('r', [&](const std::string &atom) {
-          inclusion_of.insert(atom);
-        })([&]() {
+            })(
+            // head
+            'h', [&](const std::string &atom) {
+              heads.insert(get_language_index(atom));
+            })(
+            // numeric_assignment
+            'n', [&](const std::string &atom) {
+              auto it = atom.find(',');
+              auto second_part = atom.substr(it + 1, atom.size() - it - 1);
+              numeric_var_assignments.insert(
+                  make_pair(atom.substr(0, it), get_language_index(second_part)));
+            })(
+            // type
+            'y', [&](const std::string &atom) {
+              auto it = atom.find(',');
+              auto second_part = atom.substr(it + 1, atom.size() - it - 1);
+              types.insert(make_pair(atom.substr(0, it), second_part));
+            })(
+            // target_inclusion
+            't', [&](const std::string &atom) {
+              inc_name = atom;
+              inclusion = true;
+            })(
+            // excludes
+            'v', [&](const std::string &atom) {
+              violations.insert(atom);
+            })(
+            // includes
+            'r', [&](const std::string &atom) {
+              inclusion_of.insert(atom);
+            })([&]() {
           set<Schema *> disjunction;
+          // Each program has heads and rule bodies.
+          // Disjunction contains each head/body pairing
+          // So, conceptually this is more of a conjunction.
+          // But, each conjunction is part of a disjunction.
           for (auto h : heads) {
-            disjunction.insert(Schema::get_schema(
-                h, rule_body, numeric_var_assignments, types));
+            disjunction.insert(Schema::get_schema(h, rule_body, numeric_var_assignments, types));
           }
           mtx_ss.lock();
           if (inclusion) {
             for (auto id : inclusion_of) {
               eg_incs[id].insert(inc_name);
             }
+            // Record the included examples for each rule.
             for (auto d : disjunction) {
               partial_disjs[inc_name].insert(d);
               // must reset positive cache before setting useful.
@@ -198,10 +222,10 @@ void FastLAS::compute_sat_sufficient() {
                   break;
                 }
               }
+              // Record which example each rule violates.
               for (auto eg : eg_group) {
                 if (eg->prediction()) {
-                  if ((inclusion && eg_incs[eg->id].find(inc_name) !=
-                                        eg_incs[eg->id].end())) {
+                  if ((inclusion && eg_incs[eg->id].find(inc_name) != eg_incs[eg->id].end())) {
                     for (auto d : disjunction) {
                       if (FastLAS::any_cache) {
                         d->reset_violating_cache();

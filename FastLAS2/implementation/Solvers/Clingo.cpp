@@ -13,12 +13,12 @@ information from clingo and | is a separator.
 */
 
 Solver::Clingo::Clingo(int outf, const std::string &program, const std::string &args,
-               bool debug)
+                       bool debug)
     : outf(outf), program(program), args(args), debug(debug) {}
 
 Solver::Clingo &
 Solver::Clingo::Clingo::operator()(const char &ch,
-                           const std::function<void(const std::string &)> &fn) {
+                                   const std::function<void(const std::string &)> &fn) {
   fns.insert(make_pair(ch, fn));
   return *this;
 }
@@ -103,5 +103,4 @@ void Solver::Clingo::operator()(const std::function<void()> &final_fn) const {
   proc.close();
   remove(inpipe.c_str());
   remove(outpipe.c_str());
-  std::cout << "Clingo end" << std::endl;
 }

@@ -46,8 +46,7 @@ public:
   public:
     static RuleSchema *get_schema(const int &head, const std::set<int> &body);
     static RuleSchema *get_schema(const int &id);
-    static void add_cached_schema(const int &id, const int &head,
-                                  const std::set<int> &body);
+    static void add_cached_schema(const int &id, const int &head, const std::set<int> &body);
 
     // const members
     const int head;
@@ -57,6 +56,7 @@ public:
     bool cached, re_optimise;
 
     std::map<std::string, std::string> types;
+
     std::set<Schema *> useful_schemas, violations;
     std::set<RuleSchema *> extended_by, extensions;
 
@@ -90,21 +90,18 @@ public:
     void set_cached();
 
   private:
-    RuleSchema(const int &head, const std::set<int> &body);
-
-    Schema *get_schema(const std::map<std::string, int> &var_assignment,
-                       const std::map<std::string, std::string> &types);
-
-    std::map<std::pair<std::map<std::string, int>,
-                       std::map<std::string, std::string>>,
-             Schema *>
-        cached_schemas;
-
     int score;
-    std::set<std::string> intermediate_representation;
-
     bool extendable;
 
+    RuleSchema(const int &head, const std::set<int> &body);
+
+    Schema *get_schema(const std::map<std::string, int> &var_assignment, const std::map<std::string, std::string> &types);
+
+    std::map<std::pair<std::map<std::string, int>, std::map<std::string, std::string>>, Schema *> cached_schemas;
+
+    std::set<std::string> intermediate_representation;
+
+    // Schema has access to everything in RuleSchema?
     friend Schema;
   };
 
@@ -124,28 +121,25 @@ public:
 
   // static methods
 
-  static void add_cached_schema(const int &id, const int &rule,
-                                const std::map<std::string, int> &var_assignment,
-                                const std::map<std::string, std::string> &types);
-  static Schema *get_schema(const int &head, const std::set<int> &body,
-                            const std::map<std::string, int> &var_assignment,
-                            const std::map<std::string, std::string> &types);
+  static void add_cached_schema(const int &id, const int &rule, const std::map<std::string, int> &var_assignment, const std::map<std::string, std::string> &types);
+  static Schema *get_schema(const int &head, const std::set<int> &body, const std::map<std::string, int> &var_assignment, const std::map<std::string, std::string> &types);
   static std::map<int, std::set<RuleSchema *>> get_grouped_useful_schemas();
   static std::vector<std::pair<std::set<RuleSchema *>, std::set<RuleSchema *>>> get_implication_groups();
 
   // members
   const int id;
+  RuleSchema *const rule;
+  bool useful, violating, cached;
+
   const std::map<std::string, int> var_assignment;
   const std::map<std::string, std::string> types;
-  RuleSchema *const rule;
+
   std::set<RuleSchema *> optimised_rules;
-  bool useful, violating, cached;
 
   static std::vector<Schema *> all_schemas;
 
 private:
-  Schema(RuleSchema *rule, const std::map<std::string, int> &var_assignment,
-         const std::map<std::string, std::string> &types);
+  Schema(RuleSchema *rule, const std::map<std::string, int> &var_assignment, const std::map<std::string, std::string> &types);
 };
 
 #endif
