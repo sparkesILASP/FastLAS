@@ -49,6 +49,13 @@ Easy true if everything in the rule body is found in body of the schema as a rul
 Things get more complex when bounds are involved.
 
 */
+
+/*
+To figure out whether schema is extended by a rule check:
+
+1. heads are the same
+2. every body part extends and is 'sound' (any ≤ or ≥ are really true)
+*/
 bool FastLAS::extends(Schema *sc, Schema::RuleSchema *rule) {
   // cout << "The schema: " << sc->print() << endl;
   // cout << "The rule: " << rule->print() << endl;
@@ -57,9 +64,8 @@ bool FastLAS::extends(Schema *sc, Schema::RuleSchema *rule) {
     return false;
   }
   for (auto b : rule->body) {
-    // If the body has an index and is found, return true.
-
-    if ((b != -1 && sc->rule->body.find(b) == sc->rule->body.end())) {
+    // If the body has an index and is found continue…
+    if (b != -1 && sc->rule->body.find(b) == sc->rule->body.end()) {
       // Else… check to see if geq or leq substring, otherwise false
       // Find what b is.
       auto l = FastLAS::get_language(b);
@@ -73,7 +79,6 @@ bool FastLAS::extends(Schema *sc, Schema::RuleSchema *rule) {
         if (it2 == sc->var_assignment.end()) {
           return false;
         } else {
-          cout << "Testing the geq? " << endl;
           // Otherwise, we need the geq to be true?
           // stod turns a string into a double, ignoring whitespace
           double a1 = stod(FastLAS::remove_quotes(FastLAS::language[it2->second]));
@@ -194,6 +199,10 @@ void FastLAS::optimise() {
       schema_group_ids, thread_num,
       [&](const int &schema_group_id, int thread_index) {
         if (schema_group_vec[schema_group_id].first.size() > 0) {
+
+          /*
+          Go through each rule schema and get the optimised representation
+          */
           for (Schema::RuleSchema *rs : schema_group_vec[schema_group_id].second) {
             string global_pipe = get_tmp_file(false);
             mtx.lock();
@@ -218,25 +227,26 @@ void FastLAS::optimise() {
               }
               samples.back().insert(schema);
             }
-            /*
-            And then go through all the sample sets…
-            At the moment, a single set, so every schema at once
-            */
+            // Finishing off the representation
             for (auto sample : samples) {
               stringstream ss;
               ss << rs->optimise_representation() << endl;
               for (auto schema : sample) {
                 ss << "r_assignment(" << schema->id << ")." << endl;
-                for (auto p : schema->var_assignment)
+                for (auto p : schema->var_assignment) {
                   ss << "r_assign(" << schema->id << ", " << p.first << ", " << FastLAS::language[p.second] << ") :- rule(" << rs->id << ")." << endl;
-                for (auto p : schema->types)
+                }
+                for (auto p : schema->types) {
                   ss << "r_type(" << p.first << ", " << p.second << ") :- rule(" << rs->id << "), occurs(" << p.first << ")." << endl;
+                }
               }
 
               set<int> rule_body;
-              int head, bound = 0, numerator = -1;
-              set<string> intermediate_sf_facts;
-              map<string, string> types;
+              int head{0};
+              int bound{0};
+              int numerator{-1};
+              set<string> intermediate_sf_facts{};
+              map<string, string> types{};
 
               Solver::Clingo(3, ss.str(), global_pipe + " --heuristic=Domain ")(
                   // id_in_body
@@ -276,7 +286,7 @@ void FastLAS::optimise() {
                         make_pair(atom.substr(0, it), atom.substr(it + 1, atom.size() - it - 1)));
                   })([&]() {
                 int index;
-                // ??? Why is the penalty adjusted?
+                // Penalty is adjusted only if numerator is found in program. But why?
                 if (numerator != -1) bound = numerator / bound;
 
                 // Need a lock as modifying schemas which are global
@@ -294,8 +304,9 @@ void FastLAS::optimise() {
                 }
                 mtx.unlock();
 
-                rule_body.clear();
+                // reset things
                 numerator = -1;
+                rule_body.clear();
                 intermediate_sf_facts.clear();
                 types.clear();
               });
@@ -313,13 +324,19 @@ void FastLAS::optimise() {
       sub_eg->clear_optimised_rule_violations();
     }
   }
+  /*
+  For each example/possibility update the rule disjunctions to be /optimised/ rule disjunctions…
+  */
   for (auto eg : examples) {
     for (auto sub_eg : eg->get_possibilities()) {
+      // get rule disjunctions for each possibility
       for (set<Schema *> disj : sub_eg->get_rule_disjunctions()) {
         set<Schema::RuleSchema *> new_disj;
+        // for each disjuct, copy the disjunctions to a new set
         for (Schema *d : disj) {
           new_disj.insert(d->optimised_rules.begin(), d->optimised_rules.end());
         }
+        // and this set is now added as optimised rule disjunctions
         sub_eg->add_optimised_rule_disjunction(new_disj);
       }
       for (Schema *d : sub_eg->get_rule_violations()) {

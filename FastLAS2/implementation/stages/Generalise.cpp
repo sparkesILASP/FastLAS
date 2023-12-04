@@ -42,6 +42,20 @@ struct PartialRule {
   set<Schema::RuleSchema *> extending_rules;
   set<set<Schema::RuleSchema *>> constraints;
 
+  /*
+  Consistent if at least oe rule schema in each constraint is within extending rules.
+
+  For each constraint, go through all extending rules and see if the schema in the constaint is included in the extending rules.
+  So long as the schema is in some extending rule, consistent returns true.
+
+  Constraints are those extending rules which the body literal is not contained in.
+
+  As this is a partial rule, there's a constraints set for each literal.
+
+  Idea is, get a new rule, and this is the result of extending some other rule.
+  In isolation, each constraint is guaranteed to be included in extending rules.
+  But, as intersection is taken between all literals in rule body for each rule, it may be the case that initial present extending rule is excluded.
+  */
   bool consistent() {
     for (auto constraint : constraints) {
       bool vio = true;
@@ -122,20 +136,20 @@ void FastLAS::generalise() {
             // Intersection of extending_rules and contained_in.
             // i.e. we have a body literal, extending rule schemas, and the rule schemas the literal is contained in.
             // this set gets the the rule schemas the literal is contained in which extend the rule in the for loop
-            set<Schema::RuleSchema *> extending_rules_which_body_literal_is_contained_in;
-            set_intersection(rules[ri].extending_rules.begin(), rules[ri].extending_rules.end(), contained_in[bl].begin(), contained_in[bl].end(), std::inserter(extending_rules_which_body_literal_is_contained_in, extending_rules_which_body_literal_is_contained_in.begin()));
+            set<Schema::RuleSchema *> extending_rules_which_contain_body_lit;
+            set_intersection(rules[ri].extending_rules.begin(), rules[ri].extending_rules.end(), contained_in[bl].begin(), contained_in[bl].end(), std::inserter(extending_rules_which_contain_body_lit, extending_rules_which_contain_body_lit.begin()));
             // If every rule containing the body literal is a extending rule…
-            if (extending_rules_which_body_literal_is_contained_in.size() == rules[ri].extending_rules.size()) {
+            if (extending_rules_which_contain_body_lit.size() == rules[ri].extending_rules.size()) {
               // put the body literal in the body of the rule, as there's no way to drop this rule
               // so, it must be part of the new generalised rule
               rules[ri].body.insert(bl);
               // Otherwise, so long as there is at least one extending rule containing the body literal
               // the goal is to get subrules of extending rules.
-            } else if (extending_rules_which_body_literal_is_contained_in.size() > 1) {
+            } else if (extending_rules_which_contain_body_lit.size() > 1) {
 
               // check the cache
               bool at_least_one_non_cached = false;
-              for (auto sc : extending_rules_which_body_literal_is_contained_in) {
+              for (auto sc : extending_rules_which_contain_body_lit) {
                 if (!sc->is_cached()) {
                   at_least_one_non_cached = true;
                   break;
@@ -146,16 +160,28 @@ void FastLAS::generalise() {
                 set<Schema::RuleSchema *> new_constraint;
 
                 // know the body literal is not contained in every extending rule
-                // so, for each extending rule which doesn't contain the body literal, the rule is added to the constraints of the current rule
+                // For each extending rule which doesn't contain the body literal, the rule is added to the constraints of the current rule
                 for (auto r : rules[ri].extending_rules) {
-                  if (extending_rules_which_body_literal_is_contained_in.find(r) == extending_rules_which_body_literal_is_contained_in.end()) {
+                  if (extending_rules_which_contain_body_lit.find(r) == extending_rules_which_contain_body_lit.end()) {
                     new_constraint.insert(r);
                   }
                 }
 
+                // Confused here.
+                /*
+                Added constraints.
+                These are extending rules for the current rule which do not contain the body literal.
+                When check consistency, there must be an extending rule for the new rule for each constraint.
+                This check is made before new_constraint is considered.
+                So, the new extending rules are a subset of the old extending rules, and the idea is that there's got to be some rule outside the intersection for which which subrule.
+
+                Okay, so this means that this new rule is still maximal, in the right way.
+                It's the second part of the definition.
+                */
+
                 auto new_rule = rules[ri];
                 new_rule.body.insert(bl);
-                new_rule.extending_rules = extending_rules_which_body_literal_is_contained_in;
+                new_rule.extending_rules = extending_rules_which_contain_body_lit;
                 // if the rule is consistent, add this as a rule and mark the constraint found above
                 if (new_rule.consistent()) {
                   rules.push_back(new_rule);
