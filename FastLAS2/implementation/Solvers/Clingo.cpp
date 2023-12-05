@@ -24,8 +24,8 @@ Solver::Clingo::Clingo::operator()(const char &ch,
 }
 
 void Solver::Clingo::operator()(const std::function<void()> &final_fn) const {
-  std::string inpipe = FastLAS::get_tmp_file(false),
-              outpipe = FastLAS::get_tmp_file(false);
+  std::string inpipe = FastLAS::get_tmp_file(false);
+  std::string outpipe = FastLAS::get_tmp_file(false);
   static std::mutex mtx;
   std::ofstream infile(inpipe);
   infile << program << std::endl;
@@ -45,20 +45,14 @@ void Solver::Clingo::operator()(const std::function<void()> &final_fn) const {
     std::cerr << "Fork error." << std::endl;
     exit(2);
   } else if (pid == 0) {
-    auto ret = system(std::string("clingo --outf=" + std::to_string(outf) +
-                                  " " + args + " " + inpipe + " > " + outpipe +
-                                  " 2> /dev/null")
-                          .c_str());
+    auto ret = system(std::string("clingo --outf=" + std::to_string(outf) + " " + args + " " + inpipe + " > " + outpipe + " 2> /dev/null").c_str());
     exit(0);
   } else {
     mtx.unlock();
     waitpid(pid, NULL, 0);
   }
 #else
-  auto ret =
-      system(string("clingo --outf=" + std::to_string(outf) + " " + args + " " +
-                    inpipe + " > " + outpipe + " 2> /dev/null")
-                 .c_str());
+  auto ret = system(string("clingo --outf=" + std::to_string(outf) + " " + args + " " + inpipe + " > " + outpipe + " 2> /dev/null").c_str());
 #endif
 
   // From here, processing
@@ -97,8 +91,8 @@ void Solver::Clingo::operator()(const std::function<void()> &final_fn) const {
 
   mtx.unlock();
 
-  // cout << "full" << endl << endl;
-  // cout << full_string.str() << endl;
+  // std::cout << "full" << std::endl;
+  // std::cout << full_string.str() << std::endl;
 
   proc.close();
   remove(inpipe.c_str());
