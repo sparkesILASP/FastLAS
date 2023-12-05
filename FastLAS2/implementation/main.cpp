@@ -37,6 +37,7 @@
 #include "stages/Generalise.h"
 #include "stages/Optimise.h"
 #include "stages/OptimiseSym.h"
+#include "stages/Penalty.h"
 #include "stages/Printing.h"
 #include "stages/SatSuff.h"
 #include "stages/Solve.h"
@@ -167,23 +168,26 @@ int main(int argc, char **argv) {
   if (FastLAS::mode == FastLAS::Mode::bound) {
 
     cout << "Hullo" << endl;
-    cout << "Examples: " << endl;
-    for (auto eg : examples) {
-      if (eg->ex_type == Example::ExType::bnd) {
-        cout << eg->to_string() << endl;
-        for (auto r : eg->bound_prog) {
-          cout << "The rule: ";
-          cout << r.to_string();
-          cout << "Flip:";
-          std::set<NRule> flip = r.flip();
-          for (auto r_f : flip) {
-            cout << r_f.to_string() << endl;
-          }
-          cout << endl;
-        }
-        // pen_poss(eg);
-      }
-    }
+
+    FastLAS::Possible_Penalties();
+
+    // cout << "Examples: " << endl;
+    // for (auto eg : examples) {
+    //   if (eg->ex_type == Example::ExType::bnd) {
+    //     cout << eg->to_string() << endl;
+    //     for (auto r : eg->bound_prog) {
+    //       cout << "The rule: ";
+    //       cout << r.to_string();
+    //       cout << "Flip:";
+    //       std::set<NRule> flip = r.flip();
+    //       for (auto r_f : flip) {
+    //         cout << r_f.to_string() << endl;
+    //       }
+    //       cout << endl;
+    //     }
+    //     // pen_poss(eg);
+    //   }
+    // }
 
     cout << "Exiting" << endl;
     exit(0);

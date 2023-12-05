@@ -3,11 +3,12 @@
 
 #include <string>
 
-namespace Penalty {
-    std::string make_lua_possibility_script_for(int bound);
+namespace FastLAS {
+void Possible_Penalties();
 }
 
-
+namespace Penalty {
+std::string make_lua_possibility_script_for(int bound);
+}
 
 #endif
-

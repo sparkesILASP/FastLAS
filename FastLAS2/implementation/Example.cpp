@@ -64,9 +64,7 @@ Example::Example(string id, set<string> &inclusions, set<string> &exclusions, ve
   }
 }
 // Bound example
-Example::Example(string id, int bound, vector<NRule> &bound_prog,
-                 vector<NRule> &context, Example::ExType ex_type,
-                 bool possibility)
+Example::Example(string id, int bound, vector<NRule> &bound_prog, vector<NRule> &context, Example::ExType ex_type, bool possibility)
     : id(id), context(context), bound_prog(bound_prog), bound(bound),
       ex_type(ex_type) {
   if (possibility) {
@@ -90,7 +88,7 @@ string Example::to_string() const {
 
   switch (ex_type) {
   case Example::ExType::pos:
-    ss << "#pos(" << id << ", {";
+    ss << "#pos(" << id << "@" << penalty << ", {";
     break;
   case Example::ExType::neg:
     ss << "#neg(" << id << ", {";
@@ -114,7 +112,7 @@ string Example::to_string() const {
       ss << inc;
     }
 
-    ss << "}";
+    ss << "}, {";
 
     first = true;
     for (auto exc : exclusions) {
@@ -307,21 +305,20 @@ void Example::set_unique_possibility() {
   possibilities.insert(this);
 }
 
-void Example::add_possibility(const set<int> &incs, const set<int> &excs,
-                              const set<int> &ctx) {
+void Example::add_possibility(const set<int> &incs, const set<int> &excs, const set<int> &ctx) {
   static mutex mtx;
   mtx.lock();
-  possibilities.insert(new Possibility(
-      this, id + "_" + std::to_string(possibilities.size()), incs, excs, ctx));
+  possibilities.insert(new Possibility(this, id + "_" + std::to_string(possibilities.size()), incs, excs, ctx));
   mtx.unlock();
 }
 
 void Example::add_possibility(const set<int> &ctx, const set<set<int>> &disjs) {
-  possibilities.insert(new GenPossibility(
-      this, id + "_" + std::to_string(possibilities.size()), disjs, ctx));
+  possibilities.insert(new GenPossibility(this, id + "_" + std::to_string(possibilities.size()), disjs, ctx));
 }
 
-void Example::add_possibility(Example *p) { possibilities.insert(p); }
+void Example::add_possibility(Example *p) {
+  possibilities.insert(p);
+}
 
 set<Schema *> Example::get_guaranteed_rule_violations() const {
   set<Schema *> grvs;
@@ -344,6 +341,10 @@ set<Schema *> Example::get_guaranteed_rule_violations() const {
   }
   return grvs;
 }
+
+void Example::add_bound_possibility(std::string id, std::set<std::string> &inclusions, std::set<std::string> &exclusions, int bound) {
+  possibilities.insert(new Example(id, inclusions, exclusions, context, bound, Example::ExType::pos));
+};
 
 const vector<NRule> &Example::get_context() const { return context; }
 
