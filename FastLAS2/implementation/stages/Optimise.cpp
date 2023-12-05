@@ -32,6 +32,7 @@
 #include <fstream>
 #include <iostream>
 #include <mutex>
+#include <ostream>
 #include <sstream>
 
 using namespace std;
@@ -115,6 +116,7 @@ void write_global_file(const string &global_pipe, int head = -1) {
   ss << bias->bias_constraints << endl
      << endl;
   ss << "violated(V) :- id_in_head(X), v_head(X, V), not v(V)." << endl;
+  // rule 4 of def 10
   ss << "v(V) :- v_head(_, V), not in_v_body(X, V), id_in_body(X), X != -1." << endl;
 
   set<Schema *> all_violations;
@@ -136,6 +138,7 @@ void write_global_file(const string &global_pipe, int head = -1) {
     }
   }
   // Make sure no chosen examples/possibilities??? are violated.
+  // rule 5 of def 10
   for (int v_id : v_ids) {
     ss << ":- violated(" << v_id << ")." << endl;
   }
@@ -144,20 +147,24 @@ void write_global_file(const string &global_pipe, int head = -1) {
   for (Schema *s : all_violations) {
     if (head == -1 || s->rule->head == head) {
       ss << "v_head(" << s->rule->head << ", " << s->id << ")." << endl;
-      for (int b : s->rule->body)
+      for (int b : s->rule->body) {
         ss << "in_v_body(" << b << ", " << s->id << ")." << endl;
-      for (auto p : s->var_assignment)
+      }
+      for (auto p : s->var_assignment) {
         ss << "v_assign(" << s->id << ", " << p.first << ", " << FastLAS::language[p.second] << ")." << endl;
+      }
     }
   }
 
   // possibility that this could go wrong if multiple
   // declarations for the same predicate, some containing a
   // var and some a const. To fix before FL3.
-  for (auto &mh : bias->head_declarations)
+  for (auto &mh : bias->head_declarations) {
     ss << mh.occurance_representation(true) << endl;
-  for (auto &mb : bias->body_declarations)
+  }
+  for (auto &mb : bias->body_declarations) {
     ss << mb.occurance_representation(false) << endl;
+  }
 
   if (FastLAS::max_conditions > 0) {
     ss << ":- #count { V : cond(V) } > " << FastLAS::max_conditions << "." << endl;
@@ -181,6 +188,9 @@ void write_global_file(const string &global_pipe, int head = -1) {
 /*
 Optimisation.
 
+Keep in mind throughout that heads are examples/possibilities.
+The goal is to obtain an optimal program which represents the final program.
+
 Goal is to find OPT-sufficient characteristic hypothesis space.
 So, working on rule schemas and finding an optimal rule for each rule in the genralised hypothesis space.
 */
@@ -190,10 +200,43 @@ void FastLAS::optimise() {
   // write_global_file(global_pipe);
 
   vector<pair<set<Schema::RuleSchema *>, set<Schema::RuleSchema *>>> schema_group_vec = Schema::get_implication_groups();
+  // individuated by possible mode heads?
+  cout << "schema_group_vec: " << endl;
+
+  for (auto elem : schema_group_vec) {
+    cout << "new elem: " << endl;
+    cout << "first size: " << elem.first.size() << endl;
+    cout << "second size: " << elem.second.size() << endl;
+
+    for (auto elem1 : elem.first) {
+      elem1->print();
+      elem1->print_intermediate_representation();
+      cout << FastLAS::get_language(elem1->head) << endl;
+      for (auto e : elem1->body) {
+        cout << FastLAS::get_language(e) << endl;
+      }
+      cout << elem1->get_score() << endl;
+
+      cout << "well…" << endl;
+    }
+
+    for (auto elem2 : elem.second) {
+      elem2->print();
+      elem2->print_intermediate_representation();
+      cout << FastLAS::get_language(elem2->head) << endl;
+      for (auto e : elem2->body) {
+        cout << FastLAS::get_language(e) << endl;
+      }
+      cout << elem2->get_score() << endl;
+
+      cout << "well…" << endl;
+    }
+  }
 
   set<int> schema_group_ids;
-  for (int i = 0; i < schema_group_vec.size(); i++)
+  for (int i = 0; i < schema_group_vec.size(); i++) {
     schema_group_ids.insert(i);
+  }
 
   parallel_exec(
       schema_group_ids, thread_num,
@@ -234,13 +277,18 @@ void FastLAS::optimise() {
               for (auto schema : sample) {
                 ss << "r_assignment(" << schema->id << ")." << endl;
                 for (auto p : schema->var_assignment) {
-                  ss << "r_assign(" << schema->id << ", " << p.first << ", " << FastLAS::language[p.second] << ") :- rule(" << rs->id << ")." << endl;
+                  ss << "r_assign(" << schema->id << ", " << p.first << ", " << FastLAS::language[p.second] << ")";
+                  ss << " :- ";
+                  ss << "rule(" << rs->id << ")." << endl;
                 }
                 for (auto p : schema->types) {
-                  ss << "r_type(" << p.first << ", " << p.second << ") :- rule(" << rs->id << "), occurs(" << p.first << ")." << endl;
+                  ss << "r_type(" << p.first << ", " << p.second << ")";
+                  ss << " :- ";
+                  ss << "rule(" << rs->id << "), occurs(" << p.first << ")." << endl;
                 }
               }
 
+              // Getting the optimised rule
               set<int> rule_body;
               int head{0};
               int bound{0};
@@ -282,17 +330,15 @@ void FastLAS::optimise() {
                   // r_type
                   't', [&](const string &atom) {
                     auto it = atom.find(',');
-                    types.insert(
-                        make_pair(atom.substr(0, it), atom.substr(it + 1, atom.size() - it - 1)));
+                    types.insert(make_pair(atom.substr(0, it), atom.substr(it + 1, atom.size() - it - 1)));
                   })([&]() {
                 int index;
-                // Penalty is adjusted only if numerator is found in program. But why?
+                // Penalty is adjusted only if numerator is found in program. But why adjust?
                 if (numerator != -1) bound = numerator / bound;
 
                 // Need a lock as modifying schemas which are global
                 mtx.lock();
-                // A call to get_schema which makes the schema if needed.
-                // And, guess is schema is always made.
+                // A call to get_schema which makes the schema if needed and, guess is schema is always made as goal is to find optimised schema
                 auto rule = Schema::RuleSchema::get_schema(head, rule_body);
                 rule->set_score(bound);
                 rule->set_types(types);
@@ -300,7 +346,9 @@ void FastLAS::optimise() {
 
                 // Add as an extension to every schema the rule extends
                 for (auto sc : Schema::all_schemas) {
-                  if (extends(sc, rule)) sc->optimised_rules.insert(rule);
+                  if (extends(sc, rule)) {
+                    sc->optimised_rules.insert(rule);
+                  }
                 }
                 mtx.unlock();
 
@@ -316,8 +364,6 @@ void FastLAS::optimise() {
         }
       });
 
-  // remove(global_pipe.c_str());
-
   for (auto eg : examples) {
     for (auto sub_eg : eg->get_possibilities()) {
       sub_eg->clear_optimised_rule_disjunctions();
@@ -325,20 +371,19 @@ void FastLAS::optimise() {
     }
   }
   /*
-  For each example/possibility update the rule disjunctions to be /optimised/ rule disjunctions…
+  For each example/possibility update the rule disjunctions to be /optimised/ rule disjunctions and violations
   */
   for (auto eg : examples) {
     for (auto sub_eg : eg->get_possibilities()) {
-      // get rule disjunctions for each possibility
+      // update the rule disjunction for each possibility to include the optimised rule
       for (set<Schema *> disj : sub_eg->get_rule_disjunctions()) {
         set<Schema::RuleSchema *> new_disj;
-        // for each disjuct, copy the disjunctions to a new set
         for (Schema *d : disj) {
           new_disj.insert(d->optimised_rules.begin(), d->optimised_rules.end());
         }
-        // and this set is now added as optimised rule disjunctions
         sub_eg->add_optimised_rule_disjunction(new_disj);
       }
+      // any rule violation is an optimised rule violation
       for (Schema *d : sub_eg->get_rule_violations()) {
         for (auto r : d->optimised_rules) {
           sub_eg->add_optimised_rule_violation(r);

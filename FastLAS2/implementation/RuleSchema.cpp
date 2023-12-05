@@ -163,7 +163,6 @@ vector<pair<set<Schema::RuleSchema *>, set<Schema::RuleSchema *>>> Schema::get_i
   }
 
   for (auto sg : schema_groups) {
-    // why would this ever not be 1?
     if (sg.second.size() != 1) {
       cout << "SPECIAL CASE DETECTED" << endl;
       cout << sg.second.size() << endl;

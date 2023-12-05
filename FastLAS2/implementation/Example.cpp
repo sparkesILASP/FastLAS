@@ -293,9 +293,13 @@ Example *Example::get_possibility(const std::string &id) {
   return possibility_map[id];
 }
 
-bool Example::prediction() const { return false; }
+bool Example::prediction() const {
+  return false;
+}
 
-bool PredictionExample::prediction() const { return true; }
+bool PredictionExample::prediction() const {
+  return true;
+}
 
 void Example::set_unique_possibility() {
   set_constant_representation();

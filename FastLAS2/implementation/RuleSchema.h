@@ -129,7 +129,9 @@ public:
   // members
   const int id;
   RuleSchema *const rule;
-  bool useful, violating, cached;
+  bool useful;
+  bool violating;
+  bool cached;
 
   const std::map<std::string, int> var_assignment;
   const std::map<std::string, std::string> types;

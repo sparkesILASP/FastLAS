@@ -57,9 +57,10 @@ mutex mtx_ss;
 }
 
 void FastLAS::compute_sat_sufficient() {
-  set<set<Example *>> grouped_possibilities;
 
+  set<set<Example *>> grouped_possibilities;
   map<tuple<set<pair<int, set<int>>>, set<int>, bool>, set<Example *>> grouped_possibilities_map;
+
   for (auto eg : examples) {
     if (cached_examples.find(eg->id) == cached_examples.end()) {
       auto eg_possibilities = eg->get_possibilities();
@@ -88,10 +89,7 @@ void FastLAS::compute_sat_sufficient() {
   parallel_exec(
       grouped_possibilities, thread_num, [&](set<Example *> eg_group, int) {
         stringstream ss;
-
         map<string, set<string>> eg_incs;
-
-        string id;
 
         bool first = true;
         for (auto eg : eg_group) {
@@ -110,43 +108,46 @@ void FastLAS::compute_sat_sufficient() {
           if (first) {
             first = false;
             ss << "pos(" << eg->id << ")." << endl;
-            id = eg->id;
             ss << eg->meta_representation();
           }
           ss << "example_in_group(" << eg->id << ")." << endl;
           auto inclusions = eg->get_inclusions();
           eg_incs[eg->id] = inclusions;
           auto exclusions = eg->get_exclusions();
-          for (auto inc : inclusions)
+          for (auto inc : inclusions) {
             ss << "example_inclusion(" << eg->id << "," << inc << ")." << endl;
-          for (auto exc : exclusions)
+          }
+          for (auto exc : exclusions) {
             ss << "example_exclusion(" << eg->id << "," << exc << ")." << endl;
+          }
         }
 
-        for (auto &mh : bias->head_declarations)
+        for (auto &mh : bias->head_declarations) {
           ss << mh.abduce_head_representation() << endl;
-
-        for (auto &mh : bias->head_declarations)
+        }
+        for (auto &mh : bias->head_declarations) {
           ss << mh.head_representation() << endl;
+        }
         for (auto &mb : bias->body_declarations) {
           ss << mb.body_representation() << endl;
         }
 
         if (FastLAS::mode == FastLAS::Mode::opl) {
-          for (auto r : background)
+          for (auto r : background) {
             ss << r.meta_representation();
+          }
         }
-        for (int i = 0; i < bias->maxv; i++)
+        for (int i = 0; i < bias->maxv; i++) {
           ss << "var(v_a_r" << i << ")." << endl;
+        }
 
         ss << meta_sat_suff;
         ss << "numeric_var(n_v_a_r_0)." << endl;
 
         if (bias->gwr) {
-          ss << R"(
-        %% ground without replacement
-        :- in(A1), in(A2), A1 < A2, eq(A1, A), eq(A2, A).
-)";
+          ss << endl;
+          ss << "%% ground without replacement" << endl;
+          ss << ":- in(A1), in(A2), A1 < A2, eq(A1, A), eq(A2, A)." << endl;
         }
 
         set<int> rule_body, heads;
