@@ -38,6 +38,7 @@ std::string final_solving_program_pen = R"(
 #show in_h/1.
 #show penalty/2.
 #show disj/1.
+#show hey/2.
 #script (lua)
 function onModel(m)
   atoms = m:symbols{shown=true}
@@ -101,14 +102,16 @@ And, for any examples they don't cover a different disjunction is going to be us
 */
 void FastLAS::solve_pen() {
   stringstream ss;
+  ss << "#minimise { X, Y : hey(X,Y) }." << endl;
   // For each example
   for (auto eg : examples) {
     ss << "% " << eg->id << endl;
     // Possibility disjunction
     for (auto sub_eg : eg->get_possibilities()) {
-      ss << "% " << eg->id << " : " << sub_eg->id << endl;
       cout << endl
            << "Example: " << eg->id << " : Possibility : " << sub_eg->id << endl;
+      ss << "% " << eg->id << " : " << sub_eg->id << endl;
+      ss << "hey(" << sub_eg->get_penalty() << ", " << sub_eg->id << ") :- not n_cov(" << sub_eg->id << ")." << endl;
       // Insert the optimised rule disjunctions
       // Disjunctions are ruleschemas from characteristic ruleset.
       // And, I think only rulesets which include the example.
@@ -127,9 +130,9 @@ void FastLAS::solve_pen() {
         // Possibility is uncovered unless disjunction, for each disjunction.
         ss << "n_cov(" << sub_eg->id << ") :- not disj(" << index << ")." << endl;
         ds_pen.insert(disj.begin(), disj.end()); // cannot only be done with caching in case violation occurs first;
-        for (auto d : ds_pen) {
-          cout << "Disjunct: " << d->print() << endl;
-        }
+        // for (auto d : ds_pen) {
+        //   cout << "Disjunct: " << d->print() << endl;
+        // }
       }
       // Violation disjunction
       cout << "Looking at violating disjuncts" << endl;
@@ -149,8 +152,8 @@ void FastLAS::solve_pen() {
       // Was in the cached check before, but still want to add issue for each example, no?
       */
       for (auto d : disj) {
-        ss << "disj(" << index << ") :- in_h(" << d->id << ").";
-        cout << "violating disjunct: " << d->print() << endl;
+        ss << "disj(" << index << ") :- in_h(" << d->id << ")." << endl;
+        // cout << "violating disjunct: " << d->print() << endl;
       }
       ss << "n_cov(" << sub_eg->id << ") :- disj(" << index << ")." << endl;
     }
@@ -174,6 +177,12 @@ void FastLAS::solve_pen() {
       break;
     }
 
+    ss << "n_cov(" << eg->id << ") :- #true";
+    for (auto sub_eg : eg->get_possibilities()) {
+      ss << ", n_cov(" << sub_eg->id << ")";
+    }
+    ss << "." << endl;
+
     // if (eg->get_penalty() > 0) {
     //   // soft constraint for failing to cover example when finite penalty
     //   ss << ":~ n_cov(" << eg->id << ").[" << eg->get_penalty() << "@0, eg(" << eg->id << ")]" << endl;
@@ -184,7 +193,7 @@ void FastLAS::solve_pen() {
 
   for (auto d : ds_pen) {
     ss << "0 {in_h(" << d->id << ")} 1." << endl;
-    ss << ":~ in_h(" << d->id << ").[" << d->get_score() << "@0, hyp(" << d->id << ")]" << endl;
+    //    ss << ":~ in_h(" << d->id << ").[" << d->get_score() << "@0, hyp(" << d->id << ")]" << endl;
     ss << d->intermediate_meta_representation();
   }
 
@@ -208,7 +217,7 @@ void FastLAS::solve_final_task_pen(string program) {
     exit(0);
   }
 
-  Solver::Clingo(3, ss.str(), ((FastLAS::timeout < 0) ? " " : "--time=" + std::to_string(FastLAS::timeout) + " ") + "--opt-strat=usc,stratify")(
+  Solver::Clingo(3, ss.str(), ((FastLAS::timeout < 0) ? " " : "--time=" + std::to_string(FastLAS::timeout)))(
       // in_head
       'i', [&](const string &atom) {
         auto rule = Schema::RuleSchema::get_schema(stoi(atom));
