@@ -65,7 +65,7 @@ void Solver::Clingo::operator()(const std::function<void()> &final_fn) const {
 
   // work through the buffer
   while (proc >> buffer) {
-    // full_string << buffer << " "; // To inspect buffer in full
+    full_string << buffer << " "; // To inspect buffer in full
     incremental_buffer += (buffer + " ");
     // Ignore space just added and see if 'last' char is '|'
     // Check meta_programs to see how '|' is used to chunk info.

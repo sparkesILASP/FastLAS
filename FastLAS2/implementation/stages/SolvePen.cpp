@@ -30,6 +30,7 @@
 #include "../Utils.h"
 #include "Printing.h"
 #include <boost/algorithm/string.hpp>
+#include <ostream>
 
 std::string final_solving_program_pen = R"(
 :~ penalty(P, T).[P@0, intermediate, T]
@@ -71,7 +72,6 @@ end
 using namespace std;
 
 extern LanguageBias *bias;
-extern bool prediction_task;
 extern set<Example *> examples;
 extern vector<NRule> background;
 
@@ -93,6 +93,11 @@ vector<set<Schema::RuleSchema *>> int_to_disj_pen;
 /*
 The final solving program.
 The task here is to minimize penalties for failing to cover examples.
+
+Start by considering the disjunctions for each possibility.
+At the end, solve by looking at these possibilities.
+As, they cover at least one, but maybe more examples.
+And, for any examples they don't cover a different disjunction is going to be used.
 */
 void FastLAS::solve_pen() {
   stringstream ss;
@@ -102,10 +107,13 @@ void FastLAS::solve_pen() {
     // Possibility disjunction
     for (auto sub_eg : eg->get_possibilities()) {
       ss << "% " << eg->id << " : " << sub_eg->id << endl;
+      cout << endl
+           << "Example: " << eg->id << " : Possibility : " << sub_eg->id << endl;
       // Insert the optimised rule disjunctions
       // Disjunctions are ruleschemas from characteristic ruleset.
       // And, I think only rulesets which include the example.
       for (auto disj : sub_eg->get_optimised_rule_disjunctions()) {
+        cout << "New disj" << endl;
         int index{};
         auto it = cached_disjs_pen.find(disj);
         if (it == cached_disjs_pen.end()) {
@@ -119,19 +127,30 @@ void FastLAS::solve_pen() {
         // Possibility is uncovered unless disjunction, for each disjunction.
         ss << "n_cov(" << sub_eg->id << ") :- not disj(" << index << ")." << endl;
         ds_pen.insert(disj.begin(), disj.end()); // cannot only be done with caching in case violation occurs first;
+        for (auto d : ds_pen) {
+          cout << "Disjunct: " << d->print() << endl;
+        }
       }
       // Violation disjunction
+      cout << "Looking at violating disjuncts" << endl;
       auto disj = sub_eg->get_optimised_rule_violations();
+      // Check to see if the disjunction is cached
       int index = cached_disjs_pen.size();
       auto it = cached_disjs_pen.find(disj);
       if (it == cached_disjs_pen.end()) {
         cached_disjs_pen[disj] = index;
         int_to_disj_pen.push_back(disj);
-        for (auto d : disj) {
-          ss << "disj(" << index << ") :- in_h(" << d->id << ")." << endl;
-        }
       } else {
         index = it->second;
+      }
+      /*
+      Go the violating disjunctions.
+      If any disjunct is true, then the disjunction is true. And, so, example is not covered.
+      // Was in the cached check before, but still want to add issue for each example, no?
+      */
+      for (auto d : disj) {
+        ss << "disj(" << index << ") :- in_h(" << d->id << ").";
+        cout << "violating disjunct: " << d->print() << endl;
       }
       ss << "n_cov(" << sub_eg->id << ") :- disj(" << index << ")." << endl;
     }
@@ -155,52 +174,21 @@ void FastLAS::solve_pen() {
       break;
     }
 
-    if (eg->prediction())
-      // failed predication
-      ss << "prediction_false :- n_cov(" << eg->id << ")." << endl;
-    else if (eg->get_penalty() > 0)
-      // soft constraint for failing to cover example when finite penalty
-      ss << ":~ n_cov(" << eg->id << ").[" << eg->get_penalty() << "@0, eg(" << eg->id << ")]" << endl;
-    else
-      // hard constraint for failing to cover an example
-      ss << ":- n_cov(" << eg->id << ")." << endl;
-
-    // if (FastLAS::mode == FastLAS::Mode::bound) {
-    //   cout << "eg->id: " << eg->id << endl;
-    //   ss << ":- n_cov(" << eg->id << ")" << endl;
+    // if (eg->get_penalty() > 0) {
+    //   // soft constraint for failing to cover example when finite penalty
+    //   ss << ":~ n_cov(" << eg->id << ").[" << eg->get_penalty() << "@0, eg(" << eg->id << ")]" << endl;
+    // } else { // hard constraint for failing to cover an example
+    ss << ":- n_cov(" << eg->id << ")." << endl;
     // }
   }
 
   for (auto d : ds_pen) {
-    ss << "0 {in_h(" << d->id << ")} 1. :~ in_h(" << d->id << ").[" << d->get_score() << "@0, hyp(" << d->id << ")]" << endl;
+    ss << "0 {in_h(" << d->id << ")} 1." << endl;
+    ss << ":~ in_h(" << d->id << ").[" << d->get_score() << "@0, hyp(" << d->id << ")]" << endl;
     ss << d->intermediate_meta_representation();
   }
-  if (FastLAS::space_size) {
-    cout << "% SPACE SIZE: " << ds_pen.size() << endl;
-  }
 
-  if (prediction_task) {
-    if (score_only) {
-      FastLAS::solve_final_task_pen(ss.str() + ":- prediction_false.");
-      print_score();
-      cout << ';' << flush;
-      FastLAS::solve_final_task_pen(ss.str() + ":- not prediction_false.");
-      print_score();
-    } else {
-      FastLAS::solve_final_task_pen(ss.str() + ":- prediction_false.");
-
-      cout << "% Optimal hypothesis satisfying the prediction:" << endl
-           << endl;
-      print_stats();
-
-      FastLAS::solve_final_task_pen(ss.str() + ":- not prediction_false.");
-      cout << endl
-           << "% Optimal hypothesis not satisfying the prediction:" << endl;
-      print_stats();
-    }
-  } else {
-    FastLAS::solve_final_task_pen(ss.str());
-  }
+  FastLAS::solve_final_task_pen(ss.str());
 }
 
 void FastLAS::solve_final_task_pen(string program) {
@@ -214,7 +202,7 @@ void FastLAS::solve_final_task_pen(string program) {
   ss << bias->final_bias_constraints << endl;
   ss << final_solving_program_pen << endl;
 
-  output_solve_program = true;
+  // output_solve_program = true;
   if (output_solve_program) {
     cout << ss.str() << endl;
     exit(0);
@@ -248,4 +236,6 @@ void FastLAS::solve_final_task_pen(string program) {
     boost::replace_all(solution_pen, "v_a_r", "V");
     boost::replace_all(solution_pen, "naf__", "not ");
   }
+  cout << "What's this?" << endl;
+  cout << solution_pen_ss.str() << endl;
 }
