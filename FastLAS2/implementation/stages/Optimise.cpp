@@ -203,36 +203,6 @@ void FastLAS::optimise() {
   // individuated by possible mode heads?
   cout << "schema_group_vec: " << endl;
 
-  for (auto elem : schema_group_vec) {
-    cout << "new elem: " << endl;
-    cout << "first size: " << elem.first.size() << endl;
-    cout << "second size: " << elem.second.size() << endl;
-
-    for (auto elem1 : elem.first) {
-      elem1->print();
-      elem1->print_intermediate_representation();
-      cout << FastLAS::get_language(elem1->head) << endl;
-      for (auto e : elem1->body) {
-        cout << FastLAS::get_language(e) << endl;
-      }
-      cout << elem1->get_score() << endl;
-
-      cout << "well…" << endl;
-    }
-
-    for (auto elem2 : elem.second) {
-      elem2->print();
-      elem2->print_intermediate_representation();
-      cout << FastLAS::get_language(elem2->head) << endl;
-      for (auto e : elem2->body) {
-        cout << FastLAS::get_language(e) << endl;
-      }
-      cout << elem2->get_score() << endl;
-
-      cout << "well…" << endl;
-    }
-  }
-
   set<int> schema_group_ids;
   for (int i = 0; i < schema_group_vec.size(); i++) {
     schema_group_ids.insert(i);

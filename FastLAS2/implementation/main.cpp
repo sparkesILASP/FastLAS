@@ -41,6 +41,7 @@
 #include "stages/Printing.h"
 #include "stages/SatSuff.h"
 #include "stages/Solve.h"
+#include "stages/SolvePen.h"
 
 extern int yyparse();
 extern FILE *yyin;
@@ -171,23 +172,27 @@ int main(int argc, char **argv) {
 
     FastLAS::Possible_Penalties();
 
-    // cout << "Examples: " << endl;
-    // for (auto eg : examples) {
-    //   if (eg->ex_type == Example::ExType::bnd) {
-    //     cout << eg->to_string() << endl;
-    //     for (auto r : eg->bound_prog) {
-    //       cout << "The rule: ";
-    //       cout << r.to_string();
-    //       cout << "Flip:";
-    //       std::set<NRule> flip = r.flip();
-    //       for (auto r_f : flip) {
-    //         cout << r_f.to_string() << endl;
-    //       }
-    //       cout << endl;
-    //     }
-    //     // pen_poss(eg);
-    //   }
-    // }
+    FastLAS::compute_sat_sufficient();
+
+    cout << "C^+(T):" << endl;
+    FastLAS::print_c_plus();
+    cout << "C^-(T):" << endl;
+    FastLAS::print_c_minus();
+
+    FastLAS::generalise();
+
+    cout << "G^+(T):" << endl;
+    FastLAS::print_c_plus();
+
+    FastLAS::optimise();
+    cout << "S_M:" << endl;
+    FastLAS::print_s_m();
+
+    FastLAS::solve_pen();
+    cout << "solution: " << endl;
+    FastLAS::print_solution();
+    cout << "stats: " << endl;
+    FastLAS::print_stats();
 
     cout << "Exiting" << endl;
     exit(0);
