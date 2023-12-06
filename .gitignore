@@ -15,3 +15,4 @@ graph_script*
 *.tmp*
 *.byebug*
 *.DS_Store
+*.cache/
