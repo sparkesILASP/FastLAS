@@ -25,7 +25,6 @@
 
 #ifndef NARITHMETIC_EXPRESSION_H
 #define NARITHMETIC_EXPRESSION_H
-<<<<<<< HEAD
 
 #include "NTerm.h"
 #include <set>
@@ -54,48 +53,10 @@ public:
   }
 
   int expr_int;
-=======
-#include <string>
-#include <set>
-#include "../Node.h"
-
-class NArithmeticExpr : public NTerm {
-
-  public:
-
-    NArithmeticExpr() {};
-
-    virtual std::string generalise(const std::string&, int&) const { return to_string(); };
-
-    virtual bool is_functional_term() const {
-      return false;
-    }
-
-};
-
-
-class NExprInt : public NArithmeticExpr {
-
-  public:
-
-    NExprInt(std::string str_integer)
-      : expr_int(std::stoi(str_integer)) {};
-
-    std::string to_string() const {
-      return std::to_string(expr_int);
-    }
-    void populate_constants(std::set<std::string>& consts) const {
-      consts.insert(std::to_string(expr_int));
-    }
-
-    int expr_int;
-
->>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
 };
 
 class NVar : public NArithmeticExpr {
 
-<<<<<<< HEAD
 public:
   NVar(std::string var_name) : var_name(var_name){};
 
@@ -103,21 +64,6 @@ public:
 
 private:
   std::string var_name;
-=======
-  public:
-
-    NVar(std::string var_name)
-      : var_name(var_name) {};
-
-    std::string to_string() const {
-      return var_name;
-    }
-
-  private:
-
-    std::string var_name;
-
->>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
 };
 
 #endif

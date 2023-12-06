@@ -24,22 +24,14 @@
  */
 
 #include "Generalise.h"
-<<<<<<< HEAD
 #include "../RuleSchema.h"
 #include "../Utils.h"
 #include <mutex>
 #include <set>
-=======
-#include <mutex>
-#include <set>
-#include "../RuleSchema.h"
-#include "../Utils.h"
->>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
 
 using namespace std;
 
 namespace {
-<<<<<<< HEAD
 mutex mtx;
 }
 
@@ -69,32 +61,11 @@ struct PartialRule {
       bool vio = true;
       for (auto sc : constraint) {
         if (extending_rules.find(sc) != extending_rules.end()) {
-=======
-  mutex mtx;
-}
-
-struct PartialRule {
-  PartialRule(const set<Schema::RuleSchema*>& ers)
-    : extending_rules(ers) {};
-  set<int> body;
-  set<Schema::RuleSchema*> extending_rules;
-  set<set<Schema::RuleSchema*>> constraints;
-
-  bool consistent() {
-    for(auto constraint : constraints) {
-      bool vio = true;
-      for(auto sc : constraint) {
-        if(extending_rules.find(sc) != extending_rules.end()) {
->>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
           vio = false;
           break;
         }
       }
-<<<<<<< HEAD
       if (vio) {
-=======
-      if(vio) {
->>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
         return false;
       }
     }
@@ -102,7 +73,6 @@ struct PartialRule {
   }
 };
 
-<<<<<<< HEAD
 /*
 generalisation: finding more general schemas of the initial very specific schemas
 
@@ -116,14 +86,11 @@ Intuitively, the new body (as a set) must be the intersection of bodies in the c
 
 Parallel exection is split according to the head of schemas.
 */
-=======
->>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
 void FastLAS::generalise() {
 
   auto schema_groups = Schema::get_grouped_useful_schemas();
 
   set<int> schema_group_ids;
-<<<<<<< HEAD
   for (auto p : schema_groups)
     schema_group_ids.insert(p.first);
 
@@ -132,41 +99,22 @@ void FastLAS::generalise() {
       bool at_least_one_non_cached = false;
       for (auto sc : schema_groups[schema_group_id]) {
         if (!sc->is_cached()) {
-=======
-  for(auto p : schema_groups)
-    schema_group_ids.insert(p.first);
-
-  parallel_exec(schema_group_ids, thread_num, [&](int schema_group_id, int) {
-    if(schema_groups[schema_group_id].size() > 1) {
-      bool at_least_one_non_cached = false;
-      for(auto sc : schema_groups[schema_group_id]) {
-        if(!sc->is_cached()) {
->>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
           at_least_one_non_cached = true;
           break;
         }
       }
 
-<<<<<<< HEAD
       if (at_least_one_non_cached) {
         // get body literals from rules and mark which rule the literal is contained in
         map<int, set<Schema::RuleSchema *>> contained_in;
         set<int> all_body_literals;
         for (auto rule : schema_groups[schema_group_id]) {
           for (int bl : rule->body) {
-=======
-      if(at_least_one_non_cached) {
-        map<int, set<Schema::RuleSchema*>> contained_in;
-        set<int> all_body_literals;
-        for(auto rule : schema_groups[schema_group_id]) {
-          for(int bl : rule->body) {
->>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
             all_body_literals.insert(bl);
             contained_in[bl].insert(rule);
           }
         }
 
-<<<<<<< HEAD
         // Rules is vector partial rules set to extend the current rule schema
         vector<PartialRule> rules(1, PartialRule(schema_groups[schema_group_id]));
 
@@ -238,47 +186,12 @@ void FastLAS::generalise() {
                 if (new_rule.consistent()) {
                   rules.push_back(new_rule);
                   rules[ri].constraints.insert(new_constraint);
-=======
-        vector<PartialRule> rules(1, PartialRule(schema_groups[schema_group_id]));
-
-        for(int bl : all_body_literals) {
-          int previous_size = rules.size();
-          for(int ri = 0; ri < previous_size; ri++) {
-            set<Schema::RuleSchema*> intersection;
-            set_intersection(rules[ri].extending_rules.begin(), rules[ri].extending_rules.end(), contained_in[bl].begin(), contained_in[bl].end(), std::inserter(intersection,intersection.begin()));
-            if(intersection.size() == rules[ri].extending_rules.size()) {
-              rules[ri].body.insert(bl);
-            } else {
-              if(intersection.size() > 1) {
-                bool at_least_one_non_cached = false;
-                for(auto sc : intersection) {
-                  if(!sc->is_cached()) {
-                    at_least_one_non_cached = true;
-                    break;
-                  }
-                }
-                if(at_least_one_non_cached) {
-                  set<Schema::RuleSchema*> new_constraint;
-                  for(auto r : rules[ri].extending_rules) {
-                    if(intersection.find(r) == intersection.end()) {
-                      new_constraint.insert(r);
-                    }
-                  }
-                  auto new_rule = rules[ri];
-                  new_rule.body.insert(bl);
-                  new_rule.extending_rules = intersection;
-                  if(new_rule.consistent()) {
-                    rules.push_back(new_rule);
-                    rules[ri].constraints.insert(new_constraint);
-                  }
->>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
                 }
               }
             }
           }
         }
 
-<<<<<<< HEAD
         /*
         Every extending rule is added as an extension of the rules it extends
         */
@@ -286,24 +199,10 @@ void FastLAS::generalise() {
           auto schema = Schema::RuleSchema::get_schema(schema_group_id, rules[i].body);
           mtx.lock();
           for (auto rs : rules[i].extending_rules)
-=======
-        for(int i = 0; i < rules.size(); i++) {
-          auto schema = Schema::RuleSchema::get_schema(schema_group_id, rules[i].body);
-          mtx.lock();
-          for(auto rs : rules[i].extending_rules)
->>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
             schema->add_extension(rs);
           mtx.unlock();
         }
       }
     }
-<<<<<<< HEAD
   });
 };
-=======
-
-  });
-
-};
-
->>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551

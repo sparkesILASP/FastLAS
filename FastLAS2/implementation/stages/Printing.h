@@ -28,7 +28,6 @@
 
 namespace FastLAS {
 
-<<<<<<< HEAD
 void print_possibilities();
 void print_c_plus();
 void print_c_minus();
@@ -38,16 +37,5 @@ void print_stats();
 void print_score();
 
 }; // namespace FastLAS
-=======
-  void print_possibilities();
-  void print_c_plus();
-  void print_c_minus();
-  void print_s_m();
-  void print_solution();
-  void print_stats();
-  void print_score();
-
-};
->>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
 
 #endif

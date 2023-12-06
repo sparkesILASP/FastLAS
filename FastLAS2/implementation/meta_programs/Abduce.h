@@ -26,10 +26,7 @@
 #ifndef META_PROGRAMS__ABDUCE__H__
 #define META_PROGRAMS__ABDUCE__H__
 
-<<<<<<< HEAD
 #include <string>
-=======
->>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
 std::string abduce_as = R"(
 
 
@@ -72,10 +69,6 @@ bottom2(A) :- bottom(A).
 
 )";
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
 std::string categorical_abduce_as = R"(
 
 { abduce(A) } :- abducible(A).
@@ -379,8 +372,4 @@ end
 #end.
 )";
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
 #endif

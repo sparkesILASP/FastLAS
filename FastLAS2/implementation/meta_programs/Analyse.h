@@ -26,10 +26,7 @@
 #ifndef META_PROGRAMS__ABDUCE__H__
 #define META_PROGRAMS__ABDUCE__H__
 
-<<<<<<< HEAD
 #include <string>
-=======
->>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
 std::string analyse_meta = R"(
 
 hb(A) :- modeh(A).

@@ -26,16 +26,9 @@
 #ifndef BASIC_NODE_H
 #define BASIC_NODE_H
 
-<<<<<<< HEAD
 class Node {
 public:
   virtual ~Node() {}
-=======
-
-class Node {
-  public:
-    virtual ~Node() {}
->>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
 };
 
 #endif

@@ -26,18 +26,14 @@
 #ifndef NRULE_HEAD_H
 #define NRULE_HEAD_H
 
-<<<<<<< HEAD
 #include "BasicNode.h"
 #include <iostream>
 #include <set>
 #include <string>
-=======
->>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
 class NAtom;
 
 class NRuleHead : public Node {
 
-<<<<<<< HEAD
 public:
   NRuleHead(){};
 
@@ -57,27 +53,6 @@ public:
   virtual std::pair<std::string, int> get_schema() const {
     return std::make_pair("", 0);
   }
-=======
-  public:
-
-    NRuleHead() {};
-
-    virtual std::string to_string() const = 0;
-    virtual std::string meta_representation(const std::string& id) const = 0;
-    virtual std::string abduce_representation() const = 0;
-    virtual std::string reduct_representation(const std::string& id) const {
-      std::cerr << "ERROR: reduct_representation not defined for general NRuleHeads." << std::endl;
-      exit(2);
-    }
-    virtual std::set<NAtom*> get_heads() = 0;
-    virtual std::string get_lower_bound() = 0;
-    virtual std::string get_upper_bound() = 0;
-    virtual void populate_constants(std::set<std::string>& consts) const = 0;
-    virtual std::pair<std::string, int> get_schema() const {
-      return std::make_pair("", 0);
-    }
-
->>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
 };
 
 #endif

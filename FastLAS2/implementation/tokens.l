@@ -88,10 +88,7 @@
 "#modeh"                return TOKEN(T_MODEH);
 "#modeb"                return TOKEN(T_MODEB);
 "#maxv"                 return TOKEN(T_MAXV);
-<<<<<<< HEAD
 "#be"                   return TOKEN(T_BE);
-=======
->>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
 
 
 "#cache"                        return TOKEN(T_CACHE);
