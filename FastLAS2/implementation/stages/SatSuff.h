@@ -28,7 +28,11 @@
 
 namespace FastLAS {
 
+<<<<<<< HEAD
 void compute_sat_sufficient();
+=======
+  void compute_sat_sufficient();
+>>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
 
 };
 

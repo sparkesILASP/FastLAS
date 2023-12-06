@@ -33,7 +33,10 @@
 #include "../LanguageBias.h"
 #include "../Example.h"
 #include "../meta_programs/OptimiseSym.h"
+<<<<<<< HEAD
 #include "../Solvers/Solvers.h"
+=======
+>>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
 
 using namespace std;
 
@@ -51,7 +54,10 @@ void FastLAS::optimise_sym() {
 
   set<int> heads;
 
+<<<<<<< HEAD
   // Get heads
+=======
+>>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
   for(auto eg : examples) {
     for(auto sub_eg : eg->get_possibilities()) {
       for(auto disj : sub_eg->get_rule_disjunctions()) {
@@ -62,7 +68,10 @@ void FastLAS::optimise_sym() {
     }
   }
 
+<<<<<<< HEAD
   // Figure out bodies
+=======
+>>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
   for(auto head : heads) {
     stringstream ss;
 
@@ -90,8 +99,11 @@ void FastLAS::optimise_sym() {
         }
       }
     }
+<<<<<<< HEAD
     // Choice over body literals
     // Along with literal in body
+=======
+>>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
     for(auto bl : body_literals) {
       ss << "0 { in(" << bl << ") } 1." << endl;
       bool positive = false;
@@ -186,7 +198,11 @@ void FastLAS::optimise_sym() {
     set<string> intermediate_sf_facts;
     map<string, string> types;
 
+<<<<<<< HEAD
     Solver::Clingo(3, ss.str(), "--enum=domrec --heuristic=domain  -n0")
+=======
+    Clingo(ss.str(), "--enum=domrec --heuristic=domain  -n0")
+>>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
       ('i', [&](const string& atom) {
         rule_body.insert(stoi(atom));
       }) ('n', [&](const string& atom) {

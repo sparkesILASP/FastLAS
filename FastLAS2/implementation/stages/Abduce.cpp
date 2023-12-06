@@ -23,16 +23,24 @@
  * IN THE SOFTWARE.
  */
 
+<<<<<<< HEAD
 #include "Abduce.h"
 #include "../Example.h"
 #include "../LanguageBias.h"
 #include "../Solvers/Solvers.h"
 #include "../Utils.h"
+=======
+#include "../Utils.h"
+#include "Abduce.h"
+#include "../Example.h"
+#include "../LanguageBias.h"
+>>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
 #include "../meta_programs/Abduce.h"
 
 using namespace std;
 
 extern set<string> cached_examples;
+<<<<<<< HEAD
 extern set<Example *> examples;
 extern LanguageBias *bias;
 extern vector<NRule> background;
@@ -56,10 +64,38 @@ string FastLAS::get_bottom_representation(const set<pair<string, int>> &hyp_depe
   auto ctx = eg->get_context();
   for (int id = 0; id < ctx.size(); id++)
     if (!ctx[id].depends_on(hyp_dependent_predictates))
+=======
+extern set<Example*> examples;
+extern LanguageBias* bias;
+extern vector<NRule> background;
+
+
+namespace FastLAS {
+  string get_sat_suff_representation(Example* eg, const set<int>&);
+  string get_bottom_representation(const set<pair<string, int>>&, Example* eg);
+  set<pair<pair<set<int>, set<int>>, set<set<int>>>> anti_abduce(const set<pair<string, int>>&, const set<int>&, const set<pair<set<int>, set<int>>>&, Example*);
+  set<pair<set<int>, set<int>>> repair(const set<pair<string, int>>&, const set<int>&, const set<pair<pair<set<int>, set<int>>, set<set<int>>>>&, Example*);
+  mutex sc_mtx;
+}
+
+string FastLAS::get_bottom_representation(const set<pair<string, int>>& hyp_dependent_predictates, Example* eg) {
+
+
+  stringstream ss;
+
+  for(int id = 0; id < background.size(); id++)
+    if(!background[id].depends_on(hyp_dependent_predictates))
+      ss << background[id].abduce_representation();
+
+  auto ctx = eg->get_context();
+  for(int id = 0; id < ctx.size(); id++)
+    if(!ctx[id].depends_on(hyp_dependent_predictates))
+>>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
       ss << ctx[id].abduce_representation();
 
   ss << "pos(" << eg->id << ")." << endl;
 
+<<<<<<< HEAD
   for (auto &mh : bias->head_declarations)
     ss << mh.abduce_head_representation() << endl;
   for (int id = 0; id < background.size(); id++)
@@ -68,6 +104,13 @@ string FastLAS::get_bottom_representation(const set<pair<string, int>> &hyp_depe
     ss << ctx[id].meta_representation();
 
   if (FastLAS::categorical_contexts) {
+=======
+  for(auto& mh : bias->head_declarations) ss << mh.abduce_head_representation() << endl;
+  for(int id = 0; id < background.size(); id++) ss << background[id].meta_representation();
+  for(int id = 0; id < ctx.size(); id++)  ss << ctx[id].meta_representation();
+
+  if(FastLAS::categorical_contexts) {
+>>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
     ss << categorical_abduce_as << endl;
   } else {
     ss << abduce_as << endl;
@@ -76,25 +119,44 @@ string FastLAS::get_bottom_representation(const set<pair<string, int>> &hyp_depe
   return ss.str();
 }
 
+<<<<<<< HEAD
 string FastLAS::get_sat_suff_representation(Example *eg, const set<int> &bottom_as) {
 
   set<pair<string, int>> hyp_dependent_predictates;
   for (auto &mh : bias->head_declarations) {
+=======
+string FastLAS::get_sat_suff_representation(Example* eg, const set<int>& bottom_as) {
+
+  set<pair<string, int>> hyp_dependent_predictates;
+  for(auto& mh : bias->head_declarations) {
+>>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
     auto sc = mh.get_atom();
     hyp_dependent_predictates.insert(make_pair(sc.predicate_name, sc.arguments.size()));
   }
 
   int prev_size = 0;
+<<<<<<< HEAD
   while (prev_size != hyp_dependent_predictates.size()) {
     prev_size = hyp_dependent_predictates.size();
     for (auto r : background) {
       if (!r.is_constraint() && r.depends_on(hyp_dependent_predictates)) {
+=======
+  while(prev_size != hyp_dependent_predictates.size()) {
+    prev_size = hyp_dependent_predictates.size();
+    for(auto r : background) {
+      if(!r.is_constraint() && r.depends_on(hyp_dependent_predictates)) {
+>>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
         auto hs = r.get_head_signatures();
         hyp_dependent_predictates.insert(hs.begin(), hs.end());
       }
     }
+<<<<<<< HEAD
     for (auto r : eg->get_context()) {
       if (!r.is_constraint() && r.depends_on(hyp_dependent_predictates)) {
+=======
+    for(auto r : eg->get_context()) {
+      if(!r.is_constraint() && r.depends_on(hyp_dependent_predictates)) {
+>>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
         auto hs = r.get_head_signatures();
         hyp_dependent_predictates.insert(hs.begin(), hs.end());
       }
@@ -103,11 +165,16 @@ string FastLAS::get_sat_suff_representation(Example *eg, const set<int> &bottom_
 
   stringstream ss;
 
+<<<<<<< HEAD
   for (int a : bottom_as) {
+=======
+  for(int a : bottom_as) {
+>>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
     ss << "bottom(" << FastLAS::language[a] << ")." << endl;
   }
 
   auto ctx_rules = eg->get_context();
+<<<<<<< HEAD
   for (int id = 0; id < background.size(); id++)
     if (background[id].depends_on(hyp_dependent_predictates))
       ss << background[id].fact_representation(id);
@@ -129,14 +196,42 @@ string FastLAS::get_sat_suff_representation(Example *eg, const set<int> &bottom_
     auto ctx = eg->get_context();
     for (int id = 0; id < ctx.size(); id++)
       if (!ctx[id].depends_on(hyp_dependent_predictates))
+=======
+  for(int id = 0; id < background.size(); id++)
+    if(background[id].depends_on(hyp_dependent_predictates))
+      ss << background[id].fact_representation(id);
+  for(int id = 0; id < ctx_rules.size(); id++)
+    if(ctx_rules[id].depends_on(hyp_dependent_predictates))
+      ss << ctx_rules[id].fact_representation(id + background.size());
+
+  for(auto& mh : bias->head_declarations) ss << mh.abduce_head_representation() << endl;
+  for(auto& mb : bias->body_declarations)
+    if(!mb.get_atom().is_comparison())
+      ss << mb.abduce_body_representation() << endl;
+
+
+  if(!FastLAS::separate_abduction) {
+    for(int id = 0; id < background.size(); id++)
+      if(!background[id].depends_on(hyp_dependent_predictates))
+        ss << background[id].abduce_representation();
+
+    auto ctx = eg->get_context();
+    for(int id = 0; id < ctx.size(); id++)
+      if(!ctx[id].depends_on(hyp_dependent_predictates))
+>>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
         ss << ctx[id].abduce_representation();
 
     ss << "pos(" << eg->id << ")." << endl;
 
+<<<<<<< HEAD
     for (int id = 0; id < background.size(); id++)
       ss << background[id].meta_representation();
     for (int id = 0; id < ctx.size(); id++)
       ss << ctx[id].meta_representation();
+=======
+    for(int id = 0; id < background.size(); id++) ss << background[id].meta_representation();
+    for(int id = 0; id < ctx.size(); id++)  ss << ctx[id].meta_representation();
+>>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
 
     ss << R"(
       { ctx(EG, A) } :- pos(EG), abducible(A).
@@ -161,27 +256,46 @@ string FastLAS::get_sat_suff_representation(Example *eg, const set<int> &bottom_
   return ss.str();
 }
 
+<<<<<<< HEAD
 set<pair<pair<set<int>, set<int>>, set<set<int>>>> FastLAS::anti_abduce(const set<pair<string, int>> &hyp_dependent_predictates, const set<int> &bottom, const set<pair<set<int>, set<int>>> &deltas, Example *eg) {
 
   stringstream ss;
 
   for (int a : bottom) {
+=======
+
+
+set<pair<pair<set<int>, set<int>>, set<set<int>>>> FastLAS::anti_abduce(const set<pair<string, int>>& hyp_dependent_predictates, const set<int>& bottom, const set<pair<set<int>, set<int>>>& deltas, Example* eg) {
+
+  stringstream ss;
+
+  for(int a : bottom) {
+>>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
     ss << "bottom(" << FastLAS::language[a] << ")." << endl;
   }
 
   vector<pair<set<int>, set<int>>> delta_vec(deltas.begin(), deltas.end());
 
+<<<<<<< HEAD
   for (auto i = 0; i < delta_vec.size(); i++) {
     for (int a : delta_vec[i].first) {
       ss << "abduce(" << FastLAS::language[a] << ") :- delta(" << i << ")." << endl;
     }
     for (int a : delta_vec[i].second) {
+=======
+  for(auto i = 0; i < delta_vec.size(); i++) {
+    for(int a : delta_vec[i].first) {
+      ss << "abduce(" << FastLAS::language[a] << ") :- delta(" << i << ")." << endl;
+    }
+    for(int a : delta_vec[i].second) {
+>>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
       ss << ":- abduce(" << FastLAS::language[a] << ") :- delta(" << i << ")." << endl;
     }
   }
   ss << "1 { delta(0.." << delta_vec.size() - 1 << ") } 1." << endl;
 
   auto ctx_rules = eg->get_context();
+<<<<<<< HEAD
   for (int id = 0; id < background.size(); id++)
     if (background[id].depends_on(hyp_dependent_predictates))
       ss << background[id].fact_representation(id);
@@ -191,12 +305,23 @@ set<pair<pair<set<int>, set<int>>, set<set<int>>>> FastLAS::anti_abduce(const se
 
   for (auto &mh : bias->head_declarations)
     ss << mh.abduce_head_representation() << endl;
+=======
+  for(int id = 0; id < background.size(); id++)
+    if(background[id].depends_on(hyp_dependent_predictates))
+      ss << background[id].fact_representation(id);
+  for(int id = 0; id < ctx_rules.size(); id++)
+    if(ctx_rules[id].depends_on(hyp_dependent_predictates))
+      ss << ctx_rules[id].fact_representation(id + background.size());
+
+  for(auto& mh : bias->head_declarations) ss << mh.abduce_head_representation() << endl;
+>>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
 
   map<int, set<set<int>>> exceptions;
   set<int> exception;
   int delta;
 
   ss << anti_abduce_sat_suff << endl;
+<<<<<<< HEAD
   // cout << ss.str() << endl;
   // exit(2);
 
@@ -211,17 +336,41 @@ set<pair<pair<set<int>, set<int>>, set<set<int>>>> FastLAS::anti_abduce(const se
 
   set<pair<pair<set<int>, set<int>>, set<set<int>>>> exception_set;
   for (int i = 0; i < delta_vec.size(); i++) {
+=======
+  //cout << ss.str() << endl;
+  //exit(2);
+
+
+  Clingo(ss.str(), "--enum-mode=domrec --heuristic=domain -n 0")
+    ('i', [&](const string& atom) {
+      exception.insert(get_language_index(atom));
+    }) ('d', [&](const string& atom) {
+      delta = stoi(atom);
+    }) ([&]() {
+      exceptions[delta].insert(exception);
+      exception.clear();
+    }
+  );
+
+  set<pair<pair<set<int>, set<int>>, set<set<int>>>> exception_set;
+  for(int i = 0; i < delta_vec.size(); i++) {
+>>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
     exception_set.insert(make_pair(delta_vec[i], exceptions[i]));
   }
 
   return exception_set;
 }
 
+<<<<<<< HEAD
 set<pair<set<int>, set<int>>> FastLAS::repair(const set<pair<string, int>> &hyp_dependent_predictates, const set<int> &bottom, const set<pair<pair<set<int>, set<int>>, set<set<int>>>> &deltas, Example *eg) {
+=======
+set<pair<set<int>, set<int>>> FastLAS::repair(const set<pair<string, int>>& hyp_dependent_predictates, const set<int>& bottom, const set<pair<pair<set<int>, set<int>>, set<set<int>>>>& deltas, Example* eg) {
+>>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
 
   stringstream ss;
 
   auto ctx_rules = eg->get_context();
+<<<<<<< HEAD
   for (int id = 0; id < background.size(); id++)
     if (background[id].depends_on(hyp_dependent_predictates))
       ss << background[id].meta_representation();
@@ -230,6 +379,16 @@ set<pair<set<int>, set<int>>> FastLAS::repair(const set<pair<string, int>> &hyp_
       ss << ctx_rules[id].meta_representation();
 
   for (int a : bottom) {
+=======
+  for(int id = 0; id < background.size(); id++)
+    if(background[id].depends_on(hyp_dependent_predictates))
+      ss << background[id].meta_representation();
+  for(int id = 0; id < ctx_rules.size(); id++)
+    if(ctx_rules[id].depends_on(hyp_dependent_predictates))
+      ss << ctx_rules[id].meta_representation();
+
+  for(int a : bottom) {
+>>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
     ss << "bottom(" << FastLAS::language[a] << ")." << endl;
   }
 
@@ -237,6 +396,7 @@ set<pair<set<int>, set<int>>> FastLAS::repair(const set<pair<string, int>> &hyp_
 
   ss << "1 { delta(0.." << delta_vec.size() - 1 << ") } 1." << endl;
 
+<<<<<<< HEAD
   for (int delta_count = 0; delta_count < delta_vec.size(); delta_count++) {
     int ext_count = 0;
 
@@ -247,6 +407,16 @@ set<pair<set<int>, set<int>>> FastLAS::repair(const set<pair<string, int>> &hyp_
 
     for (auto ext : delta_vec[delta_count].second) {
       for (int a : ext) {
+=======
+  for(int delta_count = 0; delta_count < delta_vec.size(); delta_count++) {
+    int ext_count = 0;
+
+    for(int a : delta_vec[delta_count].first.first) ss << "abduce(" << FastLAS::language[a] << ") :- delta(" << delta_count << ")." << endl;
+    for(int a : delta_vec[delta_count].first.second) ss << ":- abduce(" << FastLAS::language[a] << ") :- delta(" << delta_count << ")." << endl;
+
+    for(auto ext : delta_vec[delta_count].second) {
+      for(int a : ext) {
+>>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
         ss << "abduce(" << FastLAS::language[a] << ") :- ext(" << delta_count << ", " << ext_count << ")." << endl;
       }
       ext_count++;
@@ -255,6 +425,7 @@ set<pair<set<int>, set<int>>> FastLAS::repair(const set<pair<string, int>> &hyp_
     ss << "1 { ext(" << delta_count << ", 0.." << ext_count - 1 << ") } 1 :- delta(" << delta_count << ")." << endl;
   }
 
+<<<<<<< HEAD
   for (auto &mh : bias->head_declarations)
     ss << mh.abduce_head_representation() << endl;
 
@@ -264,11 +435,22 @@ set<pair<set<int>, set<int>>> FastLAS::repair(const set<pair<string, int>> &hyp_
   // mtx.lock();
   // cout << ss.str();
   // exit(2);
+=======
+  for(auto& mh : bias->head_declarations) ss << mh.abduce_head_representation() << endl;
+
+  ss << repair_sat_suff << endl;
+
+  //static mutex mtx;
+  //mtx.lock();
+  //cout << ss.str();
+  //exit(2);
+>>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
 
   set<pair<set<int>, set<int>>> repairs;
   set<int> rep;
   int delta;
 
+<<<<<<< HEAD
   Solver::Clingo(3, ss.str(), "--enum-mode=domrec --heuristic=domain -n 0")('i', [&](const string &atom) {
     rep.insert(get_language_index(atom));
   })('d', [&](const string &atom) {
@@ -279,11 +461,26 @@ set<pair<set<int>, set<int>>> FastLAS::repair(const set<pair<string, int>> &hyp_
     repairs.insert(new_delta);
     rep.clear();
   });
+=======
+  Clingo(ss.str(), "--enum-mode=domrec --heuristic=domain -n 0")
+    ('i', [&](const string& atom) {
+      rep.insert(get_language_index(atom));
+    }) ('d', [&](const string& atom) {
+      delta = stoi(atom);
+    }) ([&]() {
+      auto new_delta = delta_vec[delta].first;
+      new_delta.first = rep;
+      repairs.insert(new_delta);
+      rep.clear();
+    }
+  );
+>>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
   return repairs;
 }
 
 void FastLAS::abduce() {
 
+<<<<<<< HEAD
   set<Example *> new_examples;
   for (auto eg : examples) {
     if (cached_examples.find(eg->id) == cached_examples.end()) {
@@ -298,21 +495,46 @@ void FastLAS::abduce() {
 
     set<pair<string, int>> hyp_dependent_predictates;
     for (auto &mh : bias->head_declarations) {
+=======
+  set<Example*> new_examples;
+  for(auto eg : examples)
+    if(cached_examples.find(eg->id) == cached_examples.end())
+      if(eg->get_possibilities().empty())
+        new_examples.insert(eg);
+
+  parallel_exec(new_examples, thread_num, [&](Example* eg, int) {
+    //cout << eg->id << endl;
+
+    set<pair<string, int>> hyp_dependent_predictates;
+    for(auto& mh : bias->head_declarations) {
+>>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
       auto sc = mh.get_atom();
       hyp_dependent_predictates.insert(make_pair(sc.predicate_name, sc.arguments.size()));
     }
 
     int prev_size = 0;
+<<<<<<< HEAD
     while (prev_size != hyp_dependent_predictates.size()) {
       prev_size = hyp_dependent_predictates.size();
       for (auto r : background) {
         if (!r.is_constraint() && r.depends_on(hyp_dependent_predictates)) {
+=======
+    while(prev_size != hyp_dependent_predictates.size()) {
+      prev_size = hyp_dependent_predictates.size();
+      for(auto r : background) {
+        if(!r.is_constraint() && r.depends_on(hyp_dependent_predictates)) {
+>>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
           auto hs = r.get_head_signatures();
           hyp_dependent_predictates.insert(hs.begin(), hs.end());
         }
       }
+<<<<<<< HEAD
       for (auto r : eg->get_context()) {
         if (!r.is_constraint() && r.depends_on(hyp_dependent_predictates)) {
+=======
+      for(auto r : eg->get_context()) {
+        if(!r.is_constraint() && r.depends_on(hyp_dependent_predictates)) {
+>>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
           auto hs = r.get_head_signatures();
           hyp_dependent_predictates.insert(hs.begin(), hs.end());
         }
@@ -321,6 +543,7 @@ void FastLAS::abduce() {
 
     map<set<int>, set<set<int>>> ctx_to_incs;
 
+<<<<<<< HEAD
     // static mutex mtx;
     // mtx.lock();
     // cout << get_bottom_representation(hyp_dependent_predictates, eg) << endl;
@@ -348,11 +571,43 @@ void FastLAS::abduce() {
     for (auto starting_point : ctx_to_incs) {
       set<pair<set<int>, set<int>>> possibilities, partial_possibilities;
       for (auto incs : starting_point.second) {
+=======
+    //static mutex mtx;
+    //mtx.lock();
+    //cout << get_bottom_representation(hyp_dependent_predictates, eg) << endl;
+    //exit(2);
+
+    set<int> ctx, incs;
+    set<set<int>> all_incs;
+    Clingo(get_bottom_representation(hyp_dependent_predictates, eg), "--enum-mode=domrec --heuristic=domain --dom-mod=5,16 -n 0")
+      ('i', [&](const string& atom) {
+        ctx.insert(get_language_index(atom));
+      }) ('t', [&](const string& atom) {
+        incs.insert(get_language_index(atom));
+      }) ([&]() {
+        if(FastLAS::categorical_contexts) {
+          all_incs.insert(incs);
+        } else {
+          ctx_to_incs[ctx].insert(incs);
+          ctx.clear();
+        }
+        incs.clear();
+      }
+    );
+    if(FastLAS::categorical_contexts) {
+      ctx_to_incs[ctx] = all_incs;
+    }
+
+    for(auto starting_point : ctx_to_incs) {
+      set<pair<set<int>, set<int>>> possibilities, partial_possibilities;
+      for(auto incs : starting_point.second) {
+>>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
         partial_possibilities.insert(make_pair(incs, set<int>()));
       }
 
       int iterations = 0;
 
+<<<<<<< HEAD
       while (!partial_possibilities.empty()) {
         static mutex p_mtx;
         p_mtx.lock();
@@ -363,11 +618,27 @@ void FastLAS::abduce() {
             bool intersect = false;
             for (auto exc : excs) {
               if (p.first.first.find(exc) != p.first.first.end()) {
+=======
+      while(!partial_possibilities.empty()) {
+        static mutex p_mtx;
+        p_mtx.lock();
+        auto exceptions = anti_abduce(hyp_dependent_predictates, starting_point.first, partial_possibilities, eg);
+        for(auto p : exceptions) {
+          auto negated_exceptions = FastLAS::cnf_to_dnf(p.second);
+          for(auto excs : negated_exceptions) {
+            bool intersect = false;
+            for(auto exc : excs) {
+              if(p.first.first.find(exc) != p.first.first.end()) {
+>>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
                 intersect = true;
                 break;
               }
             }
+<<<<<<< HEAD
             if (!intersect) {
+=======
+            if(!intersect) {
+>>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
               auto new_possibility = p.first;
               new_possibility.second.insert(excs.begin(), excs.end());
               possibilities.insert(new_possibility);
@@ -376,15 +647,35 @@ void FastLAS::abduce() {
         }
         partial_possibilities = repair(hyp_dependent_predictates, starting_point.first, exceptions, eg);
         iterations++;
+<<<<<<< HEAD
         if (iterations > 10) {
+=======
+        if(iterations > 10) {
+>>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
           cout << eg->id << ":" << iterations << endl;
         }
         p_mtx.unlock();
       }
 
+<<<<<<< HEAD
       for (auto p : possibilities) {
         eg->add_possibility(p.first, p.second, starting_point.first);
       }
     }
   });
 }
+=======
+
+      for(auto p : possibilities) {
+        eg->add_possibility(p.first, p.second, starting_point.first);
+      }
+    }
+
+  });
+
+
+
+}
+
+
+>>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
