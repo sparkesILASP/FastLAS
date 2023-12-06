@@ -23,6 +23,7 @@
  * IN THE SOFTWARE.
  */
 
+<<<<<<< HEAD
 #include "NChoice.h"
 #include "NNafLiteral.h"
 
@@ -31,12 +32,26 @@ using namespace std;
 NChoice::NChoice(NTerm *lb, const vector<shared_ptr<NLiteral>> &atoms,
                  NTerm *ub)
     : lb(lb), ub(ub), atoms(atoms){};
+=======
+#include "../Node.h"
+#include "NChoice.h"
+
+using namespace std;
+
+NChoice::NChoice(NTerm* lb, const vector<shared_ptr<NLiteral>>& atoms, NTerm* ub)
+  : lb(lb), ub(ub), atoms(atoms) {};
+>>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
 
 string NChoice::to_string() const {
   stringstream ss;
   ss << lb->to_string() << " { ";
+<<<<<<< HEAD
   for (int i = 0; i < atoms.size(); i++) {
     if (i > 0)
+=======
+  for(int i = 0; i < atoms.size(); i++) {
+    if(i > 0)
+>>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
       ss << "; ";
     ss << atoms[i]->to_string();
   }
@@ -44,19 +59,33 @@ string NChoice::to_string() const {
   return ss.str();
 }
 
+<<<<<<< HEAD
 void NChoice::populate_constants(set<string> &consts) const {
   lb->populate_constants(consts);
   for (auto a : atoms)
+=======
+void NChoice::populate_constants(set<string>& consts) const {
+  lb->populate_constants(consts);
+  for(auto a : atoms)
+>>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
     a->populate_constants(consts);
   ub->populate_constants(consts);
 }
 
+<<<<<<< HEAD
 string NChoice::meta_representation(const string &id) const {
   stringstream ss;
   ss << lb->to_string() << " { ";
   for (int i = 0; i < atoms.size(); i++) {
     if (i > 0)
       ss << "; ";
+=======
+string NChoice::meta_representation(const string& id) const {
+  stringstream ss;
+  ss << lb->to_string() << " { ";
+  for(int i = 0; i < atoms.size(); i++) {
+    if(i > 0) ss << "; ";
+>>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
     ss << atoms[i]->meta_representation(id);
   }
   ss << " } " << ub->to_string();
@@ -66,29 +95,48 @@ string NChoice::meta_representation(const string &id) const {
 string NChoice::abduce_representation() const {
   stringstream ss;
   ss << lb->to_string() << " { ";
+<<<<<<< HEAD
   for (int i = 0; i < atoms.size(); i++) {
     if (i > 0)
       ss << "; ";
+=======
+  for(int i = 0; i < atoms.size(); i++) {
+    if(i > 0) ss << "; ";
+>>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
     ss << atoms[i]->abduce_representation();
   }
   ss << " } " << ub->to_string();
   return ss.str();
 }
 
+<<<<<<< HEAD
 string NChoice::reduct_representation(const string &id) const {
   auto s = to_string();
   if (s[0] == '-') {
     return std::string("-mmr(") + id + std::string(",") +
            s.substr(1, s.length()) + std::string(")");
+=======
+string NChoice::reduct_representation(const string& id) const {
+  auto s = to_string();
+  if(s[0] == '-') {
+    return std::string("-mmr(") + id + std::string(",") + s.substr(1, s.length()) + std::string(")");
+>>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
   } else {
     return std::string("mmr(") + id + std::string(",") + s + std::string(")");
   }
 }
 
+<<<<<<< HEAD
 set<NAtom *> NChoice::get_heads() {
   auto s = set<NAtom *>();
   for (auto lit : atoms) {
     auto naf_lit = dynamic_cast<NNafLiteral *>(lit.get());
+=======
+set<NAtom*> NChoice::get_heads() {
+  auto s = set<NAtom*>();
+  for(auto lit : atoms) {
+    auto naf_lit = dynamic_cast<NNafLiteral*>(lit.get());
+>>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
     s.insert(naf_lit->get_atom());
   }
   return s;

@@ -23,6 +23,7 @@
  * IN THE SOFTWARE.
  */
 
+<<<<<<< HEAD
 #include "NRule.h"
 #include "../Node.h"
 #include "../Utils.h"
@@ -49,6 +50,18 @@ string NRule::meta_representation(const std::string &id,
   stringstream ss;
   ss << head->meta_representation(id) << " :- pos(" << id << ")" << extra;
   for (const auto &body_lit : body) {
+=======
+#include "../Node.h"
+#include <sstream>
+#include "../Utils.h"
+
+using namespace std;
+
+string NRule::meta_representation(const std::string& id, std::string extra) const {
+  stringstream ss;
+  ss << head->meta_representation(id) << " :- pos(" << id << ")" << extra;
+  for(const auto& body_lit : body) {
+>>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
     ss << ", " << body_lit->meta_representation(id);
   }
   ss << "." << endl;
@@ -58,13 +71,18 @@ string NRule::meta_representation(const std::string &id,
 string NRule::abduce_representation() const {
   stringstream ss;
   ss << head->abduce_representation() << " :- #true";
+<<<<<<< HEAD
   for (const auto &body_lit : body) {
+=======
+  for(const auto& body_lit : body) {
+>>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
     ss << ", " << body_lit->abduce_representation();
   }
   ss << "." << endl;
   return ss.str();
 }
 
+<<<<<<< HEAD
 string NRule::to_string(const std::string &id) const {
   stringstream ss;
   auto h = head->to_string();
@@ -72,14 +90,28 @@ string NRule::to_string(const std::string &id) const {
     // should also check negative literals here eventually!!
     ss << ":- example(" << id << ")";
     for (const auto &body_lit : body) {
+=======
+string NRule::to_string(const std::string& id) const {
+  stringstream ss;
+  auto h = head->to_string();
+  if(h.compare("") == 0) {
+    // should also check negative literals here eventually!!
+    ss << ":- example(" << id << ")";
+    for(const auto& body_lit : body) {
+>>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
       ss << ", " << body_lit->meta_representation(id);
     }
     ss << "." << endl;
   } else {
     ss << head->meta_representation(id);
     bool first = true;
+<<<<<<< HEAD
     for (const auto &body_lit : body) {
       if (first) {
+=======
+    for(const auto& body_lit : body) {
+      if(first) {
+>>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
         first = false;
         ss << " :- ";
       } else {
@@ -95,9 +127,15 @@ string NRule::to_string(const std::string &id) const {
 string NRule::meta_representation() const {
   stringstream ss;
   auto h = head->to_string();
+<<<<<<< HEAD
   if (h.compare("") == 0) {
     ss << ":- pos(EG)";
     for (const auto &body_lit : body) {
+=======
+  if(h.compare("") == 0) {
+    ss << ":- pos(EG)";
+    for(const auto& body_lit : body) {
+>>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
       ss << ", " << body_lit->meta_representation("EG");
     }
     ss << "." << endl;
@@ -105,7 +143,11 @@ string NRule::meta_representation() const {
     ss << head->meta_representation("EG");
     ss << " :- pos(EG)";
     bool first = true;
+<<<<<<< HEAD
     for (const auto &body_lit : body) {
+=======
+    for(const auto& body_lit : body) {
+>>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
       ss << ", " << body_lit->meta_representation("EG");
     }
     ss << "." << endl;
@@ -118,8 +160,13 @@ string NRule::to_string() const {
   std::vector<int> compact_indices;
   ss << head->to_string();
   bool first = true;
+<<<<<<< HEAD
   for (const auto &body_lit : body) {
     if (first) {
+=======
+  for(const auto& body_lit : body) {
+    if(first) {
+>>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
       ss << " :- ";
       first = false;
     } else {
@@ -134,11 +181,19 @@ string NRule::to_string() const {
 string NRule::disj_representation(string extra) const {
   stringstream ss;
   auto h = head->meta_representation("hb");
+<<<<<<< HEAD
   if (h.compare("") != 0) {
     ss << h << ":- #true" << extra;
     bool first = true;
     for (const auto &body_lit : body) {
       if (body_lit->positive()) {
+=======
+  if(h.compare("") != 0) {
+    ss << h << ":- #true" << extra;
+    bool first = true;
+    for(const auto& body_lit : body) {
+      if(body_lit->positive()) {
+>>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
         ss << ", ";
         ss << body_lit->meta_representation("hb");
       }
@@ -151,6 +206,7 @@ string NRule::disj_representation(string extra) const {
 string NRule::dependency_representation() const {
   stringstream ss;
   auto h = head->to_string();
+<<<<<<< HEAD
   if (h.compare("") != 0) {
     // constraints cannot create dependencies.
     for (const auto &body_lit : body) {
@@ -160,6 +216,17 @@ string NRule::dependency_representation() const {
         ss << ") :- domain(" << h << ")";
         for (const auto &body_lit : body) {
           if (body_lit->atomic()) {
+=======
+  if(h.compare("") != 0) {
+    // constraints cannot create dependencies.
+    for(const auto& body_lit : body) {
+      if(!body_lit->is_comparison()) {
+        ss << "depends(pos(" << h << "), ";
+        ss << body_lit->to_safe_string();
+        ss << ") :- domain(" << h << ")";
+        for(const auto& body_lit : body) {
+          if(body_lit->atomic()) {
+>>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
             ss << ", domain(" << body_lit->to_string() << ")";
           }
         }
@@ -167,22 +234,40 @@ string NRule::dependency_representation() const {
       }
     }
     ss << "domain(" << h << ") :- #true";
+<<<<<<< HEAD
     for (const auto &body_lit : body) {
       if (body_lit->atomic()) {
+=======
+    for(const auto& body_lit : body) {
+      if(body_lit->atomic()) {
+>>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
         ss << ", domain(" << body_lit->to_string() << ")";
       }
     }
     ss << "." << endl;
+<<<<<<< HEAD
+=======
+
+>>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
   }
   return ss.str();
 }
 
+<<<<<<< HEAD
 string NRule::fact_representation(const int &id, std::string extra) const {
   stringstream ss2, ss_comps;
   ss_comps << extra; // extra should not appear in the head.
   for (const auto &body_lit : body) {
     if (body_lit->positive()) {
       if (!body_lit->is_comparison()) {
+=======
+string NRule::fact_representation(const int& id, std::string extra) const {
+  stringstream ss2, ss_comps;
+  ss_comps << extra; // extra should not appear in the head.
+  for(const auto& body_lit : body) {
+    if(body_lit->positive()) {
+      if(!body_lit->is_comparison()) {
+>>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
         ss2 << ", hb(" << body_lit->to_string() << ")";
       } else {
         ss_comps << ", " << body_lit->to_string();
@@ -192,6 +277,7 @@ string NRule::fact_representation(const int &id, std::string extra) const {
   auto body_str = ss2.str();
   auto comps_str = ss_comps.str();
   stringstream ss;
+<<<<<<< HEAD
   ss << "rule((" << id << body_str << ")) :- #true" << body_str << comps_str
      << "." << endl;
   ss << "bottom_prg((" << id << body_str << ")) :- bottom_prg(" << id
@@ -228,12 +314,41 @@ string NRule::fact_representation(const int &id, std::string extra) const {
   // mtx.lock();
   // cout << ss.str() << endl;
   // exit(2);
+=======
+  ss << "rule((" << id << body_str << ")) :- #true" << body_str << comps_str << "." << endl;
+  ss << "bottom_prg((" << id << body_str << ")) :- bottom_prg(" << id << "), rule((" << id << body_str << "))." << endl;
+  auto hs = head->get_heads();
+  if(hs.empty()) {
+    ss << "constraint((" << id << body_str << ")) :- #true" << body_str << comps_str << "." << endl;
+  } else {
+    for(auto h : hs) {
+      ss << "head((" << id << body_str << "), " << h->to_string() << ") :- #true" << body_str << comps_str << "." << endl;
+    }
+    ss << "cardinality((" << id << body_str << "), " << hs.size() << ") :- #true" << body_str << comps_str << "." << endl;
+    ss << "lb((" << id << body_str << "), " << head->get_lower_bound() << ") :- #true" << body_str << comps_str << "." << endl;
+    ss << "ub((" << id << body_str << "), " << head->get_upper_bound() << ") :- #true" << body_str << comps_str << "." << endl;
+  }
+  for(const auto& body_lit : body) {
+    if(!body_lit->is_comparison()) {
+      if(body_lit->positive()) {
+        ss << "body_pos((" << id << body_str << "), " << body_lit->to_string() << ") :- #true" << body_str << comps_str << "." << endl;
+      } else {
+        ss << "body_neg((" << id << body_str << "), " << body_lit->to_string().substr(4) << ") :- #true" << body_str << comps_str << "." << endl;
+      }
+    }
+  }
+  //static mutex mtx;
+  //mtx.lock();
+  //cout << ss.str() << endl;
+  //exit(2);
+>>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
   return ss.str();
 }
 
 pair<int, set<int>> NRule::to_cache_representation() const {
   pair<int, set<int>> rule_rep;
   rule_rep.first = FastLAS::get_language_index(head->to_string());
+<<<<<<< HEAD
   for (const auto &body_lit : body) {
     if (body_lit->positive()) {
       rule_rep.second.insert(
@@ -241,28 +356,57 @@ pair<int, set<int>> NRule::to_cache_representation() const {
     } else {
       rule_rep.second.insert(
           -FastLAS::get_language_index(body_lit->to_string()));
+=======
+  for(const auto& body_lit : body) {
+    if(body_lit->positive()) {
+      rule_rep.second.insert(FastLAS::get_language_index(body_lit->to_string()));
+    } else {
+      rule_rep.second.insert(-FastLAS::get_language_index(body_lit->to_string()));
+>>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
     }
   }
   return rule_rep;
 }
 
+<<<<<<< HEAD
 bool NRule::is_constraint() const { return head->to_string().compare("") == 0; }
+=======
+bool NRule::is_constraint() const {
+  return head->to_string().compare("") == 0;
+}
+>>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
 
 set<pair<string, int>> NRule::get_head_signatures() const {
   auto hs = head->get_heads();
   set<pair<string, int>> schemas;
+<<<<<<< HEAD
   for (auto h : hs) {
+=======
+  for(auto h : hs) {
+>>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
     schemas.insert(h->get_schema());
   }
   return schemas;
 }
 
+<<<<<<< HEAD
 bool NRule::depends_on(const set<pair<string, int>> &schemas) const {
   for (const auto &bl : body) {
     auto sc = bl->get_predicate_schema();
     if (schemas.find(sc) != schemas.end()) {
+=======
+bool NRule::depends_on(const set<pair<string, int>>& schemas) const {
+  for(const auto& bl : body) {
+    auto sc = bl->get_predicate_schema();
+    if(schemas.find(sc) != schemas.end()) {
+>>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
       return true;
     }
   }
   return false;
 }
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551

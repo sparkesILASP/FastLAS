@@ -27,11 +27,18 @@
 #include <sstream>
 using namespace std;
 
+<<<<<<< HEAD
 string NComplexExpr::generalise(const string &var_name, int &index,
                                 const bool &rewrite) const {
   stringstream ss;
 
   if (rewrite) {
+=======
+string NComplexExpr::generalise(const string& var_name, int& index, const bool& rewrite) const {
+  stringstream ss;
+
+  if(rewrite) {
+>>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
     ss << "bin_exp(";
     ss << arg1->generalise(var_name, index, rewrite);
     ss << ", \"";
@@ -52,9 +59,14 @@ vector<pair<string, string>> NComplexExpr::get_place_holders() const {
   vector<pair<string, string>> phs;
   auto arg_phs1 = arg1->get_place_holders();
   auto arg_phs2 = arg2->get_place_holders();
+<<<<<<< HEAD
   for (auto ph : arg_phs1)
     phs.push_back(ph);
   for (auto ph : arg_phs2)
     phs.push_back(ph);
+=======
+  for(auto ph : arg_phs1) phs.push_back(ph);
+  for(auto ph : arg_phs2) phs.push_back(ph);
+>>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
   return phs;
 }

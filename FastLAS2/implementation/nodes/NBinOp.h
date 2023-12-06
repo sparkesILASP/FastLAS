@@ -26,6 +26,7 @@
 #ifndef NBIN_OP_H
 #define NBIN_OP_H
 
+<<<<<<< HEAD
 #include "BasicNode.h"
 #include <string>
 class NBinOp : public Node {
@@ -40,4 +41,25 @@ private:
   std::string op;
 };
 
+=======
+
+class NBinOp : public Node {
+
+  public:
+
+    NBinOp(std::string op) : op(op) {};
+    NBinOp(const NBinOp& other) : op(other.op) {};
+
+    std::string to_string() const {
+      return op;
+    }
+
+  private:
+
+    std::string op;
+
+};
+
+
+>>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
 #endif
