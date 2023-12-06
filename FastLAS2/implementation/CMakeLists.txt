@@ -1,4 +1,5 @@
 cmake_minimum_required (VERSION 2.8)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_MODULE_PATH "./")
 set(CMAKE_FIND_LIBRARY_SUFFIXES ${CMAKE_STATIC_LIBRARY_SUFFIX})
 project (FastLAS)
@@ -66,7 +67,8 @@ add_library(
   stages/Optimise.cpp
   stages/OptimiseSym.cpp
   stages/Solve.cpp
-	stages/Penalty.cpp
+  stages/Penalty.cpp
+	stages/SolvePen.cpp
 
   stages/Printing.cpp
 
