@@ -26,7 +26,10 @@
 #ifndef META_PROGRAMS__SAT_SUFF__H__
 #define META_PROGRAMS__SAT_SUFF__H__
 
+<<<<<<< HEAD
 #include <string>
+=======
+>>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
 std::string meta_sat_suff = R"(
 1 {
   target_inc(A) : example_inclusion(EG, A);

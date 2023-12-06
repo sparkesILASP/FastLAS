@@ -26,7 +26,10 @@
 #ifndef OPTIMISE_SYM_META_PROGRAM__H_
 #define OPTIMISE_SYM_META_PROGRAM__H_
 
+<<<<<<< HEAD
 #include <string>
+=======
+>>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
 std::string optimise_sym_meta_prg = R"ESC(
 #script (lua)
 
