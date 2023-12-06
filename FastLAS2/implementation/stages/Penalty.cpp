@@ -59,6 +59,9 @@ For each example, generate minimal partial interpretations per penalty and add t
 void FastLAS::Possible_Penalties() {
 
   for (Example *example : examples) {
+
+    std::cout << example->to_string() << std::endl;
+
     if (example->ex_type == Example::ExType::bnd) {
       int possibility_id{0};
 
@@ -70,11 +73,21 @@ void FastLAS::Possible_Penalties() {
       std::stringstream poss_solve_strm;
 
       // Add each rule to the solver
+      poss_solve_strm << "% bound program:" << std::endl;
       for (auto r : example->bound_prog) {
         poss_solve_strm << r.to_string() << std::endl;
       }
+      poss_solve_strm << "% context:" << std::endl;
+      for (auto r : example->get_context()) {
+        poss_solve_strm << r.to_string() << std::endl;
+      }
+
       poss_solve_strm << "#minimise { X, Y : pen(X,Y) }." << std::endl;
       poss_solve_strm << Penalty::make_lua_possibility_script_for(example->bound);
+
+      std::cout << "Program start:" << std::endl;
+
+      std::cout << poss_solve_strm.str() << std::endl;
 
       Solver::Clingo(3, poss_solve_strm.str(), ((FastLAS::timeout < 0) ? " " : "--time=" + std::to_string(FastLAS::timeout)))(
           // inclusions

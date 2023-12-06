@@ -30,6 +30,7 @@
 #include "../Utils.h"
 #include "Printing.h"
 #include <boost/algorithm/string.hpp>
+#include <iostream>
 #include <ostream>
 
 std::string final_solving_program_pen = R"(
@@ -127,21 +128,33 @@ void FastLAS::solve_pen() {
         } else {
           index = it->second;
         }
+        cout << "INDEX:\t" << index << endl;
         // Possibility is uncovered unless disjunction, for each disjunction.
-        ss << "n_cov(" << sub_eg->id << ") :- not disj(" << index << ")." << endl;
+
+        // If disjuncts, then require disjunction and specify how to obtain.
+        if (disj.size() != 0) {
+          ss << "n_cov(" << sub_eg->id << ") :- not disj(" << index << ")." << endl;
+          for (auto d : disj) {
+            ss << "disj(" << index << ") :- in_h(" << d->id << ")." << endl;
+          }
+        }
+        // for (auto r : disj) {
+        //   cout << "Where:\t" << index << " : " << r->print() << endl;
+        // }
+
         ds_pen.insert(disj.begin(), disj.end()); // cannot only be done with caching in case violation occurs first;
         // for (auto d : ds_pen) {
-        //   cout << "Disjunct: " << d->print() << endl;
+        //   cout << "Disjunct: " << index << "\t" << d->print() << endl;
         // }
+        cout << "LOOP OVER" << endl;
       }
       // Violation disjunction
-      cout << "Looking at violating disjuncts" << endl;
       auto disj = sub_eg->get_optimised_rule_violations();
       // Check to see if the disjunction is cached
-      int index = cached_disjs_pen.size();
+      int index{};
       auto it = cached_disjs_pen.find(disj);
       if (it == cached_disjs_pen.end()) {
-        cached_disjs_pen[disj] = index;
+        cached_disjs_pen[disj] = index = cached_disjs_pen.size();
         int_to_disj_pen.push_back(disj);
       } else {
         index = it->second;
@@ -153,45 +166,22 @@ void FastLAS::solve_pen() {
       */
       for (auto d : disj) {
         ss << "disj(" << index << ") :- in_h(" << d->id << ")." << endl;
-        // cout << "violating disjunct: " << d->print() << endl;
+        cout << "violating disjunct: " << d->print() << endl;
       }
-      ss << "n_cov(" << sub_eg->id << ") :- disj(" << index << ")." << endl;
+      // ss << "n_cov(" << sub_eg->id << ") :- disj(" << index << ")." << endl;
     }
     // Specify relations between possibilities and examples
-    switch (eg->ex_type) {
-    // If no possiiblity is covered, then the example is not covered
-    case Example::ExType::pos:
-      ss << "n_cov(" << eg->id << ") :- #true";
-      for (auto sub_eg : eg->get_possibilities()) {
-        ss << ", n_cov(" << sub_eg->id << ")";
-      }
-      ss << "." << endl;
-      break;
-    // If some negative possibility is covered, the negative example is not covered
-    case Example::ExType::neg:
-      for (auto sub_eg : eg->get_possibilities()) {
-        ss << "n_cov(" << eg->id << ") :- not n_cov(" << sub_eg->id << ")." << endl;
-      }
-      break;
-    default:
-      break;
-    }
-
     ss << "n_cov(" << eg->id << ") :- #true";
     for (auto sub_eg : eg->get_possibilities()) {
       ss << ", n_cov(" << sub_eg->id << ")";
     }
     ss << "." << endl;
 
-    // if (eg->get_penalty() > 0) {
-    //   // soft constraint for failing to cover example when finite penalty
-    //   ss << ":~ n_cov(" << eg->id << ").[" << eg->get_penalty() << "@0, eg(" << eg->id << ")]" << endl;
-    // } else { // hard constraint for failing to cover an example
     ss << ":- n_cov(" << eg->id << ")." << endl;
-    // }
   }
 
   for (auto d : ds_pen) {
+    cout << "Head choice: " << d->id << "\t" << d->print() << endl;
     ss << "0 {in_h(" << d->id << ")} 1." << endl;
     //    ss << ":~ in_h(" << d->id << ").[" << d->get_score() << "@0, hyp(" << d->id << ")]" << endl;
     ss << d->intermediate_meta_representation();
@@ -211,8 +201,9 @@ void FastLAS::solve_final_task_pen(string program) {
   ss << bias->final_bias_constraints << endl;
   ss << final_solving_program_pen << endl;
 
-  // output_solve_program = true;
+  output_solve_program = true;
   if (output_solve_program) {
+    cout << "Solve program: " << endl;
     cout << ss.str() << endl;
     exit(0);
   }
