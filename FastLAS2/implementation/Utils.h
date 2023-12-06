@@ -30,13 +30,17 @@
 #include <thread>
 #include <mutex>
 #include <atomic>
+<<<<<<< HEAD
 #include "Example.h"
+=======
+>>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
 #include "Node.h"
 #include <unistd.h>
 
 
 namespace FastLAS {
 
+<<<<<<< HEAD
   // modes
   enum Mode {
     opl,
@@ -44,16 +48,22 @@ namespace FastLAS {
     bound,
   };
 
+=======
+>>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
   // utility functions
 
   std::string get_tmp_file(bool fifo=true);
   int get_language_index(const std::string&);
   std::string get_language(const int&);
+<<<<<<< HEAD
   // Add WCDPI example
   // Called by the parser, specifically in parser.y
   void add_example(const std::string& id, std::set<NAtom*>*& incs, std::set<NAtom*>*& excs, std::vector<NRule>& ctx, int penalty, Example::ExType ex_type, bool prediction=false);
   // Add bound example
   void add_example(const std::string& id, int bound, std::vector<NRule>& bound_prog, std::vector<NRule>& ctx, Example::ExType ex_type, bool prediction=false);
+=======
+  void add_example(const std::string& id, std::set<NAtom*>*& incs, std::set<NAtom*>*& excs, std::vector<NRule>& ctx, int penalty, bool positive, bool prediction=false);
+>>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
   std::string remove_quotes(const std::string& str);
   std::string object_level_print(const int&);
 
@@ -62,8 +72,37 @@ namespace FastLAS {
   void write_cache(const std::string& path);
 
 
+<<<<<<< HEAD
   
 
+=======
+  class Clingo {
+
+    public:
+
+      Clingo(const std::string&, const std::string&, bool debug=false);
+      Clingo& operator()(const char&, const std::function<void(const std::string&)>&);
+      void operator()(const std::function<void()>&) const;
+
+    private:
+
+      std::string program, args;
+      bool debug;
+      std::map<char, std::function<void(const std::string&)>> fns;
+  };
+
+  class ILASP {
+
+    public:
+
+      ILASP(const std::string&, const std::string&);
+      void operator()(const std::function<void(const std::string&)>&) const;
+
+    private:
+
+      std::string program, args;
+  };
+>>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
 
 
   // shared data structures
@@ -74,7 +113,11 @@ namespace FastLAS {
 
   extern int thread_num;
   extern bool output_solve_program;
+<<<<<<< HEAD
   extern Mode mode;
+=======
+  extern bool run_fast_las_2;
+>>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
   extern bool limit_rules;
   extern bool force_safety;
   extern bool score_only;

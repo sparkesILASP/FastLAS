@@ -25,6 +25,7 @@
 
 #ifndef LANGUAGE_BIAS_H
 #define LANGUAGE_BIAS_H
+<<<<<<< HEAD
 #include "ModeDeclaration.h"
 #include <list>
 
@@ -44,6 +45,29 @@ public:
   int maxv;
 
   bool gwr;
+=======
+#include <list>
+#include "ModeDeclaration.h"
+
+class LanguageBias {
+
+  public:
+
+    LanguageBias() : maxv(3), gwr(false) {};
+
+    std::list<ModeDeclaration> head_declarations, body_declarations;
+
+    std::set<std::pair<std::string, std::string>> constant_declarations;
+
+    std::set<std::string> numeric_types;
+
+    std::string bias_constraints, final_bias_constraints;
+
+    int maxv;
+
+    bool gwr;
+
+>>>>>>> 03fbe7664210d37e7b23d245ca202f53d0136551
 };
 
 #endif
