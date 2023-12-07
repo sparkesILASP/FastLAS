@@ -32,6 +32,7 @@
 #include <boost/algorithm/string.hpp>
 #include <iostream>
 #include <ostream>
+#include <string>
 
 std::string final_solving_program_pen = R"(
 :~ penalty(P, T).[P@0, intermediate, T]
@@ -104,6 +105,19 @@ And, for any examples they don't cover a different disjunction is going to be us
 void FastLAS::solve_pen() {
   stringstream ss;
   ss << "#minimise { X, Y : hey(X,Y) }." << endl;
+
+  // Add a min constraint on penalties paid.
+  // Hack for now, should be example and bound dependent.
+  std::string minString = "#min {";
+  for (int i = 0; i < 10; i++) {
+    ss << "x" << std::to_string(i) << " :- hey(" << std::to_string(i) << ",_)." << endl;
+    minString += std::to_string(i) + " : " += "x" + std::to_string(i) + " ; ";
+  }
+  minString.pop_back();
+  minString.pop_back();
+  minString += "}.";
+  ss << minString << endl;
+
   // For each example
   for (auto eg : examples) {
     ss << "% " << eg->id << endl;
@@ -113,11 +127,8 @@ void FastLAS::solve_pen() {
            << "Example: " << eg->id << " : Possibility : " << sub_eg->id << endl;
       ss << "% " << eg->id << " : " << sub_eg->id << endl;
       ss << "hey(" << sub_eg->get_penalty() << ", " << sub_eg->id << ") :- not n_cov(" << sub_eg->id << ")." << endl;
-      // Insert the optimised rule disjunctions
-      // Disjunctions are ruleschemas from characteristic ruleset.
-      // And, I think only rulesets which include the example.
+      // Insert the optimised rule disjunctions (optimised ruleschemas from characteristic ruleset).
       for (auto disj : sub_eg->get_optimised_rule_disjunctions()) {
-        cout << "New disj" << endl;
         int index{};
         auto it = cached_disjs_pen.find(disj);
         if (it == cached_disjs_pen.end()) {
@@ -128,9 +139,7 @@ void FastLAS::solve_pen() {
         } else {
           index = it->second;
         }
-        cout << "INDEX:\t" << index << endl;
         // Possibility is uncovered unless disjunction, for each disjunction.
-
         // If disjuncts, then require disjunction and specify how to obtain.
         if (disj.size() != 0) {
           ss << "n_cov(" << sub_eg->id << ") :- not disj(" << index << ")." << endl;
@@ -146,7 +155,6 @@ void FastLAS::solve_pen() {
         // for (auto d : ds_pen) {
         //   cout << "Disjunct: " << index << "\t" << d->print() << endl;
         // }
-        cout << "LOOP OVER" << endl;
       }
       // Violation disjunction
       auto disj = sub_eg->get_optimised_rule_violations();
@@ -168,7 +176,7 @@ void FastLAS::solve_pen() {
         ss << "disj(" << index << ") :- in_h(" << d->id << ")." << endl;
         cout << "violating disjunct: " << d->print() << endl;
       }
-      // ss << "n_cov(" << sub_eg->id << ") :- disj(" << index << ")." << endl;
+      ss << "n_cov(" << sub_eg->id << ") :- disj(" << index << ")." << endl;
     }
     // Specify relations between possibilities and examples
     ss << "n_cov(" << eg->id << ") :- #true";
@@ -201,7 +209,7 @@ void FastLAS::solve_final_task_pen(string program) {
   ss << bias->final_bias_constraints << endl;
   ss << final_solving_program_pen << endl;
 
-  output_solve_program = true;
+  // output_solve_program = true;
   if (output_solve_program) {
     cout << "Solve program: " << endl;
     cout << ss.str() << endl;
@@ -236,6 +244,6 @@ void FastLAS::solve_final_task_pen(string program) {
     boost::replace_all(solution_pen, "v_a_r", "V");
     boost::replace_all(solution_pen, "naf__", "not ");
   }
-  cout << "What's this?" << endl;
-  cout << solution_pen_ss.str() << endl;
+  // cout << "What's this?" << endl;
+  cout << solution_pen << endl;
 }
