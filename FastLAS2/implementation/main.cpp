@@ -168,7 +168,7 @@ int main(int argc, char **argv) {
   // Testing bound things
   if (FastLAS::mode == FastLAS::Mode::bound) {
 
-    cout << "Bounded examples…" << endl;
+    // cout << "Bounded examples…" << endl;
 
     FastLAS::Possible_Penalties();
 
@@ -189,13 +189,11 @@ int main(int argc, char **argv) {
     FastLAS::print_s_m();
 
     FastLAS::solve_pen();
-    cout << "solution: " << endl;
-    FastLAS::print_solution();
     cout << "stats: " << endl;
     FastLAS::print_stats();
 
     cout << "Exiting" << endl;
-    _exit(0);
+    exit(0);
   }
 
   if (FastLAS::mode == FastLAS::Mode::nopl || FastLAS::mode == FastLAS::Mode::opl) {

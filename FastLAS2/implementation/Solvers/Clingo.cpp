@@ -31,8 +31,7 @@ void Solver::Clingo::operator()(const std::function<void()> &final_fn) const {
   infile << program << std::endl;
   infile.close();
   if (debug) {
-    mtx.lock(); // Only one thread can write the debug program (no need to
-                // unlock).
+    mtx.lock(); // Only one thread can write the debug program (no need to unlock).
     std::ofstream infile2("tmp");
     infile2 << program << std::endl;
     infile2.close();
@@ -91,8 +90,8 @@ void Solver::Clingo::operator()(const std::function<void()> &final_fn) const {
 
   mtx.unlock();
 
-  std::cout << "full" << std::endl;
-  std::cout << full_string.str() << std::endl;
+  // std::cout << "full" << std::endl;
+  // std::cout << full_string.str() << std::endl;
 
   proc.close();
   remove(inpipe.c_str());

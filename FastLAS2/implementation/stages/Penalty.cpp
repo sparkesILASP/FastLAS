@@ -60,7 +60,7 @@ void FastLAS::Possible_Penalties() {
 
   for (Example *example : examples) {
 
-    std::cout << example->to_string() << std::endl;
+    // std::cout << example->to_string() << std::endl;
 
     if (example->ex_type == Example::ExType::bnd) {
       int possibility_id{0};
@@ -82,12 +82,8 @@ void FastLAS::Possible_Penalties() {
         poss_solve_strm << r.to_string() << std::endl;
       }
 
-      poss_solve_strm << "#minimise { X, Y : pen(X,Y) }." << std::endl;
+      poss_solve_strm << "#minimize { X, Y : pen(X,Y) }." << std::endl;
       poss_solve_strm << Penalty::make_lua_possibility_script_for(example->bound);
-
-      std::cout << "Program start:" << std::endl;
-
-      std::cout << poss_solve_strm.str() << std::endl;
 
       Solver::Clingo(3, poss_solve_strm.str(), ((FastLAS::timeout < 0) ? " " : "--time=" + std::to_string(FastLAS::timeout)))(
           // inclusions
@@ -103,11 +99,12 @@ void FastLAS::Possible_Penalties() {
             penalty = std::stoi(atom);
           })([&]() {
         // make possibility
-        example->add_bound_possibility(example->id + "000" + std::to_string(possibility_id), inc, exc, penalty);
+        example->add_bound_possibility(example->id + "x" + std::to_string(possibility_id), inc, exc, penalty);
         possibility_id++;
         inc.clear();
         exc.clear();
       });
+      std::cout << "Possibilities: " << std::endl;
       for (auto poss : example->get_possibilities()) {
         std::cout << poss->to_string() << std::endl;
       }

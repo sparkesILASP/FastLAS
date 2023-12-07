@@ -124,7 +124,7 @@ string Example::to_string() const {
       ss << exc;
     }
 
-    ss << "}" << endl;
+    ss << "}";
   }
 
   if (ex_type == Example::ExType::bnd) {
@@ -139,13 +139,18 @@ string Example::to_string() const {
        << "\t]";
   }
 
-  ss << "," << endl
-     << "\t{";
-  for (auto c : context) {
-    ss << "  " << c.to_string();
-  }
+  /*
+  Skip printing context for the moment
+  */
 
-  ss << "\t})." << endl;
+  // ss << "," << endl;
+  // ss << "\t{";
+  // for (auto c : context) {
+  //   ss << "  " << c.to_string();
+  // }
+  // ss << "\t}";
+
+  ss << ")." << endl;
 
   return ss.str();
 }
@@ -167,7 +172,7 @@ std::string Example::to_bound_pen_prog() {
     prog_str += c.to_string();
   }
   // Penalty
-  prog_str += "#minimise { X, Y : pen(X,Y) }.";
+  prog_str += "#minimize { X, Y : pen(X,Y) }.";
   prog_str += Penalty::make_lua_possibility_script_for(bound);
   return prog_str;
 }
