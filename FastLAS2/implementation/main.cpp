@@ -168,7 +168,7 @@ int main(int argc, char **argv) {
   // Testing bound things
   if (FastLAS::mode == FastLAS::Mode::bound) {
 
-    cout << "Hullo" << endl;
+    cout << "Bounded examples…" << endl;
 
     FastLAS::Possible_Penalties();
 
@@ -195,89 +195,92 @@ int main(int argc, char **argv) {
     FastLAS::print_stats();
 
     cout << "Exiting" << endl;
-    exit(0);
+    _exit(0);
   }
 
-  // Abduce possibilities, when set
-  switch (FastLAS::mode) {
-  case FastLAS::Mode::opl:
-    for (auto eg : examples) {
-      eg->set_unique_possibility();
+  if (FastLAS::mode == FastLAS::Mode::nopl || FastLAS::mode == FastLAS::Mode::opl) {
+
+    // Abduce possibilities, when set
+    switch (FastLAS::mode) {
+    case FastLAS::Mode::opl:
+      for (auto eg : examples) {
+        eg->set_unique_possibility();
+      }
+      break;
+    case FastLAS::Mode::nopl:
+      if (debug) {
+        cout << "Abducing…" << endl;
+      }
+      FastLAS::abduce();
+      if (debug) {
+        cout << "Possibilities:" << endl;
+        FastLAS::print_possibilities();
+      }
+      break;
+    default:
+      break;
     }
-    break;
-  case FastLAS::Mode::nopl:
-    if (debug) {
-      cout << "Abducing…" << endl;
-    }
-    FastLAS::abduce();
-    if (debug) {
-      cout << "Possibilities:" << endl;
-      FastLAS::print_possibilities();
-    }
-    break;
-  default:
-    break;
-  }
 
-  // SAT-sufficient subsets
-  // Additional atoms are written to FastLAS::language here
-  if (debug) cout << "Computing SAT-sufficient subset…" << endl;
+    // SAT-sufficient subsets
+    // Additional atoms are written to FastLAS::language here
+    if (debug) cout << "Computing SAT-sufficient subset…" << endl;
 
-  FastLAS::compute_sat_sufficient();
-
-  if (debug) {
-    cout << "C^+(T):" << endl;
-    FastLAS::print_c_plus();
-    cout << "C^-(T):" << endl;
-    FastLAS::print_c_minus();
-  }
-
-  if (vm.count("write-cache")) FastLAS::write_cache(vm["write-cache"].as<string>());
-
-  // Generalise
-  if (vm.count("delay-generalisation")) {
-    if (debug) cout << "Computing opt-sufficient subset…" << endl;
-
-    FastLAS::optimise_sym();
-  } else {
-    if (debug) cout << "Generalising…" << endl;
-
-    FastLAS::generalise();
+    FastLAS::compute_sat_sufficient();
 
     if (debug) {
-      cout << "G^+(T):" << endl;
+      cout << "C^+(T):" << endl;
       FastLAS::print_c_plus();
+      cout << "C^-(T):" << endl;
+      FastLAS::print_c_minus();
     }
 
     if (vm.count("write-cache")) FastLAS::write_cache(vm["write-cache"].as<string>());
-    if (debug) cout << "Computing opt-sufficient subset…" << endl;
 
-    FastLAS::optimise();
-  }
+    // Generalise
+    if (vm.count("delay-generalisation")) {
+      if (debug) cout << "Computing opt-sufficient subset…" << endl;
 
-  if (debug) {
-    cout << "S_M:" << endl;
-    FastLAS::print_s_m();
-  }
-
-  if (vm.count("write-cache")) {
-    FastLAS::write_cache(vm["write-cache"].as<string>());
-  }
-
-  if (debug) cout << "Solving…" << endl;
-
-  FastLAS::solve();
-
-  if (!prediction_task) {
-    if (FastLAS::score_only) {
-      FastLAS::print_score();
-    } else if (debug) {
-      FastLAS::print_stats();
+      FastLAS::optimise_sym();
     } else {
-      FastLAS::print_solution();
-    }
-  }
+      if (debug) cout << "Generalising…" << endl;
 
-  cout << "Complete!" << endl;
-  _exit(0);
+      FastLAS::generalise();
+
+      if (debug) {
+        cout << "G^+(T):" << endl;
+        FastLAS::print_c_plus();
+      }
+
+      if (vm.count("write-cache")) FastLAS::write_cache(vm["write-cache"].as<string>());
+      if (debug) cout << "Computing opt-sufficient subset…" << endl;
+
+      FastLAS::optimise();
+    }
+
+    if (debug) {
+      cout << "S_M:" << endl;
+      FastLAS::print_s_m();
+    }
+
+    if (vm.count("write-cache")) {
+      FastLAS::write_cache(vm["write-cache"].as<string>());
+    }
+
+    if (debug) cout << "Solving…" << endl;
+
+    FastLAS::solve();
+
+    if (!prediction_task) {
+      if (FastLAS::score_only) {
+        FastLAS::print_score();
+      } else if (debug) {
+        FastLAS::print_stats();
+      } else {
+        FastLAS::print_solution();
+      }
+    }
+
+    cout << "Complete!" << endl;
+    _exit(0);
+  }
 };
