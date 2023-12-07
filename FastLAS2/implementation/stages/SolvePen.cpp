@@ -40,7 +40,7 @@ std::string final_solving_program_pen = R"(
 #show in_h/1.
 #show penalty/2.
 #show disj/1.
-#show hey/2.
+#show hey/3.
 #script (lua)
 function onModel(m)
   atoms = m:symbols{shown=true}
@@ -104,29 +104,19 @@ And, for any examples they don't cover a different disjunction is going to be us
 */
 void FastLAS::solve_pen() {
   stringstream ss;
-  ss << "#minimise { X, Y : hey(X,Y) }." << endl;
-
-  // Add a min constraint on penalties paid.
-  // Hack for now, should be example and bound dependent.
-  std::string minString = "#min {";
-  for (int i = 0; i < 10; i++) {
-    ss << "x" << std::to_string(i) << " :- hey(" << std::to_string(i) << ",_)." << endl;
-    minString += std::to_string(i) + " : " += "x" + std::to_string(i) + " ; ";
-  }
-  minString.pop_back();
-  minString.pop_back();
-  minString += "}.";
-  ss << minString << endl;
+  // ss << "#minimize { N, P : hey(N,P,E) }." << endl;
+  ss << "min_for_example(M,E) :- M = #min{ N : hey(N,P,E)}, example(E)." << endl;
+  ss << "#minimize { M : min_for_example(M,E) }." << endl;
 
   // For each example
   for (auto eg : examples) {
     ss << "% " << eg->id << endl;
+    ss << "example(" << eg->id << ")." << endl;
     // Possibility disjunction
     for (auto sub_eg : eg->get_possibilities()) {
-      cout << endl
-           << "Example: " << eg->id << " : Possibility : " << sub_eg->id << endl;
+      // cout << "Example: " << eg->id << " : Possibility : " << sub_eg->id << endl;
       ss << "% " << eg->id << " : " << sub_eg->id << endl;
-      ss << "hey(" << sub_eg->get_penalty() << ", " << sub_eg->id << ") :- not n_cov(" << sub_eg->id << ")." << endl;
+      ss << "hey(" << sub_eg->get_penalty() << ", " << sub_eg->id << ", " << eg->id << ") :- not n_cov(" << sub_eg->id << ")." << endl;
       // Insert the optimised rule disjunctions (optimised ruleschemas from characteristic ruleset).
       for (auto disj : sub_eg->get_optimised_rule_disjunctions()) {
         int index{};
@@ -147,14 +137,14 @@ void FastLAS::solve_pen() {
             ss << "disj(" << index << ") :- in_h(" << d->id << ")." << endl;
           }
         }
-        // for (auto r : disj) {
-        //   cout << "Where:\t" << index << " : " << r->print() << endl;
-        // }
+        // cout << "Let's take a look at the disjuncts…" << endl;
+        // for (auto r : disj)
+        //   cout << "\t" << index << " : " << r->print() << endl;
 
         ds_pen.insert(disj.begin(), disj.end()); // cannot only be done with caching in case violation occurs first;
-        // for (auto d : ds_pen) {
-        //   cout << "Disjunct: " << index << "\t" << d->print() << endl;
-        // }
+        // cout << "And the other disjuncts:" << endl;
+        // for (auto d : ds_pen)
+        //   cout << "\t" << index << "\t" << d->print() << endl;
       }
       // Violation disjunction
       auto disj = sub_eg->get_optimised_rule_violations();
@@ -168,13 +158,12 @@ void FastLAS::solve_pen() {
         index = it->second;
       }
       /*
-      Go the violating disjunctions.
-      If any disjunct is true, then the disjunction is true. And, so, example is not covered.
+      Go the violating disjunctions. If any disjunct is true, then the disjunction is true. And, so, example is not covered.
       // Was in the cached check before, but still want to add issue for each example, no?
       */
       for (auto d : disj) {
         ss << "disj(" << index << ") :- in_h(" << d->id << ")." << endl;
-        cout << "violating disjunct: " << d->print() << endl;
+        // cout << "violating disjunct: " << d->print() << endl;
       }
       ss << "n_cov(" << sub_eg->id << ") :- disj(" << index << ")." << endl;
     }
@@ -189,7 +178,7 @@ void FastLAS::solve_pen() {
   }
 
   for (auto d : ds_pen) {
-    cout << "Head choice: " << d->id << "\t" << d->print() << endl;
+    // cout << "Head choice: " << d->id << "\t" << d->print() << endl;
     ss << "0 {in_h(" << d->id << ")} 1." << endl;
     //    ss << ":~ in_h(" << d->id << ").[" << d->get_score() << "@0, hyp(" << d->id << ")]" << endl;
     ss << d->intermediate_meta_representation();
@@ -244,6 +233,6 @@ void FastLAS::solve_final_task_pen(string program) {
     boost::replace_all(solution_pen, "v_a_r", "V");
     boost::replace_all(solution_pen, "naf__", "not ");
   }
-  // cout << "What's this?" << endl;
+  cout << "Soultion:" << endl;
   cout << solution_pen << endl;
 }
