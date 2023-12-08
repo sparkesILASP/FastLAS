@@ -223,112 +223,98 @@ void FastLAS::optimise() {
             write_global_file(global_pipe, rs->head);
             mtx.unlock();
             /*
-            For the useful schemas, these are maybe split into samples.
-            Set in Utils and coded to 0 at the moment, so can ignore
-            */
-            // Added default empty set to skip check on whether set is present
-            vector<set<Schema *>> samples{set<Schema *>{}};
-            /*
             useful_schemas are set by set_useful() in RuleSchema.cpp
             Called by Schema::RuleSchema::add_extension and in SatStuff
             For add_extension() is called when generalising a rule on all the extending rules.
             */
-            for (auto schema : rs->useful_schemas) {
-              // Always add to back, and push a new set to back when size of set is goldi
-              if ((FastLAS::sample_size != 0 && samples.back().size() == FastLAS::sample_size)) {
-                samples.push_back(set<Schema *>{});
-              }
-              samples.back().insert(schema);
-            }
             // Finishing off the representation
-            for (auto sample : samples) {
-              stringstream ss;
-              ss << rs->optimise_representation() << endl;
-              for (auto schema : sample) {
-                ss << "r_assignment(" << schema->id << ")." << endl;
-                for (auto p : schema->var_assignment) {
-                  ss << "r_assign(" << schema->id << ", " << p.first << ", " << FastLAS::language[p.second] << ")";
-                  ss << " :- ";
-                  ss << "rule(" << rs->id << ")." << endl;
-                }
-                for (auto p : schema->types) {
-                  ss << "r_type(" << p.first << ", " << p.second << ")";
-                  ss << " :- ";
-                  ss << "rule(" << rs->id << "), occurs(" << p.first << ")." << endl;
+            stringstream ss;
+            ss << rs->optimise_representation() << endl;
+            for (auto schema : rs->useful_schemas) {
+              ss << "r_assignment(" << schema->id << ")." << endl;
+              for (auto p : schema->var_assignment) {
+                ss << "r_assign(" << schema->id << ", " << p.first << ", " << FastLAS::language[p.second] << ")";
+                ss << " :- ";
+                ss << "rule(" << rs->id << ")." << endl;
+              }
+              for (auto p : schema->types) {
+                ss << "r_type(" << p.first << ", " << p.second << ")";
+                ss << " :- ";
+                ss << "rule(" << rs->id << "), occurs(" << p.first << ")." << endl;
+              }
+            }
+
+            // Getting the optimised rule
+            set<int> rule_body;
+            int head{0};
+            int bound{0};
+            int numerator{-1};
+            set<string> intermediate_sf_facts{};
+            map<string, string> types{};
+
+            Solver::Clingo(3, ss.str(), global_pipe + " --heuristic=Domain ")(
+                // id_in_body
+                'i', [&](const string &atom) {
+                  rule_body.insert(stoi(atom));
+                })(
+                // invert
+                'n', [&](const string &atom) {
+                  numerator = stoi(atom);
+                })(
+                // intermediate
+                'r', [&](const string &atom) {
+                  intermediate_sf_facts.insert(atom);
+                })(
+                // id_in_head
+                'h', [&](const string &atom) {
+                  head = stoi(atom);
+                })(
+                // bound
+                'b', [&](const string &atom) {
+                  bound = stoi(atom);
+                })(
+                // lb (lower bound?)
+                'l', [&](const string &atom) {
+                  auto it = atom.find(',');
+                  rule_body.insert(get_language_index(atom.substr(0, it) + " >= " + FastLAS::remove_quotes(atom.substr(it + 1, atom.size() - it - 1))));
+                })(
+                // ub (upper bound?)
+                'u', [&](const string &atom) {
+                  auto it = atom.find(',');
+                  rule_body.insert(get_language_index(atom.substr(0, it) + " <= " + FastLAS::remove_quotes(atom.substr(it + 1, atom.size() - it - 1))));
+                })(
+                // r_type
+                't', [&](const string &atom) {
+                  auto it = atom.find(',');
+                  types.insert(make_pair(atom.substr(0, it), atom.substr(it + 1, atom.size() - it - 1)));
+                })([&]() {
+              int index;
+              // Penalty is adjusted only if numerator is found in program. But why adjust?
+              if (numerator != -1) bound = numerator / bound;
+
+              // Need a lock as modifying schemas which are global
+              mtx.lock();
+              // A call to get_schema which makes the schema if needed and, guess is schema is always made as goal is to find optimised schema
+              auto rule = Schema::RuleSchema::get_schema(head, rule_body);
+              rule->set_score(bound);
+              rule->set_types(types);
+              rule->set_intermediate_representation(intermediate_sf_facts);
+
+              // Add as an extension to every schema the rule extends
+              for (auto sc : Schema::all_schemas) {
+                if (extends(sc, rule)) {
+                  sc->optimised_rules.insert(rule);
                 }
               }
+              mtx.unlock();
 
-              // Getting the optimised rule
-              set<int> rule_body;
-              int head{0};
-              int bound{0};
-              int numerator{-1};
-              set<string> intermediate_sf_facts{};
-              map<string, string> types{};
+              // reset things
+              numerator = -1;
+              rule_body.clear();
+              intermediate_sf_facts.clear();
+              types.clear();
+            });
 
-              Solver::Clingo(3, ss.str(), global_pipe + " --heuristic=Domain ")(
-                  // id_in_body
-                  'i', [&](const string &atom) {
-                    rule_body.insert(stoi(atom));
-                  })(
-                  // invert
-                  'n', [&](const string &atom) {
-                    numerator = stoi(atom);
-                  })(
-                  // intermediate
-                  'r', [&](const string &atom) {
-                    intermediate_sf_facts.insert(atom);
-                  })(
-                  // id_in_head
-                  'h', [&](const string &atom) {
-                    head = stoi(atom);
-                  })(
-                  // bound
-                  'b', [&](const string &atom) {
-                    bound = stoi(atom);
-                  })(
-                  // lb (lower bound?)
-                  'l', [&](const string &atom) {
-                    auto it = atom.find(',');
-                    rule_body.insert(get_language_index(atom.substr(0, it) + " >= " + FastLAS::remove_quotes(atom.substr(it + 1, atom.size() - it - 1))));
-                  })(
-                  // ub (upper bound?)
-                  'u', [&](const string &atom) {
-                    auto it = atom.find(',');
-                    rule_body.insert(get_language_index(atom.substr(0, it) + " <= " + FastLAS::remove_quotes(atom.substr(it + 1, atom.size() - it - 1))));
-                  })(
-                  // r_type
-                  't', [&](const string &atom) {
-                    auto it = atom.find(',');
-                    types.insert(make_pair(atom.substr(0, it), atom.substr(it + 1, atom.size() - it - 1)));
-                  })([&]() {
-                int index;
-                // Penalty is adjusted only if numerator is found in program. But why adjust?
-                if (numerator != -1) bound = numerator / bound;
-
-                // Need a lock as modifying schemas which are global
-                mtx.lock();
-                // A call to get_schema which makes the schema if needed and, guess is schema is always made as goal is to find optimised schema
-                auto rule = Schema::RuleSchema::get_schema(head, rule_body);
-                rule->set_score(bound);
-                rule->set_types(types);
-                rule->set_intermediate_representation(intermediate_sf_facts);
-
-                // Add as an extension to every schema the rule extends
-                for (auto sc : Schema::all_schemas) {
-                  if (extends(sc, rule)) {
-                    sc->optimised_rules.insert(rule);
-                  }
-                }
-                mtx.unlock();
-
-                // reset things
-                numerator = -1;
-                rule_body.clear();
-                intermediate_sf_facts.clear();
-                types.clear();
-              });
-            }
             remove(global_pipe.c_str());
           }
         }

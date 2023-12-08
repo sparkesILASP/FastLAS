@@ -76,7 +76,7 @@ extern bool space_size;
 extern bool separate_abduction;
 extern bool any_cache;
 extern bool categorical_contexts;
-extern int sample_size, max_conditions;
+extern int max_conditions;
 extern int timeout;
 
 template <typename T, typename F>
