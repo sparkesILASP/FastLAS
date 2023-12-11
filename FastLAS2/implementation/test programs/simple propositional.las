@@ -4,8 +4,8 @@
 % d is in context
 
 #be(p_1@1, [2, {
-a :- pen(2,acnb).
-c :- pen(2,acnb).
+not_a :- pen(2,acnb).
+not_c :- pen(2,acnb).
 not_b :- pen(2,acnb).
 1 { not_a; not_c; b} 1 :- not_pen(2,acnb).
 1 { pen(2,acnb); not_pen(2,acnb) } 1.

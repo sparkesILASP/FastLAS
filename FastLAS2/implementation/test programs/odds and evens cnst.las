@@ -49,7 +49,7 @@ choose(X) :- not_pen(X,choose(X)), odd(X).
 % Expect
 
 
-#modeh(choose(var(num))).
+#modeh(choose(const(num))).
 #modeb(odd(var(num))).
 #modeb(even(var(num))).
 
