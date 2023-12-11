@@ -6,7 +6,19 @@ These contain some details about the way FastLAS works and a list of significant
 
 The base FastLAS code is contained in the FastLAS2/implementation/ folder, so most changes are found there.
 
+# The initial approach
+
+1. Parse each example to a WCDPI.
+2. Generate possibilities from WCDPI in place of abduction.
+3. Solve, forcing coverage of every example.
+
 # Various things
+
+## Parsing
+
+Goes through Flex and Bison.
+Done via yyparse();
+Check the initialisers in Example.cpp
 
 ## Clingo
 
@@ -35,6 +47,13 @@ Any ruleset learnt must be a ruleset used to generate the examples it covers, an
 
 FastLAS::language is used to construct the various solving programs, I think.
 
+## disjunctions
+
+A set of rule schemas which are built from solving a meta-program for finding the characteristic ruleset of an example.
+So, in other words, the characteristic ruleset.
+
+partial_disjs map an inclusion to a characteristic ruleset when the ruleset is an inclusion.
+
 ## (Rule) schemas
 
 ### Schemas
@@ -45,8 +64,6 @@ The schema class is initialised with variable assignments and types
   There are no initialisers for a schema without supplying a rule
 - Has a collection of optimised rules.
 
-
-
 ### Rule schemas
 
 A rule schema has a head, id, body etc.
@@ -56,7 +73,19 @@ And, sets of pointers to useful_schemas and violations.
 
 - Is violating when there is some violation
 
+### Solve.cpp
+
+Used in the final solving program to get the score of and then print a rule.
+These rules are found in the heads of rules of the solving program as the solving program is solving for an optimal program (at meta-solver).
+
+
 ## FastLAS::Solve
+
+### ≤, ≥, lb, and ub
+
+Something to do with variables.
+
+optimise_meta_prg
 
 ## Nodes
 
@@ -88,6 +117,39 @@ Rewrite to head/body distinction is either
 		And implement checks on functions for flag.
 	- A subclass adding only functions as necessary
 		And cast between the two classes when needed.
+
+# Stages
+
+## Generalise
+
+Mostly as in the paper.
+
+Unsure on the use of constraint sets.
+
+## OptimiseSym
+
+Only used whendelay-generalisation flag is set.
+So, not annotated.
+
+## Optimise
+
+After generating all the generalised rules, the task is to optimise.
+
+Parallel execution is over implication groups.
+(Maybe examples?)
+
+Optimise.cpp builds and runs the optimisation program.
+Inside the optimisation program (in Optimise.h) a loop is run to implement alg 1 from the AAAI-20 paper.
+
+### Optimise.h
+
+- r_assign(id,
+	       var_assignment.first,
+		   FastLAS::language[var_assignment.second])
+
+  Where each argument is relative to a fixed schema.
+  In Optimise.cpp instances are entailed when rule(rule_id) holds, where rule_id is the rule to which the schema belongs.
+  FastLAS::language maps strings to integers,
 
 
 
