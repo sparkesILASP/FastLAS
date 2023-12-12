@@ -250,13 +250,11 @@ const set<set<Schema *>> &Example::get_rule_disjunctions() const {
   return recursive_rule_disjunctions;
 }
 
-const set<Schema::RuleSchema *> &
-Example::get_optimised_rule_violations() const {
+const set<Schema::RuleSchema *> &Example::get_optimised_rule_violations() const {
   return optimised_rule_violations;
 }
 
-const set<set<Schema::RuleSchema *>> &
-Example::get_optimised_rule_disjunctions() const {
+const set<set<Schema::RuleSchema *>> &Example::get_optimised_rule_disjunctions() const {
   return optimised_rule_disjunctions;
 }
 
@@ -286,11 +284,14 @@ void Example::add_optimised_rule_disjunction(
 void Example::clear_optimised_rule_disjunctions() {
   optimised_rule_disjunctions.clear();
 }
+
 void Example::clear_optimised_rule_violations() {
   optimised_rule_violations.clear();
 }
 
-Example *Example::get_example(const std::string &id) { return example_map[id]; }
+Example *Example::get_example(const std::string &id) {
+  return example_map[id];
+}
 
 Example *Example::get_possibility(const std::string &id) {
   return possibility_map[id];
@@ -325,6 +326,9 @@ void Example::add_possibility(Example *p) {
   possibilities.insert(p);
 }
 
+/*
+guaranteed rule violations is intersection (p in possibilities) { rule | rule violation for p }
+*/
 set<Schema *> Example::get_guaranteed_rule_violations() const {
   set<Schema *> grvs;
   if (!prediction() && penalty <= 0) {
@@ -351,7 +355,9 @@ void Example::add_bound_possibility(std::string id, std::set<std::string> &inclu
   possibilities.insert(new Example(id, inclusions, exclusions, context, bound, Example::ExType::pos));
 };
 
-const vector<NRule> &Example::get_context() const { return context; }
+const vector<NRule> &Example::get_context() const {
+  return context;
+}
 
 Possibility::Possibility(Example *eg, const string &id)
     : Example(id, -1, eg->ex_type) {
@@ -369,24 +375,24 @@ Possibility::Possibility(Example *eg, const string &id, const set<int> &incs, co
 }
 
 string Possibility::meta_representation() const {
-  stringstream ss;
+  stringstream representation_stream;
   for (auto ctx : ctx_ids)
-    ss << "ctx(" << id << ", " << FastLAS::language[ctx] << ")." << endl;
+    representation_stream << "ctx(" << id << ", " << FastLAS::language[ctx] << ")." << endl;
   for (int i = 0; i < context.size(); i++) {
-    ss << context[i].meta_representation(id);
+    representation_stream << context[i].meta_representation(id);
   }
-  ss << endl;
-  return ss.str();
+  representation_stream << endl;
+  return representation_stream.str();
 }
 
 string Possibility::to_string() const {
-  stringstream ss;
+  stringstream p_steam;
   switch (ex_type) {
   case Example::ExType::pos:
-    ss << "#pos(" << id << ", {";
+    p_steam << "#pos(" << id << ", {";
     break;
   case Example::ExType::neg:
-    ss << "#neg(" << id << ", {";
+    p_steam << "#neg(" << id << ", {";
     break;
   default:
     break;
@@ -397,85 +403,99 @@ string Possibility::to_string() const {
     if (first)
       first = false;
     else
-      ss << ", ";
-    ss << FastLAS::language[inc];
+      p_steam << ", ";
+    p_steam << FastLAS::language[inc];
   }
-  ss << "}, {";
+  p_steam << "}, {";
   first = true;
   for (auto exc : exc_ids) {
     if (first)
       first = false;
     else
-      ss << ", ";
-    ss << FastLAS::language[exc];
+      p_steam << ", ";
+    p_steam << FastLAS::language[exc];
   }
-  ss << "}, {";
+  p_steam << "}, {";
   first = true;
   if (ctx_ids.size() <= 40) {
     for (auto ctx : ctx_ids) {
       if (first)
         first = false;
       else
-        ss << " ";
-      ss << FastLAS::language[ctx] << ".";
+        p_steam << " ";
+      p_steam << FastLAS::language[ctx] << ".";
     }
-    ss << "})." << endl;
+    p_steam << "})." << endl;
   } else {
-    ss << "__CONTEXT_OMITTED__" << endl;
+    p_steam << "__CONTEXT_OMITTED__" << endl;
   }
 
-  return ss.str();
+  return p_steam.str();
 }
 
 string Example::to_cache_string() const {
-  stringstream ss;
-  ss << "{#id:" << id << "; #penalty: " << penalty << "; ";
+  stringstream cache_stream;
+  cache_stream << "{#id:" << id << "; #penalty: " << penalty << "; ";
   for (auto eg : possibilities) {
-    ss << "#possibility:" << eg->to_cache_sub_string();
+    cache_stream << "#possibility:" << eg->to_cache_sub_string();
   }
-  ss << "};";
-  return ss.str();
+  cache_stream << "};";
+  return cache_stream.str();
 }
 
 string Example::to_cache_sub_string() const {
-  stringstream ss;
-  ss << "{#identity;";
-  ss << "#schema:{";
+  stringstream cache_sub_stream;
+  cache_sub_stream << "{#identity;"
+                   << "#schema:{";
   for (auto disj : rule_disjunctions) {
-    ss << "#disj:{";
+    cache_sub_stream << "#disj:{";
+
     set<int> d_ids;
-    for (auto d : disj)
+
+    for (auto d : disj) {
       d_ids.insert(d->id);
-    for (auto d : d_ids)
-      ss << d << ";";
-    ss << "};";
+    }
+    for (auto d : d_ids) {
+      cache_sub_stream << d << ";";
+    }
+    cache_sub_stream << "};";
   }
-  ss << "#vio:{";
+  cache_sub_stream << "#vio:{";
+
   set<int> v_ids;
-  for (auto d : rule_violations)
+  for (auto d : rule_violations) {
     v_ids.insert(d->id);
-  for (auto d : v_ids)
-    ss << d << ";";
-  ss << "};";
-  for (auto disj : optimised_rule_disjunctions) {
-    ss << "#opt-disj:{";
-    set<int> d_ids;
-    for (auto d : disj)
-      d_ids.insert(d->id);
-    for (auto d : d_ids)
-      ss << d << ";";
-    ss << "};";
   }
-  ss << "#opt-vio:{";
+  for (auto d : v_ids) {
+    cache_sub_stream << d << ";";
+  }
+  cache_sub_stream << "};";
+
+  for (auto disj : optimised_rule_disjunctions) {
+    cache_sub_stream << "#opt-disj:{";
+    set<int> d_ids;
+    for (auto d : disj) {
+      d_ids.insert(d->id);
+    }
+    for (auto d : d_ids) {
+      cache_sub_stream << d << ";";
+    }
+    cache_sub_stream << "};";
+  }
+
+  cache_sub_stream << "#opt-vio:{";
+
   set<int> d_ids;
-  for (auto d : optimised_rule_violations)
+  for (auto d : optimised_rule_violations) {
     d_ids.insert(d->id);
-  for (auto d : d_ids)
-    ss << d << ";";
-  ss << "};";
-  ss << "};";
-  ss << "};";
-  return ss.str();
+  }
+  for (auto d : d_ids) {
+    cache_sub_stream << d << ";";
+  }
+  cache_sub_stream << "};"
+                   << "};"
+                   << "};";
+  return cache_sub_stream.str();
 }
 
 string Possibility::to_cache_sub_string() const {
@@ -530,8 +550,7 @@ string Possibility::to_cache_sub_string() const {
   return ss.str();
 }
 
-tuple<set<pair<int, set<int>>>, set<int>, bool>
-Example::to_context_comparison_representation() const {
+tuple<set<pair<int, set<int>>>, set<int>, bool> Example::to_context_comparison_representation() const {
   set<pair<int, set<int>>> rules;
   for (int i = 0; i < context.size(); i++) {
     rules.insert(context[i].to_cache_representation());
@@ -539,8 +558,7 @@ Example::to_context_comparison_representation() const {
   return make_tuple(rules, set<int>(), ex_type);
 }
 
-tuple<set<pair<int, set<int>>>, set<int>, bool>
-Possibility::to_context_comparison_representation() const {
+tuple<set<pair<int, set<int>>>, set<int>, bool> Possibility::to_context_comparison_representation() const {
   return make_tuple(set<pair<int, set<int>>>(), ctx_ids, ex_type);
 }
 
@@ -581,7 +599,7 @@ string GenPossibility::to_string() const {
     break;
   }
   for (auto disj : disjunctions) {
-    ss << "    :- ";
+    ss << " :- ";
     bool first = true;
     for (int d : disj) {
       if (first) {
@@ -645,35 +663,33 @@ void pen_poss(Example *example) {
   std::set<string> minus{};
   std::string penalty{};
 
-  std::cout << "Calling clingo: " << std::endl;
-  // cout << "prog: " << endl << example->to_bound_pen_prog() << endl;
-  std::string args =
-      ((FastLAS::timeout < 0) ? ""
-                              : " --time=" + std::to_string(FastLAS::timeout));
-  Solver::Clingo(3, example->to_bound_pen_prog(),
-                 args)('$', [&](const string &atom) { penalty = atom; })(
+  std::string args = ((FastLAS::timeout < 0) ? "" : " --time=" + std::to_string(FastLAS::timeout));
+  Solver::Clingo(3, example->to_bound_pen_prog(), args)('$', [&](const string &atom) { penalty = atom; })(
+      // positive literal
       '+', [&](const string &atom) { plus.insert(atom); })(
+      // negative literal
       '-', [&](const string &atom) { minus.insert(atom); })([&]() {
+    // write things out as a regular example
     std::set<string> exc{};
-    std::set_difference(minus.begin(), minus.end(), plus.begin(), plus.end(),
-                        std::inserter(exc, exc.begin()));
-    std::string poss_string = "#pos(";
-    poss_string += example->id + std::to_string(poss_count++);
-    poss_string += ", ";
-    poss_string += penalty;
-    poss_string += ", {}, {}, { ";
+    std::set_difference(minus.begin(), minus.end(), plus.begin(), plus.end(), std::inserter(exc, exc.begin()));
+    std::stringstream poss_string{};
+    poss_string << "#pos("
+                << example->id + std::to_string(poss_count++)
+                << ", "
+                << penalty
+                << ", {}, {}, { ";
     for (auto a : plus) {
-      poss_string += a + ". ";
+      poss_string << a + ". ";
     }
     for (auto a : exc) {
-      poss_string += ":- " + a + ". ";
+      poss_string << ":- " + a + ". ";
     }
-    poss_string += "}).";
-    possibility_strings.push_back(poss_string);
+    poss_string << "}).";
+    possibility_strings.push_back(poss_string.str());
 
     // Clear plus and minus for next possibility
     plus.clear();
     minus.clear();
-    cout << poss_string << endl;
+    cout << poss_string.str() << endl;
   });
 };
