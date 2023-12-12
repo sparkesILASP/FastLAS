@@ -26,15 +26,17 @@
 #ifndef PRINTING__H_
 #define PRINTING__H_
 
+#include <string>
+
 namespace FastLAS {
 
-void print_possibilities();
-void print_c_plus();
-void print_c_minus();
-void print_s_m();
-void print_solution();
-void print_stats();
-void print_score();
+std::string print_string_possibilities();
+std::string print_string_c_plus();
+std::string print_string_c_minus();
+std::string print_string_s_m();
+std::string print_string_solution();
+std::string print_string_stats();
+std::string print_string_score();
 
 }; // namespace FastLAS
 

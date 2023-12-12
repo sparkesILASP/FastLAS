@@ -28,12 +28,14 @@
 #include "Solve.h"
 #include <boost/algorithm/string.hpp>
 #include <iostream>
+#include <sstream>
+#include <string>
 
 using namespace std;
 
 extern set<Example *> examples;
 
-void FastLAS::print_possibilities() {
+string FastLAS::print_string_possibilities() {
   stringstream ss;
   for (auto eg : examples) {
     for (auto p : eg->get_possibilities())
@@ -42,10 +44,10 @@ void FastLAS::print_possibilities() {
   }
   string sol = ss.str();
   boost::replace_all(sol, "naf__", "not ");
-  cout << sol;
+  return sol;
 }
 
-void FastLAS::print_c_plus() {
+string FastLAS::print_string_c_plus() {
   stringstream characterisation;
   for (auto schema : Schema::RuleSchema::all_rule_schemas) {
     if (schema->is_useful()) {
@@ -81,10 +83,10 @@ void FastLAS::print_c_plus() {
   boost::replace_all(sol, "n_v_a_r", "V");
   boost::replace_all(sol, "v_a_r", "V");
   boost::replace_all(sol, "naf__", "not ");
-  cout << sol << endl;
+  return sol;
 }
 
-void FastLAS::print_c_minus() {
+string FastLAS::print_string_c_minus() {
   stringstream characterisation;
   for (auto schema : Schema::RuleSchema::all_rule_schemas) {
     if (schema->is_violating()) {
@@ -99,11 +101,11 @@ void FastLAS::print_c_minus() {
   boost::replace_all(sol, "n_v_a_r", "V");
   boost::replace_all(sol, "v_a_r", "V");
   boost::replace_all(sol, "naf__", "not ");
-  cout << sol << endl;
+  return sol;
 }
 
-void FastLAS::print_s_m() {
-  stringstream ss;
+string FastLAS::print_string_s_m() {
+  stringstream S_M_stream;
   set<Schema::RuleSchema *> ds;
   for (auto eg : examples)
     for (auto sub_eg : eg->get_possibilities()) {
@@ -125,38 +127,40 @@ void FastLAS::print_s_m() {
 
   for (Schema::RuleSchema *rs : ds) {
     // ss << "  " << "[" << rs->id << "] " << rs->get_score();
-    ss << rs->print_intermediate_representation();
+    S_M_stream << rs->print_intermediate_representation();
     auto r = rs->print();
     boost::replace_all(r, "n_v_a_r", "V");
     boost::replace_all(r, "v_a_r", "V");
     boost::replace_all(r, "naf__", "not ");
-    ss << "  " << r << endl;
+    S_M_stream << "  " << r << endl;
   }
-  // ss << "Disjunctions:" << endl;
+  // S_M_stream << "Disjunctions:" << endl;
   // for(auto eg : examples) {
-  //   ss << "  EG {" << endl;
+  //   S_M_stream << "  EG {" << endl;
   //   for(auto sub_eg : eg->get_possibilities()) {
-  //     ss << "    POSS {";
+  //     S_M_stream << "    POSS {";
   //     for(auto disj : sub_eg->get_optimised_rule_disjunctions()) {
-  //       ss << "DISJ {";
+  //       S_M_stream << "DISJ {";
   //       for(auto sc : disj) {
-  //         ss << " " << sc->id << "; ";
+  //         S_M_stream << " " << sc->id << "; ";
   //       }
-  //       ss << "}; ";
+  //       S_M_stream << "}; ";
   //     }
   //     for(auto sc : sub_eg->get_optimised_rule_violations()) {
-  //       ss << "NOT " << sc->id << "; ";
+  //       S_M_stream << "NOT " << sc->id << "; ";
   //     }
-  //     ss << "}; " << endl;
+  //     S_M_stream << "}; " << endl;
   //   }
-  //   ss << "  };" << endl;
+  //   S_M_stream << "  };" << endl;
   // }
 
-  cout << ss.str() << endl;
+  return S_M_stream.str();
 }
 
-void FastLAS::print_solution() {
-  cout << solution << flush;
+string FastLAS::print_string_solution() {
+  stringstream solution_steam{};
+  solution_steam << solution << flush << endl;
+  return solution_steam.str();
 }
 
 pair<int, set<string>> get_total_penalty() {
@@ -191,41 +195,45 @@ pair<int, set<string>> get_total_penalty() {
   return make_pair(total_penalty, uncovered_example_ids);
 }
 
-void FastLAS::print_stats() {
+string FastLAS::print_string_stats() {
   auto tp = get_total_penalty();
   int total_penalty = tp.first;
   set<string> uncovered_example_ids = tp.second;
+  stringstream stat_steam{};
 
-  cout << solution << endl
-       << endl;
-  cout << "{" << endl;
-  cout << "  \"Length\": " << hypothesis_length << "," << endl;
-  cout << "  \"Noisy Example Penalty\": " << total_penalty << "," << endl;
-  cout << "  \"Uncovered Examples\": [";
+  stat_steam << solution << endl
+             << endl;
+  stat_steam << "{" << endl;
+  stat_steam << "  \"Length\": " << hypothesis_length << "," << endl;
+  stat_steam << "  \"Noisy Example Penalty\": " << total_penalty << "," << endl;
+  stat_steam << "  \"Uncovered Examples\": [";
   bool first = true;
   for (auto uce : uncovered_example_ids) {
     if (first) {
       first = false;
     } else {
-      cout << ", ";
+      stat_steam << ", ";
     }
-    cout << uce;
+    stat_steam << uce;
   }
-  cout << " ]," << endl;
-  cout << "  \"Final Semi-decomposable Representation\": [";
+  stat_steam << " ]," << endl;
+  stat_steam << "  \"Final Semi-decomposable Representation\": [";
   first = true;
   for (auto sdcf : sat_intermediate_facts) {
     if (first) {
       first = false;
     } else {
-      cout << ", ";
+      stat_steam << ", ";
     }
-    cout << sdcf;
+    stat_steam << sdcf;
   }
-  cout << " ]" << endl;
-  cout << "}" << endl;
+  stat_steam << " ]" << endl;
+  stat_steam << "}" << endl;
+  return stat_steam.str();
 }
 
-void FastLAS::print_score() {
-  cout << hypothesis_length + get_total_penalty().first << flush;
+string FastLAS::print_string_score() {
+  stringstream score_stream{};
+  score_stream << hypothesis_length + get_total_penalty().first << flush;
+  return score_stream.str();
 }
