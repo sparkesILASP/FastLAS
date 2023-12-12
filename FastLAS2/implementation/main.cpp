@@ -165,105 +165,88 @@ int main(int argc, char **argv) {
     fclose(file);
   }
 
-  // Testing bound things
-  if (FastLAS::mode == FastLAS::Mode::bound) {
-
-    // cout << "Bounded examples…" << endl;
-
+  // Stage: Generate possibilities if needed
+  switch (FastLAS::mode) {
+  case FastLAS::Mode::bound:
     FastLAS::Possible_Penalties();
+    break;
+  case FastLAS::Mode::nopl:
+    // Abduce possibilities, when set
+    if (debug) {
+      cout << "Abducing…" << endl;
+    }
+    FastLAS::abduce();
+    if (debug) {
+      cout << "Possibilities:" << endl;
+      FastLAS::print_possibilities();
+    }
+    break;
+  case FastLAS::Mode::opl:
+    for (auto eg : examples) {
+      eg->set_unique_possibility();
+    }
+    break;
+  default:
+    break;
+  }
 
-    FastLAS::compute_sat_sufficient();
+  // Stage: SAT-sufficient subsets
+  // Additional atoms are written to FastLAS::language here
+  if (debug) cout << "Computing SAT-sufficient subset…" << endl;
 
+  FastLAS::compute_sat_sufficient();
+
+  if (debug) {
     cout << "C^+(T):" << endl;
     FastLAS::print_c_plus();
     cout << "C^-(T):" << endl;
     FastLAS::print_c_minus();
+  }
+
+  if (vm.count("write-cache")) FastLAS::write_cache(vm["write-cache"].as<string>());
+
+  // Stage: Generalise
+  if (vm.count("delay-generalisation")) {
+    if (debug) cout << "Computing opt-sufficient subset…" << endl;
+
+    FastLAS::optimise_sym();
+  } else {
+    if (debug) cout << "Generalising…" << endl;
 
     FastLAS::generalise();
 
-    cout << "G^+(T):" << endl;
-    FastLAS::print_c_plus();
+    if (debug) {
+      cout << "G^+(T):" << endl;
+      FastLAS::print_c_plus();
+    }
+
+    if (vm.count("write-cache")) FastLAS::write_cache(vm["write-cache"].as<string>());
+    if (debug) cout << "Computing opt-sufficient subset…" << endl;
 
     FastLAS::optimise();
+  }
+
+  if (debug) {
     cout << "S_M:" << endl;
     FastLAS::print_s_m();
+  }
 
+  if (vm.count("write-cache")) {
+    FastLAS::write_cache(vm["write-cache"].as<string>());
+  }
+
+  // Stage: Solve
+  switch (FastLAS::mode) {
+  case FastLAS::Mode::bound:
     FastLAS::solve_pen();
     cout << "stats: " << endl;
     FastLAS::print_stats();
 
     cout << "Exiting" << endl;
-    exit(0);
-  }
-
-  if (FastLAS::mode == FastLAS::Mode::nopl || FastLAS::mode == FastLAS::Mode::opl) {
-
-    // Abduce possibilities, when set
-    switch (FastLAS::mode) {
-    case FastLAS::Mode::opl:
-      for (auto eg : examples) {
-        eg->set_unique_possibility();
-      }
-      break;
-    case FastLAS::Mode::nopl:
-      if (debug) {
-        cout << "Abducing…" << endl;
-      }
-      FastLAS::abduce();
-      if (debug) {
-        cout << "Possibilities:" << endl;
-        FastLAS::print_possibilities();
-      }
-      break;
-    default:
-      break;
-    }
-
-    // SAT-sufficient subsets
-    // Additional atoms are written to FastLAS::language here
-    if (debug) cout << "Computing SAT-sufficient subset…" << endl;
-
-    FastLAS::compute_sat_sufficient();
-
-    if (debug) {
-      cout << "C^+(T):" << endl;
-      FastLAS::print_c_plus();
-      cout << "C^-(T):" << endl;
-      FastLAS::print_c_minus();
-    }
-
-    if (vm.count("write-cache")) FastLAS::write_cache(vm["write-cache"].as<string>());
-
-    // Generalise
-    if (vm.count("delay-generalisation")) {
-      if (debug) cout << "Computing opt-sufficient subset…" << endl;
-
-      FastLAS::optimise_sym();
-    } else {
-      if (debug) cout << "Generalising…" << endl;
-
-      FastLAS::generalise();
-
-      if (debug) {
-        cout << "G^+(T):" << endl;
-        FastLAS::print_c_plus();
-      }
-
-      if (vm.count("write-cache")) FastLAS::write_cache(vm["write-cache"].as<string>());
-      if (debug) cout << "Computing opt-sufficient subset…" << endl;
-
-      FastLAS::optimise();
-    }
-
-    if (debug) {
-      cout << "S_M:" << endl;
-      FastLAS::print_s_m();
-    }
-
-    if (vm.count("write-cache")) {
-      FastLAS::write_cache(vm["write-cache"].as<string>());
-    }
-
+    break;
+  case FastLAS::Mode::opl:
+  // fall through
+  case FastLAS::Mode::nopl:
     if (debug) cout << "Solving…" << endl;
 
     FastLAS::solve();
@@ -279,6 +262,11 @@ int main(int argc, char **argv) {
     }
 
     cout << "Complete!" << endl;
-    _exit(0);
+    break;
+  default:
+    break;
   }
-};
+
+  // finish
+  _exit(0);
+}
