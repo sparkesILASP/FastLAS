@@ -171,15 +171,20 @@ std::stringstream converse_stream(std::map<std::string, std::set<std::vector<std
       std::string rep_lit = representative_literal(body_vec);
       for (auto body_lit : body_vec) {
         negate_with_prefix(body_lit);
-        converse_stream << body_lit << " :- " << rep_lit << "." << std::endl;
+        converse_stream << body_lit
+                        << " :- "
+                        << rep_lit
+                        << "." << std::endl;
       }
       rep_vec.push_back(rep_lit);
     }
-    converse_stream << "1 { ";
-    converse_stream << join_vec(rep_vec, ",")
+    converse_stream << endl;
+    converse_stream << "1 { "
+                    << join_vec(rep_vec, ",")
                     << " }"
                     << " :- "
-                    << iter->first << endl;
+                    << iter->first << endl
+                    << endl;
   }
   return converse_stream;
 }
@@ -204,6 +209,17 @@ std::stringstream converse_complement_stream(std::map<std::string, std::set<std:
                                  << " :- "
                                  << "not\'" << iter->first
                                  << "." << endl;
+
+      // heuristics for a few violations as possible
+      converse_complement_stream << endl
+                                 << "%minimal interpretation heuristics" << endl;
+      for (auto comp : complement_vec) {
+        converse_complement_stream
+            << "#heuristic "
+            << comp
+            << ".[1@1, false]" << endl;
+      }
+      converse_complement_stream << endl;
     }
   }
   return converse_complement_stream;
