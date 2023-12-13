@@ -24,4 +24,20 @@ std::stringstream converse_stream(std::map<std::string, std::set<std::vector<std
 
 std::string flatten(std::string &lit);
 
+std::stringstream converse_complement_stream(std::map<std::string, std::set<std::vector<std::string>>> &head_body_map);
+
+std::stringstream penalty_yes_no_stream(std::map<std::string, std::set<std::vector<std::string>>> &head_body_map);
+
+/*
+I think abduction would be preferable…
+*/
+
+void with_negation_prefix(std::string &literal);
+
+void negation_as_failure(std::string &literal);
+
+void negate_with_prefix(std::string &literal);
+
+std::string add_negation_prefix(std::string &literal);
+
 #endif

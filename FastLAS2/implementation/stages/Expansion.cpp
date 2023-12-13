@@ -28,7 +28,9 @@ void FastLAS::expand_penalty_rules() {
   std::cout << "Expanding…" << endl;
 
   fill_head_body_map(head_body_map);
-  cout << converse_stream(head_body_map).str();
+  cout << converse_stream(head_body_map).str() << endl;
+  cout << converse_complement_stream(head_body_map).str() << endl;
+  cout << penalty_yes_no_stream(head_body_map).str() << endl;
 
   // print_head_body_map(head_body_map);
 }
@@ -168,6 +170,7 @@ std::stringstream converse_stream(std::map<std::string, std::set<std::vector<std
     for (std::vector<std::string> body_vec : iter->second) {
       std::string rep_lit = representative_literal(body_vec);
       for (auto body_lit : body_vec) {
+        negate_with_prefix(body_lit);
         converse_stream << body_lit << " :- " << rep_lit << "." << std::endl;
       }
       rep_vec.push_back(rep_lit);
@@ -179,4 +182,95 @@ std::stringstream converse_stream(std::map<std::string, std::set<std::vector<std
                     << iter->first << endl;
   }
   return converse_stream;
+}
+
+std::stringstream converse_complement_stream(std::map<std::string, std::set<std::vector<std::string>>> &head_body_map) {
+
+  std::stringstream converse_complement_stream{};
+
+  for (std::map<std::string, std::set<std::vector<std::string>>>::iterator iter = head_body_map.begin(); iter != head_body_map.end(); ++iter) {
+
+    for (std::vector<std::string> body_vec : iter->second) {
+
+      std::vector<std::string> complement_vec{};
+
+      for (auto body_lit : body_vec) {
+        negate_with_prefix(body_lit);
+        complement_vec.push_back(body_lit);
+      }
+      converse_complement_stream << "1 { "
+                                 << join_vec(complement_vec, ",")
+                                 << " }"
+                                 << " :- "
+                                 << "not\'" << iter->first
+                                 << "." << endl;
+    }
+  }
+  return converse_complement_stream;
+}
+
+std::stringstream penalty_yes_no_stream(std::map<std::string, std::set<std::vector<std::string>>> &head_body_map) {
+  std::stringstream penalty_yes_no_stream{};
+
+  for (std::map<std::string, std::set<std::vector<std::string>>>::iterator iter = head_body_map.begin(); iter != head_body_map.end(); ++iter) {
+
+    std::string head{iter->first};
+
+    penalty_yes_no_stream << "1 { ";
+
+    penalty_yes_no_stream << head
+                          << ", "
+                          << add_negation_prefix(head)
+                          << " ";
+
+    penalty_yes_no_stream << "} 1. " << endl;
+  }
+
+  return penalty_yes_no_stream;
+}
+
+/*
+Non-ideal way to deal with not literals.
+
+A better way to do this is to only match for not' rather than '
+
+Though, restrictions on input language should be avoided
+*/
+void negation_as_prefix(std::string &literal) {
+  std::string regex_string = "not \\([^\\)]\\)";
+  std::regex re(regex_string);
+  std::smatch m;
+  if (std::regex_search(literal, m, re)) {
+    literal = std::string("not\'") + std::string(m[0]);
+  }
+}
+
+/*
+I shouldn't need this…
+*/
+void negation_as_failure(std::string &literal) {
+  std::string regex_string = "not'\\([^\\)]\\)";
+  std::regex re(regex_string);
+  std::smatch m;
+  if (std::regex_search(literal, m, re)) {
+    literal = std::string("not ") + std::string(m[0]);
+  }
+}
+
+/*
+Either strip negation as failure or add negation as prefix
+*/
+void negate_with_prefix(std::string &literal) {
+  std::string regex_string = "not ([^\\)])";
+  std::regex re(regex_string);
+  std::smatch m;
+  if (std::regex_search(literal, m, re)) {
+    literal = std::string(m[1]);
+  } else {
+    literal = std::string("not\'") + literal;
+  }
+}
+
+std::string add_negation_prefix(std::string &literal) {
+  return std::string("not\'") + literal;
 }
