@@ -54,6 +54,8 @@ bool space_size = false;
 bool separate_abduction = false;
 bool categorical_contexts = false;
 bool any_cache = false;
+bool output_penalty_program = false;
+bool view_possibilities = false;
 
 vector<string> language({"f_triv___"});
 

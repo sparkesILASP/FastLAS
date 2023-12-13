@@ -41,7 +41,7 @@ std::string final_solving_program_pen = R"(
 % #show penalty/2.
 % #show disj/1.
 % #show possibility_penalty/3.
-% #show min_for_example/2.
+% #show sum_for_example/2.
 #script (lua)
 function onModel(m)
   atoms = m:symbols{shown=true}
@@ -95,7 +95,7 @@ vector<set<Schema::RuleSchema *>> int_to_disj_pen;
 
 /*
 The final solving program.
-The task here is to minimize penalties for failing to cover examples.
+The task here is to minimise penalties for failing to cover examples.
 
 Start by considering the disjunctions for each possibility.
 At the end, solve by looking at these possibilities.
@@ -104,23 +104,22 @@ And, for any examples they don't cover a different disjunction is going to be us
 */
 void FastLAS::solve_pen() {
   stringstream ss;
-  // ss << "#minimize { N, P : possibility_penalty(N,P,E) }." << endl;
+  // ss << "#minimise { N, P : possibility_penalty(N,P,E) }." << endl;
   // If there are multiple possibilities covered, take the minimum.
   // Though in general rare, as anything which influences a penalty will be inc/exc.
-  ss << "min_for_example(M,E) :- M = #min{ N : possibility_penalty(N,P,E)}, example(E)." << endl;
-  // minimize over examples
-  ss << "#minimize { M, E : min_for_example(M,E) }." << endl;
+  ss << "sum_for_example(M,E) :- M = #sum{ N : possibility_penalty(N,P,E)}, example(E)." << endl;
+  // minimise over examples
+  ss << "#minimise { M, E : sum_for_example(M,E) }." << endl;
 
   // get minimum penalty of possibility covered for example, though this should never be needed
   // ss << "min_of_covered(M,Ex) :- M = #min{ N : possibility_penalty(N,Poss,Ex)}, cov(Poss,Ex)." << endl;
-  // ss << "#minimize { M, E : min_of_covered(M,E) }." << endl;
+  // ss << "#minimise { M, E : min_of_covered(M,E) }." << endl;
 
   for (auto eg : examples) {
     ss << "% " << eg->id << endl;
     ss << "example(" << eg->id << ")." << endl;
     // Possibility disjunction
     for (auto sub_eg : eg->get_possibilities()) {
-      // cout << "Example: " << eg->id << " : Possibility : " << sub_eg->id << endl;
       ss << "% " << eg->id << " : " << sub_eg->id << endl;
       ss << "possibility_penalty(" << sub_eg->get_penalty() << ", " << sub_eg->id << ", " << eg->id << ")"
          << " :- "
@@ -151,14 +150,8 @@ void FastLAS::solve_pen() {
             ss << "disj(" << index << ") :- in_h(" << d->id << ")." << endl;
           }
         }
-        // cout << "Let's take a look at the disjuncts…" << endl;
-        // for (auto r : disj)
-        //   cout << "\t" << index << " : " << r->print() << endl;
 
         ds_pen.insert(disj.begin(), disj.end()); // cannot only be done with caching in case violation occurs first;
-        // cout << "And the other disjuncts:" << endl;
-        // for (auto d : ds_pen)
-        //   cout << "\t" << index << "\t" << d->print() << endl;
       }
       // if (cov_string_disjunctions.size() > 0) {
       //   ss << "cov(" << sub_eg->id << ") :- " << cov_string_disjunctions << "#true." << endl;
@@ -181,7 +174,6 @@ void FastLAS::solve_pen() {
       */
       for (auto d : disj) {
         ss << "disj(" << index << ") :- in_h(" << d->id << ")." << endl;
-        // cout << "violating disjunct: " << d->print() << endl;
       }
       ss << "n_cov(" << sub_eg->id << "," << eg->id << ") :- disj(" << index << ")." << endl;
     }
@@ -196,7 +188,6 @@ void FastLAS::solve_pen() {
   }
 
   for (auto d : ds_pen) {
-    // cout << "Head choice: " << d->id << "\t" << d->print() << endl;
     ss << "0 {in_h(" << d->id << ")} 1." << endl
        << ":~ in_h(" << d->id << ").[" << d->get_score() << "@0, hyp(" << d->id << ")]" << endl
        << d->intermediate_meta_representation();

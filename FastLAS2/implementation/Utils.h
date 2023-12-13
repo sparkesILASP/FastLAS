@@ -78,6 +78,8 @@ extern bool any_cache;
 extern bool categorical_contexts;
 extern int max_conditions;
 extern int timeout;
+extern bool output_penalty_program;
+extern bool view_possibilities;
 
 template <typename T, typename F>
 void parallel_exec(const T &jobs, int number_of_workers, F p) {

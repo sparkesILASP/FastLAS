@@ -172,7 +172,7 @@ std::string Example::to_bound_pen_prog() {
     prog_str += c.to_string();
   }
   // Penalty
-  prog_str += "#minimize { X, Y : pen(X,Y) }.";
+  prog_str += "#minimize { X, Y : " + Penalty::asp_predicate + "(X,Y) }.";
   prog_str += Penalty::make_lua_possibility_script_for(bound);
   return prog_str;
 }

@@ -26,7 +26,8 @@ atoms = m:symbols{shown=true}
 
 for i, atom in ipairs(atoms) do
 		atom_string = tostring(atom)
-		penalty_match = atom_string:match('pen%(%d+,(.+)%)')
+		penalty_match = atom_string:match(')" +
+         Penalty::asp_predicate + R"(%(%d+,(.+)%)')
 		negation_match = atom_string:match('not_(.+)')
 		if penalty_match then
 				model_string = model_string.." &"..penalty_match.."|"
@@ -82,8 +83,10 @@ void FastLAS::Possible_Penalties() {
         poss_solve_strm << r.to_string() << std::endl;
       }
 
-      poss_solve_strm << "#minimize { X, Y : pen(X,Y) }." << std::endl;
+      poss_solve_strm << "#minimize { X, Y : " + Penalty::asp_predicate + "(X,Y) }." << std::endl;
       poss_solve_strm << Penalty::make_lua_possibility_script_for(example->bound);
+
+      if (FastLAS::output_penalty_program) std::cout << poss_solve_strm.str() << std::endl;
 
       Solver::Clingo(3, poss_solve_strm.str(), ((FastLAS::timeout < 0) ? " " : "--time=" + std::to_string(FastLAS::timeout)))(
           // inclusions
@@ -104,10 +107,6 @@ void FastLAS::Possible_Penalties() {
         inc.clear();
         exc.clear();
       });
-      std::cout << "Possibilities: " << std::endl;
-      for (auto poss : example->get_possibilities()) {
-        std::cout << poss->to_string() << std::endl;
-      }
     }
   }
 }

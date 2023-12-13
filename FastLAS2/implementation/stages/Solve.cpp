@@ -60,10 +60,8 @@ The task here is to minimize penalties for failing to cover examples.
 */
 void FastLAS::solve() {
   stringstream ss;
-  // For each example
   for (auto eg : examples) {
     ss << "% " << eg->id << endl;
-    // Possibility disjunction
     for (auto sub_eg : eg->get_possibilities()) {
       ss << "% " << eg->id << " : " << sub_eg->id << endl;
       // Insert the optimised rule disjunctions
@@ -145,21 +143,21 @@ void FastLAS::solve() {
   if (prediction_task) {
     if (score_only) {
       FastLAS::solve_final_task(ss.str() + ":- prediction_false.");
-      print_score();
+      print_string_score();
       cout << ';' << flush;
       FastLAS::solve_final_task(ss.str() + ":- not prediction_false.");
-      print_score();
+      print_string_score();
     } else {
       FastLAS::solve_final_task(ss.str() + ":- prediction_false.");
 
       cout << "% Optimal hypothesis satisfying the prediction:" << endl
            << endl;
-      print_stats();
+      print_string_stats();
 
       FastLAS::solve_final_task(ss.str() + ":- not prediction_false.");
       cout << endl
            << "% Optimal hypothesis not satisfying the prediction:" << endl;
-      print_stats();
+      print_string_stats();
     }
   } else {
     FastLAS::solve_final_task(ss.str());
@@ -173,9 +171,9 @@ void FastLAS::solve_final_task(string program) {
   hypothesis_length = 0;
   stringstream solution_ss;
 
-  ss << program;
-  ss << bias->final_bias_constraints << endl;
-  ss << final_solving_program << endl;
+  ss << program
+     << bias->final_bias_constraints << endl
+     << final_solving_program << endl;
 
   if (output_solve_program) {
     cout << ss.str() << endl;

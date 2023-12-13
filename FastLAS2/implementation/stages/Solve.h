@@ -25,8 +25,10 @@
 
 #ifndef SOLVE__H_
 #define SOLVE__H_
+#include "../Example.h"
 #include "../RuleSchema.h"
 #include <set>
+#include <string>
 
 namespace FastLAS {
 

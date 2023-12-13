@@ -42,9 +42,8 @@ public:
   }
 
   virtual std::string abduce_representation() const {
-    std::cerr
-        << "ERROR: abduce representation not defined for general NLiterals."
-        << std::endl;
+    std::cerr << "ERROR: abduce representation not defined for general NLiterals."
+              << std::endl;
     exit(2);
   }
 
@@ -52,8 +51,8 @@ public:
 
   virtual void populate_constants(std::set<std::string> &consts) const {
     std::cerr << "ERROR: populate constants not defined for general NLiterals."
-              << std::endl;
-    std::cerr << to_string() << std::endl;
+              << std::endl
+              << to_string() << std::endl;
     exit(2);
   }
 

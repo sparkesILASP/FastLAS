@@ -37,8 +37,7 @@ class NAtom : public NRuleHead {
 public:
   NAtom(std::string predicate_name) : predicate_name(predicate_name){};
 
-  NAtom(std::string predicate_name,
-        std::vector<std::shared_ptr<NTerm>> &arguments)
+  NAtom(std::string predicate_name, std::vector<std::shared_ptr<NTerm>> &arguments)
       : predicate_name(predicate_name), arguments(arguments){};
 
   bool is_comparison() const {
@@ -53,14 +52,14 @@ public:
   std::string to_string() const {
     std::stringstream ss;
     if (arguments.size() == 2 && is_comparison()) {
-      ss << arguments[0]->to_string();
-      ss << " " << predicate_name << " ";
-      ss << arguments[1]->to_string();
+      ss << arguments[0]->to_string()
+         << " " << predicate_name << " "
+         << arguments[1]->to_string();
     } else {
       ss << predicate_name;
       for (int i = 0; i < arguments.size(); i++) {
-        ss << (i == 0 ? "(" : ",");
-        ss << arguments[i]->to_string();
+        ss << (i == 0 ? "(" : ",")
+           << arguments[i]->to_string();
       }
       if (arguments.size() > 0) {
         ss << ")";
@@ -72,8 +71,7 @@ public:
   std::string abduce_representation() const {
     auto s = to_string();
     if (s[0] == '-') {
-      return std::string("-bottom(") + s.substr(1, s.length() - 1) +
-             std::string(")");
+      return std::string("-bottom(") + s.substr(1, s.length() - 1) + std::string(")");
     } else {
       return std::string("bottom(") + s + std::string(")");
     }
@@ -82,8 +80,7 @@ public:
   std::string meta_representation(const std::string &id) const {
     auto s = to_string();
     if (s[0] == '-') {
-      return std::string("-ctx(") + id + std::string(",") +
-             s.substr(1, s.length() - 1) + std::string(")");
+      return std::string("-ctx(") + id + std::string(",") + s.substr(1, s.length() - 1) + std::string(")");
     } else {
       return std::string("ctx(") + id + std::string(",") + s + std::string(")");
     }
@@ -91,8 +88,7 @@ public:
   std::string reduct_representation(const std::string &id) const {
     auto s = to_string();
     if (s[0] == '-') {
-      return std::string("-mmr(") + id + std::string(",") +
-             s.substr(1, s.length()) + std::string(")");
+      return std::string("-mmr(") + id + std::string(",") + s.substr(1, s.length()) + std::string(")");
     } else {
       return std::string("mmr(") + id + std::string(",") + s + std::string(")");
     }
@@ -128,8 +124,7 @@ public:
     return ss.str();
   }
 
-  std::string generalise(const std::string &var_name,
-                         const bool &rewrite) const;
+  std::string generalise(const std::string &var_name, const bool &rewrite) const;
 
   std::vector<std::pair<std::string, std::string>> get_place_holders() const {
     std::vector<std::pair<std::string, std::string>> phs;

@@ -69,6 +69,7 @@ add_library(
   stages/Solve.cpp
   stages/Penalty.cpp
 	stages/SolvePen.cpp
+	stages/Expansion.cpp
 
   stages/Printing.cpp
 

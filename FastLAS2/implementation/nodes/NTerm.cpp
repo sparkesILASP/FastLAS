@@ -84,8 +84,7 @@ string NTerm::abduce_body_representation() const {
   return ss.str();
 }
 
-std::string NTerm::generalise(const std::string &var_name, int &index,
-                              const bool &rewrite) const {
+std::string NTerm::generalise(const std::string &var_name, int &index, const bool &rewrite) const {
   stringstream ss;
 
   if (arguments.size() == 1 && (function_name.compare("num_var") == 0 ||
@@ -157,14 +156,12 @@ string NTerm::list_vars(int &index) const {
   return ss.str();
 }
 
-set<string> NTerm::get_type_atoms(const string &var_name, int &index,
-                                  string prefix) const {
+set<string> NTerm::get_type_atoms(const string &var_name, int &index, string prefix) const {
   set<string> type_atoms;
 
   if (arguments.size() == 1 && (function_name.compare("var") == 0 ||
                                 function_name.compare("const") == 0)) {
-    type_atoms.insert(prefix + arguments[0]->to_string() + "(" + var_name +
-                      std::to_string(index++) + "))");
+    type_atoms.insert(prefix + arguments[0]->to_string() + "(" + var_name + std::to_string(index++) + "))");
   } else {
     for (int i = 0; i < arguments.size(); i++) {
       auto other_type_atoms =

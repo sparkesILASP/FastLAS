@@ -35,8 +35,7 @@
 class NRule : public Node {
 
 public:
-  NRule(std::shared_ptr<NRuleHead> &head,
-        std::vector<std::shared_ptr<NLiteral>> &body)
+  NRule(std::shared_ptr<NRuleHead> &head, std::vector<std::shared_ptr<NLiteral>> &body)
       : head(head), body(body){};
 
   std::string to_string(const std::string &) const;
@@ -55,8 +54,6 @@ public:
 
   std::string to_string() const;
 
-  std::set<NRule> flip();
-
   bool operator<(const NRule &r) const {
     return to_string().compare(r.to_string()) < 0;
   }
@@ -66,6 +63,9 @@ public:
       body[i]->populate_constants(consts);
     }
   }
+
+  std::shared_ptr<NRuleHead> get_head();
+  std::vector<std::shared_ptr<NLiteral>> get_body();
 
 private:
   std::shared_ptr<NRuleHead> head;

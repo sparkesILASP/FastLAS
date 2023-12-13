@@ -39,13 +39,12 @@ string NAtom::generalise(const std::string &var_name,
       ss << "binop(\"" << predicate_name << "\", " << arg1 << ", " << arg2
          << ")";
     } else {
-      ss << arg1;
-      ss << predicate_name;
-      ss << arg2;
+      ss << arg1
+         << predicate_name
+         << arg2;
       auto vars = get_place_holders();
       for (int i = 0; i < vars.size(); i++) {
-        ss << ", eq(ARG" << i << ", " << vars[i].second << ", ARG_VAL" << i
-           << ")";
+        ss << ", eq(ARG" << i << ", " << vars[i].second << ", ARG_VAL" << i << ")";
       }
     }
   } else {

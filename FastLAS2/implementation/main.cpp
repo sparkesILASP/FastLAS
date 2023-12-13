@@ -34,6 +34,7 @@
 #include "Utils.h"
 #include "nodes/NRule.h"
 #include "stages/Abduce.h"
+#include "stages/Expansion.hpp"
 #include "stages/Generalise.h"
 #include "stages/Optimise.h"
 #include "stages/OptimiseSym.h"
@@ -77,7 +78,9 @@ int main(int argc, char **argv) {
       "force-safety", "enforce safety constraint on learned rules.")(
       "space-size", "output final s_m size.")(
       "timeout", po::value<int>(), "time limit for the final solving stage.")(
-      "threads", po::value<int>(), "number of threads.");
+      "threads", po::value<int>(), "number of threads.")(
+      "output-penalty-program", "output program used to generate possibilities for examples.")(
+      "view-possibilities", "output generated possibilities.");
 
   po::positional_options_description p;
   p.add("file_names", -1);
@@ -128,6 +131,8 @@ int main(int argc, char **argv) {
   if (vm.count("bound")) FastLAS::mode = FastLAS::Mode::bound;
   if (vm.count("force-safety")) FastLAS::force_safety = true;
   if (vm.count("score-only")) FastLAS::score_only = true;
+  if (vm.count("output-penalty-program")) FastLAS::output_penalty_program = true;
+  if (vm.count("view-possibilities")) FastLAS::view_possibilities = true;
 
   // parse
 
@@ -156,7 +161,12 @@ int main(int argc, char **argv) {
     fclose(file);
   }
 
-  // Stage: Generate possibilities if needed
+  // STAGE: Expand penalty programs through each example
+  if (FastLAS::mode == FastLAS::Mode::bound) {
+    FastLAS::expand_penalty_rules();
+  }
+
+  // STAGE: Generate possibilities, if needed
   switch (FastLAS::mode) {
   case FastLAS::Mode::bound:
     FastLAS::Possible_Penalties();
@@ -166,8 +176,9 @@ int main(int argc, char **argv) {
     if (debug) cout << "Abducing…" << endl;
 
     FastLAS::abduce();
-    if (debug) cout << "Possibilities:" << endl
-                    << FastLAS::print_string_possibilities();
+
+    if (FastLAS::view_possibilities) cout << "Possibilities:" << endl
+                                          << FastLAS::print_string_possibilities();
 
     break;
   case FastLAS::Mode::opl:
@@ -179,7 +190,7 @@ int main(int argc, char **argv) {
     break;
   }
 
-  // Stage: SAT-sufficient subsets
+  // STAGE: SAT-sufficient subsets
   // Additional atoms are written to FastLAS::language here
   if (debug) cout << "Computing SAT-sufficient subset…" << endl;
 
@@ -192,7 +203,7 @@ int main(int argc, char **argv) {
 
   if (vm.count("write-cache")) FastLAS::write_cache(vm["write-cache"].as<string>());
 
-  // Stage: Generalise
+  // STAGE: Generalise
   if (vm.count("delay-generalisation")) {
     if (debug) cout << "Computing opt-sufficient subset…" << endl;
 
@@ -218,14 +229,13 @@ int main(int argc, char **argv) {
     FastLAS::write_cache(vm["write-cache"].as<string>());
   }
 
-  // Stage: Solve
+  // STAGE: Solve
   switch (FastLAS::mode) {
   case FastLAS::Mode::bound:
     FastLAS::solve_pen();
     cout << "stats: " << endl
-         << FastLAS::print_string_stats();
-
-    cout << "Exiting" << endl;
+         << FastLAS::print_string_stats() << endl
+         << "Exiting" << endl;
     break;
   case FastLAS::Mode::opl:
   // fall through
@@ -243,8 +253,6 @@ int main(int argc, char **argv) {
         cout << FastLAS::print_string_solution();
       }
     }
-
-    cout << "Complete!" << endl;
     break;
   default:
     break;

@@ -38,6 +38,7 @@
 #include <tuple>
 #include <cassert>
 #include <algorithm>
+
 std::set<Example*> examples;
 std::set<std::string> cached_examples;
 std::set<std::pair<int, int>> extensions;

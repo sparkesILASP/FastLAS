@@ -126,7 +126,6 @@ string FastLAS::print_string_s_m() {
     }
 
   for (Schema::RuleSchema *rs : ds) {
-    // ss << "  " << "[" << rs->id << "] " << rs->get_score();
     S_M_stream << rs->print_intermediate_representation();
     auto r = rs->print();
     boost::replace_all(r, "n_v_a_r", "V");

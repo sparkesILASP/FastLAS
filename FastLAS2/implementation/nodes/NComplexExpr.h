@@ -34,8 +34,7 @@
 class NComplexExpr : public NTerm {
 
 public:
-  NComplexExpr(std::shared_ptr<NTerm> arg1, std::string op,
-               std::shared_ptr<NTerm> arg2)
+  NComplexExpr(std::shared_ptr<NTerm> arg1, std::string op, std::shared_ptr<NTerm> arg2)
       : arg1(arg1), arg2(arg2), op(op){};
 
   virtual std::string to_string() const {
@@ -51,16 +50,14 @@ public:
     return t;
   }
 
-  virtual std::shared_ptr<NTerm>
-  substitute(const std::map<std::string, std::string> &sm) const {
+  virtual std::shared_ptr<NTerm> substitute(const std::map<std::string, std::string> &sm) const {
     auto a1 = arg1->substitute(sm);
     auto a2 = arg2->substitute(sm);
     std::shared_ptr<NTerm> t(new NComplexExpr(a1, op, a2));
     return t;
   }
 
-  virtual std::string generalise(const std::string &, int &,
-                                 const bool &) const;
+  virtual std::string generalise(const std::string &, int &, const bool &) const;
 
   virtual void populate_constants(std::set<std::string> &consts) const {
     arg1->populate_constants(consts);
@@ -77,7 +74,8 @@ private:
 class NAbsVal : public NTerm {
 
 public:
-  NAbsVal(std::shared_ptr<NTerm> arg) : arg(arg){};
+  NAbsVal(std::shared_ptr<NTerm> arg)
+      : arg(arg){};
 
   virtual std::string to_string() const { return "|" + arg->to_string() + "|"; }
 
@@ -89,8 +87,7 @@ public:
     return t;
   }
 
-  virtual std::shared_ptr<NTerm>
-  substitute(const std::map<std::string, std::string> &sm) const {
+  virtual std::shared_ptr<NTerm> substitute(const std::map<std::string, std::string> &sm) const {
     auto a = arg->substitute(sm);
     std::shared_ptr<NTerm> t(new NAbsVal(a));
     return t;
