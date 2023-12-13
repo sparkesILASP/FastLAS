@@ -16,6 +16,7 @@
 
 using namespace std;
 extern std::set<Example *> examples;
+int rep_count{1};
 
 // Map of penalty predicates to sets of bodies (themselves as sets)
 // predicates are stored as strings as
@@ -110,12 +111,17 @@ https://stackoverflow.com/questions/83439/remove-spaces-from-stdstring-in-c
 std::string representative_literal(std::vector<std::string> &lit_vec) {
   std::stringstream rep_stream{};
   for (std::string elem : lit_vec) {
-    std::string elem_copy{elem};
-    elem_copy.erase(std::remove_if(elem_copy.begin(), elem_copy.end(), ::isspace), elem_copy.end());
-    boost::algorithm::to_lower(elem_copy);
-    rep_stream << elem_copy;
+    rep_stream << flatten(elem);
   }
+  rep_stream << 0 << rep_count++;
   return rep_stream.str();
+}
+
+std::string flatten(std::string &lit) {
+  std::string lit_copy{lit};
+  lit_copy.erase(std::remove_if(lit_copy.begin(), lit_copy.end(), ::isspace), lit_copy.end());
+  boost::algorithm::to_lower(lit_copy);
+  return lit_copy;
 }
 
 std::string representative_rule(std::string &representative_literal, std::vector<std::string> &lit_vec) {
@@ -147,6 +153,10 @@ std::string join_vec(std::vector<std::string> &vec, std::string sep) {
   return out_stream.str();
 }
 
+/*
+each distinct body associated with a rule is given a representative.
+
+*/
 std::stringstream converse_stream(std::map<std::string, std::set<std::vector<std::string>>> &head_body_map) {
 
   std::stringstream converse_stream{};
@@ -154,6 +164,7 @@ std::stringstream converse_stream(std::map<std::string, std::set<std::vector<std
   for (std::map<std::string, std::set<std::vector<std::string>>>::iterator iter = head_body_map.begin(); iter != head_body_map.end(); ++iter) {
 
     std::vector<std::string> rep_vec{};
+
     for (std::vector<std::string> body_vec : iter->second) {
       std::string rep_lit = representative_literal(body_vec);
       for (auto body_lit : body_vec) {

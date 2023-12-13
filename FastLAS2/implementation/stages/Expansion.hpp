@@ -22,4 +22,6 @@ std::string join_vec(std::vector<std::string> &vec, std::string sep);
 
 std::stringstream converse_stream(std::map<std::string, std::set<std::vector<std::string>>> &head_body_map);
 
+std::string flatten(std::string &lit);
+
 #endif
