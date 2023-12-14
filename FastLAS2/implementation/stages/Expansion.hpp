@@ -22,6 +22,7 @@ std::string representative_literal(std::vector<std::string> &lit_vec);
 std::string representative_rule(std::string &representative_literal, std::vector<std::string> &lit_vec);
 
 std::string join_vec(std::vector<std::string> &vec, std::string sep);
+std::string join_set(std::set<std::string> &set, std::string sep);
 
 std::stringstream converse_stream(std::map<std::string, std::set<std::vector<std::string>>> &head_body_map);
 

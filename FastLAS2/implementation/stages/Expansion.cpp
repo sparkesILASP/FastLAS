@@ -4,6 +4,7 @@
 #include <__algorithm/remove_if.h>
 #include <algorithm>
 #include <boost/algorithm/string.hpp>
+#include <boost/regex.hpp>
 #include <cstdlib>
 #include <iostream>
 #include <memory>
@@ -30,6 +31,8 @@ void expand_penalty_rule_to_for(std::stringstream &stream, Example *example) {
   std::map<std::string, std::set<std::vector<std::string>>> head_body_map{};
 
   fill_head_body_map(head_body_map, example);
+
+  print_head_body_map(head_body_map);
 
   stream << converse_stream(head_body_map).str() << endl
          << converse_complement_stream(head_body_map).str() << endl
@@ -104,18 +107,38 @@ void print_head_body_map(std::map<std::string, std::set<std::vector<std::string>
 }
 
 /*
-Naive approach to representative literal for collection of literals
-1. remove spaces (atom)
-2. lower case (to avoid variables)
-3. concatenate
-https://stackoverflow.com/questions/83439/remove-spaces-from-stdstring-in-c
+Representative literal via rep_ prefix and then number incrementing from 0.
+In the case of variables need to ensure safe.
+So, collect every variable in literal string and include in representative.
+boost used for positive lookbehind
 */
 std::string representative_literal(std::vector<std::string> &lit_vec) {
   std::stringstream rep_stream{};
-  for (std::string elem : lit_vec) {
-    rep_stream << flatten(elem);
+
+  rep_stream << "rep_"
+             << std::to_string(rep_count);
+  rep_count++;
+
+  std::set<std::string> var_set{};
+
+  const boost::regex expression("(?<=\\(|,)[A-Z]+(?=\\)|,)");
+  boost::smatch match;
+
+  for (std::string literal : lit_vec) {
+    while (boost::regex_search(literal, match, expression)) {
+      var_set.insert(match.str());
+      literal = match.suffix();
+    }
   }
-  rep_stream << 0 << rep_count++;
+
+  if (var_set.size() > 0) rep_stream << "("
+                                     << join_set(var_set, std::string(","))
+                                     << ")";
+
+  // for (std::string elem : lit_vec) {
+  //   rep_stream << flatten(elem);
+  // }
+  // rep_stream << 0 << rep_count++;
   return rep_stream.str();
 }
 
@@ -144,6 +167,24 @@ std::string join_vec(std::vector<std::string> &vec, std::string sep) {
   std::stringstream out_stream{};
   bool first{true};
   for (std::string elem : vec) {
+    if (first) {
+      out_stream << elem;
+      first = false;
+    } else {
+      out_stream << sep << " "
+                 << elem;
+    }
+  }
+  return out_stream.str();
+}
+
+/*
+join set of strings with separator (e.g. ",")
+*/
+std::string join_set(std::set<std::string> &set, std::string sep) {
+  std::stringstream out_stream{};
+  bool first{true};
+  for (std::string elem : set) {
     if (first) {
       out_stream << elem;
       first = false;
@@ -221,15 +262,6 @@ std::stringstream converse_complement_stream(std::map<std::string, std::set<std:
                                    << "not\'" << iter->first
                                    << "." << endl;
       }
-
-      // // heuristics for a few violations as possible
-
-      // for (auto comp : complement_vec) {
-      //   converse_complement_stream
-      //       << "#heuristic "
-      //       << comp
-      //       << ".[1@1, false]" << endl;
-      // }
       converse_complement_stream << endl;
     }
   }

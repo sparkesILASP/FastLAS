@@ -97,11 +97,13 @@ void FastLAS::Possible_Penalties() {
 
     // poss_solve_strm << "#minimize { X, Y : " + Penalty::asp_predicate + "(X,Y) }." << std::endl;
 
-    poss_solve_strm
-        << Penalty::make_lua_possibility_script_for(example->bound);
+    poss_solve_strm << Penalty::make_lua_possibility_script_for(example->bound);
 
     if (FastLAS::output_penalty_program) std::cout << poss_solve_strm.str()
                                                    << std::endl;
+
+    // std::cout << poss_solve_strm.str()
+    //           << std::endl;
 
     bool satisfiable{true};
     int possibility_penalty{-1};
