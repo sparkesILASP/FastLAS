@@ -201,7 +201,6 @@ void FastLAS::optimise() {
 
   vector<pair<set<Schema::RuleSchema *>, set<Schema::RuleSchema *>>> schema_group_vec = Schema::get_implication_groups();
   // individuated by possible mode heads?
-  cout << "schema_group_vec: " << endl;
 
   set<int> schema_group_ids;
   for (int i = 0; i < schema_group_vec.size(); i++) {
