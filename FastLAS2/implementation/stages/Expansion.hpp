@@ -31,9 +31,13 @@ std::stringstream converse_complement_stream(std::map<std::string, std::set<std:
 
 std::stringstream penalty_yes_no_stream(std::map<std::string, std::set<std::vector<std::string>>> &head_body_map);
 
+std::stringstream heuristic_stream(std::map<std::string, std::set<std::vector<std::string>>> &head_body_map);
+
 /*
 I think abduction would be preferable…
 */
+
+void negation_as_prefix(std::string &literal);
 
 void with_negation_prefix(std::string &literal);
 
@@ -42,5 +46,7 @@ void negation_as_failure(std::string &literal);
 void negate_with_prefix(std::string &literal);
 
 std::string add_negation_prefix(std::string &literal);
+
+std::string remove_naf(std::string literal);
 
 #endif

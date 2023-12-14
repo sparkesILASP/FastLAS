@@ -81,7 +81,7 @@ int main(int argc, char **argv) {
       "timeout", po::value<int>(), "time limit for the final solving stage.")(
       "threads", po::value<int>(), "number of threads.")(
       "output-penalty-program", "output program used to generate possibilities for examples.")(
-      "view-possibilities", "output generated possibilities.");
+      "vp", "output generated possibilities.");
 
   po::positional_options_description p;
   p.add("file_names", -1);
@@ -133,7 +133,7 @@ int main(int argc, char **argv) {
   if (vm.count("force-safety")) FastLAS::force_safety = true;
   if (vm.count("score-only")) FastLAS::score_only = true;
   if (vm.count("output-penalty-program")) FastLAS::output_penalty_program = true;
-  if (vm.count("view-possibilities")) FastLAS::view_possibilities = true;
+  if (vm.count("vp")) FastLAS::view_possibilities = true;
 
   // parse
 
@@ -163,9 +163,9 @@ int main(int argc, char **argv) {
   }
 
   // STAGE: Expand penalty programs through each example
-  if (FastLAS::mode == FastLAS::Mode::bound) {
-    FastLAS::expand_penalty_rules();
-  }
+  // if (FastLAS::mode == FastLAS::Mode::bound) {
+  //   // FastLAS::expand_penalty_rules();
+  // }
 
   // STAGE: Generate possibilities, if needed
   switch (FastLAS::mode) {

@@ -197,28 +197,35 @@ void FastLAS::solve_pen() {
 }
 
 void FastLAS::solve_final_task_pen(string program) {
-  stringstream ss;
+  stringstream solve_program_stream;
+
   sat_pen = false;
   sat_disjs_pen.clear();
 
   stringstream solution_pen_ss;
 
-  ss << program
-     << bias->final_bias_constraints << endl
-     << final_solving_program_pen << endl;
+  solve_program_stream << program
+                       << bias->final_bias_constraints << endl
+                       << final_solving_program_pen << endl;
 
   if (FastLAS::output_solve_program) {
     cout << "Solve program: " << endl
-         << ss.str() << endl;
+         << solve_program_stream.str() << endl;
     exit(0);
   }
 
-  Solver::Clingo(3, ss.str(), ((FastLAS::timeout < 0) ? " " : "--time=" + std::to_string(FastLAS::timeout)))(
+  Solver::Clingo(3, solve_program_stream.str(), ((FastLAS::timeout < 0) ? " " : "--time=" + std::to_string(FastLAS::timeout)))(
       // in_head
       'i', [&](const string &atom) {
         auto rule = Schema::RuleSchema::get_schema(stoi(atom));
         hypothesis_length_pen += rule->get_score();
         solution_pen_ss << rule->print() << endl;
+
+        cout << "Rule: "
+             << rule->print()
+             << ". Penalty: "
+             << rule->get_score()
+             << endl;
       })(
       // intermediate_penalty
       'b', [&](const string &atom) {

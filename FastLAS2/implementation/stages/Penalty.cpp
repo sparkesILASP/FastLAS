@@ -17,41 +17,41 @@ $penalty|{+X | X is used atom}|{-X | X is atom in a penalty}
 Figure out negative by diff of + from - set.
 */
 std::string Penalty::make_lua_possibility_script_for(int bound) {
-  return R"[](
+  return R"ESC(
 #script (lua)
 
-function customPrint(m)3
-model_string = "$"
-model_string = model_string..m.cost[1].."|"
+function customPrint(m)
+model_string = ""
 atoms = m:symbols{shown=true}
 
 for i, atom in ipairs(atoms) do
 		atom_string = tostring(atom)
-		penalty_match = atom_string:match(')[]" +
-         Penalty::asp_predicate + R"[](%(%d+,(.+)%)')
+		penalty_match = atom_string:match(')ESC" +
+         std::string("sum_of_penalties") + R"ESC(%((%d+)%)')
 		negation_match = atom_string:match("not'(.+)")
 		if penalty_match then
-				model_string = model_string.." &"..penalty_match.."|"
+      model_string = model_string.." $"..penalty_match.."|"
 		elseif negation_match then
-		    model_string = model_string.." -"..negation_match.."|"
+      model_string = model_string.." -"..negation_match.."|"
 		else
-        model_string = model_string.." +"..atom_string.."|"
+      model_string = model_string.." +"..atom_string.."|"
 		end
+    
+    
 end
 model_string = model_string.." ;|"
 print(model_string)
 end
 
 function main(prg)
-prg.configuration.solve.models = 0 -- find all models
--- prg.configuration.solve.opt_mode = "enum,)[]" +
-         //  std::to_string(bound) +
-         R"[]("
-prg:ground({{"base", {}}})
-prg:solve{on_model=customPrint}
+
+  prg.configuration.solve.models = 0 -- find all models
+  prg:ground({{"base", {}}})
+  prg:solve{on_model=customPrint}
+
 end
 
-#end.)[]";
+#end.)ESC";
 }
 
 /*
@@ -68,7 +68,6 @@ void FastLAS::Possible_Penalties() {
     // Set up things for example
     std::set<std::string> inc;
     std::set<std::string> exc;
-    int penalty;
 
     std::stringstream poss_solve_strm;
 
@@ -85,36 +84,53 @@ void FastLAS::Possible_Penalties() {
     // Expand
     expand_penalty_rule_to_for(poss_solve_strm, example);
 
-    poss_solve_strm << "#minimize { X, Y : " + Penalty::asp_predicate + "(X,Y) }." << std::endl;
-    poss_solve_strm << Penalty::make_lua_possibility_script_for(example->bound);
+    // calculate the sum of penalties
+    poss_solve_strm << std::endl
+                    << "sum_of_penalties(M)"
+                    << " :- "
+                    << "M = #sum { N, ID : penalty(N,ID) }." << std::endl;
 
-    if (FastLAS::output_penalty_program) std::cout << poss_solve_strm.str() << std::endl;
+    // require sum of penalties is below bound
+    poss_solve_strm << "M < "
+                    << example->bound + 1
+                    << ":- sum_of_penalties(M).";
 
-    for (int i = 0; i <= example->bound; i++) {
-      std::cout << std::to_string(i) << std::endl;
+    // poss_solve_strm << "#minimize { X, Y : " + Penalty::asp_predicate + "(X,Y) }." << std::endl;
 
-      std::string timeout_cmd = (FastLAS::timeout < 0) ? " " : "--time=" + std::to_string(FastLAS::timeout);
-      std::string bound_cmd = " --opt-mode=enum," + std::to_string(i);
+    poss_solve_strm
+        << Penalty::make_lua_possibility_script_for(example->bound);
 
-      Solver::Clingo(3, poss_solve_strm.str(), timeout_cmd + bound_cmd)(
-          // inclusions
-          '+', [&](const std::string &atom) {
-            inc.insert(atom);
-          })(
-          // exclusions
-          '-', [&](const std::string &atom) {
-            exc.insert(atom);
-          })(
-          // penalty
-          '$', [&](const std::string &atom) {
-            penalty = std::stoi(atom);
-          })([&]() {
+    if (FastLAS::output_penalty_program) std::cout << poss_solve_strm.str()
+                                                   << std::endl;
+
+    bool satisfiable{true};
+    int possibility_penalty{-1};
+
+    std::string timeout_cmd = (FastLAS::timeout < 0) ? " " : "--time=" + std::to_string(FastLAS::timeout);
+    std::string subset_min_cmd = " --enum-mode=domrec --heuristic=domain --dom-mod=5,16";
+
+    Solver::Clingo(3, poss_solve_strm.str(), timeout_cmd + subset_min_cmd)(
+        // inclusions
+        '+', [&](const std::string &atom) {
+          inc.insert(atom);
+        })(
+        // exclusions
+        '-', [&](const std::string &atom) {
+          exc.insert(atom);
+        })(
+        // penalty
+        '$', [&](const std::string &atom) {
+          possibility_penalty = std::stoi(atom);
+        })(
         // make possibility
-        example->add_bound_possibility(example->id + "x" + std::to_string(possibility_id), inc, exc, penalty);
-        possibility_id++;
-        inc.clear();
-        exc.clear();
-      });
-    }
+        [&]() {
+          satisfiable = true;
+
+          Example *new_possibility = example->add_bound_possibility(example->id + "x" + std::to_string(possibility_id), inc, exc, possibility_penalty);
+          possibility_id++;
+
+          inc.clear();
+          exc.clear();
+        });
   }
 }

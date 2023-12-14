@@ -45,7 +45,8 @@ void expand_penalty_rule_to_for(std::stringstream &stream, Example *example) {
 
   stream << converse_stream(head_body_map).str() << endl
          << converse_complement_stream(head_body_map).str() << endl
-         << penalty_yes_no_stream(head_body_map).str() << endl;
+         << penalty_yes_no_stream(head_body_map).str() << endl
+         << heuristic_stream(head_body_map).str() << endl;
 }
 
 /*
@@ -181,7 +182,7 @@ std::stringstream converse_stream(std::map<std::string, std::set<std::vector<std
     for (std::vector<std::string> body_vec : iter->second) {
       std::string rep_lit = representative_literal(body_vec);
       for (auto body_lit : body_vec) {
-        negate_with_prefix(body_lit);
+        negation_as_prefix(body_lit);
         converse_stream << body_lit
                         << " :- "
                         << rep_lit
@@ -233,19 +234,42 @@ std::stringstream converse_complement_stream(std::map<std::string, std::set<std:
                                    << "." << endl;
       }
 
-      // heuristics for a few violations as possible
-      converse_complement_stream << endl
-                                 << "%minimal interpretation heuristics" << endl;
-      for (auto comp : complement_vec) {
-        converse_complement_stream
-            << "#heuristic "
-            << comp
-            << ".[1@1, false]" << endl;
-      }
+      // // heuristics for a few violations as possible
+
+      // for (auto comp : complement_vec) {
+      //   converse_complement_stream
+      //       << "#heuristic "
+      //       << comp
+      //       << ".[1@1, false]" << endl;
+      // }
       converse_complement_stream << endl;
     }
   }
   return converse_complement_stream;
+}
+
+/*
+heuristics for a few violations as possible
+*/
+std::stringstream heuristic_stream(std::map<std::string, std::set<std::vector<std::string>>> &head_body_map) {
+
+  std::stringstream heuristic_stream{};
+
+  heuristic_stream << endl
+                   << "%minimal interpretation heuristics" << endl;
+
+  for (std::map<std::string, std::set<std::vector<std::string>>>::iterator iter = head_body_map.begin(); iter != head_body_map.end(); ++iter) {
+
+    for (std::vector<std::string> body_vec : iter->second) {
+
+      for (auto body_lit : body_vec) {
+        heuristic_stream << "#heuristic "
+                         << remove_naf(body_lit)
+                         << ".[1@1, false]" << endl;
+      }
+    }
+  }
+  return heuristic_stream;
 }
 
 std::stringstream penalty_yes_no_stream(std::map<std::string, std::set<std::vector<std::string>>> &head_body_map) {
@@ -267,6 +291,14 @@ std::stringstream penalty_yes_no_stream(std::map<std::string, std::set<std::vect
 
   return penalty_yes_no_stream;
 }
+
+// std::stringstream penalty_sum_stream(std::map<std::string, std::set<std::vector<std::string>>> &head_body_map) {
+
+//   std::stringstream penalty_sum_stream{};
+
+//       for (std::map<std::string, std::set<std::vector<std::string>>>::iterator iter = head_body_map.begin(); iter != head_body_map.end(); ++iter) {
+//   }
+// }
 
 /*
 Non-ideal way to deal with not literals.
@@ -312,4 +344,16 @@ void negate_with_prefix(std::string &literal) {
 
 std::string add_negation_prefix(std::string &literal) {
   return std::string("not\'") + literal;
+}
+
+std::string remove_naf(std::string literal) {
+  std::string regex_string = "not ([^\\)])";
+  std::regex re(regex_string);
+  std::smatch m;
+
+  if (std::regex_search(literal, m, re)) {
+    return m[1];
+  } else {
+    return literal;
+  }
 }

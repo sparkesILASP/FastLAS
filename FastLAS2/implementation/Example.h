@@ -69,7 +69,7 @@ public:
   void set_unique_possibility();
   void add_possibility(const std::set<int> &, const std::set<int> &, const std::set<int> &);
   void add_possibility(const std::set<int> &, const std::set<std::set<int>> &);
-  void add_bound_possibility(std::string id, std::set<std::string> &inclusions, std::set<std::string> &exclusions, int bound);
+  Example *add_bound_possibility(std::string id, std::set<std::string> &inclusions, std::set<std::string> &exclusions, int bound);
   void add_possibility(Example *);
 
   virtual bool prediction() const;
