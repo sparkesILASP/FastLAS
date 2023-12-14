@@ -72,7 +72,7 @@ int main(int argc, char **argv) {
       "nopl", "run the new phases of the FastNonOPL algorithm, needed for non-observational predicate learning.")(
       "opl", "do not run the new phases of the FastNonOPL algorithm, needed for non-observational predicate learning.")(
       "bound", "run with boundary type examples.")(
-      "output-solve-program", "perform the main steps of the FastLAS algorithm, then write out the final ASP program used to search for an optimal solution.")("file_names", po::value<vector<string>>(), "input files.")(
+      "fsp", "perform the main steps of the FastLAS algorithm, then write out the final ASP program used to search for an optimal solution.")("file_names", po::value<vector<string>>(), "input files.")(
       "read-cache", po::value<string>(), "location to read cached data from.")(
       "write-cache", po::value<string>(), "location to write cached data to.")(
       "score-only", "only output the score of the solution.")(
@@ -80,7 +80,7 @@ int main(int argc, char **argv) {
       "space-size", "output final s_m size.")(
       "timeout", po::value<int>(), "time limit for the final solving stage.")(
       "threads", po::value<int>(), "number of threads.")(
-      "output-penalty-program", "output program used to generate possibilities for examples.")(
+      "opp", "output program used to generate possibilities for examples.")(
       "vp", "output generated possibilities.");
 
   po::positional_options_description p;
@@ -123,7 +123,7 @@ int main(int argc, char **argv) {
 
   if (vm.count("space-size")) FastLAS::space_size = true;
   if (vm.count("categorical-contexts")) FastLAS::categorical_contexts = true;
-  if (vm.count("output-solve-program")) FastLAS::output_solve_program = true;
+  if (vm.count("fsp")) FastLAS::output_solve_program = true;
   if (vm.count("debug")) debug = true;
   if (vm.count("threads")) FastLAS::thread_num = vm["threads"].as<int>();
   if (vm.count("timeout")) FastLAS::timeout = vm["timeout"].as<int>();
@@ -132,7 +132,7 @@ int main(int argc, char **argv) {
   if (vm.count("bound")) FastLAS::mode = FastLAS::Mode::bound;
   if (vm.count("force-safety")) FastLAS::force_safety = true;
   if (vm.count("score-only")) FastLAS::score_only = true;
-  if (vm.count("output-penalty-program")) FastLAS::output_penalty_program = true;
+  if (vm.count("opp")) FastLAS::output_penalty_program = true;
   if (vm.count("vp")) FastLAS::view_possibilities = true;
 
   // parse
