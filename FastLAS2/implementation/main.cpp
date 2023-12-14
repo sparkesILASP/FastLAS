@@ -46,7 +46,8 @@
 
 extern int yyparse();
 extern FILE *yyin;
-extern bool prediction_task, cache;
+extern bool prediction_task;
+extern bool cache;
 extern std::set<Example *> examples;
 
 std::string usage_str = "ERROR: usage:  FastLAS [ --opl | --nopl | --bound ] file_name";
@@ -170,6 +171,9 @@ int main(int argc, char **argv) {
   switch (FastLAS::mode) {
   case FastLAS::Mode::bound:
     FastLAS::Possible_Penalties();
+
+    if (FastLAS::view_possibilities) cout << "Possibilities:" << endl
+                                          << FastLAS::print_string_possibilities();
     break;
   case FastLAS::Mode::nopl:
     // Abduce possibilities, when set

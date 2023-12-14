@@ -1,5 +1,4 @@
 #include "./Expansion.hpp"
-#include "../Example.h"
 #include "../Utils.h"
 #include "./Penalty.h"
 #include <__algorithm/remove_if.h>
@@ -22,58 +21,70 @@ int rep_count{1};
 // predicates are stored as strings as
 // 1. otherwise heads are unique to a rule.
 // 2. will build new rules from strings anyway (and so bodies also as strings)
-std::map<std::string, std::set<std::vector<std::string>>> head_body_map{};
 
 void FastLAS::expand_penalty_rules() {
   std::cout << "Expanding…" << endl;
 
-  fill_head_body_map(head_body_map);
-  cout << converse_stream(head_body_map).str() << endl;
-  cout << converse_complement_stream(head_body_map).str() << endl;
-  cout << penalty_yes_no_stream(head_body_map).str() << endl;
+  // for (auto example : examples) {
+
+  //   std::map<std::string, std::set<std::vector<std::string>>> head_body_map{};
+
+  //   fill_head_body_map(head_body_map, example);
+  //   cout << converse_stream(head_body_map).str() << endl;
+  //   cout << converse_complement_stream(head_body_map).str() << endl;
+  //   cout << penalty_yes_no_stream(head_body_map).str() << endl;
+  // }
 
   // print_head_body_map(head_body_map);
+}
+
+void expand_penalty_rule_to_for(std::stringstream &stream, Example *example) {
+  std::map<std::string, std::set<std::vector<std::string>>> head_body_map{};
+
+  fill_head_body_map(head_body_map, example);
+
+  stream << converse_stream(head_body_map).str() << endl
+         << converse_complement_stream(head_body_map).str() << endl
+         << penalty_yes_no_stream(head_body_map).str() << endl;
 }
 
 /*
 Fill head body map by searching rules for heads matching penalty regex.
 */
-void fill_head_body_map(std::map<std::string, std::set<std::vector<std::string>>> &head_body_map) {
+void fill_head_body_map(std::map<std::string, std::set<std::vector<std::string>>> &head_body_map, Example *example) {
   // Set up part of regex for finding penalty predicates
   std::string regex_string = Penalty::asp_predicate + "\\([^\\)]+\\)";
   std::regex re(regex_string);
 
-  for (auto eg : examples) {
-    for (auto rule : eg->bound_prog) {
+  for (auto rule : example->bound_prog) {
 
-      std::string head_string = rule.get_head()->to_string();
+    std::string head_string = rule.get_head()->to_string();
 
-      std::smatch m;
+    std::smatch m;
 
-      if (std::regex_search(head_string, m, re)) {
-        // This can't happen given FastLAS2 restrictions.
-        if (m.size() > 1) {
-          cerr << "Multiple penalties in the head of a rule" << endl;
-          exit(88);
-        }
+    if (std::regex_search(head_string, m, re)) {
+      // This can't happen given FastLAS2 restrictions.
+      if (m.size() > 1) {
+        cerr << "Multiple penalties in the head of a rule" << endl;
+        exit(88);
+      }
 
-        std::vector<std::shared_ptr<NLiteral>> body_vec = rule.get_body();
-        std::vector<std::string> body_string_vec{};
+      std::vector<std::shared_ptr<NLiteral>> body_vec = rule.get_body();
+      std::vector<std::string> body_string_vec{};
 
-        // get body strings
-        for (auto body_rule : body_vec) {
-          body_string_vec.push_back(body_rule->to_string());
-        }
+      // get body strings
+      for (auto body_rule : body_vec) {
+        body_string_vec.push_back(body_rule->to_string());
+      }
 
-        // add to map
-        auto it = head_body_map.find(rule.get_head()->to_string());
-        if (it == head_body_map.end()) {
-          // create set if needed
-          std::set<std::vector<std::string>> body_sets{body_string_vec};
-          head_body_map.insert_or_assign(rule.get_head()->to_string(), body_sets);
-        } else {
-          it->second.insert(body_string_vec);
-        }
+      // add to map
+      auto it = head_body_map.find(rule.get_head()->to_string());
+      if (it == head_body_map.end()) {
+        // create set if needed
+        std::set<std::vector<std::string>> body_sets{body_string_vec};
+        head_body_map.insert_or_assign(rule.get_head()->to_string(), body_sets);
+      } else {
+        it->second.insert(body_string_vec);
       }
     }
   }
@@ -180,10 +191,12 @@ std::stringstream converse_stream(std::map<std::string, std::set<std::vector<std
     }
     converse_stream << endl;
     converse_stream << "1 { "
-                    << join_vec(rep_vec, ",")
-                    << " }"
+                    << join_vec(rep_vec, ";")
+                    << " } "
+                    << rep_vec.size()
                     << " :- "
-                    << iter->first << endl
+                    << iter->first
+                    << "." << endl
                     << endl;
   }
   return converse_stream;
@@ -203,12 +216,22 @@ std::stringstream converse_complement_stream(std::map<std::string, std::set<std:
         negate_with_prefix(body_lit);
         complement_vec.push_back(body_lit);
       }
-      converse_complement_stream << "1 { "
-                                 << join_vec(complement_vec, ",")
-                                 << " }"
-                                 << " :- "
-                                 << "not\'" << iter->first
-                                 << "." << endl;
+
+      if (complement_vec.size() > 0) {
+
+        if (complement_vec.size() > 1) {
+          converse_complement_stream << "1 { "
+                                     << join_vec(complement_vec, ";")
+                                     << " } "
+                                     << complement_vec.size();
+        } else {
+          converse_complement_stream << complement_vec[0];
+        }
+
+        converse_complement_stream << " :- "
+                                   << "not\'" << iter->first
+                                   << "." << endl;
+      }
 
       // heuristics for a few violations as possible
       converse_complement_stream << endl
@@ -235,7 +258,7 @@ std::stringstream penalty_yes_no_stream(std::map<std::string, std::set<std::vect
     penalty_yes_no_stream << "1 { ";
 
     penalty_yes_no_stream << head
-                          << ", "
+                          << "; "
                           << add_negation_prefix(head)
                           << " ";
 

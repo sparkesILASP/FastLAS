@@ -1,6 +1,7 @@
 #include "Penalty.h"
 #include "../Example.h"
 #include "../Solvers/Solvers.h"
+#include "Expansion.hpp"
 #include <iostream>
 #include <ostream>
 #include <set>
@@ -16,19 +17,19 @@ $penalty|{+X | X is used atom}|{-X | X is atom in a penalty}
 Figure out negative by diff of + from - set.
 */
 std::string Penalty::make_lua_possibility_script_for(int bound) {
-  return R"(
-    #script (lua)
+  return R"[](
+#script (lua)
 
-function customPrint(m)
+function customPrint(m)3
 model_string = "$"
 model_string = model_string..m.cost[1].."|"
 atoms = m:symbols{shown=true}
 
 for i, atom in ipairs(atoms) do
 		atom_string = tostring(atom)
-		penalty_match = atom_string:match(')" +
-         Penalty::asp_predicate + R"(%(%d+,(.+)%)')
-		negation_match = atom_string:match('not_(.+)')
+		penalty_match = atom_string:match(')[]" +
+         Penalty::asp_predicate + R"[](%(%d+,(.+)%)')
+		negation_match = atom_string:match("not'(.+)")
 		if penalty_match then
 				model_string = model_string.." &"..penalty_match.."|"
 		elseif negation_match then
@@ -43,13 +44,14 @@ end
 
 function main(prg)
 prg.configuration.solve.models = 0 -- find all models
-prg.configuration.solve.opt_mode = "enum,)" +
-         std::to_string(bound) + R"("
+-- prg.configuration.solve.opt_mode = "enum,)[]" +
+         //  std::to_string(bound) +
+         R"[]("
 prg:ground({{"base", {}}})
 prg:solve{on_model=customPrint}
 end
 
-#end.)";
+#end.)[]";
 }
 
 /*
@@ -61,34 +63,40 @@ void FastLAS::Possible_Penalties() {
 
   for (Example *example : examples) {
 
-    // std::cout << example->to_string() << std::endl;
+    int possibility_id{0};
 
-    if (example->ex_type == Example::ExType::bnd) {
-      int possibility_id{0};
+    // Set up things for example
+    std::set<std::string> inc;
+    std::set<std::string> exc;
+    int penalty;
 
-      // Set up things for example
-      std::set<std::string> inc;
-      std::set<std::string> exc;
-      int penalty;
+    std::stringstream poss_solve_strm;
 
-      std::stringstream poss_solve_strm;
+    // Add each rule to the solver
+    poss_solve_strm << "% bound program:" << std::endl;
+    for (auto r : example->bound_prog) {
+      poss_solve_strm << r.to_string() << std::endl;
+    }
+    poss_solve_strm << "% context:" << std::endl;
+    for (auto r : example->get_context()) {
+      poss_solve_strm << r.to_string() << std::endl;
+    }
 
-      // Add each rule to the solver
-      poss_solve_strm << "% bound program:" << std::endl;
-      for (auto r : example->bound_prog) {
-        poss_solve_strm << r.to_string() << std::endl;
-      }
-      poss_solve_strm << "% context:" << std::endl;
-      for (auto r : example->get_context()) {
-        poss_solve_strm << r.to_string() << std::endl;
-      }
+    // Expand
+    expand_penalty_rule_to_for(poss_solve_strm, example);
 
-      poss_solve_strm << "#minimize { X, Y : " + Penalty::asp_predicate + "(X,Y) }." << std::endl;
-      poss_solve_strm << Penalty::make_lua_possibility_script_for(example->bound);
+    poss_solve_strm << "#minimize { X, Y : " + Penalty::asp_predicate + "(X,Y) }." << std::endl;
+    poss_solve_strm << Penalty::make_lua_possibility_script_for(example->bound);
 
-      if (FastLAS::output_penalty_program) std::cout << poss_solve_strm.str() << std::endl;
+    if (FastLAS::output_penalty_program) std::cout << poss_solve_strm.str() << std::endl;
 
-      Solver::Clingo(3, poss_solve_strm.str(), ((FastLAS::timeout < 0) ? " " : "--time=" + std::to_string(FastLAS::timeout)))(
+    for (int i = 0; i <= example->bound; i++) {
+      std::cout << std::to_string(i) << std::endl;
+
+      std::string timeout_cmd = (FastLAS::timeout < 0) ? " " : "--time=" + std::to_string(FastLAS::timeout);
+      std::string bound_cmd = " --opt-mode=enum," + std::to_string(i);
+
+      Solver::Clingo(3, poss_solve_strm.str(), timeout_cmd + bound_cmd)(
           // inclusions
           '+', [&](const std::string &atom) {
             inc.insert(atom);

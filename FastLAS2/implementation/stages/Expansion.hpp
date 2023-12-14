@@ -1,6 +1,7 @@
 #ifndef STAGES__EXPANSION__H__
 #define STAGES__EXPANSION__H__
 
+#include "../Example.h"
 #include <map>
 #include <set>
 #include <string>
@@ -11,7 +12,9 @@ void expand_penalty_rules();
 
 }
 
-void fill_head_body_map(std::map<std::string, std::set<std::vector<std::string>>> &head_body_map);
+void expand_penalty_rule_to_for(std::stringstream &stream, Example *example);
+
+void fill_head_body_map(std::map<std::string, std::set<std::vector<std::string>>> &head_body_map, Example *example);
 
 void print_head_body_map(std::map<std::string, std::set<std::vector<std::string>>> &head_body_map);
 
