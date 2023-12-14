@@ -24,18 +24,6 @@ int rep_count{1};
 
 void FastLAS::expand_penalty_rules() {
   std::cout << "Expanding…" << endl;
-
-  // for (auto example : examples) {
-
-  //   std::map<std::string, std::set<std::vector<std::string>>> head_body_map{};
-
-  //   fill_head_body_map(head_body_map, example);
-  //   cout << converse_stream(head_body_map).str() << endl;
-  //   cout << converse_complement_stream(head_body_map).str() << endl;
-  //   cout << penalty_yes_no_stream(head_body_map).str() << endl;
-  // }
-
-  // print_head_body_map(head_body_map);
 }
 
 void expand_penalty_rule_to_for(std::stringstream &stream, Example *example) {
@@ -308,11 +296,11 @@ A better way to do this is to only match for not' rather than '
 Though, restrictions on input language should be avoided
 */
 void negation_as_prefix(std::string &literal) {
-  std::string regex_string = "not \\([^\\)]\\)";
+  std::string regex_string = "not (.*)";
   std::regex re(regex_string);
   std::smatch m;
   if (std::regex_search(literal, m, re)) {
-    literal = std::string("not\'") + std::string(m[0]);
+    literal = std::string("not\'") + std::string(m[1]);
   }
 }
 

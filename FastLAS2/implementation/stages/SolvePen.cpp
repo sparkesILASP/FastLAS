@@ -34,7 +34,7 @@
 #include <ostream>
 #include <string>
 
-std::string final_solving_program_pen = R"(
+std::string final_solving_program_pen = R"ESC(
 :~ penalty(P, T).[P@0, intermediate, T]
 
 % #show in_h/1.
@@ -70,7 +70,7 @@ function main(prg)
   print(new_model)
 end
 #end.
-)";
+)ESC";
 
 using namespace std;
 
@@ -123,7 +123,7 @@ void FastLAS::solve_pen() {
       ss << "% " << eg->id << " : " << sub_eg->id << endl;
       ss << "possibility_penalty(" << sub_eg->get_penalty() << ", " << sub_eg->id << ", " << eg->id << ")"
          << " :- "
-         << "not n_cov(" << sub_eg->id << ", " << eg->id << ")." << endl;
+         << "cov(" << sub_eg->id << ", " << eg->id << ")." << endl;
       // Insert the optimised rule disjunctions (optimised ruleschemas from characteristic ruleset).
 
       std::string cov_string_disjunctions{};
@@ -220,12 +220,6 @@ void FastLAS::solve_final_task_pen(string program) {
         auto rule = Schema::RuleSchema::get_schema(stoi(atom));
         hypothesis_length_pen += rule->get_score();
         solution_pen_ss << rule->print() << endl;
-
-        cout << "Rule: "
-             << rule->print()
-             << ". Penalty: "
-             << rule->get_score()
-             << endl;
       })(
       // intermediate_penalty
       'b', [&](const string &atom) {
