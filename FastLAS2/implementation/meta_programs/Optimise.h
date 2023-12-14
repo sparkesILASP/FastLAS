@@ -157,7 +157,6 @@ function onModel(m)
   if bound < 0 then
     bound = 0
   end
-  bound = bound + 1
   mp = new_model.." b"..tostring(bound).."| ;|"
 end
 
