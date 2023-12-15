@@ -94,6 +94,7 @@ void check(std::string id) {
   std::vector<std::shared_ptr<NTerm>> *arg_list;
   NNafLiteral *naf_literal;
   std::vector<std::shared_ptr<NLiteral>> *conjunction;
+  std::vector<std::shared_ptr<NLiteral>> *domain_restriction_conjunction;
   NRule* rule;
   std::vector<NRule> *program;
   std::string* str_ptr;
@@ -122,7 +123,8 @@ void check(std::string id) {
 %type <mode> mode inner_mode_dec
 %type <naf_literal> naf_literal
 %type <arg_list> arg_list atom_args
-%type <conjunction> conjunction rule_body
+%type <conjunction> conjunction rule_body 
+%type <domain_restriction_conjunction> domain_restriction_conjunction
 %type <rule> rule
 %type <program> asp_program
 %type <atom_set> atom_set atom_list
@@ -272,11 +274,22 @@ conjunction : naf_literal { $$ = new std::vector<std::shared_ptr<NLiteral>>(); s
             | conjunction comma_or_semi_colon naf_literal { $$ = $1; std::shared_ptr<NLiteral> nl($3); $$->push_back(nl); }
             ;
 
+domain_restriction_conjunction : naf_literal { $$ = new std::vector<std::shared_ptr<NLiteral>>(); std::shared_ptr<NLiteral> nl($1); $$->push_back(nl); }
+                      | domain_restriction_conjunction T_COMMA naf_literal { $$ = $1; std::shared_ptr<NLiteral> nl($3); $$->push_back(nl); }
+                      ;
+
+
 comma_or_semi_colon : T_COMMA;
 comma_or_semi_colon : T_SEMI_COLON;
 
-naf_literal : T_NAF atom { std::shared_ptr<NAtom> a($2); $$ = new NNafLiteral(false, a); }
-            | atom { std::shared_ptr<NAtom> a($1); $$ = new NNafLiteral(true, a); }
+naf_literal : T_NAF atom { std::shared_ptr<NAtom> a($2); 
+                           $$ = new NNafLiteral(false, a); }
+            | atom { std::shared_ptr<NAtom> a($1); 
+                     $$ = new NNafLiteral(true, a); }
+            | atom T_COLON domain_restriction_conjunction { std::shared_ptr<NAtom> a($1);
+                                                   NNafLiteral* new_lit = new NNafLiteral(true, a);
+                                                   new_lit->associate_domain_restrictions($3);
+                                                   $$ = new_lit; }
             ;
 
 atom : T_BASIC_SYMBOL atom_args {

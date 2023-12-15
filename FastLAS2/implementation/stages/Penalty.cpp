@@ -71,15 +71,22 @@ void FastLAS::Possible_Penalties() {
 
     std::stringstream poss_solve_strm;
 
+    std::cout << "huh" << std::endl;
+
     // Add each rule to the solver
     poss_solve_strm << "% bound program:" << std::endl;
     for (auto r : example->bound_prog) {
-      poss_solve_strm << r.to_string() << std::endl;
+      poss_solve_strm << r.to_domain_expanded_string() << std::endl;
     }
+
+    std::cout << "huh" << std::endl;
+
     poss_solve_strm << "% context:" << std::endl;
     for (auto r : example->get_context()) {
-      poss_solve_strm << r.to_string() << std::endl;
+      poss_solve_strm << r.to_domain_expanded_string() << std::endl;
     }
+
+    std::cout << "huh" << std::endl;
 
     // Expand
     expand_penalty_rule_to_for(poss_solve_strm, example);

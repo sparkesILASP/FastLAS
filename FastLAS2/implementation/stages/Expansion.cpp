@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <boost/algorithm/string.hpp>
 #include <boost/regex.hpp>
+#include <condition_variable>
 #include <cstdlib>
 #include <iostream>
 #include <memory>
@@ -28,7 +29,9 @@ void FastLAS::expand_penalty_rules() {
 }
 
 void expand_penalty_rule_to_for(std::stringstream &stream, Example *example) {
-  std::map<std::string, std::set<std::vector<std::string>>> head_body_map{};
+  std::map<std::string, std::set<std::vector<std::shared_ptr<NLiteral>>>> head_body_map{};
+
+  cout << "here we go " << endl;
 
   fill_head_body_map(head_body_map, example);
 
@@ -38,12 +41,17 @@ void expand_penalty_rule_to_for(std::stringstream &stream, Example *example) {
          << converse_complement_stream(head_body_map).str() << endl
          << penalty_yes_no_stream(head_body_map).str() << endl
          << heuristic_stream(head_body_map).str() << endl;
+
+  // cout << converse_stream(head_body_map).str() << endl;
+  // cout << converse_complement_stream(head_body_map).str() << endl;
+  cout << penalty_yes_no_stream(head_body_map).str() << endl;
+  // cout << heuristic_stream(head_body_map).str() << endl;
 }
 
 /*
 Fill head body map by searching rules for heads matching penalty regex.
 */
-void fill_head_body_map(std::map<std::string, std::set<std::vector<std::string>>> &head_body_map, Example *example) {
+void fill_head_body_map(std::map<std::string, std::set<std::vector<std::shared_ptr<NLiteral>>>> &head_body_map, Example *example) {
   // Set up part of regex for finding penalty predicates
   std::string regex_string = Penalty::asp_predicate + "\\([^\\)]+\\)";
   std::regex re(regex_string);
@@ -62,21 +70,15 @@ void fill_head_body_map(std::map<std::string, std::set<std::vector<std::string>>
       }
 
       std::vector<std::shared_ptr<NLiteral>> body_vec = rule.get_body();
-      std::vector<std::string> body_string_vec{};
-
-      // get body strings
-      for (auto body_rule : body_vec) {
-        body_string_vec.push_back(body_rule->to_string());
-      }
 
       // add to map
       auto it = head_body_map.find(rule.get_head()->to_string());
       if (it == head_body_map.end()) {
         // create set if needed
-        std::set<std::vector<std::string>> body_sets{body_string_vec};
+        std::set<std::vector<std::shared_ptr<NLiteral>>> body_sets{body_vec};
         head_body_map.insert_or_assign(rule.get_head()->to_string(), body_sets);
       } else {
-        it->second.insert(body_string_vec);
+        it->second.insert(body_vec);
       }
     }
   }
@@ -85,9 +87,9 @@ void fill_head_body_map(std::map<std::string, std::set<std::vector<std::string>>
 /*
 Print head body map, for inspection
 */
-void print_head_body_map(std::map<std::string, std::set<std::vector<std::string>>> &head_body_map) {
+void print_head_body_map(std::map<std::string, std::set<std::vector<std::shared_ptr<NLiteral>>>> &head_body_map) {
   std::vector<std::string> key;
-  std::vector<std::set<std::vector<std::string>>> value;
+  std::vector<std::set<std::vector<std::shared_ptr<NLiteral>>>> value;
   std::cout << "head_body_sets: " << std::endl;
   for (auto it = head_body_map.begin(); it != head_body_map.end(); ++it) {
     key.push_back(it->first);
@@ -98,7 +100,7 @@ void print_head_body_map(std::map<std::string, std::set<std::vector<std::string>
     for (auto set : it->second) {
       std::cout << "\t{ ";
       for (auto body : set) {
-        std::cout << body << " , ";
+        std::cout << body->to_string() << " , ";
       }
       std::cout << "}" << std::endl;
     }
@@ -112,7 +114,7 @@ In the case of variables need to ensure safe.
 So, collect every variable in literal string and include in representative.
 boost used for positive lookbehind
 */
-std::string representative_literal(std::vector<std::string> &lit_vec) {
+std::string representative_literal(std::vector<std::shared_ptr<NLiteral>> &lit_vec) {
   std::stringstream rep_stream{};
 
   rep_stream << "rep_"
@@ -124,10 +126,11 @@ std::string representative_literal(std::vector<std::string> &lit_vec) {
   const boost::regex expression("(?<=\\(|,)[A-Z]+(?=\\)|,)");
   boost::smatch match;
 
-  for (std::string literal : lit_vec) {
-    while (boost::regex_search(literal, match, expression)) {
+  for (std::shared_ptr<NLiteral> literal : lit_vec) {
+    std::string literal_string{literal->to_string()};
+    while (boost::regex_search(literal_string, match, expression)) {
       var_set.insert(match.str());
-      literal = match.suffix();
+      literal_string = match.suffix();
     }
   }
 
@@ -163,7 +166,7 @@ std::string representative_rule(std::string &representative_literal, std::vector
 /*
 join vec of strings with separator (e.g. ",")
 */
-std::string join_vec(std::vector<std::string> &vec, std::string sep) {
+std::string join_vec(std::vector<std::string> vec, std::string sep) {
   std::stringstream out_stream{};
   bool first{true};
   for (std::string elem : vec) {
@@ -198,21 +201,28 @@ std::string join_set(std::set<std::string> &set, std::string sep) {
 
 /*
 each distinct body associated with a rule is given a representative.
-
 */
-std::stringstream converse_stream(std::map<std::string, std::set<std::vector<std::string>>> &head_body_map) {
+std::stringstream converse_stream(std::map<std::string, std::set<std::vector<std::shared_ptr<NLiteral>>>> &head_body_map) {
 
   std::stringstream converse_stream{};
 
-  for (std::map<std::string, std::set<std::vector<std::string>>>::iterator iter = head_body_map.begin(); iter != head_body_map.end(); ++iter) {
+  for (std::map<std::string, std::set<std::vector<std::shared_ptr<NLiteral>>>>::iterator iter = head_body_map.begin(); iter != head_body_map.end(); ++iter) {
 
     std::vector<std::string> rep_vec{};
 
-    for (std::vector<std::string> body_vec : iter->second) {
+    for (std::vector<std::shared_ptr<NLiteral>> body_vec : iter->second) {
       std::string rep_lit = representative_literal(body_vec);
       for (auto body_lit : body_vec) {
-        negation_as_prefix(body_lit);
-        converse_stream << body_lit
+        std::string body_lit_string{body_lit->to_string()};
+        negation_as_prefix(body_lit_string);
+        converse_stream << "1 { "
+                        << body_lit_string;
+        if (body_lit->has_domain_restrictions()) {
+          converse_stream << " : "
+                          << join_vec(body_lit->associated_domain_restriction_strings(), ";");
+        }
+
+        converse_stream << " }"
                         << " :- "
                         << rep_lit
                         << "." << std::endl;
@@ -220,93 +230,103 @@ std::stringstream converse_stream(std::map<std::string, std::set<std::vector<std
       rep_vec.push_back(rep_lit);
     }
     converse_stream << endl;
-    converse_stream << "1 { "
-                    << join_vec(rep_vec, ";")
-                    << " } "
-                    << rep_vec.size()
+    converse_stream << "1 { " << join_vec(rep_vec, ";") << " } "
                     << " :- "
                     << iter->first
+                    << domain_string_for_head(iter->second, std::string(" , "))
                     << "." << endl
                     << endl;
   }
+
   return converse_stream;
 }
 
-std::stringstream converse_complement_stream(std::map<std::string, std::set<std::vector<std::string>>> &head_body_map) {
+std::stringstream converse_complement_stream(std::map<std::string, std::set<std::vector<std::shared_ptr<NLiteral>>>> &head_body_map) {
 
   std::stringstream converse_complement_stream{};
 
-  for (std::map<std::string, std::set<std::vector<std::string>>>::iterator iter = head_body_map.begin(); iter != head_body_map.end(); ++iter) {
+  for (std::map<std::string, std::set<std::vector<std::shared_ptr<NLiteral>>>>::iterator iter = head_body_map.begin(); iter != head_body_map.end(); ++iter) {
 
-    for (std::vector<std::string> body_vec : iter->second) {
+    for (std::vector<std::shared_ptr<NLiteral>> body_vec : iter->second) {
 
-      std::vector<std::string> complement_vec{};
+      if (body_vec.size() > 1) {
 
-      for (auto body_lit : body_vec) {
-        negate_with_prefix(body_lit);
-        complement_vec.push_back(body_lit);
-      }
+        converse_complement_stream << "1 { ";
 
-      if (complement_vec.size() > 0) {
+        for (auto body_lit : body_vec) {
+          std::string body_lit_string{body_lit->to_string()};
+          negate_with_prefix(body_lit_string);
 
-        if (complement_vec.size() > 1) {
-          converse_complement_stream << "1 { "
-                                     << join_vec(complement_vec, ";")
-                                     << " } "
-                                     << complement_vec.size();
-        } else {
-          converse_complement_stream << complement_vec[0];
+          converse_complement_stream << body_lit_string;
+
+          if (body_lit->has_domain_restrictions()) {
+            converse_complement_stream << " : "
+                                       << join_vec(body_lit->associated_domain_restriction_strings(), ";");
+          }
+
+          converse_complement_stream << " ; ";
         }
-
-        converse_complement_stream << " :- "
-                                   << "not\'" << iter->first
-                                   << "." << endl;
+        converse_complement_stream << "#false"
+                                   << " } ";
+      } else if (body_vec.size() == 1) {
+        converse_complement_stream << body_vec.front()->to_string();
       }
-      converse_complement_stream << endl;
+
+      converse_complement_stream << " :- "
+                                 << "not\'" << iter->first
+                                 << domain_string_for_head(iter->second, std::string(" , "))
+                                 << "." << endl;
     }
+
+    converse_complement_stream << endl;
   }
+
   return converse_complement_stream;
 }
 
 /*
 heuristics for a few violations as possible
 */
-std::stringstream heuristic_stream(std::map<std::string, std::set<std::vector<std::string>>> &head_body_map) {
+std::stringstream heuristic_stream(std::map<std::string, std::set<std::vector<std::shared_ptr<NLiteral>>>> &head_body_map) {
 
   std::stringstream heuristic_stream{};
 
   heuristic_stream << endl
                    << "%minimal interpretation heuristics" << endl;
 
-  for (std::map<std::string, std::set<std::vector<std::string>>>::iterator iter = head_body_map.begin(); iter != head_body_map.end(); ++iter) {
+  for (std::map<std::string, std::set<std::vector<std::shared_ptr<NLiteral>>>>::iterator iter = head_body_map.begin(); iter != head_body_map.end(); ++iter) {
 
-    for (std::vector<std::string> body_vec : iter->second) {
+    for (std::vector<std::shared_ptr<NLiteral>> body_vec : iter->second) {
 
       for (auto body_lit : body_vec) {
+
+        std::string body_lit_string{body_lit->to_string()};
+
         heuristic_stream << "#heuristic "
-                         << remove_naf(body_lit)
+                         << remove_naf(body_lit_string)
                          << ".[1@1, false]" << endl;
       }
     }
   }
+
   return heuristic_stream;
 }
 
-std::stringstream penalty_yes_no_stream(std::map<std::string, std::set<std::vector<std::string>>> &head_body_map) {
+std::stringstream penalty_yes_no_stream(std::map<std::string, std::set<std::vector<std::shared_ptr<NLiteral>>>> &head_body_map) {
   std::stringstream penalty_yes_no_stream{};
 
-  for (std::map<std::string, std::set<std::vector<std::string>>>::iterator iter = head_body_map.begin(); iter != head_body_map.end(); ++iter) {
+  for (std::map<std::string, std::set<std::vector<std::shared_ptr<NLiteral>>>>::iterator iter = head_body_map.begin(); iter != head_body_map.end(); ++iter) {
 
     std::string head{iter->first};
 
     penalty_yes_no_stream << "1 { ";
 
     penalty_yes_no_stream << head
+                          << domain_string_for_head(iter->second, std::string(" : "))
                           << "; "
                           << add_negation_prefix(head)
-                          << " ";
-
-    penalty_yes_no_stream << "} 1. " << endl;
+                          << domain_string_for_head(iter->second, std::string(" : "))
+                          << " } 1. " << endl;
   }
 
   return penalty_yes_no_stream;
@@ -375,5 +395,23 @@ std::string remove_naf(std::string literal) {
     return m[1];
   } else {
     return literal;
+  }
+}
+
+std::string domain_string_for_head(std::set<std::vector<std::shared_ptr<NLiteral>>> &associated_body, std::string prefix) {
+  std::string domain_restriction_string{};
+  for (auto rule_vec : associated_body) {
+    for (auto rule : rule_vec) {
+      if (rule->has_domain_restrictions()) {
+        domain_restriction_string += join_vec(rule->associated_domain_restriction_strings(), ",") + ", ";
+      }
+    }
+  }
+  if (domain_restriction_string.size() > 0) {
+    domain_restriction_string.pop_back();
+    domain_restriction_string.pop_back();
+    return prefix + domain_restriction_string;
+  } else {
+    return "";
   }
 }

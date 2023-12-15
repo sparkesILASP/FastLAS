@@ -28,8 +28,7 @@
 
 using namespace std;
 
-string NAtom::generalise(const std::string &var_name,
-                         const bool &rewrite) const {
+string NAtom::generalise(const std::string &var_name, const bool &rewrite) const {
   stringstream ss;
   int index = 0;
   if (is_comparison() && arguments.size() == 2) {

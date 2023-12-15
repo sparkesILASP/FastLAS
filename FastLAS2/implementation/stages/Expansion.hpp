@@ -14,25 +14,27 @@ void expand_penalty_rules();
 
 void expand_penalty_rule_to_for(std::stringstream &stream, Example *example);
 
-void fill_head_body_map(std::map<std::string, std::set<std::vector<std::string>>> &head_body_map, Example *example);
+void fill_head_body_map(std::map<std::string, std::set<std::vector<std::shared_ptr<NLiteral>>>> &head_body_map, Example *example);
 
-void print_head_body_map(std::map<std::string, std::set<std::vector<std::string>>> &head_body_map);
+void print_head_body_map(std::map<std::string, std::set<std::vector<std::shared_ptr<NLiteral>>>> &head_body_map);
 
 std::string representative_literal(std::vector<std::string> &lit_vec);
 std::string representative_rule(std::string &representative_literal, std::vector<std::string> &lit_vec);
 
-std::string join_vec(std::vector<std::string> &vec, std::string sep);
+std::string join_vec(std::vector<std::string> vec, std::string sep);
 std::string join_set(std::set<std::string> &set, std::string sep);
 
-std::stringstream converse_stream(std::map<std::string, std::set<std::vector<std::string>>> &head_body_map);
+std::stringstream converse_stream(std::map<std::string, std::set<std::vector<std::shared_ptr<NLiteral>>>> &head_body_map);
 
 std::string flatten(std::string &lit);
 
-std::stringstream converse_complement_stream(std::map<std::string, std::set<std::vector<std::string>>> &head_body_map);
+std::stringstream converse_complement_stream(std::map<std::string, std::set<std::vector<std::shared_ptr<NLiteral>>>> &head_body_map);
 
-std::stringstream penalty_yes_no_stream(std::map<std::string, std::set<std::vector<std::string>>> &head_body_map);
+std::stringstream penalty_yes_no_stream(std::map<std::string, std::set<std::vector<std::shared_ptr<NLiteral>>>> &head_body_map);
 
-std::stringstream heuristic_stream(std::map<std::string, std::set<std::vector<std::string>>> &head_body_map);
+std::stringstream heuristic_stream(std::map<std::string, std::set<std::vector<std::shared_ptr<NLiteral>>>> &head_body_map);
+
+std::string domain_string_for_head(std::set<std::vector<std::shared_ptr<NLiteral>>> &associated_body, std::string prefix);
 
 /*
 I think abduction would be preferable…

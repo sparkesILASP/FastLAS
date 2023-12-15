@@ -119,6 +119,24 @@ string NRule::to_string() const {
   return ss.str();
 }
 
+string NRule::to_domain_expanded_string() const {
+  stringstream ss;
+  std::vector<int> compact_indices;
+  ss << head->to_string();
+  bool first = true;
+  for (const auto &body_lit : get_domain_expanded_body()) {
+    if (first) {
+      ss << " :- ";
+      first = false;
+    } else {
+      ss << ", ";
+    }
+    ss << body_lit->to_string();
+  }
+  ss << "." << endl;
+  return ss.str();
+}
+
 string NRule::disj_representation(string extra) const {
   stringstream ss;
   auto h = head->meta_representation("hb");
@@ -257,6 +275,20 @@ bool NRule::depends_on(const set<pair<string, int>> &schemas) const {
 std::shared_ptr<NRuleHead> NRule::get_head() {
   return head;
 }
+
 std::vector<std::shared_ptr<NLiteral>> NRule::get_body() {
   return body;
+}
+
+std::vector<std::shared_ptr<NLiteral>> NRule::get_domain_expanded_body() const {
+  std::vector<std::shared_ptr<NLiteral>> royal{};
+  for (auto lit : body) {
+    royal.push_back(lit);
+    if (lit->has_domain_restrictions()) {
+      for (auto dom_lit : *lit->associated_domain_restrictions()) {
+        royal.push_back(dom_lit);
+      }
+    }
+  }
+  return royal;
 }
