@@ -263,5 +263,5 @@ int main(int argc, char **argv) {
   }
 
   // finish
-  _exit(0);
+  exit(0);
 }
