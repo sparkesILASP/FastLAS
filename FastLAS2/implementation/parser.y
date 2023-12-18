@@ -286,10 +286,15 @@ naf_literal : T_NAF atom { std::shared_ptr<NAtom> a($2);
                            $$ = new NNafLiteral(false, a); }
             | atom { std::shared_ptr<NAtom> a($1); 
                      $$ = new NNafLiteral(true, a); }
-            | atom T_COLON domain_restriction_conjunction { std::shared_ptr<NAtom> a($1);
-                                                   NNafLiteral* new_lit = new NNafLiteral(true, a);
-                                                   new_lit->associate_domain_restrictions($3);
-                                                   $$ = new_lit; }
+            | atom T_COLON domain_restriction_conjunction { 
+                                                  std::shared_ptr<NAtom> a($1);
+                                                  NNafLiteral* new_lit = new NNafLiteral(true, a);
+                                                  new_lit->associate_domain_restrictions($3);
+                                                  $$ = new_lit; }
+            | T_NAF atom T_COLON domain_restriction_conjunction {                                     std::shared_ptr<NAtom> a($2);
+                                                  NNafLiteral* new_lit = new NNafLiteral(false, a);
+                                                  new_lit->associate_domain_restrictions($4);
+                                                  $$ = new_lit; }
             ;
 
 atom : T_BASIC_SYMBOL atom_args {
