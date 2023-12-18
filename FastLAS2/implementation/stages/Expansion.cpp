@@ -31,20 +31,20 @@ void FastLAS::expand_penalty_rules() {
 void expand_penalty_rule_to_for(std::stringstream &stream, Example *example) {
   std::map<std::string, std::set<std::vector<std::shared_ptr<NLiteral>>>> head_body_map{};
 
-  cout << "here we go " << endl;
-
   fill_head_body_map(head_body_map, example);
-
-  print_head_body_map(head_body_map);
 
   stream << converse_stream(head_body_map).str() << endl
          << converse_complement_stream(head_body_map).str() << endl
          << penalty_yes_no_stream(head_body_map).str() << endl
          << heuristic_stream(head_body_map).str() << endl;
 
+  // to inspect the stream…
+
+  // print_head_body_map(head_body_map);
+
   // cout << converse_stream(head_body_map).str() << endl;
   // cout << converse_complement_stream(head_body_map).str() << endl;
-  cout << penalty_yes_no_stream(head_body_map).str() << endl;
+  // cout << penalty_yes_no_stream(head_body_map).str() << endl;
   // cout << heuristic_stream(head_body_map).str() << endl;
 }
 

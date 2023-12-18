@@ -72,10 +72,10 @@ public:
   void associate_domain_restrictions(std::vector<std::shared_ptr<NLiteral>> *input_domain_restrictions) {
 
     domain_restrictions = input_domain_restrictions;
-    for (auto c : *domain_restrictions) {
-      std::cout << c->to_string() << std::endl;
-    }
-    std::cout << std::endl;
+    // for (auto c : *domain_restrictions) {
+    //   std::cout << c->to_string() << std::endl;
+    // }
+    // std::cout << std::endl;
     has_domain_restrictions_bit = true;
   }
 

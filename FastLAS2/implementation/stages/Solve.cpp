@@ -143,21 +143,21 @@ void FastLAS::solve() {
   if (prediction_task) {
     if (score_only) {
       FastLAS::solve_final_task(ss.str() + ":- prediction_false.");
-      print_string_score();
-      cout << ';' << flush;
+      cout << print_string_score()
+           << ';' << flush;
       FastLAS::solve_final_task(ss.str() + ":- not prediction_false.");
-      print_string_score();
+      cout << print_string_score();
     } else {
       FastLAS::solve_final_task(ss.str() + ":- prediction_false.");
 
       cout << "% Optimal hypothesis satisfying the prediction:" << endl
-           << endl;
-      print_string_stats();
+           << endl
+           << print_string_stats();
 
       FastLAS::solve_final_task(ss.str() + ":- not prediction_false.");
       cout << endl
-           << "% Optimal hypothesis not satisfying the prediction:" << endl;
-      print_string_stats();
+           << "% Optimal hypothesis not satisfying the prediction:" << endl
+           << print_string_stats();
     }
   } else {
     FastLAS::solve_final_task(ss.str());

@@ -693,6 +693,6 @@ void pen_poss(Example *example) {
     // Clear plus and minus for next possibility
     plus.clear();
     minus.clear();
-    cout << poss_string.str() << endl;
+    // cout << poss_string.str() << endl;
   });
 };
