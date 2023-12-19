@@ -178,13 +178,18 @@ void FastLAS::solve_pen() {
       ss << "n_cov(" << sub_eg->id << "," << eg->id << ") :- disj(" << index << ")." << endl;
     }
     // Specify relations between possibilities and examples
-    ss << "n_cov(" << eg->id << "," << eg->id << ") :- #true";
-    for (auto sub_eg : eg->get_possibilities()) {
-      ss << ", n_cov(" << sub_eg->id << "," << eg->id << ")";
-    }
-    ss << "." << endl;
+    if (eg->get_possibilities().size() == 0) {
+      cout << "Oops, no possibilities for example: " << eg->id << endl;
+    } else {
 
-    ss << ":- n_cov(" << eg->id << "," << eg->id << ")." << endl;
+      ss << "n_cov(" << eg->id << "," << eg->id << ") :- #true";
+      for (auto sub_eg : eg->get_possibilities()) {
+        ss << ", n_cov(" << sub_eg->id << "," << eg->id << ")";
+      }
+      ss << "." << endl;
+
+      ss << ":- n_cov(" << eg->id << "," << eg->id << ")." << endl;
+    }
   }
 
   for (auto d : ds_pen) {
