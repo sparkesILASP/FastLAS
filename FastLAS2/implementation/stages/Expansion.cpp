@@ -377,7 +377,6 @@ void negation_as_failure(std::string &literal) {
 Either strip negation as failure or add negation as prefix
 */
 void negate_with_prefix(std::string &literal) {
-  cout << "negating with prefix: " << literal << endl;
   boost::regex re("not ([^\\.]+)");
   boost::smatch m;
   if (boost::regex_search(literal, m, re)) {
@@ -385,7 +384,6 @@ void negate_with_prefix(std::string &literal) {
   } else {
     literal = std::string("not\'") + literal;
   }
-  cout << " to: " << literal << endl;
 }
 
 std::string add_negation_prefix(std::string &literal) {
@@ -393,7 +391,6 @@ std::string add_negation_prefix(std::string &literal) {
 }
 
 std::string remove_naf(std::string literal) {
-  cout << "removing naf from: " << literal << endl;
   boost::regex re("not ([^\\.]+)");
   boost::smatch m;
 

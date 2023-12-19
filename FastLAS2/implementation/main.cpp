@@ -84,7 +84,7 @@ int main(int argc, char **argv) {
       "space-size", "output final s_m size.")(
       "timeout", po::value<int>(), "time limit for the final solving stage.")(
       "threads", po::value<int>(), "number of threads.")(
-      "show-penalty-prog", "output program used to generate possibilities for examples.")(
+      "show-p-prog", "output program used to generate possibilities for examples.")(
       "show-p", "output generated possibilities.")(
       "chunk", "convert sentence chunking examples.");
 
@@ -131,7 +131,7 @@ int main(int argc, char **argv) {
   if (vm.count("bound")) FastLAS::mode = FastLAS::Mode::bound;
   if (vm.count("force-safety")) FastLAS::force_safety = true;
   if (vm.count("score-only")) FastLAS::score_only = true;
-  if (vm.count("show-penalty-prog")) FastLAS::output_penalty_program = true;
+  if (vm.count("show-p-prog")) FastLAS::output_penalty_program = true;
   if (vm.count("show-p")) FastLAS::view_possibilities = true;
 
   // parse
@@ -162,6 +162,7 @@ int main(int argc, char **argv) {
   }
 
   if (vm.count("chunk")) {
+
     misc_chunk();
   }
 

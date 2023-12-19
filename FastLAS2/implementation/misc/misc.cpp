@@ -72,29 +72,26 @@ penalty(1,split(N,t)) :- not split(N) : true_split(N).
 })ESC";
 
   for (auto it = example_map.begin(); it != example_map.end(); ++it) {
-    if (example_id < 1) {
-
-      example_stream
-          << "#be(id_" << example_id << ",";
-      example_id++;
-      example_stream << "[" << penalty << ", "
-                     << penalty_program << "]"
-                     << ", {";
-      example_stream << endl
-                     << "% % original context: " << endl;
-      for (auto ctx_line : it->second.first) {
-        example_stream << ctx_line;
-      }
-
-      example_stream << endl
-                     << "% % unified (true) inclusions: " << endl;
-      for (auto inc : it->second.second) {
-        example_stream << "true_" << inc << "." << endl;
-      }
-      example_stream << "}"
-                     << ")." << endl
-                     << endl;
+    example_stream
+        << "#be(id_" << example_id << ",";
+    example_id++;
+    example_stream << "[" << penalty << ", "
+                   << penalty_program << "]"
+                   << ", {";
+    example_stream << endl
+                   << "% % original context: " << endl;
+    for (auto ctx_line : it->second.first) {
+      example_stream << ctx_line;
     }
+
+    example_stream << endl
+                   << "% % unified (true) inclusions: " << endl;
+    for (auto inc : it->second.second) {
+      example_stream << "true_" << inc << "." << endl;
+    }
+    example_stream << "}"
+                   << ")." << endl
+                   << endl;
   }
 
   example_stream << R"ESC(

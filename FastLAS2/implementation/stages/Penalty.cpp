@@ -138,7 +138,6 @@ void FastLAS::Possible_Penalties() {
         })(
         // penalty
         '$', [&](const std::string &atom) {
-          std::cout << atom << std::endl;
           possibility_penalty = std::stoi(atom);
         })(
         // make possibility
@@ -146,6 +145,7 @@ void FastLAS::Possible_Penalties() {
           satisfiable = true;
 
           Example *new_possibility = example->add_bound_possibility(example->id + "x" + std::to_string(possibility_id), inc, exc, possibility_penalty);
+
           possibility_id++;
 
           inc.clear();
