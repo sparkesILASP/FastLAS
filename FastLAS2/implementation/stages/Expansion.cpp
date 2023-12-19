@@ -1,7 +1,6 @@
 #include "./Expansion.hpp"
 #include "../Utils.h"
 #include "./Penalty.h"
-#include <__algorithm/remove_if.h>
 #include <algorithm>
 #include <boost/algorithm/string.hpp>
 #include <boost/regex.hpp>
@@ -233,7 +232,7 @@ std::stringstream converse_stream(std::map<std::string, std::set<std::vector<std
     converse_stream << "1 { " << join_vec(rep_vec, ";") << " } "
                     << " :- "
                     << iter->first
-                    << domain_string_for_head(iter->second, std::string(" , "))
+                    << domain_string_for_head(iter->second, std::string(", "))
                     << "." << endl
                     << endl;
   }
@@ -263,18 +262,19 @@ std::stringstream converse_complement_stream(std::map<std::string, std::set<std:
             converse_complement_stream << " : "
                                        << join_vec(body_lit->associated_domain_restriction_strings(), ";");
           }
-
           converse_complement_stream << " ; ";
         }
         converse_complement_stream << "#false"
                                    << " } ";
       } else if (body_vec.size() == 1) {
-        converse_complement_stream << body_vec.front()->to_string();
+        std::string body_singular{body_vec.front()->to_string()};
+        negate_with_prefix(body_singular);
+        converse_complement_stream << body_singular;
       }
 
       converse_complement_stream << " :- "
                                  << "not\'" << iter->first
-                                 << domain_string_for_head(iter->second, std::string(" , "))
+                                 << domain_string_for_head(iter->second, std::string(", "))
                                  << "." << endl;
     }
 
@@ -319,14 +319,21 @@ std::stringstream penalty_yes_no_stream(std::map<std::string, std::set<std::vect
 
     std::string head{iter->first};
 
-    penalty_yes_no_stream << "1 { ";
+    // penalty_yes_no_stream << "1 { ";
 
-    penalty_yes_no_stream << head
-                          << domain_string_for_head(iter->second, std::string(" : "))
-                          << "; "
-                          << add_negation_prefix(head)
-                          << domain_string_for_head(iter->second, std::string(" : "))
-                          << " } 1. " << endl;
+    // penalty_yes_no_stream << head
+    //                       << domain_string_for_head(iter->second, std::string(" : "))
+    //                       << "; "
+    //                       << add_negation_prefix(head)
+    //                       << domain_string_for_head(iter->second, std::string(" : "))
+    //                       << " } 1. " << endl;
+
+    penalty_yes_no_stream << add_negation_prefix(head)
+                          << " :- "
+                          << "not " << head << domain_string_for_head(iter->second, std::string(", ")) << "." << endl;
+
+    penalty_yes_no_stream << head << " :- "
+                          << "not " << add_negation_prefix(head) << domain_string_for_head(iter->second, std::string(", ")) << "." << endl;
   }
 
   return penalty_yes_no_stream;
@@ -348,10 +355,9 @@ A better way to do this is to only match for not' rather than '
 Though, restrictions on input language should be avoided
 */
 void negation_as_prefix(std::string &literal) {
-  std::string regex_string = "not (.*)";
-  std::regex re(regex_string);
-  std::smatch m;
-  if (std::regex_search(literal, m, re)) {
+  boost::regex re("not (.*)");
+  boost::smatch m;
+  if (boost::regex_search(literal, m, re)) {
     literal = std::string("not\'") + std::string(m[1]);
   }
 }
@@ -360,11 +366,10 @@ void negation_as_prefix(std::string &literal) {
 I shouldn't need this…
 */
 void negation_as_failure(std::string &literal) {
-  std::string regex_string = "not'\\([^\\)]\\)";
-  std::regex re(regex_string);
-  std::smatch m;
-  if (std::regex_search(literal, m, re)) {
-    literal = std::string("not ") + std::string(m[0]);
+  boost::regex re("not'\\([^\\)]+\\)");
+  boost::smatch m;
+  if (boost::regex_search(literal, m, re)) {
+    literal = std::string("not ") + std::string(m[1]);
   }
 }
 
@@ -372,14 +377,15 @@ void negation_as_failure(std::string &literal) {
 Either strip negation as failure or add negation as prefix
 */
 void negate_with_prefix(std::string &literal) {
-  std::string regex_string = "not ([^\\)])";
-  std::regex re(regex_string);
-  std::smatch m;
-  if (std::regex_search(literal, m, re)) {
+  cout << "negating with prefix: " << literal << endl;
+  boost::regex re("not ([^\\.]+)");
+  boost::smatch m;
+  if (boost::regex_search(literal, m, re)) {
     literal = std::string(m[1]);
   } else {
     literal = std::string("not\'") + literal;
   }
+  cout << " to: " << literal << endl;
 }
 
 std::string add_negation_prefix(std::string &literal) {
@@ -387,11 +393,11 @@ std::string add_negation_prefix(std::string &literal) {
 }
 
 std::string remove_naf(std::string literal) {
-  std::string regex_string = "not ([^\\)])";
-  std::regex re(regex_string);
-  std::smatch m;
+  cout << "removing naf from: " << literal << endl;
+  boost::regex re("not ([^\\.]+)");
+  boost::smatch m;
 
-  if (std::regex_search(literal, m, re)) {
+  if (boost::regex_search(literal, m, re)) {
     return m[1];
   } else {
     return literal;
