@@ -16,3 +16,4 @@ graph_script*
 *.byebug*
 *.DS_Store
 *.cache
+*test programs/
