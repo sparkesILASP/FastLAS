@@ -175,18 +175,6 @@ identifier : atom T_COMMA {
            | { $$ = new std::pair<std::string, int>("eg___" + std::to_string(eg_count++), -1); }
            ;
 
-example : T_BE T_L_PAREN identifier T_L_BRACK T_INT[bound] T_COMMA T_L_BRACE asp_program[bound_prog] T_R_BRACE T_R_BRACK T_COMMA T_L_BRACE asp_program[ctx] T_R_BRACE T_R_PAREN T_DOT {
-  // id is the third match
-  std::string id = $3->first;
-  // clean up the id
-  id.erase(remove_if(id.begin(), id.end(), ::isspace), id.end());
-  // not sure why pointers…
-  FastLAS::add_example(id, std::stoi(*$bound), *$bound_prog, *$ctx, Example::ExType::bnd);
-  delete $3;
-  delete $bound;
-  delete $bound_prog;
-  delete $ctx;
-}
 
 example : T_POS T_L_PAREN identifier atom_set[incs] T_COMMA atom_set[excs] T_COMMA T_L_BRACE asp_program[ctx] T_R_BRACE T_R_PAREN T_DOT {
           std::string id = $3->first;
@@ -216,6 +204,17 @@ example : T_POS T_L_PAREN identifier atom_set[incs] T_COMMA atom_set[excs] T_COM
           delete $3;
           delete $incs;
           delete $excs;
+          delete $ctx;
+        } | T_BE T_L_PAREN identifier T_L_BRACK T_INT[bound] T_COMMA T_L_BRACE asp_program[bound_prog] T_R_BRACE T_R_BRACK T_COMMA T_L_BRACE asp_program[ctx] T_R_BRACE T_R_PAREN T_DOT {
+          // id is the third match
+          std::string id = $3->first;
+          // clean up the id
+          id.erase(remove_if(id.begin(), id.end(), ::isspace), id.end());
+          // not sure why pointers…
+          FastLAS::add_example(id, std::stoi(*$bound), *$bound_prog, *$ctx, Example::ExType::bnd);
+          delete $3;
+          delete $bound;
+          delete $bound_prog;
           delete $ctx;
         }
           ;
