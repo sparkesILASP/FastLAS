@@ -1,10 +1,14 @@
+#include "misc.hpp"
 #include "../Example.h"
 #include <iostream>
 #include <map>
 #include <set>
+#include <sstream>
 #include <string>
 
 #include <boost/regex.hpp>
+#include <utility>
+#include <vector>
 
 extern std::set<Example *> examples;
 
@@ -65,7 +69,6 @@ void misc_chunk() {
   std::string penalty_program = R"ESC({
 penalty(1,split(N,t)) :- not split(N) : true_split(N).
 0 { split(N) } 1 :- true_split(N).
-
 })ESC";
 
   for (auto it = example_map.begin(); it != example_map.end(); ++it) {
@@ -95,6 +98,8 @@ penalty(1,split(N,t)) :- not split(N) : true_split(N).
   }
 
   example_stream << R"ESC(
+% % background
+
 postype(c_VBG).
 postype(c_CD).
 postype(c_NNP).
@@ -127,13 +132,17 @@ postype(c_p).
 postype(c_WRB).
 postype(c_NNPS).
 token(0..10).
+
+prevpos(P,X) :- pos(P,X+1).
+
+% % bias
 #modeh(split(var(token))).
 #maxv(1).
 #modeb(1, pos(const(postype),var(token))).
 #modeb(1, prevpos(const(postype),var(token))).
 #bias("penalty(2, head(X)) :- in_head(X).").
 #bias("penalty(1, body(X)) :- in_body(X).").
-      )ESC";
+)ESC";
 
   cout << example_stream.str();
 

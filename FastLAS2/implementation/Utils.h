@@ -116,4 +116,8 @@ void parallel_exec(const T &jobs, int number_of_workers, F p) {
 
 }; // namespace FastLAS
 
+std::string shows_from_mode_h();
+
+std::string as_show_string(std::pair<std::string, int> show_pair);
+
 #endif

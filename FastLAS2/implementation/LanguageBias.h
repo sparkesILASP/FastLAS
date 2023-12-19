@@ -33,13 +33,15 @@ class LanguageBias {
 public:
   LanguageBias() : maxv(3), gwr(false){};
 
-  std::list<ModeDeclaration> head_declarations, body_declarations;
+  std::list<ModeDeclaration> head_declarations;
+  std::list<ModeDeclaration> body_declarations;
 
   std::set<std::pair<std::string, std::string>> constant_declarations;
 
   std::set<std::string> numeric_types;
 
-  std::string bias_constraints, final_bias_constraints;
+  std::string bias_constraints;
+  std::string final_bias_constraints;
 
   int maxv;
 

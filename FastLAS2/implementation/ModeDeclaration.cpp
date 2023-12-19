@@ -326,3 +326,37 @@ string ModeDeclaration::abduce_body_representation() const {
 
   return ss.str();
 }
+
+std::pair<std::string, int> ModeDeclaration::predicate_count_pair() {
+
+  string predicate{};
+  int paren_depth{0};
+  int args{0};
+  bool predicate_found{false};
+
+  for (char c : to_string()) {
+    switch (c) {
+    case '(':
+      paren_depth++;
+      if (predicate_found == false) {
+        args++;
+        predicate_found = true;
+      }
+      break;
+    case ')':
+      paren_depth--;
+      break;
+    case ',':
+      if (paren_depth == 1) {
+        args++;
+      }
+      break;
+    default:
+      if (predicate_found == false) {
+        predicate.push_back(c);
+      }
+      break;
+    }
+  }
+  return std::pair<std::string, int>(predicate, args);
+}
