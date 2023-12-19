@@ -12,9 +12,7 @@
 extern std::set<Example *> examples;
 
 /*
-lua script to return a string of form:
-$penalty|{+X | X is used atom}|{-X | X is atom in a penalty}
-Figure out negative by diff of + from - set.
+lua script to return a string to describe penalty program
 */
 std::string Penalty::make_lua_possibility_script_for(int bound) {
   return R"ESC(
@@ -28,15 +26,17 @@ function customPrint(m)
   for i, atom in ipairs(atoms) do
 
     atom_string = tostring(atom)
-    penalty_sum_match = atom_string:match(')ESC" +
+    cost_sum_match = atom_string:match(')ESC" +
          std::string("sum_of_penalties") + R"ESC(%((%d+)%)')
-    penalty_match = atom_string:match('penalty[^%.]+.')
+    cost_match = atom_string:match(')ESC" +
+         Penalty::asp_predicate +
+         R"ESC([^%.]+.')
     negation_match = atom_string:match("not'(.+)")
     
-    if penalty_match then
+    if cost_match then
       model_string = model_string
-    elseif penalty_sum_match then
-      model_string = model_string.." $"..penalty_sum_match.."|"
+    elseif cost_sum_match then
+      model_string = model_string.." $"..cost_sum_match.."|"
     elseif negation_match then
       model_string = model_string.." -"..negation_match.."|"
     else
@@ -96,7 +96,7 @@ void FastLAS::Possible_Penalties() {
     poss_solve_strm << std::endl
                     << "sum_of_penalties(M)"
                     << " :- "
-                    << "M = #sum { N, ID : penalty(N,ID) }." << std::endl;
+                    << "M = #sum { N, ID : " << Penalty::asp_predicate << "(N,ID) }." << std::endl;
 
     // require sum of penalties is below bound
     poss_solve_strm << "M < "
@@ -111,8 +111,8 @@ void FastLAS::Possible_Penalties() {
     poss_solve_strm << std::endl
                     << "% % show statements: " << std::endl
                     << shows_from_mode_h()
-                    << "#show penalty/2." << std::endl
-                    << "#show not'penalty/2." << std::endl
+                    << "#show " << Penalty::asp_predicate << "/2. " << std::endl
+                    << "#show not'" << Penalty::asp_predicate << "/2." << std::endl
                     << "#show sum_of_penalties/1." << std::endl;
 
     if (FastLAS::output_penalty_program) std::cout << poss_solve_strm.str()

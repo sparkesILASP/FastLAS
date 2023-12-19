@@ -351,7 +351,7 @@ string Schema::RuleSchema::print() const {
     }
     ss << ")).    ";
 
-    ss << "#bias(\"cost(" << get_score() << ", head) :- head(rec(" << id;
+    ss << "#bias(\"penalty(" << get_score() << ", head) :- head(rec(" << id;
     for (auto t : types) {
       ss << ", _";
     }

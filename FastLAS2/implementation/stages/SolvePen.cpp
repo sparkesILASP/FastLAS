@@ -58,6 +58,12 @@ function onModel(m)
       new_model = new_model.." p"..tostring(atom).."|"
     elseif atom_name == "disj" then
       new_model = new_model.." d"..tostring(atom):sub(6,-2).."|"
+    elseif atom_name == "cov" then
+      new_model = new_model.." c"..tostring(atom):sub(5,-2).."|"
+    elseif atom_name == "n_cov" then
+      new_model = new_model.." f"..tostring(atom):sub(5,-2).."|"
+    elseif atom_name == "sum_for_example" then
+      new_model = new_model.." s"..tostring(atom):sub(17,-2).."|"
     end
   end
   new_model = new_model.." b"..tostring(intermediate_penalty).."| ;|"
@@ -106,12 +112,12 @@ void FastLAS::solve_pen() {
   // ss << "#minimise { N, P : possibility_penalty(N,P,E) }." << endl;
   // If there are multiple possibilities covered, take the minimum.
   // Though in general rare, as anything which influences a penalty will be inc/exc.
-  ss << "sum_for_example(M,E) :- M = #sum{ N : possibility_penalty(N,P,E)}, example(E)." << endl;
+  ss << "sum_for_example(M,E) :- M = #sum{ N : possibility_cost(N,P,E)}, example(E)." << endl;
   // minimise over examples
   ss << "#minimise { M, E : sum_for_example(M,E) }." << endl;
 
   // get minimum penalty of possibility covered for example, though this should never be needed
-  // ss << "min_of_covered(M,Ex) :- M = #min{ N : possibility_penalty(N,Poss,Ex)}, cov(Poss,Ex)." << endl;
+  // ss << "min_of_covered(M,Ex) :- M = #min{ N : possibility_cost(N,Poss,Ex)}, cov(Poss,Ex)." << endl;
   // ss << "#minimise { M, E : min_of_covered(M,E) }." << endl;
 
   for (auto eg : examples) {
@@ -120,7 +126,7 @@ void FastLAS::solve_pen() {
     // Possibility disjunction
     for (auto sub_eg : eg->get_possibilities()) {
       ss << "% " << eg->id << " : " << sub_eg->id << endl;
-      ss << "possibility_penalty(" << sub_eg->get_penalty() << ", " << sub_eg->id << ", " << eg->id << ")"
+      ss << "possibility_cost(" << sub_eg->get_penalty() << ", " << sub_eg->id << ", " << eg->id << ")"
          << " :- "
          << "cov(" << sub_eg->id << ", " << eg->id << ")." << endl;
       // Insert the optimised rule disjunctions (optimised ruleschemas from characteristic ruleset).
@@ -213,10 +219,13 @@ void FastLAS::solve_final_task_pen(string program) {
                        << final_solving_program_pen << endl;
 
   if (FastLAS::output_solve_program) {
-    cout << "Solve program: " << endl
+    cout << "% % Solve program: " << endl
          << solve_program_stream.str() << endl;
     exit(0);
   }
+
+  int covered{0};
+  int uncovered{0};
 
   Solver::Clingo(3, solve_program_stream.str(), ((FastLAS::timeout < 0) ? " " : "--time=" + std::to_string(FastLAS::timeout)))(
       // in_head
@@ -233,6 +242,18 @@ void FastLAS::solve_final_task_pen(string program) {
       'd', [&](const string &atom) {
         sat_disjs_pen.insert(int_to_disj_pen[stoi(atom)]);
       })(
+      // cov
+      'c', [&](const string &atom) {
+        covered++;
+      })(
+      // n_cov
+      'f', [&](const string &atom) {
+        uncovered++;
+      })(
+      // sum_for_example
+      's', [&](const string &atom) {
+        cout << atom << endl;
+      })(
       // penalty
       'p', [&](const string &atom) {
         sat_intermediate_facts_pen.insert(atom);
@@ -248,4 +269,7 @@ void FastLAS::solve_final_task_pen(string program) {
   }
   cout << "Soultion:" << endl
        << solution_pen << endl;
+
+  cout << "Covered: " << covered << endl
+       << "Uncovered: " << uncovered << endl;
 }

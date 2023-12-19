@@ -168,9 +168,7 @@ end
 }
 
 // Add WCDPI example
-void FastLAS::add_example(const string &id, set<NAtom *> *&incs,
-                          set<NAtom *> *&excs, vector<NRule> &ctx, int penalty,
-                          Example::ExType ex_type, bool prediction) {
+void FastLAS::add_example(const string &id, set<NAtom *> *&incs, set<NAtom *> *&excs, vector<NRule> &ctx, int penalty, Example::ExType ex_type, bool prediction) {
   if (cached_examples.find(id) == cached_examples.end()) {
     set<string> string_incs, string_excs;
     for (auto inc : *incs)

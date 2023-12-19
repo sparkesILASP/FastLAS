@@ -1,5 +1,6 @@
 #include "misc.hpp"
 #include "../Example.h"
+#include "../stages/Penalty.h"
 #include <iostream>
 #include <map>
 #include <set>
@@ -66,17 +67,19 @@ void misc_chunk() {
   std::stringstream example_stream{};
   int penalty{10};
 
-  std::string penalty_program = R"ESC({
-penalty(1,split(N,t)) :- not split(N) : true_split(N).
-0 { split(N) } 1 :- true_split(N).
-})ESC";
+  std::stringstream penalty_program_stream{};
+
+  penalty_program_stream << "{" << endl
+                         << Penalty::asp_predicate << "(1,split(N,t)) :- not split(N) : true_split(N)." << endl
+                         << "0 { split(N) } 1 :- true_split(N)." << endl
+                         << "}" << endl;
 
   for (auto it = example_map.begin(); it != example_map.end(); ++it) {
     example_stream
         << "#be(id_" << example_id << ",";
     example_id++;
     example_stream << "[" << penalty << ", "
-                   << penalty_program << "]"
+                   << penalty_program_stream.str() << "]"
                    << ", {";
     example_stream << endl
                    << "% % original context: " << endl;
