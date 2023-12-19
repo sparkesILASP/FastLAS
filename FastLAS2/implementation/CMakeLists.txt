@@ -76,6 +76,8 @@ add_library(
   RuleSchema.cpp
 
   ModeDeclaration.cpp
+
+  misc/misc.cpp
 )
 
 add_executable(FastLAS main.cpp)

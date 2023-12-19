@@ -22,16 +22,20 @@
  * IN THE SOFTWARE.
  */
 
+#include <algorithm>
 #include <boost/program_options.hpp>
 #include <iostream>
+#include <iterator>
 #include <ostream>
 #include <sstream>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "Example.h"
 #include "RuleSchema.h"
 #include "Utils.h"
+#include "misc/misc.hpp"
 #include "nodes/NRule.h"
 #include "stages/Abduce.h"
 #include "stages/Expansion.hpp"
@@ -81,7 +85,8 @@ int main(int argc, char **argv) {
       "timeout", po::value<int>(), "time limit for the final solving stage.")(
       "threads", po::value<int>(), "number of threads.")(
       "show-penalty-prog", "output program used to generate possibilities for examples.")(
-      "show-p", "output generated possibilities.");
+      "show-p", "output generated possibilities.")(
+      "chunk", "convert sentence chunking examples.");
 
   po::positional_options_description p;
   p.add("file_names", -1);
@@ -109,12 +114,6 @@ int main(int argc, char **argv) {
 
   file_names = vm["file_names"].as<vector<string>>();
   if (file_names.empty()) {
-    cerr << usage_str << endl;
-    return 1;
-  }
-
-  int mode_count = vm.count("nopl") + vm.count("opl") + vm.count("bound");
-  if (mode_count == 0 || mode_count > 1) {
     cerr << usage_str << endl;
     return 1;
   }
@@ -160,6 +159,16 @@ int main(int argc, char **argv) {
     yyin = file;
     yyparse();
     fclose(file);
+  }
+
+  if (vm.count("chunk")) {
+    misc_chunk();
+  }
+
+  int mode_count = vm.count("nopl") + vm.count("opl") + vm.count("bound");
+  if (mode_count != 1) {
+    cerr << usage_str << endl;
+    return 1;
   }
 
   // STAGE: Expand penalty programs through each example
