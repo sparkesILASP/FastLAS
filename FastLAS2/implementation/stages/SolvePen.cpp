@@ -76,7 +76,6 @@ using namespace std;
 
 extern LanguageBias *bias;
 extern set<Example *> examples;
-extern vector<NRule> background;
 
 namespace FastLAS {
 void solve_final_task_pen(string);

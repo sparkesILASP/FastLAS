@@ -37,7 +37,6 @@ using namespace std;
 extern LanguageBias *bias;
 extern bool prediction_task;
 extern set<Example *> examples;
-extern vector<NRule> background;
 
 namespace FastLAS {
 void solve_final_task(string);
