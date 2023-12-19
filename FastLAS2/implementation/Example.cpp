@@ -143,12 +143,12 @@ string Example::to_string() const {
   Skip printing context for the moment
   */
 
-  // ss << "," << endl;
-  // ss << "\t{";
-  // for (auto c : context) {
-  //   ss << "  " << c.to_string();
-  // }
-  // ss << "\t}";
+  ss << "," << endl;
+  ss << "\t{";
+  for (auto c : context) {
+    ss << "  " << c.to_string();
+  }
+  ss << "\t}";
 
   ss << ")." << endl;
 
@@ -352,9 +352,11 @@ set<Schema *> Example::get_guaranteed_rule_violations() const {
 }
 
 Example *Example::add_bound_possibility(std::string id, std::set<std::string> &inclusions, std::set<std::string> &exclusions, int bound) {
+
   Example *possibility_pointer = new Example(id, inclusions, exclusions, context, bound, Example::ExType::pos);
 
   possibilities.insert(possibility_pointer);
+
   return possibility_pointer;
 };
 
