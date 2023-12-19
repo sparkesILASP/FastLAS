@@ -22,18 +22,23 @@
  * IN THE SOFTWARE.
  */
 
+#include <algorithm>
 #include <boost/program_options.hpp>
 #include <iostream>
+#include <iterator>
 #include <ostream>
 #include <sstream>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "Example.h"
 #include "RuleSchema.h"
 #include "Utils.h"
+#include "misc/misc.hpp"
 #include "nodes/NRule.h"
 #include "stages/Abduce.h"
+#include "stages/Expansion.hpp"
 #include "stages/Generalise.h"
 #include "stages/Optimise.h"
 #include "stages/OptimiseSym.h"
@@ -45,13 +50,12 @@
 
 extern int yyparse();
 extern FILE *yyin;
-extern bool prediction_task, cache;
+extern bool prediction_task;
+extern bool cache;
 extern std::set<Example *> examples;
 
-std::string usage_str =
-    "ERROR: usage:  FastLAS [ --opl | --nopl | --bound ] file_name";
-std::string version_info = "FastLAS version 2.1.0 (release built on " +
-                           std::string(__DATE__) + ")." +
+std::string usage_str = "ERROR: usage:  FastLAS [ --opl | --nopl | --bound ] file_name";
+std::string version_info = "FastLAS version 2.1.0 (release built on " + std::string(__DATE__) + ")." +
                            R"ESC(
 
                                For updates and
@@ -63,36 +67,32 @@ int main(int argc, char **argv) {
   namespace po = boost::program_options;
 
   po::options_description desc("Allowed options");
-  desc.add_options()("help", "produce this help message.")(
+  desc.add_options()(
+      "help", "produce this help message.")(
       "version", "output version information.")(
-      "categorical-contexts",
-      "speeds up abduction if the \"bottom\" parts of all programs are known "
-      "to have exactly one answer set.")("debug", "verbose output.")(
+      "categorical-contexts", "speeds up abduction if the \"bottom\" parts of all programs are known to have exactly one answer set.")(
+      "debug", "verbose output.")(
       "delay-generalisation", "experimental optimisation approach.")(
-      "nopl", "run the new phases of the FastNonOPL algorithm, needed for "
-              "non-observational predicate learning.")(
-      "opl", "do not run the new phases of the FastNonOPL algorithm, needed "
-             "for non-observational predicate learning.")(
+      "nopl", "run the new phases of the FastNonOPL algorithm, needed for non-observational predicate learning.")(
+      "opl", "do not run the new phases of the FastNonOPL algorithm, needed for non-observational predicate learning.")(
       "bound", "run with boundary type examples.")(
-      "output-solve-program",
-      "perform the main steps of the FastLAS algorithm, then write out "
-      "the final ASP program used to search for an optimal solution.")(
-      "file_names", po::value<vector<string>>(), "input files.")(
+      "show-solve-prog", "perform the main steps of the FastLAS algorithm, then write out the final ASP program used to search for an optimal solution.")("file_names", po::value<vector<string>>(), "input files.")(
       "read-cache", po::value<string>(), "location to read cached data from.")(
       "write-cache", po::value<string>(), "location to write cached data to.")(
       "score-only", "only output the score of the solution.")(
       "force-safety", "enforce safety constraint on learned rules.")(
       "space-size", "output final s_m size.")(
       "timeout", po::value<int>(), "time limit for the final solving stage.")(
-      "threads", po::value<int>(), "number of threads.");
+      "threads", po::value<int>(), "number of threads.")(
+      "show-p-prog", "output program used to generate possibilities for examples.")(
+      "show-p", "output generated possibilities.")(
+      "chunk", "convert sentence chunking examples.");
 
   po::positional_options_description p;
   p.add("file_names", -1);
 
   po::variables_map vm;
-  po::store(
-      po::command_line_parser(argc, argv).options(desc).positional(p).run(),
-      vm);
+  po::store(po::command_line_parser(argc, argv).options(desc).positional(p).run(), vm);
   po::notify(vm);
 
   string cache_file;
@@ -118,17 +118,11 @@ int main(int argc, char **argv) {
     return 1;
   }
 
-  int mode_count = vm.count("nopl") + vm.count("opl") + vm.count("bound");
-  if (mode_count == 0 || mode_count > 1) {
-    cerr << usage_str << endl;
-    return 1;
-  }
-
   // set config
 
   if (vm.count("space-size")) FastLAS::space_size = true;
   if (vm.count("categorical-contexts")) FastLAS::categorical_contexts = true;
-  if (vm.count("output-solve-program")) FastLAS::output_solve_program = true;
+  if (vm.count("show-solve-prog")) FastLAS::output_solve_program = true;
   if (vm.count("debug")) debug = true;
   if (vm.count("threads")) FastLAS::thread_num = vm["threads"].as<int>();
   if (vm.count("timeout")) FastLAS::timeout = vm["timeout"].as<int>();
@@ -137,6 +131,8 @@ int main(int argc, char **argv) {
   if (vm.count("bound")) FastLAS::mode = FastLAS::Mode::bound;
   if (vm.count("force-safety")) FastLAS::force_safety = true;
   if (vm.count("score-only")) FastLAS::score_only = true;
+  if (vm.count("show-p-prog")) FastLAS::output_penalty_program = true;
+  if (vm.count("show-p")) FastLAS::view_possibilities = true;
 
   // parse
 
@@ -165,76 +161,63 @@ int main(int argc, char **argv) {
     fclose(file);
   }
 
-  // Testing bound things
-  if (FastLAS::mode == FastLAS::Mode::bound) {
+  if (vm.count("chunk")) {
 
-    cout << "Hullo" << endl;
-
-    FastLAS::Possible_Penalties();
-
-    FastLAS::compute_sat_sufficient();
-
-    cout << "C^+(T):" << endl;
-    FastLAS::print_c_plus();
-    cout << "C^-(T):" << endl;
-    FastLAS::print_c_minus();
-
-    FastLAS::generalise();
-
-    cout << "G^+(T):" << endl;
-    FastLAS::print_c_plus();
-
-    FastLAS::optimise();
-    cout << "S_M:" << endl;
-    FastLAS::print_s_m();
-
-    FastLAS::solve_pen();
-    cout << "solution: " << endl;
-    FastLAS::print_solution();
-    cout << "stats: " << endl;
-    FastLAS::print_stats();
-
-    cout << "Exiting" << endl;
-    exit(0);
+    misc_chunk();
   }
 
-  // Abduce possibilities, when set
+  int mode_count = vm.count("nopl") + vm.count("opl") + vm.count("bound");
+  if (mode_count != 1) {
+    cerr << usage_str << endl;
+    return 1;
+  }
+
+  // STAGE: Expand penalty programs through each example
+  // if (FastLAS::mode == FastLAS::Mode::bound) {
+  //   // FastLAS::expand_penalty_rules();
+  // }
+
+  // STAGE: Generate possibilities, if needed
   switch (FastLAS::mode) {
+  case FastLAS::Mode::bound:
+    FastLAS::Possible_Penalties();
+
+    if (FastLAS::view_possibilities) cout << "Possibilities:" << endl
+                                          << FastLAS::print_string_possibilities();
+    break;
+  case FastLAS::Mode::nopl:
+    // Abduce possibilities, when set
+    if (debug) cout << "Abducing…" << endl;
+
+    FastLAS::abduce();
+
+    if (FastLAS::view_possibilities) cout << "Possibilities:" << endl
+                                          << FastLAS::print_string_possibilities();
+
+    break;
   case FastLAS::Mode::opl:
     for (auto eg : examples) {
       eg->set_unique_possibility();
-    }
-    break;
-  case FastLAS::Mode::nopl:
-    if (debug) {
-      cout << "Abducing…" << endl;
-    }
-    FastLAS::abduce();
-    if (debug) {
-      cout << "Possibilities:" << endl;
-      FastLAS::print_possibilities();
     }
     break;
   default:
     break;
   }
 
-  // SAT-sufficient subsets
+  // STAGE: SAT-sufficient subsets
   // Additional atoms are written to FastLAS::language here
   if (debug) cout << "Computing SAT-sufficient subset…" << endl;
 
   FastLAS::compute_sat_sufficient();
 
-  if (debug) {
-    cout << "C^+(T):" << endl;
-    FastLAS::print_c_plus();
-    cout << "C^-(T):" << endl;
-    FastLAS::print_c_minus();
-  }
+  if (debug) cout << "C^+(T):" << endl
+                  << FastLAS::print_string_c_plus()
+                  << "C^-(T):" << endl
+                  << FastLAS::print_string_c_minus();
 
   if (vm.count("write-cache")) FastLAS::write_cache(vm["write-cache"].as<string>());
 
-  // Generalise
+  // STAGE: Generalise
   if (vm.count("delay-generalisation")) {
     if (debug) cout << "Computing opt-sufficient subset…" << endl;
 
@@ -244,10 +227,8 @@ int main(int argc, char **argv) {
 
     FastLAS::generalise();
 
-    if (debug) {
-      cout << "G^+(T):" << endl;
-      FastLAS::print_c_plus();
-    }
+    if (debug) cout << "G^+(T):" << endl
+                    << FastLAS::print_string_c_plus();
 
     if (vm.count("write-cache")) FastLAS::write_cache(vm["write-cache"].as<string>());
     if (debug) cout << "Computing opt-sufficient subset…" << endl;
@@ -255,29 +236,42 @@ int main(int argc, char **argv) {
     FastLAS::optimise();
   }
 
-  if (debug) {
-    cout << "S_M:" << endl;
-    FastLAS::print_s_m();
-  }
+  if (debug) cout << "S_M:" << endl
+                  << FastLAS::print_string_s_m();
 
   if (vm.count("write-cache")) {
     FastLAS::write_cache(vm["write-cache"].as<string>());
   }
 
-  if (debug) cout << "Solving…" << endl;
+  // STAGE: Solve
+  switch (FastLAS::mode) {
+  case FastLAS::Mode::bound:
+    FastLAS::solve_pen();
+    cout << "stats: " << endl
+         << FastLAS::print_string_stats() << endl
+         << "Exiting" << endl;
+    break;
+  case FastLAS::Mode::opl:
+  // fall through
+  case FastLAS::Mode::nopl:
+    if (debug) cout << "Solving…" << endl;
 
-  FastLAS::solve();
+    FastLAS::solve();
 
-  if (!prediction_task) {
-    if (FastLAS::score_only) {
-      FastLAS::print_score();
-    } else if (debug) {
-      FastLAS::print_stats();
-    } else {
-      FastLAS::print_solution();
+    if (!prediction_task) {
+      if (FastLAS::score_only) {
+        cout << FastLAS::print_string_score();
+      } else if (debug) {
+        cout << FastLAS::print_string_stats();
+      } else {
+        cout << FastLAS::print_string_solution();
+      }
     }
+    break;
+  default:
+    break;
   }
 
-  cout << "Complete!" << endl;
-  _exit(0);
-};
+  // finish
+  exit(0);
+}

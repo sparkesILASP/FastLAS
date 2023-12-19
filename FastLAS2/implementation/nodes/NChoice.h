@@ -32,8 +32,7 @@
 class NChoice : public NRuleHead {
 
 public:
-  NChoice(NTerm *lb, const std::vector<std::shared_ptr<NLiteral>> &atoms,
-          NTerm *ub);
+  NChoice(NTerm *lb, const std::vector<std::shared_ptr<NLiteral>> &atoms, NTerm *ub);
 
   std::string to_string() const;
   std::string meta_representation(const std::string &) const;

@@ -30,15 +30,18 @@
 #include "../Utils.h"
 #include "Printing.h"
 #include <boost/algorithm/string.hpp>
+#include <iostream>
 #include <ostream>
+#include <string>
 
-std::string final_solving_program_pen = R"(
+std::string final_solving_program_pen = R"ESC(
 :~ penalty(P, T).[P@0, intermediate, T]
 
-#show in_h/1.
-#show penalty/2.
-#show disj/1.
-#show hey/2.
+% #show in_h/1.
+% #show penalty/2.
+% #show disj/1.
+% #show possibility_penalty/3.
+% #show sum_for_example/2.
 #script (lua)
 function onModel(m)
   atoms = m:symbols{shown=true}
@@ -61,20 +64,18 @@ function onModel(m)
 end
 
 function main(prg)
-  prg.configuration.solve.models = 0 -- find all models
   new_model = ""
   prg:ground({{"base", {}}})
   prg:solve{on_model=onModel}
   print(new_model)
 end
 #end.
-)";
+)ESC";
 
 using namespace std;
 
 extern LanguageBias *bias;
 extern set<Example *> examples;
-extern vector<NRule> background;
 
 namespace FastLAS {
 void solve_final_task_pen(string);
@@ -93,7 +94,7 @@ vector<set<Schema::RuleSchema *>> int_to_disj_pen;
 
 /*
 The final solving program.
-The task here is to minimize penalties for failing to cover examples.
+The task here is to minimise penalties for failing to cover examples.
 
 Start by considering the disjunctions for each possibility.
 At the end, solve by looking at these possibilities.
@@ -102,21 +103,31 @@ And, for any examples they don't cover a different disjunction is going to be us
 */
 void FastLAS::solve_pen() {
   stringstream ss;
-  ss << "#minimise { X, Y : hey(X,Y) }." << endl;
-  // For each example
+  // ss << "#minimise { N, P : possibility_penalty(N,P,E) }." << endl;
+  // If there are multiple possibilities covered, take the minimum.
+  // Though in general rare, as anything which influences a penalty will be inc/exc.
+  ss << "sum_for_example(M,E) :- M = #sum{ N : possibility_penalty(N,P,E)}, example(E)." << endl;
+  // minimise over examples
+  ss << "#minimise { M, E : sum_for_example(M,E) }." << endl;
+
+  // get minimum penalty of possibility covered for example, though this should never be needed
+  // ss << "min_of_covered(M,Ex) :- M = #min{ N : possibility_penalty(N,Poss,Ex)}, cov(Poss,Ex)." << endl;
+  // ss << "#minimise { M, E : min_of_covered(M,E) }." << endl;
+
   for (auto eg : examples) {
     ss << "% " << eg->id << endl;
+    ss << "example(" << eg->id << ")." << endl;
     // Possibility disjunction
     for (auto sub_eg : eg->get_possibilities()) {
-      cout << endl
-           << "Example: " << eg->id << " : Possibility : " << sub_eg->id << endl;
       ss << "% " << eg->id << " : " << sub_eg->id << endl;
-      ss << "hey(" << sub_eg->get_penalty() << ", " << sub_eg->id << ") :- not n_cov(" << sub_eg->id << ")." << endl;
-      // Insert the optimised rule disjunctions
-      // Disjunctions are ruleschemas from characteristic ruleset.
-      // And, I think only rulesets which include the example.
+      ss << "possibility_penalty(" << sub_eg->get_penalty() << ", " << sub_eg->id << ", " << eg->id << ")"
+         << " :- "
+         << "cov(" << sub_eg->id << ", " << eg->id << ")." << endl;
+      // Insert the optimised rule disjunctions (optimised ruleschemas from characteristic ruleset).
+
+      std::string cov_string_disjunctions{};
+
       for (auto disj : sub_eg->get_optimised_rule_disjunctions()) {
-        cout << "New disj" << endl;
         int index{};
         auto it = cached_disjs_pen.find(disj);
         if (it == cached_disjs_pen.end()) {
@@ -127,97 +138,87 @@ void FastLAS::solve_pen() {
         } else {
           index = it->second;
         }
+
         // Possibility is uncovered unless disjunction, for each disjunction.
-        ss << "n_cov(" << sub_eg->id << ") :- not disj(" << index << ")." << endl;
+        // If disjuncts, then require disjunction and specify how to obtain.
+
+        if (disj.size() != 0) {
+          // cov_string_disjunctions += "disj(" + std::to_string(index) + "), ";
+          ss << "n_cov(" << sub_eg->id << "," << eg->id << ") :- not disj(" << index << ")." << endl;
+          for (auto d : disj) {
+            ss << "disj(" << index << ") :- in_h(" << d->id << ")." << endl;
+          }
+        }
+
         ds_pen.insert(disj.begin(), disj.end()); // cannot only be done with caching in case violation occurs first;
-        // for (auto d : ds_pen) {
-        //   cout << "Disjunct: " << d->print() << endl;
-        // }
       }
+      // if (cov_string_disjunctions.size() > 0) {
+      //   ss << "cov(" << sub_eg->id << ") :- " << cov_string_disjunctions << "#true." << endl;
+      // }
+      ss << "cov(" << sub_eg->id << "," << eg->id << ") :- not n_cov(" << sub_eg->id << "," << eg->id << ")." << endl;
       // Violation disjunction
-      cout << "Looking at violating disjuncts" << endl;
       auto disj = sub_eg->get_optimised_rule_violations();
       // Check to see if the disjunction is cached
-      int index = cached_disjs_pen.size();
+      int index{};
       auto it = cached_disjs_pen.find(disj);
       if (it == cached_disjs_pen.end()) {
-        cached_disjs_pen[disj] = index;
+        cached_disjs_pen[disj] = index = cached_disjs_pen.size();
         int_to_disj_pen.push_back(disj);
       } else {
         index = it->second;
       }
       /*
-      Go the violating disjunctions.
-      If any disjunct is true, then the disjunction is true. And, so, example is not covered.
+      Go the violating disjunctions. If any disjunct is true, then the disjunction is true. And, so, example is not covered.
       // Was in the cached check before, but still want to add issue for each example, no?
       */
       for (auto d : disj) {
         ss << "disj(" << index << ") :- in_h(" << d->id << ")." << endl;
-        // cout << "violating disjunct: " << d->print() << endl;
       }
-      ss << "n_cov(" << sub_eg->id << ") :- disj(" << index << ")." << endl;
+      ss << "n_cov(" << sub_eg->id << "," << eg->id << ") :- disj(" << index << ")." << endl;
     }
     // Specify relations between possibilities and examples
-    switch (eg->ex_type) {
-    // If no possiiblity is covered, then the example is not covered
-    case Example::ExType::pos:
-      ss << "n_cov(" << eg->id << ") :- #true";
+    if (eg->get_possibilities().size() == 0) {
+      cout << "Oops, no possibilities for example: " << eg->id << endl;
+    } else {
+
+      ss << "n_cov(" << eg->id << "," << eg->id << ") :- #true";
       for (auto sub_eg : eg->get_possibilities()) {
-        ss << ", n_cov(" << sub_eg->id << ")";
+        ss << ", n_cov(" << sub_eg->id << "," << eg->id << ")";
       }
       ss << "." << endl;
-      break;
-    // If some negative possibility is covered, the negative example is not covered
-    case Example::ExType::neg:
-      for (auto sub_eg : eg->get_possibilities()) {
-        ss << "n_cov(" << eg->id << ") :- not n_cov(" << sub_eg->id << ")." << endl;
-      }
-      break;
-    default:
-      break;
-    }
 
-    ss << "n_cov(" << eg->id << ") :- #true";
-    for (auto sub_eg : eg->get_possibilities()) {
-      ss << ", n_cov(" << sub_eg->id << ")";
+      ss << ":- n_cov(" << eg->id << "," << eg->id << ")." << endl;
     }
-    ss << "." << endl;
-
-    // if (eg->get_penalty() > 0) {
-    //   // soft constraint for failing to cover example when finite penalty
-    //   ss << ":~ n_cov(" << eg->id << ").[" << eg->get_penalty() << "@0, eg(" << eg->id << ")]" << endl;
-    // } else { // hard constraint for failing to cover an example
-    ss << ":- n_cov(" << eg->id << ")." << endl;
-    // }
   }
 
   for (auto d : ds_pen) {
-    ss << "0 {in_h(" << d->id << ")} 1." << endl;
-    //    ss << ":~ in_h(" << d->id << ").[" << d->get_score() << "@0, hyp(" << d->id << ")]" << endl;
-    ss << d->intermediate_meta_representation();
+    ss << "0 {in_h(" << d->id << ")} 1." << endl
+       << ":~ in_h(" << d->id << ").[" << d->get_score() << "@0, hyp(" << d->id << ")]" << endl
+       << d->intermediate_meta_representation();
   }
 
   FastLAS::solve_final_task_pen(ss.str());
 }
 
 void FastLAS::solve_final_task_pen(string program) {
-  stringstream ss;
+  stringstream solve_program_stream;
+
   sat_pen = false;
   sat_disjs_pen.clear();
-  hypothesis_length_pen = 0;
+
   stringstream solution_pen_ss;
 
-  ss << program;
-  ss << bias->final_bias_constraints << endl;
-  ss << final_solving_program_pen << endl;
+  solve_program_stream << program
+                       << bias->final_bias_constraints << endl
+                       << final_solving_program_pen << endl;
 
-  // output_solve_program = true;
-  if (output_solve_program) {
-    cout << ss.str() << endl;
+  if (FastLAS::output_solve_program) {
+    cout << "Solve program: " << endl
+         << solve_program_stream.str() << endl;
     exit(0);
   }
 
-  Solver::Clingo(3, ss.str(), ((FastLAS::timeout < 0) ? " " : "--time=" + std::to_string(FastLAS::timeout)))(
+  Solver::Clingo(3, solve_program_stream.str(), ((FastLAS::timeout < 0) ? " " : "--time=" + std::to_string(FastLAS::timeout)))(
       // in_head
       'i', [&](const string &atom) {
         auto rule = Schema::RuleSchema::get_schema(stoi(atom));
@@ -245,6 +246,6 @@ void FastLAS::solve_final_task_pen(string program) {
     boost::replace_all(solution_pen, "v_a_r", "V");
     boost::replace_all(solution_pen, "naf__", "not ");
   }
-  cout << "What's this?" << endl;
-  cout << solution_pen_ss.str() << endl;
+  cout << "Soultion:" << endl
+       << solution_pen << endl;
 }

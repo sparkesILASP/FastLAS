@@ -507,7 +507,6 @@ void Schema::reset_positive_cache() {
 void Schema::reset_violating_cache() {
   if (!violating || !cached) {
     for (auto old_rule_schema : RuleSchema::all_rule_schemas) {
-      // cout << old_rule_schema->print() << endl;
       if (old_rule_schema->is_cached() && old_rule_schema->head == rule->head) {
         for (auto old_schema : old_rule_schema->useful_schemas) {
           for (auto opt_rule : old_schema->optimised_rules) {

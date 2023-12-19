@@ -12,13 +12,10 @@ some single character identifier which is used to call a function, X is
 information from clingo and | is a separator.
 */
 
-Solver::Clingo::Clingo(int outf, const std::string &program, const std::string &args,
-                       bool debug)
+Solver::Clingo::Clingo(int outf, const std::string &program, const std::string &args, bool debug)
     : outf(outf), program(program), args(args), debug(debug) {}
 
-Solver::Clingo &
-Solver::Clingo::Clingo::operator()(const char &ch,
-                                   const std::function<void(const std::string &)> &fn) {
+Solver::Clingo &Solver::Clingo::Clingo::operator()(const char &ch, const std::function<void(const std::string &)> &fn) {
   fns.insert(make_pair(ch, fn));
   return *this;
 }
@@ -31,8 +28,7 @@ void Solver::Clingo::operator()(const std::function<void()> &final_fn) const {
   infile << program << std::endl;
   infile.close();
   if (debug) {
-    mtx.lock(); // Only one thread can write the debug program (no need to
-                // unlock).
+    mtx.lock(); // Only one thread can write the debug program (no need to unlock).
     std::ofstream infile2("tmp");
     infile2 << program << std::endl;
     infile2.close();
@@ -68,7 +64,7 @@ void Solver::Clingo::operator()(const std::function<void()> &final_fn) const {
     full_string << buffer << " "; // To inspect buffer in full
     incremental_buffer += (buffer + " ");
     // Ignore space just added and see if 'last' char is '|'
-    // Check meta_programs to see how '|' is used to chunk info.
+    // Check meta_programs to see how '|' is used to divide info.
     if (incremental_buffer[incremental_buffer.size() - 2] == '|') {
       char ch = incremental_buffer[0];
       if (ch == ';') {
@@ -77,8 +73,7 @@ void Solver::Clingo::operator()(const std::function<void()> &final_fn) const {
         // try {
         auto it = fns.find(ch);
         if (it != fns.end()) {
-          it->second(
-              incremental_buffer.substr(1, incremental_buffer.size() - 3));
+          it->second(incremental_buffer.substr(1, incremental_buffer.size() - 3));
         }
         //} catch(std::invalid_argument e) {
         //  cerr << incremental_buffer.substr(1, incremental_buffer.size() - 3);

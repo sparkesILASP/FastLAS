@@ -27,22 +27,21 @@
 #include <sstream>
 using namespace std;
 
-string NComplexExpr::generalise(const string &var_name, int &index,
-                                const bool &rewrite) const {
+string NComplexExpr::generalise(const string &var_name, int &index, const bool &rewrite) const {
   stringstream ss;
 
   if (rewrite) {
-    ss << "bin_exp(";
-    ss << arg1->generalise(var_name, index, rewrite);
-    ss << ", \"";
-    ss << op;
-    ss << "\", ";
-    ss << arg2->generalise(var_name, index, rewrite);
-    ss << ")";
+    ss << "bin_exp("
+       << arg1->generalise(var_name, index, rewrite)
+       << ", \""
+       << op
+       << "\", "
+       << arg2->generalise(var_name, index, rewrite)
+       << ")";
   } else {
-    ss << arg1->generalise(var_name, index, rewrite);
-    ss << op;
-    ss << arg2->generalise(var_name, index, rewrite);
+    ss << arg1->generalise(var_name, index, rewrite)
+       << op
+       << arg2->generalise(var_name, index, rewrite);
   }
 
   return ss.str();

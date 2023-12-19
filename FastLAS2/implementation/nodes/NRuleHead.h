@@ -41,9 +41,8 @@ public:
   virtual std::string meta_representation(const std::string &id) const = 0;
   virtual std::string abduce_representation() const = 0;
   virtual std::string reduct_representation(const std::string &id) const {
-    std::cerr
-        << "ERROR: reduct_representation not defined for general NRuleHeads."
-        << std::endl;
+    std::cerr << "ERROR: reduct_representation not defined for general NRuleHeads."
+              << std::endl;
     exit(2);
   }
   virtual std::set<NAtom *> get_heads() = 0;

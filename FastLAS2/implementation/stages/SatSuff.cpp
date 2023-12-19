@@ -132,7 +132,8 @@ void FastLAS::compute_sat_sufficient() {
           ss << mb.body_representation() << endl;
         }
 
-        if (FastLAS::mode == FastLAS::Mode::opl) {
+        // nopl abduction ignores background
+        if (FastLAS::mode == FastLAS::Mode::opl || FastLAS::mode == FastLAS::Mode::bound) {
           for (auto r : background) {
             ss << r.meta_representation();
           }

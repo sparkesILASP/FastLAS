@@ -26,8 +26,11 @@
 #ifndef NLITERAL_H
 #define NLITERAL_H
 #include "BasicNode.h"
+#include "NAtom.h"
 #include <iostream>
 #include <set>
+#include <string>
+#include <vector>
 
 class NLiteral : public Node {
 
@@ -42,9 +45,8 @@ public:
   }
 
   virtual std::string abduce_representation() const {
-    std::cerr
-        << "ERROR: abduce representation not defined for general NLiterals."
-        << std::endl;
+    std::cerr << "ERROR: abduce representation not defined for general NLiterals."
+              << std::endl;
     exit(2);
   }
 
@@ -52,8 +54,8 @@ public:
 
   virtual void populate_constants(std::set<std::string> &consts) const {
     std::cerr << "ERROR: populate constants not defined for general NLiterals."
-              << std::endl;
-    std::cerr << to_string() << std::endl;
+              << std::endl
+              << to_string() << std::endl;
     exit(2);
   }
 
@@ -66,6 +68,45 @@ public:
   virtual std::pair<std::string, int> get_predicate_schema() const {
     return std::make_pair("", 0);
   }
+
+  void associate_domain_restrictions(std::vector<std::shared_ptr<NLiteral>> *input_domain_restrictions) {
+
+    domain_restrictions = input_domain_restrictions;
+    // for (auto c : *domain_restrictions) {
+    //   std::cout << c->to_string() << std::endl;
+    // }
+    // std::cout << std::endl;
+    has_domain_restrictions_bit = true;
+  }
+
+  std::vector<std::shared_ptr<NLiteral>> *associated_domain_restrictions() {
+    if (!has_domain_restrictions_bit) {
+      std::cout << "oops" << std::endl;
+      exit(9);
+    }
+    return domain_restrictions;
+  }
+
+  std::vector<std::string> associated_domain_restriction_strings() {
+    if (!has_domain_restrictions_bit) {
+      std::cout << "oops" << std::endl;
+      exit(9);
+    }
+    std::vector<std::string> the_strings{};
+    for (auto restriction : *domain_restrictions) {
+      the_strings.push_back(restriction->to_string());
+    }
+    return the_strings;
+  }
+
+  bool has_domain_restrictions() {
+    return has_domain_restrictions_bit;
+  };
+
+private:
+  // vector of domain_restrictions for literal
+  bool has_domain_restrictions_bit{false};
+  std::vector<std::shared_ptr<NLiteral>> *domain_restrictions{};
 };
 
 #endif

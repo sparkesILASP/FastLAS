@@ -29,6 +29,9 @@
 #include "NAtom.h"
 #include "NLiteral.h"
 #include "NRuleHead.h"
+#include <iostream>
+#include <memory>
+#include <vector>
 
 class NNafLiteral : public NLiteral {
 public:

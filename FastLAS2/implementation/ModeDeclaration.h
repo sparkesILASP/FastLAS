@@ -43,6 +43,8 @@ public:
   std::string occurance_representation(bool head) const;
   std::string sym_representation(bool, bool) const;
 
+  std::pair<std::string, int> predicate_count_pair();
+
   std::string dependency_representation(const std::string &) const;
 
   bool matches_schema(const std::pair<std::string, int> &schema) const;

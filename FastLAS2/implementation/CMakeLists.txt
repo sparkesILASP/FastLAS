@@ -69,12 +69,15 @@ add_library(
   stages/Solve.cpp
   stages/Penalty.cpp
 	stages/SolvePen.cpp
+	stages/Expansion.cpp
 
   stages/Printing.cpp
 
   RuleSchema.cpp
 
   ModeDeclaration.cpp
+
+  misc/misc.cpp
 )
 
 add_executable(FastLAS main.cpp)

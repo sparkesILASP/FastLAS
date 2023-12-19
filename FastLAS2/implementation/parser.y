@@ -23,6 +23,7 @@
  * IN THE SOFTWARE.
  */
 
+
 %{
 #include "Node.h"
 #include "Example.h"
@@ -37,6 +38,7 @@
 #include <tuple>
 #include <cassert>
 #include <algorithm>
+
 std::set<Example*> examples;
 std::set<std::string> cached_examples;
 std::set<std::pair<int, int>> extensions;
@@ -71,39 +73,40 @@ void check(std::string id) {
   }
 }
 
-
 %}
+
 %define parse.error verbose
 
 %locations
 
 
 %union {
-    std::string *string;
-    int token;
+  std::string *string;
+  int token;
 
 // ASP
 
-    NTerm *term;
-    NAtom *atom;
-    ModeDeclaration *mode;
-    std::set<NAtom*> *atom_set;
-    std::set<std::string> *term_list;
-    std::vector<std::shared_ptr<NTerm>> *arg_list;
-    NNafLiteral *naf_literal;
-    std::vector<std::shared_ptr<NLiteral>> *conjunction;
-    NRule* rule;
-    std::vector<NRule> *program;
-    std::string* str_ptr;
-    std::tuple<int, int, std::set<int>, std::set<int>, int, std::set<std::string>>* r_schema;
-    std::tuple<int, int, std::map<std::string, int>, std::map<std::string, std::string>, std::set<int>>* h_schema;
-    std::set<int>* ints;
-    std::map<std::string, int>* assignment;
-    std::map<std::string, std::string>* types;
-    std::tuple<std::set<std::set<int>>, std::set<int>, std::set<std::set<int>>, std::set<int>>* cached_example_schemas;
-    CachedPossibility* cached_possibility;
-    std::tuple<std::string, int, std::set<CachedPossibility>>* cached_example;
-    std::pair<std::string, int>* identifier;
+  NTerm *term;
+  NAtom *atom;
+  ModeDeclaration *mode;
+  std::set<NAtom*> *atom_set;
+  std::set<std::string> *term_list;
+  std::vector<std::shared_ptr<NTerm>> *arg_list;
+  NNafLiteral *naf_literal;
+  std::vector<std::shared_ptr<NLiteral>> *conjunction;
+  std::vector<std::shared_ptr<NLiteral>> *domain_restriction_conjunction;
+  NRule* rule;
+  std::vector<NRule> *program;
+  std::string* str_ptr;
+  std::tuple<int, int, std::set<int>, std::set<int>, int, std::set<std::string>>* r_schema;
+  std::tuple<int, int, std::map<std::string, int>, std::map<std::string, std::string>, std::set<int>>* h_schema;
+  std::set<int>* ints;
+  std::map<std::string, int>* assignment;
+  std::map<std::string, std::string>* types;
+  std::tuple<std::set<std::set<int>>, std::set<int>, std::set<std::set<int>>, std::set<int>>* cached_example_schemas;
+  CachedPossibility* cached_possibility;
+  std::tuple<std::string, int, std::set<CachedPossibility>>* cached_example;
+  std::pair<std::string, int>* identifier;
 }
 
 %token <string> T_BASIC_SYMBOL T_VAR_NAME T_INT T_NUM T_STRING T_UNDERSCORE T_AT
@@ -120,7 +123,8 @@ void check(std::string id) {
 %type <mode> mode inner_mode_dec
 %type <naf_literal> naf_literal
 %type <arg_list> arg_list atom_args
-%type <conjunction> conjunction rule_body
+%type <conjunction> conjunction rule_body 
+%type <domain_restriction_conjunction> domain_restriction_conjunction
 %type <rule> rule
 %type <program> asp_program
 %type <atom_set> atom_set atom_list
@@ -156,8 +160,7 @@ task : task rule { background.push_back(*$2); delete $2;}
      | task T_FINAL_BIAS T_L_PAREN T_STRING T_R_PAREN T_DOT { bias->final_bias_constraints += *$4; delete $4; }
      | task T_GWR T_DOT { bias->gwr = true; }
      | {}
-;
-
+     ;
 
 identifier : atom T_COMMA {
                check($1->to_string());
@@ -170,20 +173,8 @@ identifier : atom T_COMMA {
                delete $1;
              }
            | { $$ = new std::pair<std::string, int>("eg___" + std::to_string(eg_count++), -1); }
-;
+           ;
 
-example : T_BE T_L_PAREN identifier T_L_BRACK T_INT[bound] T_COMMA T_L_BRACE asp_program[bound_prog] T_R_BRACE T_R_BRACK T_COMMA T_L_BRACE asp_program[ctx] T_R_BRACE T_R_PAREN T_DOT {
-  // id is the third match
-  std::string id = $3->first;
-  // clean up the id
-  id.erase(remove_if(id.begin(), id.end(), ::isspace), id.end());
-  // not sure why pointers…
-  FastLAS::add_example(id, std::stoi(*$bound), *$bound_prog, *$ctx, Example::ExType::bnd);
-  delete $3;
-  delete $bound;
-  delete $bound_prog;
-  delete $ctx;
-}
 
 example : T_POS T_L_PAREN identifier atom_set[incs] T_COMMA atom_set[excs] T_COMMA T_L_BRACE asp_program[ctx] T_R_BRACE T_R_PAREN T_DOT {
           std::string id = $3->first;
@@ -214,8 +205,20 @@ example : T_POS T_L_PAREN identifier atom_set[incs] T_COMMA atom_set[excs] T_COM
           delete $incs;
           delete $excs;
           delete $ctx;
+        } | T_BE T_L_PAREN identifier T_L_BRACK T_INT[bound] T_COMMA T_L_BRACE asp_program[bound_prog] T_R_BRACE T_R_BRACK T_COMMA T_L_BRACE asp_program[ctx] T_R_BRACE T_R_PAREN T_DOT {
+          // id is the third match
+          std::string id = $3->first;
+          // clean up the id
+          id.erase(remove_if(id.begin(), id.end(), ::isspace), id.end());
+          // not sure why pointers…
+          FastLAS::add_example(id, std::stoi(*$bound), *$bound_prog, *$ctx, Example::ExType::bnd);
+          delete $3;
+          delete $bound;
+          delete $bound_prog;
+          delete $ctx;
         }
-;
+          ;
+
 example : T_POS T_L_PAREN identifier atom_set[incs] T_COMMA atom_set[excs] T_R_PAREN T_DOT {
           std::string id = $3->first;
           std::vector<NRule> empty_prg;
@@ -238,11 +241,11 @@ example : T_POS T_L_PAREN identifier atom_set[incs] T_COMMA atom_set[excs] T_R_P
           delete $incs;
           delete $excs;
         }
-;
+          ;
 
 asp_program : { $$ = new std::vector<NRule>(); }
             | rule asp_program { $$ = $2; $$->push_back(*$1); delete $1; }
-;
+            ;
 
 rule : atom rule_body { std::shared_ptr<NRuleHead> head_atom($1); $$ = new NRule(head_atom, *$2); delete $2; }
      | term T_L_BRACE conjunction T_R_BRACE term rule_body {
@@ -253,30 +256,45 @@ rule : atom rule_body { std::shared_ptr<NRuleHead> head_atom($1); $$ = new NRule
          delete $6;
      }
      | T_IF conjunction T_DOT { std::reverse($2->begin(), $2->end()); std::shared_ptr<NRuleHead> head_atom(new NConstraintHead()); $$ = new NRule(head_atom, *$2); delete $2; }
-;
+     ;
 
 rule_body : T_DOT { $$ = new std::vector<std::shared_ptr<NLiteral>>(); }
 rule_body : T_IF conjunction T_DOT { $$ = $2; std::reverse($$->begin(), $$->end()); }
 
-
 atom_set : T_L_BRACE T_R_BRACE { $$ = new std::set<NAtom*>(); }
          | T_L_BRACE atom atom_list T_R_BRACE { $$ = $3; $$->insert($2); }
-;
+         ;
 
 atom_list : { $$ = new std::set<NAtom*>(); }
           | atom_list T_COMMA atom { $$ = $1; $$->insert($3); }
-;
+          ;
 
 conjunction : naf_literal { $$ = new std::vector<std::shared_ptr<NLiteral>>(); std::shared_ptr<NLiteral> nl($1); $$->push_back(nl); }
             | conjunction comma_or_semi_colon naf_literal { $$ = $1; std::shared_ptr<NLiteral> nl($3); $$->push_back(nl); }
-;
+            ;
+
+domain_restriction_conjunction : naf_literal { $$ = new std::vector<std::shared_ptr<NLiteral>>(); std::shared_ptr<NLiteral> nl($1); $$->push_back(nl); }
+                      | domain_restriction_conjunction T_COMMA naf_literal { $$ = $1; std::shared_ptr<NLiteral> nl($3); $$->push_back(nl); }
+                      ;
+
 
 comma_or_semi_colon : T_COMMA;
 comma_or_semi_colon : T_SEMI_COLON;
 
-naf_literal : T_NAF atom { std::shared_ptr<NAtom> a($2); $$ = new NNafLiteral(false, a); }
-            | atom { std::shared_ptr<NAtom> a($1); $$ = new NNafLiteral(true, a); }
-;
+naf_literal : T_NAF atom { std::shared_ptr<NAtom> a($2); 
+                           $$ = new NNafLiteral(false, a); }
+            | atom { std::shared_ptr<NAtom> a($1); 
+                     $$ = new NNafLiteral(true, a); }
+            | atom T_COLON domain_restriction_conjunction { 
+                                                  std::shared_ptr<NAtom> a($1);
+                                                  NNafLiteral* new_lit = new NNafLiteral(true, a);
+                                                  new_lit->associate_domain_restrictions($3);
+                                                  $$ = new_lit; }
+            | T_NAF atom T_COLON domain_restriction_conjunction {                                     std::shared_ptr<NAtom> a($2);
+                                                  NNafLiteral* new_lit = new NNafLiteral(false, a);
+                                                  new_lit->associate_domain_restrictions($4);
+                                                  $$ = new_lit; }
+            ;
 
 atom : T_BASIC_SYMBOL atom_args {
        if($2->empty()) {
@@ -302,7 +320,7 @@ atom : T_BASIC_SYMBOL atom_args {
          $$ = new NAtom(*$2, arg_list);
          delete $2;
      }
-;
+       ;
 
 atom_args : T_L_PAREN arg_list T_R_PAREN { $$ = $2; }
           | { $$ = new std::vector<std::shared_ptr<NTerm>>(); }
@@ -313,12 +331,11 @@ infix_op : T_EQUAL { $$ = new std::string("="); }
          | T_GEQ { $$ = new std::string(">="); }
          | T_LT { $$ = new std::string("<"); }
          | T_GT { $$ = new std::string(">"); }
-;
+         ;
 
 arg_list : term { $$ = new std::vector<std::shared_ptr<NTerm>>(); std::shared_ptr<NTerm> nt($1); $$->push_back(nt); }
          | arg_list T_COMMA term { $$ = $1; std::shared_ptr<NTerm> nt($3); $$->push_back(nt); }
          ;
-
 
 term  : T_BASIC_SYMBOL { $$ = new NTerm(*$1); }
       | T_BASIC_SYMBOL T_L_PAREN arg_list T_R_PAREN { $$ = new NTerm(*$1, *$3); delete $1; delete $3; }
@@ -348,9 +365,7 @@ arithmetic_expr : T_INT { $$ = new NExprInt(*$1); delete $1; }
                 | term T_DIV   term { std::shared_ptr<NTerm> arg1($1); std::shared_ptr<NTerm> arg2($3); $$ = new NComplexExpr(arg1, "/", arg2); }
                 | term T_MOD   term { std::shared_ptr<NTerm> arg1($1); std::shared_ptr<NTerm> arg2($3); $$ = new NComplexExpr(arg1, "\\",arg2); }
                 | term T_POW   term { std::shared_ptr<NTerm> arg1($1); std::shared_ptr<NTerm> arg2($3); $$ = new NComplexExpr(arg1, "**",arg2); }
-;
-
-
+                ;
 
 mode : T_MODEH inner_mode_dec {
          bias->head_declarations.push_back(*$2); delete $2;
@@ -377,7 +392,6 @@ inner_mode_dec : T_L_PAREN atom T_R_PAREN T_DOT {
          $$ = new ModeDeclaration(std::stoi(*$2), *$4, true); delete $2; delete $4;
        }
      ;
-
 
 // CACHE
 

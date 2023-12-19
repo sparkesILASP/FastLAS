@@ -69,7 +69,9 @@ public:
   void set_unique_possibility();
   void add_possibility(const std::set<int> &, const std::set<int> &, const std::set<int> &);
   void add_possibility(const std::set<int> &, const std::set<std::set<int>> &);
-  void add_bound_possibility(std::string id, std::set<std::string> &inclusions, std::set<std::string> &exclusions, int bound);
+
+  Example *add_bound_possibility(std::string id, std::set<std::string> &inclusions, std::set<std::string> &exclusions, int bound);
+
   void add_possibility(Example *);
 
   virtual bool prediction() const;
@@ -83,6 +85,7 @@ public:
   const std::set<std::set<Schema::RuleSchema *>> &get_optimised_rule_disjunctions() const;
   const std::set<Example *> &get_possibilities() const;
   const std::vector<NRule> &get_context() const;
+
   virtual std::set<std::string> get_inclusions() const { return inclusions; };
   virtual std::set<std::string> get_exclusions() const { return exclusions; };
 
@@ -103,7 +106,8 @@ protected:
   std::string c_rep;
 
 private:
-  std::set<std::string> inclusions, exclusions;
+  std::set<std::string> inclusions;
+  std::set<std::string> exclusions;
   std::vector<NRule> context;
 
   int penalty;

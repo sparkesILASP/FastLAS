@@ -28,8 +28,7 @@
 
 using namespace std;
 
-NChoice::NChoice(NTerm *lb, const vector<shared_ptr<NLiteral>> &atoms,
-                 NTerm *ub)
+NChoice::NChoice(NTerm *lb, const vector<shared_ptr<NLiteral>> &atoms, NTerm *ub)
     : lb(lb), ub(ub), atoms(atoms){};
 
 string NChoice::to_string() const {

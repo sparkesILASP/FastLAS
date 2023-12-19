@@ -42,7 +42,6 @@ extern set<string> cached_examples;
 namespace FastLAS {
 
 int thread_num = 8;
-int sample_size = 0;
 int max_conditions = 1;
 int timeout = -1;
 bool output_solve_program = false;
@@ -55,6 +54,8 @@ bool space_size = false;
 bool separate_abduction = false;
 bool categorical_contexts = false;
 bool any_cache = false;
+bool output_penalty_program = false;
+bool view_possibilities = false;
 
 vector<string> language({"f_triv___"});
 
@@ -258,4 +259,26 @@ string FastLAS::object_level_print(const int &index) {
   regex bin_op_regex("binop\\(\\\"([^\"]+)\\\",([^,]+),([^\\)]+)\\)");
   auto final_str = regex_replace(processed, bin_op_regex, "$2 $1 $3");
   return final_str;
+}
+
+#include "LanguageBias.h"
+std::string shows_from_mode_h() {
+
+  extern LanguageBias *bias;
+  std::stringstream shows{};
+
+  for (auto hd : bias->head_declarations) {
+    shows << as_show_string(hd.predicate_count_pair());
+  }
+  return shows.str();
+}
+
+std::string as_show_string(std::pair<std::string, int> show_pair) {
+  std::stringstream show_stream{};
+  show_stream << "#show " << show_pair.first;
+  if (show_pair.second > 0) {
+    show_stream << "/" << show_pair.second;
+  }
+  show_stream << "." << std::endl;
+  return show_stream.str();
 }

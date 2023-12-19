@@ -33,19 +33,7 @@
 
 using namespace std;
 
-std::set<NRule> NRule::flip() {
-  std::set<NRule> outset{};
-  for (std::shared_ptr<NLiteral> bod_lit : body) {
-
-    // NRule flipped = NRule(bod_lit, head) cout << bod_lit->to_string() <<
-    // endl; cout << head->to_string() << endl;
-  }
-
-  return outset;
-};
-
-string NRule::meta_representation(const std::string &id,
-                                  std::string extra) const {
+string NRule::meta_representation(const std::string &id, std::string extra) const {
   stringstream ss;
   ss << head->meta_representation(id) << " :- pos(" << id << ")" << extra;
   for (const auto &body_lit : body) {
@@ -131,6 +119,24 @@ string NRule::to_string() const {
   return ss.str();
 }
 
+string NRule::to_domain_expanded_string() const {
+  stringstream ss;
+  std::vector<int> compact_indices;
+  ss << head->to_string();
+  bool first = true;
+  for (const auto &body_lit : get_domain_expanded_body()) {
+    if (first) {
+      ss << " :- ";
+      first = false;
+    } else {
+      ss << ", ";
+    }
+    ss << body_lit->to_string();
+  }
+  ss << "." << endl;
+  return ss.str();
+}
+
 string NRule::disj_representation(string extra) const {
   stringstream ss;
   auto h = head->meta_representation("hb");
@@ -192,18 +198,17 @@ string NRule::fact_representation(const int &id, std::string extra) const {
   auto body_str = ss2.str();
   auto comps_str = ss_comps.str();
   stringstream ss;
-  ss << "rule((" << id << body_str << ")) :- #true" << body_str << comps_str
-     << "." << endl;
-  ss << "bottom_prg((" << id << body_str << ")) :- bottom_prg(" << id
-     << "), rule((" << id << body_str << "))." << endl;
+  ss << "rule((" << id << body_str << ")) :- #true" << body_str << comps_str << "." << endl
+     << "bottom_prg((" << id << body_str << ")) :- bottom_prg(" << id << ")"
+     << ", "
+     << "rule((" << id << body_str << "))." << endl;
   auto hs = head->get_heads();
   if (hs.empty()) {
     ss << "constraint((" << id << body_str << ")) :- #true" << body_str
        << comps_str << "." << endl;
   } else {
     for (auto h : hs) {
-      ss << "head((" << id << body_str << "), " << h->to_string()
-         << ") :- #true" << body_str << comps_str << "." << endl;
+      ss << "head((" << id << body_str << "), " << h->to_string() << ") :- #true" << body_str << comps_str << "." << endl;
     }
     ss << "cardinality((" << id << body_str << "), " << hs.size()
        << ") :- #true" << body_str << comps_str << "." << endl;
@@ -265,4 +270,25 @@ bool NRule::depends_on(const set<pair<string, int>> &schemas) const {
     }
   }
   return false;
+}
+
+std::shared_ptr<NRuleHead> NRule::get_head() {
+  return head;
+}
+
+std::vector<std::shared_ptr<NLiteral>> NRule::get_body() {
+  return body;
+}
+
+std::vector<std::shared_ptr<NLiteral>> NRule::get_domain_expanded_body() const {
+  std::vector<std::shared_ptr<NLiteral>> royal{};
+  for (auto lit : body) {
+    royal.push_back(lit);
+    if (lit->has_domain_restrictions()) {
+      for (auto dom_lit : *lit->associated_domain_restrictions()) {
+        royal.push_back(dom_lit);
+      }
+    }
+  }
+  return royal;
 }
