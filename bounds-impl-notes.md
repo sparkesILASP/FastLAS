@@ -166,4 +166,12 @@ Inside the optimisation program (in Optimise.h) a loop is run to implement alg 1
 	switch statements now used to control branching when task is relevant
 
 - Output argument for Clingo calls
-  Though, arguments other than 3 aren:t used.
+  Though, arguments other than 3 aren't used.
+
+# CC
+
+## issues
+
+- All annotations are combined when taking the cc.
+  This leads to probelms when the same predicate has distinct annotations.
+  Should take a set of annotations and use this to create distinct instances.
