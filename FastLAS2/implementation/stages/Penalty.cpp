@@ -21,26 +21,33 @@ std::string Penalty::make_lua_possibility_script_for(int bound) {
 #script (lua)
 
 function customPrint(m)
-model_string = ""
-atoms = m:symbols{shown=true}
 
-for i, atom in ipairs(atoms) do
-		atom_string = tostring(atom)
-		penalty_match = atom_string:match(')ESC" +
+  model_string = ""
+  atoms = m:symbols{shown=true}
+
+  for i, atom in ipairs(atoms) do
+
+    atom_string = tostring(atom)
+    penalty_sum_match = atom_string:match(')ESC" +
          std::string("sum_of_penalties") + R"ESC(%((%d+)%)')
-		negation_match = atom_string:match("not'(.+)")
-		if penalty_match then
-      model_string = model_string.." $"..penalty_match.."|"
-		elseif negation_match then
+    penalty_match = atom_string:match('penalty[^%.]+.')
+    negation_match = atom_string:match("not'(.+)")
+    
+    if penalty_match then
+      model_string = model_string
+    elseif penalty_sum_match then
+      model_string = model_string.." $"..penalty_sum_match.."|"
+    elseif negation_match then
       model_string = model_string.." -"..negation_match.."|"
-		else
+    else
       model_string = model_string.." +"..atom_string.."|"
-		end
-    
-    
-end
+    end 
+
+  end
+
 model_string = model_string.." ;|"
 print(model_string)
+
 end
 
 function main(prg)
@@ -100,6 +107,14 @@ void FastLAS::Possible_Penalties() {
 
     poss_solve_strm << Penalty::make_lua_possibility_script_for(example->bound);
 
+    // only want to see what will be learnt from but penalties to ensure all possibilities are found
+    poss_solve_strm << std::endl
+                    << "% % show statements: " << std::endl
+                    << shows_from_mode_h()
+                    << "#show penalty/2." << std::endl
+                    << "#show not'penalty/2." << std::endl
+                    << "#show sum_of_penalties/1." << std::endl;
+
     if (FastLAS::output_penalty_program) std::cout << poss_solve_strm.str()
                                                    << std::endl;
 
@@ -123,6 +138,7 @@ void FastLAS::Possible_Penalties() {
         })(
         // penalty
         '$', [&](const std::string &atom) {
+          std::cout << atom << std::endl;
           possibility_penalty = std::stoi(atom);
         })(
         // make possibility
