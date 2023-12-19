@@ -9,7 +9,11 @@ BISON_TARGET(Parser parser.y .parser.cpp)
 FLEX_TARGET(Scanner tokens.l .tokens.cpp)
 ADD_FLEX_BISON_DEPENDENCY(Scanner Parser)
 
+link_directories(/usr/lib)
 link_directories(/usr/local/lib)
+include_directories(/usr/local/include)
+link_directories(~/.brew)
+link_directories(~/.brew/lib)
 include_directories(/usr/local/include)
 
 set(Boost_USE_STATIC_LIBS ON)
