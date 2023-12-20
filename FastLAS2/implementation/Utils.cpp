@@ -260,20 +260,20 @@ string FastLAS::object_level_print(const int &index) {
 }
 
 #include "LanguageBias.h"
-std::string shows_from_mode_h() {
+std::string shows_from_mode_h(std::string prefix) {
 
   extern LanguageBias *bias;
   std::stringstream shows{};
 
   for (auto hd : bias->head_declarations) {
-    shows << as_show_string(hd.predicate_count_pair());
+    shows << as_show_string(hd.predicate_count_pair(), prefix);
   }
   return shows.str();
 }
 
-std::string as_show_string(std::pair<std::string, int> show_pair) {
+std::string as_show_string(std::pair<std::string, int> show_pair, std::string prefix) {
   std::stringstream show_stream{};
-  show_stream << "#show " << show_pair.first;
+  show_stream << "#show " << prefix << show_pair.first;
   if (show_pair.second > 0) {
     show_stream << "/" << show_pair.second;
   }
