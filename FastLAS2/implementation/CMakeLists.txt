@@ -58,6 +58,7 @@ add_library(
   nodes/NComplexExpr.cpp
   Example.cpp
   Utils.cpp
+	global.cpp
 
   Solvers/Clingo.cpp
 

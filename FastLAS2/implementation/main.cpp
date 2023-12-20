@@ -35,6 +35,7 @@
 #include "Example.h"
 #include "RuleSchema.h"
 #include "Utils.h"
+#include "global.hpp"
 #include "misc/misc.hpp"
 #include "nodes/NRule.h"
 #include "stages/Abduce.h"
@@ -186,7 +187,7 @@ int main(int argc, char **argv) {
   // }
 
   // STAGE: Generate possibilities, if needed
-  if (FastLAS::debug) cout << "Generate possibilities, if needed…" << endl;
+  if (FastLAS::debug) cout << "Generating possibilities, as needed…" << endl;
 
   switch (FastLAS::mode) {
   case FastLAS::Mode::bound:
@@ -220,7 +221,7 @@ int main(int argc, char **argv) {
     break;
   }
 
-  if (FastLAS::debug) cout << "Total possibilities, if there" << total_possibilities << endl;
+  if (FastLAS::debug) cout << "Total examples/possibilities: " << total_possibilities << endl;
 
   // STAGE: SAT-sufficient subsets
   // Additional atoms are written to FastLAS::language here
@@ -261,17 +262,18 @@ int main(int argc, char **argv) {
     FastLAS::write_cache(vm["write-cache"].as<string>());
   }
 
+  if (FastLAS::debug) cout << "Solving…" << endl;
+
   // STAGE: Solve
   switch (FastLAS::mode) {
   case FastLAS::Mode::bound:
     FastLAS::solve_pen();
-    cout << "stats: " << endl
+    cout << "Statistics: " << endl
          << FastLAS::print_string_stats() << endl;
     break;
   case FastLAS::Mode::opl:
   // fall through
   case FastLAS::Mode::nopl:
-    if (FastLAS::debug) cout << "Solving…" << endl;
 
     FastLAS::solve();
 

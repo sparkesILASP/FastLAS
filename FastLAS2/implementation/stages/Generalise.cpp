@@ -26,6 +26,7 @@
 #include "Generalise.h"
 #include "../RuleSchema.h"
 #include "../Utils.h"
+#include "../global.hpp"
 #include <mutex>
 #include <set>
 

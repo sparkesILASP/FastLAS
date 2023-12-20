@@ -27,6 +27,7 @@
 #include "LanguageBias.h"
 #include "Solvers/Solvers.h"
 #include "Utils.h"
+#include "global.hpp"
 #include "nodes/NAtom.h"
 #include "stages/Penalty.h"
 #include <algorithm>

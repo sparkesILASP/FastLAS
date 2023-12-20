@@ -27,7 +27,7 @@
 #include "../Example.h"
 #include "../LanguageBias.h"
 #include "../Solvers/Solvers.h"
-#include "../Utils.h"
+#include "../global.hpp"
 #include "Printing.h"
 #include <boost/algorithm/string.hpp>
 #include <iostream>
@@ -111,9 +111,8 @@ void FastLAS::solve_pen() {
   // ss << "#minimise { N, P : possibility_penalty(N,P,E) }." << endl;
   // If there are multiple possibilities covered, take the minimum.
   // Though in general rare, as anything which influences a penalty will be inc/exc.
-  solve_pen_stream << "sum_for_example(M,E) :- M = #sum{ N : possibility_cost(N,P,E)}, example(E)." << endl;
-  // minimise over examples
-  solve_pen_stream << "#minimise { M, E : sum_for_example(M,E) }." << endl;
+  solve_pen_stream << "sum_for_example(M,E) :- M = #sum{ N : possibility_cost(N,P,E)}, example(E)." << endl
+                   << "#minimise { M, E : sum_for_example(M,E) }." << endl;
 
   // get minimum penalty of possibility covered for example, though this should never be needed
   // ss << "min_of_covered(M,Ex) :- M = #min{ N : possibility_cost(N,Poss,Ex)}, cov(Poss,Ex)." << endl;
@@ -208,6 +207,8 @@ void FastLAS::solve_pen() {
 void FastLAS::solve_final_task_pen(string program) {
   stringstream solve_program_stream;
 
+  int total_cost{0};
+
   sat_pen = false;
   sat_disjs_pen.clear();
 
@@ -251,6 +252,7 @@ void FastLAS::solve_final_task_pen(string program) {
       })(
       // sum_for_example
       's', [&](const string &atom) {
+        total_cost += std::stoi(atom);
         // cout << atom << endl;
       })(
       // penalty
@@ -258,7 +260,6 @@ void FastLAS::solve_final_task_pen(string program) {
         sat_intermediate_facts_pen.insert(atom);
       })([&]() { sat_pen = true; });
 
-  cout << "hlp: " << hypothesis_length << endl;
   if (!sat_pen) {
     solution_pen = "UNSATISFIABLE";
   } else {
@@ -271,5 +272,6 @@ void FastLAS::solve_final_task_pen(string program) {
        << solution_pen << endl;
 
   cout << "Covered: " << covered << endl
-       << "Uncovered: " << uncovered << endl;
+       << "Uncovered: " << uncovered << endl
+       << "Total cost: " << total_cost << endl;
 }

@@ -39,7 +39,7 @@ The task of the solver is to figure out the rules.
 #include "../LanguageBias.h"
 #include "../RuleSchema.h"
 #include "../Solvers/Solvers.h"
-#include "../Utils.h"
+#include "../global.hpp"
 #include "../meta_programs/SatSuff.h"
 #include <iostream>
 #include <mutex>

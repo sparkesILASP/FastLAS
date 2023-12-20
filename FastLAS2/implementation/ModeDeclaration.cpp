@@ -24,7 +24,7 @@
  */
 
 #include "ModeDeclaration.h"
-#include "Utils.h"
+#include "global.hpp"
 #include <sstream>
 
 using namespace std;

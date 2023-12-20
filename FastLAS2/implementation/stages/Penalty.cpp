@@ -1,5 +1,6 @@
 #include "Penalty.h"
 #include "../Solvers/Solvers.h"
+#include "../global.hpp"
 #include "Expansion.hpp"
 #include <iostream>
 #include <ostream>

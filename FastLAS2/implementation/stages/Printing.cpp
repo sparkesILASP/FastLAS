@@ -25,8 +25,12 @@
 
 #include "Printing.h"
 #include "../Example.h"
+#include "../Utils.h"
+#include "../global.hpp"
 #include "Solve.h"
+
 #include <boost/algorithm/string.hpp>
+
 #include <iostream>
 #include <sstream>
 #include <string>
@@ -200,33 +204,39 @@ string FastLAS::print_string_stats() {
   stringstream stat_steam{};
 
   stat_steam << solution << endl
-             << endl;
-  stat_steam << "{" << endl;
-  stat_steam << "  \"Length\": " << hypothesis_length << "," << endl;
-  stat_steam << "  \"Noisy Example Penalty\": " << total_penalty << "," << endl;
-  stat_steam << "  \"Uncovered Examples\": [";
-  bool first = true;
-  for (auto uce : uncovered_example_ids) {
-    if (first) {
-      first = false;
-    } else {
-      stat_steam << ", ";
+             << "  \"Length\": " << hypothesis_length << "," << endl;
+
+  if (FastLAS::mode == FastLAS::Mode::opl || FastLAS::mode == FastLAS::Mode::nopl) {
+
+    stat_steam << endl
+               << "{" << endl
+
+               << "  \"Noisy Example Penalty\": " << total_penalty << "," << endl
+               << "  \"Uncovered Examples\": [";
+    bool first = true;
+    for (auto uce : uncovered_example_ids) {
+      if (first) {
+        first = false;
+      } else {
+        stat_steam << ", ";
+      }
+      stat_steam << uce;
     }
-    stat_steam << uce;
-  }
-  stat_steam << " ]," << endl;
-  stat_steam << "  \"Final Semi-decomposable Representation\": [";
-  first = true;
-  for (auto sdcf : sat_intermediate_facts) {
-    if (first) {
-      first = false;
-    } else {
-      stat_steam << ", ";
+    stat_steam << " ]," << endl;
+    stat_steam << "  \"Final Semi-decomposable Representation\": [";
+    first = true;
+    for (auto sdcf : sat_intermediate_facts) {
+      if (first) {
+        first = false;
+      } else {
+        stat_steam << ", ";
+      }
+      stat_steam << sdcf;
     }
-    stat_steam << sdcf;
+    stat_steam << " ]" << endl;
+    stat_steam << "}" << endl;
   }
-  stat_steam << " ]" << endl;
-  stat_steam << "}" << endl;
+
   return stat_steam.str();
 }
 

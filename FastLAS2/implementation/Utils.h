@@ -36,13 +36,6 @@
 
 namespace FastLAS {
 
-// modes
-enum Mode {
-  opl,
-  nopl,
-  bound,
-};
-
 // utility functions
 
 std::string get_tmp_file(bool fifo = true);
@@ -63,24 +56,6 @@ void write_cache(const std::string &path);
 // shared data structures
 
 extern std::vector<std::string> language;
-
-// Config
-
-extern int thread_num;
-extern bool output_solve_program;
-extern Mode mode;
-extern bool limit_rules;
-extern bool force_safety;
-extern bool score_only;
-extern bool space_size;
-extern bool separate_abduction;
-extern bool any_cache;
-extern bool categorical_contexts;
-extern int max_conditions;
-extern int timeout;
-extern bool output_penalty_program;
-extern bool view_possibilities;
-extern bool debug;
 
 template <typename T, typename F>
 void parallel_exec(const T &jobs, int number_of_workers, F p) {

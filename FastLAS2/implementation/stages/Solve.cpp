@@ -27,7 +27,7 @@
 #include "../Example.h"
 #include "../LanguageBias.h"
 #include "../Solvers/Solvers.h"
-#include "../Utils.h"
+#include "../global.hpp"
 #include "../meta_programs/Solve.h"
 #include "Printing.h"
 #include <boost/algorithm/string.hpp>
