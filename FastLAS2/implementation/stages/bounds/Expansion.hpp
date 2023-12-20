@@ -1,7 +1,7 @@
 #ifndef STAGES__EXPANSION__H__
 #define STAGES__EXPANSION__H__
 
-#include "../Example.h"
+#include "../../Example.h"
 #include <map>
 #include <set>
 #include <string>

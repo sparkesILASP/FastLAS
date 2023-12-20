@@ -1,6 +1,6 @@
 #include "misc.hpp"
 #include "../Example.h"
-#include "../stages/Penalty.h"
+#include "../stages/bounds/Penalty.h"
 #include <iostream>
 #include <map>
 #include <set>

@@ -68,9 +68,10 @@ add_library(
   stages/Optimise.cpp
   stages/OptimiseSym.cpp
   stages/Solve.cpp
-  stages/Penalty.cpp
-	stages/SolvePen.cpp
-	stages/Expansion.cpp
+
+	stages/bounds/Penalty.cpp
+	stages/bounds/SolvePen.cpp
+	stages/bounds/Expansion.cpp
 
   stages/Printing.cpp
 

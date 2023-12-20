@@ -24,11 +24,11 @@
  */
 
 #include "SolvePen.h"
-#include "../Example.h"
-#include "../LanguageBias.h"
-#include "../Solvers/Solvers.h"
-#include "../global.hpp"
-#include "Printing.h"
+#include "../../Example.h"
+#include "../../LanguageBias.h"
+#include "../../Solvers/Solvers.h"
+#include "../../global.hpp"
+#include "../Printing.h"
 #include <boost/algorithm/string.hpp>
 #include <iostream>
 #include <ostream>

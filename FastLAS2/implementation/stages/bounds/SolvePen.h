@@ -25,7 +25,7 @@
 
 #ifndef SOLVE__PEN__H_
 #define SOLVE__PEN__H_
-#include "../RuleSchema.h"
+#include "../../RuleSchema.h"
 #include <set>
 
 namespace FastLAS {

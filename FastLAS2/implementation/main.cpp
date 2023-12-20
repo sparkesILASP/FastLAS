@@ -39,15 +39,15 @@
 #include "misc/misc.hpp"
 #include "nodes/NRule.h"
 #include "stages/Abduce.h"
-#include "stages/Expansion.hpp"
 #include "stages/Generalise.h"
 #include "stages/Optimise.h"
 #include "stages/OptimiseSym.h"
-#include "stages/Penalty.h"
 #include "stages/Printing.h"
 #include "stages/SatSuff.h"
 #include "stages/Solve.h"
-#include "stages/SolvePen.h"
+#include "stages/bounds/Expansion.hpp"
+#include "stages/bounds/Penalty.h"
+#include "stages/bounds/SolvePen.h"
 
 extern int yyparse();
 extern FILE *yyin;

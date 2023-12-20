@@ -29,7 +29,7 @@
 #include "Utils.h"
 #include "global.hpp"
 #include "nodes/NAtom.h"
-#include "stages/Penalty.h"
+#include "stages/bounds/Penalty.h"
 #include <algorithm>
 #include <exception>
 #include <iostream>
