@@ -58,8 +58,7 @@ To figure out whether schema is extended by a rule check:
 2. every body part extends and is 'sound' (any ≤ or ≥ are really true)
 */
 bool FastLAS::extends(Schema *sc, Schema::RuleSchema *rule) {
-  // cout << "The schema: " << sc->print() << endl;
-  // cout << "The rule: " << rule->print() << endl;
+
   // Heads must be the same
   if (sc->rule->head != rule->head) {
     return false;

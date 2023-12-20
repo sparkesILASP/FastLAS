@@ -47,7 +47,6 @@ public:
   virtual std::set<std::string> get_type_atoms(const std::string &, int &, std::string prefix = "ctx(_, ") const;
 
   std::shared_ptr<NTerm> get_argument(int i) {
-    // std::cout << to_string() << ":" << i << std::endl;
     return arguments[i];
   }
 

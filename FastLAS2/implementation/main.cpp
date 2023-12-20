@@ -119,6 +119,7 @@ int main(int argc, char **argv) {
   }
 
   // set config
+  int mode_count{0};
 
   if (vm.count("space-size")) FastLAS::space_size = true;
   if (vm.count("categorical-contexts")) FastLAS::categorical_contexts = true;
@@ -126,13 +127,28 @@ int main(int argc, char **argv) {
   if (vm.count("debug")) debug = true;
   if (vm.count("threads")) FastLAS::thread_num = vm["threads"].as<int>();
   if (vm.count("timeout")) FastLAS::timeout = vm["timeout"].as<int>();
-  if (vm.count("nopl")) FastLAS::mode = FastLAS::Mode::nopl;
-  if (vm.count("opl")) FastLAS::mode = FastLAS::Mode::opl;
-  if (vm.count("bound")) FastLAS::mode = FastLAS::Mode::bound;
   if (vm.count("force-safety")) FastLAS::force_safety = true;
   if (vm.count("score-only")) FastLAS::score_only = true;
   if (vm.count("show-p-prog")) FastLAS::output_penalty_program = true;
   if (vm.count("show-p")) FastLAS::view_possibilities = true;
+
+  if (vm.count("nopl")) {
+    FastLAS::mode = FastLAS::Mode::nopl;
+    mode_count++;
+  }
+  if (vm.count("opl")) {
+    FastLAS::mode = FastLAS::Mode::opl;
+    mode_count++;
+  }
+  if (vm.count("bound")) {
+    FastLAS::mode = FastLAS::Mode::bound;
+    mode_count++;
+  }
+
+  if (mode_count != 1) {
+    cerr << usage_str << endl;
+    return 1;
+  }
 
   // parse
 
@@ -166,12 +182,6 @@ int main(int argc, char **argv) {
     misc_chunk();
   }
 
-  int mode_count = vm.count("nopl") + vm.count("opl") + vm.count("bound");
-  if (mode_count != 1) {
-    cerr << usage_str << endl;
-    return 1;
-  }
-
   // STAGE: Expand penalty programs through each example
   // if (FastLAS::mode == FastLAS::Mode::bound) {
   //   // FastLAS::expand_penalty_rules();
@@ -182,8 +192,11 @@ int main(int argc, char **argv) {
   case FastLAS::Mode::bound:
     FastLAS::Possible_Penalties();
 
-    if (FastLAS::view_possibilities) cout << "Possibilities:" << endl
-                                          << FastLAS::print_string_possibilities();
+    if (FastLAS::view_possibilities) {
+      cout << "% % Possibilities:" << endl
+           << FastLAS::print_string_possibilities();
+      exit(16);
+    }
     break;
   case FastLAS::Mode::nopl:
     // Abduce possibilities, when set
@@ -191,8 +204,11 @@ int main(int argc, char **argv) {
 
     FastLAS::abduce();
 
-    if (FastLAS::view_possibilities) cout << "Possibilities:" << endl
-                                          << FastLAS::print_string_possibilities();
+    if (FastLAS::view_possibilities) {
+      cout << "% % Possibilities:" << endl
+           << FastLAS::print_string_possibilities();
+      exit(16);
+    }
 
     break;
   case FastLAS::Mode::opl:

@@ -252,7 +252,7 @@ void FastLAS::solve_final_task_pen(string program) {
       })(
       // sum_for_example
       's', [&](const string &atom) {
-        cout << atom << endl;
+        // cout << atom << endl;
       })(
       // penalty
       'p', [&](const string &atom) {

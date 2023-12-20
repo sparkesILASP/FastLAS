@@ -86,8 +86,8 @@ void Solver::Clingo::operator()(const std::function<void()> &final_fn) const {
 
   mtx.unlock();
 
-  // std::cout << "full" << std::endl;
-  // std::cout << full_string.str() << std::endl;
+  // std::cout << "full" << std::endl
+  //           << full_string.str() << std::endl;
 
   proc.close();
   remove(inpipe.c_str());

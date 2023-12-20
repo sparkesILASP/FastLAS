@@ -197,8 +197,6 @@ set<pair<pair<set<int>, set<int>>, set<set<int>>>> FastLAS::anti_abduce(const se
   int delta;
 
   ss << anti_abduce_sat_suff << endl;
-  // cout << ss.str() << endl;
-  // exit(2);
 
   Solver::Clingo(3, ss.str(), "--enum-mode=domrec --heuristic=domain -n 0")('i', [&](const string &atom) {
     exception.insert(get_language_index(atom));
@@ -294,8 +292,6 @@ void FastLAS::abduce() {
   }
 
   parallel_exec(new_examples, thread_num, [&](Example *eg, int) {
-    // cout << eg->id << endl;
-
     set<pair<string, int>> hyp_dependent_predictates;
     for (auto &mh : bias->head_declarations) {
       auto sc = mh.get_atom();

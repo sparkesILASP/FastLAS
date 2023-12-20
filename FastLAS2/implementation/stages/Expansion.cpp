@@ -93,9 +93,9 @@ void print_head_body_map(std::map<std::string, std::set<std::vector<std::shared_
   for (auto it = head_body_map.begin(); it != head_body_map.end(); ++it) {
     key.push_back(it->first);
     value.push_back(it->second);
-    std::cout << "Key: " << it->first << std::endl;
-    std::cout << "Value: " << std::endl;
-    std::cout << "{ " << endl;
+    std::cout << "Key: " << it->first << std::endl
+              << "Value: " << std::endl
+              << "{ " << endl;
     for (auto set : it->second) {
       std::cout << "\t{ ";
       for (auto body : set) {
