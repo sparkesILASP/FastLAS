@@ -36,17 +36,17 @@ string ModeDeclaration::to_string() const {
 
 string ModeDeclaration::head_representation() const {
   stringstream ss;
-  ss << "possible_head(" << atom.generalise("ARG", true) << ") :- ";
-  ss << "target(_, _, " << atom.generalise("ARG_VAL", true) << ")";
-  ss << atom.link_arguments(false) << "." << endl;
+  ss << "possible_head(" << atom.generalise("ARG", true) << ") :- "
+     << "target(_, _, " << atom.generalise("ARG_VAL", true) << ")"
+     << atom.link_arguments(false) << "." << endl;
 
   ss << "eq(" << atom.generalise("ARG", true) << ", "
-     << atom.generalise("ARG_VAL", true) << ") :- ";
-  ss << "head(" << atom.generalise("ARG", true) << "), ";
-  ss << "target(" << atom.generalise("ARG_VAL", true) << ")." << endl;
+     << atom.generalise("ARG_VAL", true) << ") :- "
+     << "head(" << atom.generalise("ARG", true) << "), "
+     << "target(" << atom.generalise("ARG_VAL", true) << ")." << endl;
 
-  ss << ":- head(" << atom.generalise("ARG", true) << "), ";
-  ss << "#false : target(" << atom.generalise("ARG_VAL", true) << ")." << endl;
+  ss << ":- head(" << atom.generalise("ARG", true) << "), "
+     << "#false : target(" << atom.generalise("ARG_VAL", true) << ")." << endl;
 
   auto vars = atom.get_place_holders();
   for (int i = 0; i < vars.size(); i++) {
@@ -285,9 +285,8 @@ string ModeDeclaration::analyse_head_representation() const {
   stringstream ss;
   ss << "recursive(" << atom.to_string()
      << ") :- A1 = " << atom.generalise("ARG", true)
-     << ", modeh(A1), has_modeb_dependencies(A1)." << endl;
-  ss << "modeh(" << atom.generalise("ARG", true) << ") :- ";
-  ss << atom.analyse_body_representation();
+     << ", modeh(A1), has_modeb_dependencies(A1)." << endl
+     << "modeh(" << atom.generalise("ARG", true) << ") :- " << atom.analyse_body_representation();
   return ss.str();
 }
 
@@ -295,10 +294,9 @@ string ModeDeclaration::analyse_body_representation() const {
   stringstream ss;
   ss << "recursive(" << atom.to_string()
      << ") :- A1 = " << atom.generalise("ARG", true)
-     << ", modeb(_, A1), depends_on_modeh(A1)." << endl;
-  ss << "modeb(" << (positive ? "pos" : "neg") << ", "
-     << atom.generalise("ARG", true) << ") :- ";
-  ss << atom.analyse_body_representation();
+     << ", modeb(_, A1), depends_on_modeh(A1)." << endl
+     << "modeb(" << (positive ? "pos" : "neg") << ", "
+     << atom.generalise("ARG", true) << ") :- " << atom.analyse_body_representation();
   return ss.str();
 }
 
@@ -309,19 +307,19 @@ string ModeDeclaration::abduce_body_representation() const {
   if (atom.is_comparison()) {
     int index = 0;
     ss << "binop(\"" << atom.predicate_name << "\", "
-       << atom.arguments[0]->generalise("ARG", index, true) << ", ";
-    ss << atom.arguments[1]->generalise("ARG", index, true) << ") :- ";
-    ss << atom.generalise("ARG", true);
-    ss << atom.type_info() << ".";
+       << atom.arguments[0]->generalise("ARG", index, true) << ", "
+       << atom.arguments[1]->generalise("ARG", index, true) << ") :- "
+       << atom.generalise("ARG", true)
+       << atom.type_info() << ".";
   } else {
     ss << "in(" << atom.generalise("ARG", true) << ") :- not recursive("
-       << atom.to_string() << "), ";
-    ss << "bottom(" << atom.generalise("ARG", true) << ")";
-    ss << atom.type_info() << ".";
-    ss << "n_in(" << atom.generalise("ARG", true) << ") :- not recursive("
-       << atom.to_string() << "), ";
-    ss << "not bottom(" << atom.generalise("ARG", true) << ")";
-    ss << atom.type_info() << ".";
+       << atom.to_string() << "), "
+       << "bottom(" << atom.generalise("ARG", true) << ")"
+       << atom.type_info() << "."
+       << "n_in(" << atom.generalise("ARG", true) << ") :- not recursive("
+       << atom.to_string() << "), "
+       << "not bottom(" << atom.generalise("ARG", true) << ")"
+       << atom.type_info() << ".";
   }
 
   return ss.str();
