@@ -97,7 +97,6 @@ int main(int argc, char **argv) {
 
   string cache_file;
   vector<string> file_names;
-  bool debug = false;
   FastLAS::score_only = false;
 
   // check args for causes of termination
@@ -124,7 +123,7 @@ int main(int argc, char **argv) {
   if (vm.count("space-size")) FastLAS::space_size = true;
   if (vm.count("categorical-contexts")) FastLAS::categorical_contexts = true;
   if (vm.count("show-solve-prog")) FastLAS::output_solve_program = true;
-  if (vm.count("debug")) debug = true;
+  if (vm.count("debug")) FastLAS::debug = true;
   if (vm.count("threads")) FastLAS::thread_num = vm["threads"].as<int>();
   if (vm.count("timeout")) FastLAS::timeout = vm["timeout"].as<int>();
   if (vm.count("force-safety")) FastLAS::force_safety = true;
@@ -187,7 +186,7 @@ int main(int argc, char **argv) {
   // }
 
   // STAGE: Generate possibilities, if needed
-  if (debug) cout << "Generate possibilities, if needed…" << endl;
+  if (FastLAS::debug) cout << "Generate possibilities, if needed…" << endl;
 
   switch (FastLAS::mode) {
   case FastLAS::Mode::bound:
@@ -201,7 +200,7 @@ int main(int argc, char **argv) {
     break;
   case FastLAS::Mode::nopl:
     // Abduce possibilities, when set
-    if (debug) cout << "Abducing…" << endl;
+    if (FastLAS::debug) cout << "Abducing…" << endl;
 
     FastLAS::abduce();
 
@@ -221,42 +220,42 @@ int main(int argc, char **argv) {
     break;
   }
 
-  if (debug) cout << "Total possibilities, if there" << total_possibilities << endl;
+  if (FastLAS::debug) cout << "Total possibilities, if there" << total_possibilities << endl;
 
   // STAGE: SAT-sufficient subsets
   // Additional atoms are written to FastLAS::language here
-  if (debug) cout << "Computing SAT-sufficient subset…" << endl;
+  if (FastLAS::debug) cout << "Computing SAT-sufficient subset…" << endl;
 
   FastLAS::compute_sat_sufficient();
 
-  if (debug) cout << "C^+(T):" << endl
-                  << FastLAS::print_string_c_plus()
-                  << "C^-(T):" << endl
-                  << FastLAS::print_string_c_minus();
+  if (FastLAS::debug) cout << "C^+(T):" << endl
+                           << FastLAS::print_string_c_plus()
+                           << "C^-(T):" << endl
+                           << FastLAS::print_string_c_minus();
 
   if (vm.count("write-cache")) FastLAS::write_cache(vm["write-cache"].as<string>());
 
   // STAGE: Generalise
   if (vm.count("delay-generalisation")) {
-    if (debug) cout << "Computing opt-sufficient subset…" << endl;
+    if (FastLAS::debug) cout << "Computing opt-sufficient subset…" << endl;
 
     FastLAS::optimise_sym();
   } else {
-    if (debug) cout << "Generalising…" << endl;
+    if (FastLAS::debug) cout << "Generalising…" << endl;
 
     FastLAS::generalise();
 
-    if (debug) cout << "G^+(T):" << endl
-                    << FastLAS::print_string_c_plus();
+    if (FastLAS::debug) cout << "G^+(T):" << endl
+                             << FastLAS::print_string_c_plus();
 
     if (vm.count("write-cache")) FastLAS::write_cache(vm["write-cache"].as<string>());
-    if (debug) cout << "Computing opt-sufficient subset…" << endl;
+    if (FastLAS::debug) cout << "Computing opt-sufficient subset…" << endl;
 
     FastLAS::optimise();
   }
 
-  if (debug) cout << "S_M:" << endl
-                  << FastLAS::print_string_s_m();
+  if (FastLAS::debug) cout << "S_M:" << endl
+                           << FastLAS::print_string_s_m();
 
   if (vm.count("write-cache")) {
     FastLAS::write_cache(vm["write-cache"].as<string>());
@@ -272,14 +271,14 @@ int main(int argc, char **argv) {
   case FastLAS::Mode::opl:
   // fall through
   case FastLAS::Mode::nopl:
-    if (debug) cout << "Solving…" << endl;
+    if (FastLAS::debug) cout << "Solving…" << endl;
 
     FastLAS::solve();
 
     if (!prediction_task) {
       if (FastLAS::score_only) {
         cout << FastLAS::print_string_score();
-      } else if (debug) {
+      } else if (FastLAS::debug) {
         cout << FastLAS::print_string_stats();
       } else {
         cout << FastLAS::print_string_solution();

@@ -56,6 +56,7 @@ bool categorical_contexts = false;
 bool any_cache = false;
 bool output_penalty_program = false;
 bool view_possibilities = false;
+bool debug{false};
 
 vector<string> language({"f_triv___"});
 
