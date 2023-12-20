@@ -53,10 +53,10 @@ extern FILE *yyin;
 extern bool prediction_task;
 extern bool cache;
 extern std::set<Example *> examples;
+extern int total_possibilities;
 
 std::string usage_str = "ERROR: usage:  FastLAS [ --opl | --nopl | --bound ] file_name";
-std::string version_info = "FastLAS version 2.1.0 (release built on " + std::string(__DATE__) + ")." +
-                           R"ESC(
+std::string version_info = "FastLAS version 2.1.0 (release built on " + std::string(__DATE__) + ")." + R"ESC(
 
                                For updates and
                            information on FastLAS,
@@ -145,11 +145,6 @@ int main(int argc, char **argv) {
     mode_count++;
   }
 
-  if (mode_count != 1) {
-    cerr << usage_str << endl;
-    return 1;
-  }
-
   // parse
 
   if (vm.count("read-cache")) {
@@ -178,8 +173,12 @@ int main(int argc, char **argv) {
   }
 
   if (vm.count("chunk")) {
-
     misc_chunk();
+  }
+
+  if (mode_count != 1) {
+    cerr << usage_str << endl;
+    return 1;
   }
 
   // STAGE: Expand penalty programs through each example
@@ -188,6 +187,8 @@ int main(int argc, char **argv) {
   // }
 
   // STAGE: Generate possibilities, if needed
+  if (debug) cout << "Generate possibilities, if needed…" << endl;
+
   switch (FastLAS::mode) {
   case FastLAS::Mode::bound:
     FastLAS::Possible_Penalties();
@@ -219,6 +220,8 @@ int main(int argc, char **argv) {
   default:
     break;
   }
+
+  if (debug) cout << "Total possibilities, if there" << total_possibilities << endl;
 
   // STAGE: SAT-sufficient subsets
   // Additional atoms are written to FastLAS::language here
@@ -264,8 +267,7 @@ int main(int argc, char **argv) {
   case FastLAS::Mode::bound:
     FastLAS::solve_pen();
     cout << "stats: " << endl
-         << FastLAS::print_string_stats() << endl
-         << "Exiting" << endl;
+         << FastLAS::print_string_stats() << endl;
     break;
   case FastLAS::Mode::opl:
   // fall through

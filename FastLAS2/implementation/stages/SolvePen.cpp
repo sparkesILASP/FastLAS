@@ -86,8 +86,7 @@ extern set<Example *> examples;
 namespace FastLAS {
 void solve_final_task_pen(string);
 
-int hypothesis_length_pen = 0;
-int penalty_paid_pen = 0;
+int penalty_paid_pen{0};
 set<set<Schema::RuleSchema *>> sat_disjs_pen;
 string solution_pen;
 bool sat_pen;
@@ -108,27 +107,27 @@ As, they cover at least one, but maybe more examples.
 And, for any examples they don't cover a different disjunction is going to be used.
 */
 void FastLAS::solve_pen() {
-  stringstream ss;
+  stringstream solve_pen_stream;
   // ss << "#minimise { N, P : possibility_penalty(N,P,E) }." << endl;
   // If there are multiple possibilities covered, take the minimum.
   // Though in general rare, as anything which influences a penalty will be inc/exc.
-  ss << "sum_for_example(M,E) :- M = #sum{ N : possibility_cost(N,P,E)}, example(E)." << endl;
+  solve_pen_stream << "sum_for_example(M,E) :- M = #sum{ N : possibility_cost(N,P,E)}, example(E)." << endl;
   // minimise over examples
-  ss << "#minimise { M, E : sum_for_example(M,E) }." << endl;
+  solve_pen_stream << "#minimise { M, E : sum_for_example(M,E) }." << endl;
 
   // get minimum penalty of possibility covered for example, though this should never be needed
   // ss << "min_of_covered(M,Ex) :- M = #min{ N : possibility_cost(N,Poss,Ex)}, cov(Poss,Ex)." << endl;
   // ss << "#minimise { M, E : min_of_covered(M,E) }." << endl;
 
   for (auto eg : examples) {
-    ss << "% " << eg->id << endl;
-    ss << "example(" << eg->id << ")." << endl;
+    solve_pen_stream << "% " << eg->id << endl
+                     << "example(" << eg->id << ")." << endl;
     // Possibility disjunction
     for (auto sub_eg : eg->get_possibilities()) {
-      ss << "% " << eg->id << " : " << sub_eg->id << endl;
-      ss << "possibility_cost(" << sub_eg->get_penalty() << ", " << sub_eg->id << ", " << eg->id << ")"
-         << " :- "
-         << "cov(" << sub_eg->id << ", " << eg->id << ")." << endl;
+      solve_pen_stream << "% " << eg->id << " : " << sub_eg->id << endl
+                       << "possibility_cost(" << sub_eg->get_penalty() << ", " << sub_eg->id << ", " << eg->id << ")"
+                       << " :- "
+                       << "cov(" << sub_eg->id << ", " << eg->id << ")." << endl;
       // Insert the optimised rule disjunctions (optimised ruleschemas from characteristic ruleset).
 
       std::string cov_string_disjunctions{};
@@ -150,9 +149,9 @@ void FastLAS::solve_pen() {
 
         if (disj.size() != 0) {
           // cov_string_disjunctions += "disj(" + std::to_string(index) + "), ";
-          ss << "n_cov(" << sub_eg->id << "," << eg->id << ") :- not disj(" << index << ")." << endl;
+          solve_pen_stream << "n_cov(" << sub_eg->id << "," << eg->id << ") :- not disj(" << index << ")." << endl;
           for (auto d : disj) {
-            ss << "disj(" << index << ") :- in_h(" << d->id << ")." << endl;
+            solve_pen_stream << "disj(" << index << ") :- in_h(" << d->id << ")." << endl;
           }
         }
 
@@ -161,7 +160,7 @@ void FastLAS::solve_pen() {
       // if (cov_string_disjunctions.size() > 0) {
       //   ss << "cov(" << sub_eg->id << ") :- " << cov_string_disjunctions << "#true." << endl;
       // }
-      ss << "cov(" << sub_eg->id << "," << eg->id << ") :- not n_cov(" << sub_eg->id << "," << eg->id << ")." << endl;
+      solve_pen_stream << "cov(" << sub_eg->id << "," << eg->id << ") :- not n_cov(" << sub_eg->id << "," << eg->id << ")." << endl;
       // Violation disjunction
       auto disj = sub_eg->get_optimised_rule_violations();
       // Check to see if the disjunction is cached
@@ -178,32 +177,32 @@ void FastLAS::solve_pen() {
       // Was in the cached check before, but still want to add issue for each example, no?
       */
       for (auto d : disj) {
-        ss << "disj(" << index << ") :- in_h(" << d->id << ")." << endl;
+        solve_pen_stream << "disj(" << index << ") :- in_h(" << d->id << ")." << endl;
       }
-      ss << "n_cov(" << sub_eg->id << "," << eg->id << ") :- disj(" << index << ")." << endl;
+      solve_pen_stream << "n_cov(" << sub_eg->id << "," << eg->id << ") :- disj(" << index << ")." << endl;
     }
     // Specify relations between possibilities and examples
     if (eg->get_possibilities().size() == 0) {
       cout << "Oops, no possibilities for example: " << eg->id << endl;
     } else {
 
-      ss << "n_cov(" << eg->id << "," << eg->id << ") :- #true";
+      solve_pen_stream << "n_cov(" << eg->id << "," << eg->id << ") :- #true";
       for (auto sub_eg : eg->get_possibilities()) {
-        ss << ", n_cov(" << sub_eg->id << "," << eg->id << ")";
+        solve_pen_stream << ", n_cov(" << sub_eg->id << "," << eg->id << ")";
       }
-      ss << "." << endl;
+      solve_pen_stream << "." << endl;
 
-      ss << ":- n_cov(" << eg->id << "," << eg->id << ")." << endl;
+      solve_pen_stream << ":- n_cov(" << eg->id << "," << eg->id << ")." << endl;
     }
   }
 
   for (auto d : ds_pen) {
-    ss << "0 {in_h(" << d->id << ")} 1." << endl
-       << ":~ in_h(" << d->id << ").[" << d->get_score() << "@0, hyp(" << d->id << ")]" << endl
-       << d->intermediate_meta_representation();
+    solve_pen_stream << "0 {in_h(" << d->id << ")} 1." << endl
+                     << ":~ in_h(" << d->id << ").[" << d->get_score() << "@0, hyp(" << d->id << ")]" << endl
+                     << d->intermediate_meta_representation();
   }
 
-  FastLAS::solve_final_task_pen(ss.str());
+  FastLAS::solve_final_task_pen(solve_pen_stream.str());
 }
 
 void FastLAS::solve_final_task_pen(string program) {
@@ -231,12 +230,12 @@ void FastLAS::solve_final_task_pen(string program) {
       // in_head
       'i', [&](const string &atom) {
         auto rule = Schema::RuleSchema::get_schema(stoi(atom));
-        hypothesis_length_pen += rule->get_score();
+        hypothesis_length += rule->get_score();
         solution_pen_ss << rule->print() << endl;
       })(
       // intermediate_penalty
       'b', [&](const string &atom) {
-        hypothesis_length_pen += stoi(atom);
+        hypothesis_length += stoi(atom);
       })(
       // disj
       'd', [&](const string &atom) {
@@ -259,6 +258,7 @@ void FastLAS::solve_final_task_pen(string program) {
         sat_intermediate_facts_pen.insert(atom);
       })([&]() { sat_pen = true; });
 
+  cout << "hlp: " << hypothesis_length << endl;
   if (!sat_pen) {
     solution_pen = "UNSATISFIABLE";
   } else {

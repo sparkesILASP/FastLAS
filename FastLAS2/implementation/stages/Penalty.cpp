@@ -8,6 +8,7 @@
 #include <string>
 
 extern std::set<Example *> examples;
+int total_possibilities{0};
 
 /*
 For each example, generate minimal partial interpretations per penalty and add these as possibilities for each example.
@@ -50,6 +51,7 @@ void FastLAS::Possible_Penalties() {
           Example *new_possibility = example->add_bound_possibility(example->id + "x" + std::to_string(possibility_id), inc, exc, possibility_penalty);
 
           possibility_id++;
+          total_possibilities++;
 
           inc.clear();
           exc.clear();

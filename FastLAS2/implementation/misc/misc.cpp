@@ -16,8 +16,8 @@ extern std::set<Example *> examples;
 using namespace std;
 
 void misc_chunk() {
-  // unique_id : <{ context }, { inclusions }>
-  map<string, pair<set<string>, set<string>>> example_map{};
+  // unique_id : <<{ context }, { inclusions }>, last>
+  map<string, pair<pair<set<string>, set<string>>, int>> example_map{};
 
   boost::regex re_form("form\\(\\d+,([^\\)])+\\)\\.");
   boost::regex re_last("last\\((\\d+)\\)");
@@ -48,17 +48,17 @@ void misc_chunk() {
 
     // id not found then add to map and fill context
     if (id_find == example_map.end()) {
-
-      example_map[unique_id] = pair<set<string>, set<string>>{};
+      example_map[unique_id] = pair<pair<set<string>, set<string>>, int>{};
 
       for (auto context_NRule : eg->get_context()) {
-        example_map[unique_id].first.insert(context_NRule.to_string());
+        example_map[unique_id].first.first.insert(context_NRule.to_string());
       }
+      example_map[unique_id].second = max_split;
     }
 
     // always add the inclusions
     for (auto inc : eg->get_inclusions()) {
-      example_map[unique_id].second.insert(inc);
+      example_map[unique_id].first.second.insert(inc);
     }
   }
 
@@ -83,13 +83,16 @@ void misc_chunk() {
                    << ", {";
     example_stream << endl
                    << "% % original context: " << endl;
-    for (auto ctx_line : it->second.first) {
+    for (auto ctx_line : it->second.first.first) {
       example_stream << ctx_line;
     }
 
+    // options of where to split
+    example_stream << "possible_split(1.." << it->second.second << ")." << endl;
+
     example_stream << endl
                    << "% % unified (true) inclusions: " << endl;
-    for (auto inc : it->second.second) {
+    for (auto inc : it->second.first.second) {
       example_stream << "true_" << inc << "." << endl;
     }
     example_stream << "}"
