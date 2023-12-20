@@ -39,8 +39,7 @@ string FastLAS::print_string_possibilities() {
   stringstream ss;
   for (auto eg : examples) {
     for (auto p : eg->get_possibilities())
-      ss << "  " << p->to_string();
-    ss << endl;
+      ss << "  " << p->to_string() << endl;
   }
   string sol = ss.str();
   boost::replace_all(sol, "naf__", "not ");

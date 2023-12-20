@@ -88,17 +88,20 @@ string Example::to_string() const {
 
   switch (ex_type) {
   case Example::ExType::pos:
-    ss << "#pos(" << id << "@" << penalty << ", {";
+    ss << "#pos(" << id << "@" << penalty;
     break;
   case Example::ExType::neg:
-    ss << "#neg(" << id << ", {";
+    ss << "#neg(" << id;
     break;
   case Example::ExType::bnd:
-    ss << "#be(" << id << "," << endl;
+    ss << "#be(" << id;
     break;
   default:
     break;
   }
+
+  ss << "," << endl
+     << "{";
 
   if (ex_type == Example::ExType::pos || ex_type == Example::ExType::neg) {
 
@@ -112,7 +115,8 @@ string Example::to_string() const {
       ss << inc;
     }
 
-    ss << "}, {";
+    ss << "}," << endl
+       << "{";
 
     first = true;
     for (auto exc : exclusions) {
@@ -128,9 +132,9 @@ string Example::to_string() const {
   }
 
   if (ex_type == Example::ExType::bnd) {
-    ss << "\t[" << endl;
-    ss << "\t " << bound;
-    ss << "," << endl
+    ss << "\t[" << endl
+       << "\t " << bound
+       << "," << endl
        << "\t{" << endl;
     for (auto c : bound_prog) {
       ss << "\t " << c.to_string();
@@ -139,18 +143,13 @@ string Example::to_string() const {
        << "\t]";
   }
 
-  /*
-  Skip printing context for the moment
-  */
-
-  ss << "," << endl;
-  ss << "\t{";
+  ss << "," << endl
+     << "{" << endl;
   for (auto c : context) {
     ss << "  " << c.to_string();
   }
-  ss << "\t}";
-
-  ss << ")." << endl;
+  ss << "}"
+     << ")." << endl;
 
   return ss.str();
 }
