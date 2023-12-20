@@ -26,23 +26,29 @@ function customPrint(m)
   for i, atom in ipairs(atoms) do
 
     atom_string = tostring(atom)
+    
     cost_sum_match = atom_string:match(')ESC" +
          std::string("sum_of_penalties") + R"ESC(%((%d+)%)')
-    cost_match = atom_string:match(')ESC" +
+    cost_match = atom_string:match(")ESC" +
          Penalty::asp_predicate +
-         R"ESC([^%.]+.')
-    negation_match = atom_string:match("not'(.+)")
+         R"ESC(.*")
+    cost_negation_match = atom_string:match("not')ESC" +
+         Penalty::asp_predicate + R"ESC(.*")
     
     if cost_match then
       model_string = model_string
     elseif cost_sum_match then
       model_string = model_string.." $"..cost_sum_match.."|"
-    elseif negation_match then
-      model_string = model_string.." -"..negation_match.."|"
+    elseif cost_negation_match then
+      model_string = model_string.." £"..cost_negation_match.."|"
     else
-      model_string = model_string.." +"..atom_string.."|"
-    end 
-
+	    negation_match = atom_string:match("not'([^%.]+)")
+	    if negation_match then
+      	 model_string = model_string.." -"..negation_match.."|"
+			else
+				model_string = model_string.." +"..atom_string.."|"
+			end
+    end
   end
 
 model_string = model_string.." ;|"
@@ -103,14 +109,15 @@ void FastLAS::Possible_Penalties() {
                     << example->bound + 1
                     << ":- sum_of_penalties(M).";
 
-    // poss_solve_strm << "#minimize { X, Y : " + Penalty::asp_predicate + "(X,Y) }." << std::endl;
+    poss_solve_strm << "#minimize { X, Y : " + Penalty::asp_predicate + "(X,Y) }." << std::endl;
 
     poss_solve_strm << Penalty::make_lua_possibility_script_for(example->bound);
 
     // only want to see what will be learnt from but penalties to ensure all possibilities are found
     poss_solve_strm << std::endl
                     << "% % show statements: " << std::endl
-                    << shows_from_mode_h()
+                    << shows_from_mode_h("")
+                    << shows_from_mode_h("not'")
                     << "#show " << Penalty::asp_predicate << "/2. " << std::endl
                     << "#show not'" << Penalty::asp_predicate << "/2." << std::endl
                     << "#show sum_of_penalties/1." << std::endl;
