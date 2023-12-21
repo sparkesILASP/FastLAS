@@ -38,6 +38,7 @@
 using namespace std;
 
 extern set<Example *> examples;
+extern vector<NRule> background;
 
 string FastLAS::print_string_possibilities() {
   stringstream ss;
@@ -244,4 +245,16 @@ string FastLAS::print_string_score() {
   stringstream score_stream{};
   score_stream << hypothesis_length + get_total_penalty().first << flush;
   return score_stream.str();
+}
+
+string FastLAS::print_string_background() {
+  std::stringstream background_stream{};
+  background_stream << "% % Background: " << endl
+                    << endl;
+  for (auto rule : background) {
+    background_stream << rule.to_string();
+  }
+  background_stream << endl;
+
+  return background_stream.str();
 }

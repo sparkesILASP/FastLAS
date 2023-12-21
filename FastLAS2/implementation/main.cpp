@@ -24,6 +24,7 @@
 
 #include <algorithm>
 #include <boost/program_options.hpp>
+#include <fstream>
 #include <iostream>
 #include <iterator>
 #include <ostream>
@@ -87,7 +88,9 @@ int main(int argc, char **argv) {
       "threads", po::value<int>(), "number of threads.")(
       "show-p-prog", "output program used to generate possibilities for examples.")(
       "show-p", "output generated possibilities.")(
-      "chunk", "convert sentence chunking examples.");
+      "write-p", po::value<string>(), "write possibilities to specfied file.")(
+      "write-c", po::value<string>(), "write contexts to files in location.")(
+      "chunk", po::value<string>(), "convert sentence chunking examples.");
 
   po::positional_options_description p;
   p.add("file_names", -1);
@@ -173,7 +176,11 @@ int main(int argc, char **argv) {
   }
 
   if (vm.count("chunk")) {
-    misc_chunk();
+    ofstream chunk_file;
+    chunk_file.open(vm["chunk"].as<string>());
+    chunk_file << misc_chunk();
+    chunk_file.close();
+    exit(0);
   }
 
   if (mode_count != 1) {
@@ -192,25 +199,12 @@ int main(int argc, char **argv) {
   switch (FastLAS::mode) {
   case FastLAS::Mode::bound:
     FastLAS::Possible_Penalties();
-
-    if (FastLAS::view_possibilities) {
-      cout << "% % Possibilities:" << endl
-           << FastLAS::print_string_possibilities();
-      exit(16);
-    }
     break;
   case FastLAS::Mode::nopl:
     // Abduce possibilities, when set
     if (FastLAS::debug) cout << "Abducing…" << endl;
 
     FastLAS::abduce();
-
-    if (FastLAS::view_possibilities) {
-      cout << "% % Possibilities:" << endl
-           << FastLAS::print_string_possibilities();
-      exit(16);
-    }
-
     break;
   case FastLAS::Mode::opl:
     for (auto eg : examples) {
@@ -219,6 +213,30 @@ int main(int argc, char **argv) {
     break;
   default:
     break;
+  }
+
+  if (vm.count("write-c")) {
+    for (Example *eg : examples) {
+      ofstream context_file;
+      context_file.open(vm["write-c"].as<string>() + "/" + eg->id + ".lp");
+      for (auto c : eg->get_context()) {
+        context_file << c.to_string() << endl;
+      }
+      context_file.close();
+    }
+  }
+
+  if (FastLAS::view_possibilities) {
+    cout << "% % Possibilities:" << endl
+         << FastLAS::print_string_possibilities();
+    exit(16);
+  }
+  if (vm.count("write-p")) {
+    ofstream possibilities_file;
+    possibilities_file.open(vm["write-p"].as<string>());
+    possibilities_file << FastLAS::print_string_possibilities();
+    possibilities_file << FastLAS::print_string_background();
+    possibilities_file.close();
   }
 
   if (FastLAS::debug) cout << "Total examples/possibilities: " << total_possibilities << endl;

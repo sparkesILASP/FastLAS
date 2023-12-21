@@ -13,7 +13,7 @@ extern std::set<Example *> examples;
 
 using namespace std;
 
-void misc_chunk() {
+std::string misc_chunk() {
   // unique_id : <<{ context }, { inclusions }>, last>
   map<string, pair<pair<set<string>, set<string>>, int>> example_map{};
 
@@ -137,9 +137,7 @@ prevpos(P,X) :- pos(P,X+1).
 #bias("penalty(1, body(X)) :- in_body(X).").
 )ESC";
 
-  cout << example_stream.str();
-
-  exit(0);
+  return example_stream.str();
 }
 
 std::string penalty_program_stream_oops(int oops) {

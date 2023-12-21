@@ -37,6 +37,7 @@ std::string print_string_s_m();
 std::string print_string_solution();
 std::string print_string_stats();
 std::string print_string_score();
+std::string print_string_background();
 
 }; // namespace FastLAS
 
