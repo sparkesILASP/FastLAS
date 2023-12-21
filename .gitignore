@@ -15,9 +15,6 @@ graph_script*
 *.tmp*
 *.byebug*
 *.DS_Store
-<<<<<<< HEAD
-*.cache/
-=======
 *.cache
 *test programs/
->>>>>>> old-state
+*FastLAS2/data/sentence_chunking/
