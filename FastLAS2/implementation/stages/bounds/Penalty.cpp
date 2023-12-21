@@ -3,10 +3,9 @@
 #include "../../global.hpp"
 #include "Expansion.hpp"
 #include <iostream>
-#include <ostream>
+
 #include <set>
 #include <sstream>
-#include <string>
 
 extern std::set<Example *> examples;
 int total_possibilities{0};

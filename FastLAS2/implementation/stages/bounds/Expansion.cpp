@@ -1,17 +1,12 @@
 #include "Expansion.hpp"
-#include "../../Utils.h"
+
 #include "./Penalty.h"
-#include <algorithm>
+
 #include <boost/algorithm/string.hpp>
 #include <boost/regex.hpp>
-#include <condition_variable>
-#include <cstdlib>
+
 #include <iostream>
-#include <memory>
-#include <ostream>
-#include <regex>
 #include <sstream>
-#include <string>
 #include <vector>
 
 using namespace std;
@@ -52,16 +47,16 @@ Fill head body map by searching rules for heads matching penalty regex.
 */
 void fill_head_body_map(std::map<std::string, std::set<std::vector<std::shared_ptr<NLiteral>>>> &head_body_map, Example *example) {
   // Set up part of regex for finding penalty predicates
-  std::string regex_string = Penalty::asp_predicate + "\\([^\\)]+\\)";
-  std::regex re(regex_string);
+
+  boost::regex re(Penalty::asp_predicate + "\\([^\\)]+\\)");
 
   for (auto rule : example->bound_prog) {
 
     std::string head_string = rule.get_head()->to_string();
 
-    std::smatch m;
+    boost::smatch m;
 
-    if (std::regex_search(head_string, m, re)) {
+    if (boost::regex_search(head_string, m, re)) {
       // This can't happen given FastLAS2 restrictions.
       if (m.size() > 1) {
         cerr << "Multiple penalties in the head of a rule" << endl;

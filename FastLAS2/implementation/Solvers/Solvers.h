@@ -1,7 +1,6 @@
 #ifndef SOLVERS__H_
 #define SOLVERS__H_
 
-#include "../Example.h"
 #include "../Utils.h"
 #include <fstream>
 #include <mutex>

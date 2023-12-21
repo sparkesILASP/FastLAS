@@ -1,15 +1,13 @@
 #include "misc.hpp"
 #include "../Example.h"
 #include "../stages/bounds/Penalty.h"
-#include <iostream>
+
 #include <map>
 #include <set>
 #include <sstream>
-#include <string>
+#include <vector>
 
 #include <boost/regex.hpp>
-#include <utility>
-#include <vector>
 
 extern std::set<Example *> examples;
 
@@ -65,21 +63,13 @@ void misc_chunk() {
   // map complete, so make examples
   int example_id{0};
   std::stringstream example_stream{};
-  int penalty{10};
-
-  std::stringstream penalty_program_stream{};
-
-  penalty_program_stream << "{" << endl
-                         << Penalty::asp_predicate << "(1,split(N,t)) :- not split(N) : true_split(N)." << endl
-                         << "0 { split(N) } 1 :- true_split(N)." << endl
-                         << "}" << endl;
 
   for (auto it = example_map.begin(); it != example_map.end(); ++it) {
-    example_stream
-        << "#be(id_" << example_id << ",";
-    example_id++;
-    example_stream << "[" << penalty << ", "
-                   << penalty_program_stream.str() << "]"
+    example_stream << "#be(id_" << example_id++ << ",";
+    example_stream << "[" << it->second.first.second.size() << ", " // bound is # of true splits
+                                                                    //  << penalty_program_stream_oops(it->second.second)
+                   << penalty_program_stream_tf()
+                   << "]"
                    << ", {";
     example_stream << endl
                    << "% % original context: " << endl;
@@ -150,4 +140,32 @@ prevpos(P,X) :- pos(P,X+1).
   cout << example_stream.str();
 
   exit(0);
+}
+
+std::string penalty_program_stream_oops(int oops) {
+
+  std::stringstream penalty_program_stream{};
+
+  penalty_program_stream << "{" << endl
+                         << "% % Penalty program" << endl
+                         << Penalty::asp_predicate << "(1,split(N,t)) :- not split(N) : true_split(N)." << endl
+                         //  << "0 { split(N) } 1 :- true_split(N)." << endl
+                         //  << Penalty::asp_predicate << "(" << oops << ", oops) :- split(-1)."
+                         << "}" << endl;
+
+  return penalty_program_stream.str();
+}
+
+std::string penalty_program_stream_tf() {
+
+  std::stringstream penalty_program_stream{};
+
+  penalty_program_stream << "{" << endl
+                         << "% % Penalty program" << endl
+                         << Penalty::asp_predicate << "(1,split(N,t)) :- not split(N) : true_split(N)." << endl
+                         << Penalty::asp_predicate << "(1,split(N,f)) :- not true_split(N) : split(N)." << endl
+                         << "0 { split(N) } 1 :- possible_split(N)." << endl
+                         << "}" << endl;
+
+  return penalty_program_stream.str();
 }

@@ -26,12 +26,11 @@
 #include "Example.h"
 #include "LanguageBias.h"
 #include "Solvers/Solvers.h"
-#include "Utils.h"
 #include "global.hpp"
 #include "nodes/NAtom.h"
 #include "stages/bounds/Penalty.h"
+
 #include <algorithm>
-#include <exception>
 #include <iostream>
 #include <sstream>
 #include <string>
