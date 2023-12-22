@@ -90,6 +90,7 @@ int main(int argc, char **argv) {
       "show-p", "output generated possibilities.")(
       "write-p", po::value<string>(), "write possibilities to specfied file.")(
       "write-c", po::value<string>(), "write contexts to files in location.")(
+      "write-e", po::value<string>(), "write examples to separate files in given folder.")(
       "chunk", po::value<string>(), "convert sentence chunking examples.");
 
   po::positional_options_description p;
@@ -186,6 +187,20 @@ int main(int argc, char **argv) {
   if (mode_count != 1) {
     cerr << usage_str << endl;
     return 1;
+  }
+
+  if (vm.count("write-e")) {
+    for (Example *eg : examples) {
+      ofstream ex_file;
+      ex_file.open(vm["write-e"].as<string>() + "/" + eg->id + ".lp");
+      ex_file << eg->to_string();
+      ex_file.close();
+    }
+    ofstream bf_file;
+    bf_file.open(vm["write-e"].as<string>() + "/background.lp");
+    bf_file << FastLAS::print_string_background();
+    bf_file.close();
+    exit(0);
   }
 
   // STAGE: Expand penalty programs through each example
