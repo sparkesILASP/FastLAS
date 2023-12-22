@@ -100,8 +100,11 @@ string Example::to_string() const {
     break;
   }
 
-  ss << "," << endl
-     << "{";
+  ss << "," << endl;
+
+  if (ex_type == Example::ExType::pos || ex_type == Example::ExType::neg) {
+    ss << "{";
+  }
 
   if (ex_type == Example::ExType::pos || ex_type == Example::ExType::neg) {
 
