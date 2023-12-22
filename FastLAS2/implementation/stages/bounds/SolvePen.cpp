@@ -268,8 +268,9 @@ void FastLAS::solve_final_task_pen(string program) {
     boost::replace_all(solution_pen, "v_a_r", "V");
     boost::replace_all(solution_pen, "naf__", "not ");
   }
-  cout << "Soultion:" << endl
-       << solution_pen << endl;
+  cout << "# Solution:" << endl
+       << solution_pen << endl
+       << "#" << endl;
 
   cout << "Covered: " << covered << endl
        << "Uncovered: " << uncovered << endl
