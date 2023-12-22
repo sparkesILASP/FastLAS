@@ -1,0 +1,84 @@
+#be(id_312,
+	[
+	 9,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(9).
+  true_split(7).
+  true_split(6).
+  true_split(3).
+  true_split(15).
+  true_split(14).
+  true_split(13).
+  true_split(10).
+  true_split(1).
+  possible_split((1 .. 15)).
+  test_split(1).
+  rel(c_VC,6).
+  rel(c_SUB,14).
+  rel(c_SBJ,13).
+  rel(c_ROOT,4).
+  rel(c_PRP,1).
+  rel(c_PMOD,9).
+  rel(c_PMOD,3).
+  rel(c_OBJ,15).
+  rel(c_NMOD,8).
+  rel(c_NMOD,2).
+  rel(c_NMOD,12).
+  rel(c_NMOD,11).
+  rel(c_ADV,7).
+  rel(c_ADV,5).
+  rel(c_ADV,10).
+  pos(c_VBZ,14).
+  pos(c_VB,6).
+  pos(c_RB,5).
+  pos(c_NNS,9).
+  pos(c_NN,3).
+  pos(c_NN,15).
+  pos(c_NN,13).
+  pos(c_NN,12).
+  pos(c_MD,4).
+  pos(c_IN,7).
+  pos(c_IN,10).
+  pos(c_IN,1).
+  pos(c_DT,8).
+  pos(c_DT,2).
+  pos(c_DT,11).
+  last(15).
+  head(root,4).
+  head(9,8).
+  head(7,9).
+  head(6,7).
+  head(6,10).
+  head(4,6).
+  head(4,5).
+  head(4,1).
+  head(3,2).
+  head(14,15).
+  head(14,13).
+  head(13,12).
+  head(13,11).
+  head(10,14).
+  head(1,3).
+  form(9,"wires").
+  form(8,"the").
+  form(7,"through").
+  form(6,"flow").
+  form(5,"not").
+  form(4,"will").
+  form(3,"electricity").
+  form(2,"the").
+  form(15,"incomplete.").
+  form(14,"is").
+  form(13,"path").
+  form(12,"circuit").
+  form(11,"the").
+  form(10,"if").
+  form(1,"Because").
+  first(1).
+}).

@@ -1,0 +1,70 @@
+#be(id_239,
+	[
+	 2,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(4).
+  true_split(2).
+  possible_split((1 .. 13)).
+  test_split(2).
+  test_split(1).
+  rel(c_VC,4).
+  rel(c_SBJ,2).
+  rel(c_ROOT,3).
+  rel(c_PMOD,9).
+  rel(c_PMOD,7).
+  rel(c_NMOD,8).
+  rel(c_NMOD,6).
+  rel(c_NMOD,12).
+  rel(c_NMOD,11).
+  rel(c_NMOD,1).
+  rel(c_COORD,10).
+  rel(c_CONJ,13).
+  rel(c_ADV,5).
+  pos(c_VBZ,3).
+  pos(c_VBN,4).
+  pos(c_TO,5).
+  pos(c_NN,9).
+  pos(c_NN,7).
+  pos(c_NN,13).
+  pos(c_NN,12).
+  pos(c_NN,1).
+  pos(c_JJ,6).
+  pos(c_IN,8).
+  pos(c_DT,11).
+  pos(c_CD,2).
+  pos(c_CC,10).
+  last(13).
+  head(root,3).
+  head(9,10).
+  head(8,9).
+  head(7,8).
+  head(7,6).
+  head(5,7).
+  head(4,5).
+  head(3,4).
+  head(3,2).
+  head(2,1).
+  head(13,12).
+  head(13,11).
+  head(10,13).
+  form(9,"battery").
+  form(8,"of").
+  form(7,"end").
+  form(6,"postive").
+  form(5,"to").
+  form(4,"connected").
+  form(3,"is").
+  form(2,"-113994").
+  form(13,"meter").
+  form(12,"voltage").
+  form(11,"the").
+  form(10,"and").
+  form(1,"terminal").
+  first(1).
+}).

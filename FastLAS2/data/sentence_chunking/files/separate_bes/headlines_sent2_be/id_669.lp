@@ -1,0 +1,54 @@
+#be(id_669,
+	[
+	 3,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(7).
+  true_split(3).
+  true_split(1).
+  possible_split((1 .. 9)).
+  test_split(1).
+  rel(c_ROOT,1).
+  rel(c_PMOD,9).
+  rel(c_OBJ,7).
+  rel(c_NMOD,6).
+  rel(c_NMOD,5).
+  rel(c_NMOD,4).
+  rel(c_NMOD,2).
+  rel(c_IM,3).
+  rel(c_ADV,8).
+  pos(c_VB,3).
+  pos(c_TO,2).
+  pos(c_NNS,1).
+  pos(c_NNP,4).
+  pos(c_NN,9).
+  pos(c_NN,7).
+  pos(c_NN,6).
+  pos(c_NN,5).
+  pos(c_IN,8).
+  last(9).
+  head(root,1).
+  head(8,9).
+  head(7,6).
+  head(7,4).
+  head(6,5).
+  head(3,8).
+  head(3,7).
+  head(2,3).
+  head(1,2).
+  form(9,"sea").
+  form(8,"at").
+  form(7,"stockpile").
+  form(6,"weapon").
+  form(5,"chemical").
+  form(4,"Syria").
+  form(3,"destroy").
+  form(2,"to").
+  form(1,"US").
+  first(1).
+}).

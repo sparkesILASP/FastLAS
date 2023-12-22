@@ -1,0 +1,61 @@
+#be(id_59,
+	[
+	 6,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(7).
+  true_split(6).
+  true_split(5).
+  true_split(3).
+  true_split(2).
+  true_split(1).
+  possible_split((1 .. 10)).
+  test_split(1).
+  rel(c_SBJ,3).
+  rel(c_ROOT,1).
+  rel(c_PMOD,5).
+  rel(c_PMOD,10).
+  rel(c_P,2).
+  rel(c_OBJ,7).
+  rel(c_NMOD,9).
+  rel(c_NMOD,8).
+  rel(c_NMOD,6).
+  rel(c_NMOD,4).
+  pos(c_c,2).
+  pos(c_VBP,6).
+  pos(c_NNS,3).
+  pos(c_NNP,5).
+  pos(c_NNP,1).
+  pos(c_NN,7).
+  pos(c_NN,10).
+  pos(c_JJ,9).
+  pos(c_IN,8).
+  pos(c_IN,4).
+  last(10).
+  head(root,1).
+  head(8,10).
+  head(7,8).
+  head(6,7).
+  head(6,3).
+  head(4,5).
+  head(3,4).
+  head(10,9).
+  head(1,6).
+  head(1,2).
+  form(9,"sole").
+  form(8,"as").
+  form(7,"opposition").
+  form(6,"recognize").
+  form(5,"Syria").
+  form(4,"of").
+  form(3,"Friends").
+  form(2,",").
+  form(10,"representative").
+  form(1,"U.S.").
+  first(1).
+}).

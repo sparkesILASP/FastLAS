@@ -1,0 +1,52 @@
+#be(id_519,
+	[
+	 2,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(5).
+  true_split(4).
+  possible_split((1 .. 8)).
+  test_split(4).
+  test_split(3).
+  test_split(2).
+  test_split(1).
+  rel(c_ROOT,1).
+  rel(c_PMOD,8).
+  rel(c_P,2).
+  rel(c_NMOD,7).
+  rel(c_NMOD,3).
+  rel(c_LOC,6).
+  rel(c_APPO,5).
+  rel(c_APPO,4).
+  pos(c_c,2).
+  pos(c_VBN,5).
+  pos(c_NN,8).
+  pos(c_NN,4).
+  pos(c_NN,3).
+  pos(c_NN,1).
+  pos(c_JJ,7).
+  pos(c_IN,6).
+  last(8).
+  head(root,1).
+  head(8,7).
+  head(6,8).
+  head(5,6).
+  head(4,5).
+  head(4,3).
+  head(1,4).
+  head(1,2).
+  form(8,"capital").
+  form(7,"Syrian").
+  form(6,"in").
+  form(5,"restored").
+  form(4,"service").
+  form(3,"phone").
+  form(2,",").
+  form(1,"Internet").
+  first(1).
+}).

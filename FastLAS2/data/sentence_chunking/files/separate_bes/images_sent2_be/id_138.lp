@@ -1,0 +1,69 @@
+#be(id_138,
+	[
+	 5,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(6).
+  true_split(3).
+  true_split(2).
+  true_split(12).
+  true_split(11).
+  possible_split((1 .. 12)).
+  test_split(2).
+  test_split(1).
+  rel(c_ROOT,1).
+  rel(c_PMOD,8).
+  rel(c_PMOD,6).
+  rel(c_PMOD,3).
+  rel(c_PMOD,11).
+  rel(c_P,12).
+  rel(c_NMOD,9).
+  rel(c_NMOD,5).
+  rel(c_NMOD,2).
+  rel(c_NMOD,10).
+  rel(c_LOC,7).
+  rel(c_LOC,4).
+  pos(c_p,12).
+  pos(c_NN,8).
+  pos(c_NN,6).
+  pos(c_NN,3).
+  pos(c_NN,11).
+  pos(c_JJR,2).
+  pos(c_IN,9).
+  pos(c_IN,7).
+  pos(c_IN,4).
+  pos(c_IN,1).
+  pos(c_DT,5).
+  pos(c_DT,10).
+  last(12).
+  head(root,1).
+  head(9,11).
+  head(8,9).
+  head(7,8).
+  head(6,5).
+  head(4,6).
+  head(3,7).
+  head(3,4).
+  head(3,2).
+  head(11,10).
+  head(1,3).
+  head(1,12).
+  form(9,"of").
+  form(8,"front").
+  form(7,"in").
+  form(6,"field").
+  form(5,"a").
+  form(4,"in").
+  form(3,"standing").
+  form(2,"horse").
+  form(12,".").
+  form(11,"fence").
+  form(10,"a").
+  form(1,"Than").
+  first(1).
+}).

@@ -1,0 +1,69 @@
+#be(id_110,
+	[
+	 5,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(9).
+  true_split(8).
+  true_split(3).
+  true_split(2).
+  true_split(10).
+  possible_split((1 .. 12)).
+  test_split(2).
+  test_split(1).
+  rel(c_VC,11).
+  rel(c_SBJ,2).
+  rel(c_ROOT,10).
+  rel(c_P,9).
+  rel(c_P,3).
+  rel(c_OBJ,12).
+  rel(c_NMOD,7).
+  rel(c_NMOD,6).
+  rel(c_NMOD,5).
+  rel(c_NMOD,4).
+  rel(c_NAME,1).
+  rel(c_APPO,8).
+  pos(c_c,9).
+  pos(c_c,3).
+  pos(c_VBZ,10).
+  pos(c_VBN,4).
+  pos(c_VBN,11).
+  pos(c_NNP,2).
+  pos(c_NNP,1).
+  pos(c_NN,8).
+  pos(c_NN,7).
+  pos(c_NN,6).
+  pos(c_JJ,5).
+  pos(c_CD,12).
+  last(12).
+  head(root,10).
+  head(8,7).
+  head(8,5).
+  head(8,4).
+  head(7,6).
+  head(2,9).
+  head(2,8).
+  head(2,3).
+  head(2,1).
+  head(11,12).
+  head(10,2).
+  head(10,11).
+  form(9,",").
+  form(8,"guard").
+  form(7,"camp").
+  form(6,"death").
+  form(5,"Nazi").
+  form(4,"convicted").
+  form(3,",").
+  form(2,"Demjanjuk").
+  form(12,"91").
+  form(11,"aged").
+  form(10,"dies").
+  form(1,"John").
+  first(1).
+}).

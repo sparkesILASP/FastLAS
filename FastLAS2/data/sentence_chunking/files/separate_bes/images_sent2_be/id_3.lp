@@ -1,0 +1,64 @@
+#be(id_3,
+	[
+	 8,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(9).
+  true_split(7).
+  true_split(6).
+  true_split(5).
+  true_split(4).
+  true_split(3).
+  true_split(2).
+  true_split(10).
+  possible_split((1 .. 10)).
+  test_split(2).
+  test_split(1).
+  rel(c_ROOT,2).
+  rel(c_PMOD,9).
+  rel(c_P,10).
+  rel(c_OBJ,7).
+  rel(c_OBJ,4).
+  rel(c_NMOD,1).
+  rel(c_COORD,5).
+  rel(c_CONJ,6).
+  rel(c_APPO,3).
+  rel(c_ADV,8).
+  pos(c_p,10).
+  pos(c_VBG,6).
+  pos(c_VBG,3).
+  pos(c_RB,9).
+  pos(c_NNS,4).
+  pos(c_NN,7).
+  pos(c_NN,2).
+  pos(c_NN,1).
+  pos(c_IN,8).
+  pos(c_CC,5).
+  last(10).
+  head(root,2).
+  head(8,9).
+  head(6,8).
+  head(6,7).
+  head(5,6).
+  head(3,5).
+  head(3,4).
+  head(2,3).
+  head(2,10).
+  head(2,1).
+  form(9,"behind").
+  form(8,"from").
+  form(7,"smoke").
+  form(6,"emitting").
+  form(5,"and").
+  form(4,"tires").
+  form(3,"spinning").
+  form(2,"truck").
+  form(10,".").
+  form(1,"Red").
+  first(1).
+}).

@@ -1,0 +1,61 @@
+#be(id_24,
+	[
+	 4,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(6).
+  true_split(5).
+  true_split(4).
+  true_split(3).
+  possible_split((1 .. 10)).
+  test_split(3).
+  test_split(2).
+  test_split(1).
+  rel(c_ROOT,3).
+  rel(c_P,4).
+  rel(c_NMOD,9).
+  rel(c_NMOD,8).
+  rel(c_NMOD,7).
+  rel(c_NMOD,6).
+  rel(c_NMOD,5).
+  rel(c_NMOD,2).
+  rel(c_NMOD,10).
+  rel(c_NMOD,1).
+  pos(c_c,4).
+  pos(c_VBN,1).
+  pos(c_NNS,9).
+  pos(c_NNP,7).
+  pos(c_NN,8).
+  pos(c_NN,6).
+  pos(c_NN,3).
+  pos(c_NN,10).
+  pos(c_JJ,5).
+  pos(c_JJ,2).
+  last(10).
+  head(root,3).
+  head(9,8).
+  head(6,5).
+  head(3,4).
+  head(3,2).
+  head(3,10).
+  head(3,1).
+  head(10,9).
+  head(10,7).
+  head(10,6).
+  form(9,"talks").
+  form(8,"peace").
+  form(7,"US").
+  form(6,"rebuff").
+  form(5,"Palestinians").
+  form(4,":").
+  form(3,"territory").
+  form(2,"Palestinian").
+  form(10,"blueprint").
+  form(1,"occupied").
+  first(1).
+}).

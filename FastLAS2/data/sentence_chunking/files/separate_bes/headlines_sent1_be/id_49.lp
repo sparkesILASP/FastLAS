@@ -1,0 +1,61 @@
+#be(id_49,
+	[
+	 3,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(7).
+  true_split(5).
+  true_split(4).
+  possible_split((1 .. 10)).
+  test_split(4).
+  test_split(3).
+  test_split(2).
+  test_split(1).
+  rel(c_SUFFIX,8).
+  rel(c_SBJ,4).
+  rel(c_ROOT,5).
+  rel(c_PMOD,10).
+  rel(c_NMOD,9).
+  rel(c_NMOD,7).
+  rel(c_NMOD,3).
+  rel(c_DEP,2).
+  rel(c_DEP,1).
+  rel(c_ADV,6).
+  pos(c_VBP,5).
+  pos(c_RBR,1).
+  pos(c_POS,8).
+  pos(c_NNS,4).
+  pos(c_NNP,7).
+  pos(c_NN,3).
+  pos(c_NN,10).
+  pos(c_JJ,9).
+  pos(c_IN,6).
+  pos(c_IN,2).
+  last(10).
+  head(root,5).
+  head(7,8).
+  head(6,10).
+  head(5,6).
+  head(5,4).
+  head(4,3).
+  head(3,2).
+  head(3,1).
+  head(10,9).
+  head(10,7).
+  form(9,"al-Kweifiya").
+  form(8,"'s").
+  form(7,"Libya").
+  form(6,"from").
+  form(5,"escape").
+  form(4,"inmates").
+  form(3,"-213999,-214000").
+  form(2,"than").
+  form(10,"prison").
+  form(1,"More").
+  first(1).
+}).

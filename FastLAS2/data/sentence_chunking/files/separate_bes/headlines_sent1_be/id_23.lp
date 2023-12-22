@@ -1,0 +1,61 @@
+#be(id_23,
+	[
+	 6,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(9).
+  true_split(6).
+  true_split(3).
+  true_split(2).
+  true_split(10).
+  true_split(1).
+  possible_split((1 .. 10)).
+  test_split(1).
+  rel(c_ROOT,3).
+  rel(c_PMOD,6).
+  rel(c_PMOD,10).
+  rel(c_NMOD,9).
+  rel(c_NMOD,8).
+  rel(c_NMOD,7).
+  rel(c_NMOD,5).
+  rel(c_NMOD,4).
+  rel(c_NMOD,2).
+  rel(c_NMOD,1).
+  pos(c_NNS,3).
+  pos(c_NNS,2).
+  pos(c_NNS,10).
+  pos(c_NN,9).
+  pos(c_NN,8).
+  pos(c_NN,1).
+  pos(c_JJ,6).
+  pos(c_IN,7).
+  pos(c_IN,4).
+  pos(c_DT,5).
+  last(10).
+  head(root,3).
+  head(9,8).
+  head(7,10).
+  head(6,7).
+  head(6,5).
+  head(4,6).
+  head(3,4).
+  head(3,2).
+  head(2,1).
+  head(10,9).
+  form(9,"collapse").
+  form(8,"rupee").
+  form(7,"as").
+  form(6,"third").
+  form(5,"a").
+  form(4,"by").
+  form(3,"costs").
+  form(2,"cuts").
+  form(10,"bites").
+  form(1,"Bollywood").
+  first(1).
+}).

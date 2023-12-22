@@ -1,0 +1,73 @@
+#be(id_241,
+	[
+	 5,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(9).
+  true_split(7).
+  true_split(3).
+  true_split(2).
+  true_split(10).
+  possible_split((1 .. 13)).
+  test_split(2).
+  test_split(1).
+  rel(c_SBJ,2).
+  rel(c_ROOT,3).
+  rel(c_PMOD,9).
+  rel(c_PMOD,6).
+  rel(c_PMOD,13).
+  rel(c_NMOD,12).
+  rel(c_NMOD,1).
+  rel(c_APPO,7).
+  rel(c_APPO,10).
+  rel(c_ADV,8).
+  rel(c_ADV,5).
+  rel(c_ADV,4).
+  rel(c_ADV,11).
+  pos(c_VBP,3).
+  pos(c_VBN,7).
+  pos(c_VBN,10).
+  pos(c_VBG,9).
+  pos(c_VBG,6).
+  pos(c_TO,8).
+  pos(c_TO,11).
+  pos(c_RB,5).
+  pos(c_NNS,2).
+  pos(c_JJ,13).
+  pos(c_IN,4).
+  pos(c_DT,12).
+  pos(c_DT,1).
+  last(13).
+  head(root,3).
+  head(9,10).
+  head(8,9).
+  head(7,8).
+  head(6,7).
+  head(6,5).
+  head(4,6).
+  head(3,4).
+  head(3,2).
+  head(2,1).
+  head(13,12).
+  head(11,13).
+  head(10,11).
+  form(9,"being").
+  form(8,"to").
+  form(7,"connected").
+  form(6,"being").
+  form(5,"not").
+  form(4,"from").
+  form(3,"go").
+  form(2,"terminals").
+  form(13,"other.").
+  form(12,"each").
+  form(11,"to").
+  form(10,"connected").
+  form(1,"the").
+  first(1).
+}).

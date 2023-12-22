@@ -1,0 +1,67 @@
+#be(id_99,
+	[
+	 7,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(9).
+  true_split(8).
+  true_split(6).
+  true_split(3).
+  true_split(2).
+  true_split(11).
+  true_split(10).
+  possible_split((1 .. 11)).
+  test_split(2).
+  test_split(1).
+  rel(c_SBJ,10).
+  rel(c_ROOT,11).
+  rel(c_PMOD,8).
+  rel(c_PMOD,6).
+  rel(c_P,9).
+  rel(c_OBJ,3).
+  rel(c_NMOD,7).
+  rel(c_NMOD,5).
+  rel(c_NMOD,2).
+  rel(c_LOC,4).
+  rel(c_ADV,1).
+  pos(c_c,9).
+  pos(c_VBG,1).
+  pos(c_VBD,11).
+  pos(c_NNS,3).
+  pos(c_NNP,8).
+  pos(c_NN,6).
+  pos(c_NN,2).
+  pos(c_JJ,5).
+  pos(c_IN,7).
+  pos(c_IN,4).
+  pos(c_CD,10).
+  last(11).
+  head(root,11).
+  head(7,8).
+  head(6,7).
+  head(6,5).
+  head(4,6).
+  head(3,4).
+  head(3,2).
+  head(11,9).
+  head(11,10).
+  head(11,1).
+  head(1,3).
+  form(9,",").
+  form(8,"Kazan").
+  form(7,"of").
+  form(6,"city").
+  form(5,"Russian").
+  form(4,"in").
+  form(3,"crashes").
+  form(2,"airliner").
+  form(11,"killed").
+  form(10,"-393950").
+  form(1,"Boeing").
+  first(1).
+}).

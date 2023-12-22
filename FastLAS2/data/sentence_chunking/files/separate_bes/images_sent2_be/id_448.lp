@@ -1,0 +1,58 @@
+#be(id_448,
+	[
+	 5,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(8).
+  true_split(7).
+  true_split(6).
+  true_split(4).
+  true_split(3).
+  possible_split((1 .. 9)).
+  test_split(3).
+  test_split(2).
+  test_split(1).
+  rel(c_ROOT,8).
+  rel(c_PMOD,6).
+  rel(c_P,9).
+  rel(c_P,7).
+  rel(c_NMOD,3).
+  rel(c_NMOD,2).
+  rel(c_NMOD,1).
+  rel(c_APPO,4).
+  rel(c_ADV,5).
+  pos(c_p,9).
+  pos(c_p,7).
+  pos(c_VBG,4).
+  pos(c_NN,8).
+  pos(c_NN,6).
+  pos(c_NN,3).
+  pos(c_JJ,2).
+  pos(c_JJ,1).
+  pos(c_IN,5).
+  last(9).
+  head(root,8).
+  head(8,9).
+  head(8,7).
+  head(8,3).
+  head(5,6).
+  head(4,5).
+  head(3,4).
+  head(3,2).
+  head(3,1).
+  form(9,".").
+  form(8,"l").
+  form(7,".").
+  form(6,"water").
+  form(5,"on").
+  form(4,"floating").
+  form(3,"boat").
+  form(2,"green").
+  form(1,"Large").
+  first(1).
+}).

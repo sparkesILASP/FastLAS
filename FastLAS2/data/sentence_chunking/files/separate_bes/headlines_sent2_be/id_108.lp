@@ -1,0 +1,64 @@
+#be(id_108,
+	[
+	 5,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(8).
+  true_split(5).
+  true_split(4).
+  true_split(2).
+  true_split(1).
+  possible_split((1 .. 11)).
+  test_split(1).
+  rel(c_SBJ,1).
+  rel(c_ROOT,3).
+  rel(c_PMOD,8).
+  rel(c_PMOD,11).
+  rel(c_P,5).
+  rel(c_P,2).
+  rel(c_OPRD,4).
+  rel(c_NMOD,9).
+  rel(c_NMOD,7).
+  rel(c_NMOD,10).
+  rel(c_ADV,6).
+  pos(c_qq,5).
+  pos(c_qq,2).
+  pos(c_VBG,4).
+  pos(c_VBD,3).
+  pos(c_NNS,8).
+  pos(c_NNS,1).
+  pos(c_NNP,10).
+  pos(c_NN,7).
+  pos(c_NN,11).
+  pos(c_IN,9).
+  pos(c_IN,6).
+  last(11).
+  head(root,3).
+  head(9,11).
+  head(8,9).
+  head(8,7).
+  head(6,8).
+  head(4,6).
+  head(4,5).
+  head(3,4).
+  head(3,2).
+  head(3,1).
+  head(11,10).
+  form(9,"from").
+  form(8,"emits").
+  form(7,"smoke").
+  form(6,"as").
+  form(5,"'").
+  form(4,"burning").
+  form(3,"left").
+  form(2,"`").
+  form(11,"tunnel").
+  form(10,"Japan").
+  form(1,"Vehicles").
+  first(1).
+}).

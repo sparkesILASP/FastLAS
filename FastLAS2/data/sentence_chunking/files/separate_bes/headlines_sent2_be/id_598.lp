@@ -1,0 +1,55 @@
+#be(id_598,
+	[
+	 4,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(6).
+  true_split(4).
+  true_split(3).
+  true_split(1).
+  possible_split((1 .. 9)).
+  test_split(1).
+  rel(c_SUFFIX,2).
+  rel(c_SBJ,3).
+  rel(c_ROOT,4).
+  rel(c_PMOD,8).
+  rel(c_OBJ,6).
+  rel(c_NMOD,9).
+  rel(c_NMOD,1).
+  rel(c_NAME,5).
+  rel(c_ADV,7).
+  pos(c_d,8).
+  pos(c_VBZ,4).
+  pos(c_POS,2).
+  pos(c_NNP,6).
+  pos(c_NNP,5).
+  pos(c_NNP,3).
+  pos(c_NNP,1).
+  pos(c_IN,7).
+  pos(c_CD,9).
+  last(9).
+  head(root,4).
+  head(8,9).
+  head(7,8).
+  head(6,5).
+  head(4,7).
+  head(4,6).
+  head(4,3).
+  head(3,1).
+  head(1,2).
+  form(9,"-473750-M").
+  form(8,"$").
+  form(7,"for").
+  form(6,"Post").
+  form(5,"Washington").
+  form(4,"buys").
+  form(3,"Bezos").
+  form(2,"'s").
+  form(1,"Amazon").
+  first(1).
+}).

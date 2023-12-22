@@ -1,0 +1,84 @@
+#be(id_246,
+	[
+	 5,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(8).
+  true_split(6).
+  true_split(5).
+  true_split(15).
+  true_split(14).
+  possible_split((1 .. 15)).
+  test_split(5).
+  test_split(4).
+  test_split(3).
+  test_split(2).
+  test_split(1).
+  rel(c_SBJ,5).
+  rel(c_ROOT,6).
+  rel(c_PMOD,8).
+  rel(c_PMOD,14).
+  rel(c_P,15).
+  rel(c_NMOD,9).
+  rel(c_NMOD,2).
+  rel(c_NMOD,13).
+  rel(c_NMOD,12).
+  rel(c_NMOD,10).
+  rel(c_NMOD,1).
+  rel(c_COORD,3).
+  rel(c_CONJ,4).
+  rel(c_AMOD,11).
+  rel(c_ADV,7).
+  pos(c_p,15).
+  pos(c_VBZ,6).
+  pos(c_RB,11).
+  pos(c_NN,8).
+  pos(c_NN,5).
+  pos(c_NN,14).
+  pos(c_JJ,4).
+  pos(c_JJ,2).
+  pos(c_JJ,13).
+  pos(c_JJ,12).
+  pos(c_IN,9).
+  pos(c_IN,7).
+  pos(c_DT,10).
+  pos(c_DT,1).
+  pos(c_CC,3).
+  last(15).
+  head(root,6).
+  head(9,14).
+  head(8,9).
+  head(7,8).
+  head(6,7).
+  head(6,5).
+  head(6,15).
+  head(5,2).
+  head(5,1).
+  head(3,4).
+  head(2,3).
+  head(14,13).
+  head(14,12).
+  head(14,10).
+  head(12,11).
+  form(9,"against").
+  form(8,"grass").
+  form(7,"on").
+  form(6,"stands").
+  form(5,"cow").
+  form(4,"white").
+  form(3,"and").
+  form(2,"black").
+  form(15,".").
+  form(14,"sky").
+  form(13,"blue").
+  form(12,"cloudy").
+  form(11,"partly").
+  form(10,"a").
+  form(1,"A").
+  first(1).
+}).

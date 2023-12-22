@@ -1,0 +1,69 @@
+#be(id_236,
+	[
+	 2,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(10).
+  true_split(1).
+  possible_split((1 .. 13)).
+  test_split(1).
+  rel(c_VC,13).
+  rel(c_SBJ,1).
+  rel(c_ROOT,11).
+  rel(c_PMOD,6).
+  rel(c_PMOD,3).
+  rel(c_NMOD,9).
+  rel(c_NMOD,8).
+  rel(c_NMOD,5).
+  rel(c_NMOD,4).
+  rel(c_NMOD,2).
+  rel(c_COORD,7).
+  rel(c_CONJ,10).
+  rel(c_ADV,12).
+  pos(c_VBZ,11).
+  pos(c_VBN,13).
+  pos(c_RB,12).
+  pos(c_NN,6).
+  pos(c_NN,3).
+  pos(c_NN,10).
+  pos(c_JJ,9).
+  pos(c_IN,4).
+  pos(c_IN,1).
+  pos(c_DT,8).
+  pos(c_DT,5).
+  pos(c_DT,2).
+  pos(c_CC,7).
+  last(13).
+  head(root,11).
+  head(7,10).
+  head(6,7).
+  head(6,5).
+  head(4,6).
+  head(3,4).
+  head(3,2).
+  head(11,13).
+  head(11,12).
+  head(11,1).
+  head(10,9).
+  head(10,8).
+  head(1,3).
+  form(9,"light").
+  form(8,"the").
+  form(7,"and").
+  form(6,"battery").
+  form(5,"the").
+  form(4,"between").
+  form(3,"path").
+  form(2,"the").
+  form(13,"closed").
+  form(12,"not").
+  form(11,"is").
+  form(10,"bulb").
+  form(1,"Because").
+  first(1).
+}).

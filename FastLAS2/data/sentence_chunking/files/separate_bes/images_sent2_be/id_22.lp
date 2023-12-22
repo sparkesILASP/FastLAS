@@ -1,0 +1,62 @@
+#be(id_22,
+	[
+	 4,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(9).
+  true_split(8).
+  true_split(4).
+  true_split(10).
+  possible_split((1 .. 10)).
+  test_split(4).
+  test_split(3).
+  test_split(2).
+  test_split(1).
+  rel(c_ROOT,4).
+  rel(c_PMOD,8).
+  rel(c_P,10).
+  rel(c_NMOD,7).
+  rel(c_NMOD,6).
+  rel(c_NMOD,5).
+  rel(c_NMOD,3).
+  rel(c_NMOD,2).
+  rel(c_NMOD,1).
+  rel(c_LOC,9).
+  pos(c_p,10).
+  pos(c_RB,9).
+  pos(c_PRPd,6).
+  pos(c_NNP,2).
+  pos(c_NN,8).
+  pos(c_NN,7).
+  pos(c_NN,4).
+  pos(c_NN,3).
+  pos(c_IN,5).
+  pos(c_DT,1).
+  last(10).
+  head(root,4).
+  head(8,9).
+  head(8,7).
+  head(8,6).
+  head(5,8).
+  head(4,5).
+  head(4,3).
+  head(4,10).
+  head(4,1).
+  head(3,2).
+  form(9,"down").
+  form(8,"gear").
+  form(7,"landing").
+  form(6,"its").
+  form(5,"with").
+  form(4,"plane").
+  form(3,"fighter").
+  form(2,"WWII").
+  form(10,".").
+  form(1,"A").
+  first(1).
+}).

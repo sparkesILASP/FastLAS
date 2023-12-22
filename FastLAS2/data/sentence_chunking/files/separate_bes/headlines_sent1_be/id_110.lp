@@ -1,0 +1,74 @@
+#be(id_110,
+	[
+	 3,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(9).
+  true_split(7).
+  true_split(5).
+  possible_split((1 .. 13)).
+  test_split(5).
+  test_split(4).
+  test_split(3).
+  test_split(2).
+  test_split(1).
+  rel(c_ROOT,2).
+  rel(c_PMOD,9).
+  rel(c_PMOD,7).
+  rel(c_OBJ,13).
+  rel(c_NMOD,8).
+  rel(c_NMOD,12).
+  rel(c_NMOD,10).
+  rel(c_NAME,4).
+  rel(c_NAME,11).
+  rel(c_NAME,1).
+  rel(c_LOC,6).
+  rel(c_COORD,3).
+  rel(c_CONJ,5).
+  pos(c_VBG,9).
+  pos(c_NNS,7).
+  pos(c_NNP,5).
+  pos(c_NNP,4).
+  pos(c_NNP,2).
+  pos(c_NNP,12).
+  pos(c_NNP,11).
+  pos(c_NNP,1).
+  pos(c_NN,13).
+  pos(c_IN,8).
+  pos(c_IN,6).
+  pos(c_DT,10).
+  pos(c_CC,3).
+  last(13).
+  head(root,2).
+  head(9,13).
+  head(8,9).
+  head(7,8).
+  head(6,7).
+  head(5,4).
+  head(3,5).
+  head(2,6).
+  head(2,3).
+  head(2,1).
+  head(13,12).
+  head(13,10).
+  head(12,11).
+  form(9,"filming").
+  form(8,"about").
+  form(7,"talks").
+  form(6,"in").
+  form(5,"Abrams").
+  form(4,"JJ").
+  form(3,"and").
+  form(2,"Cooper").
+  form(13,"biopic").
+  form(12,"Armstrong").
+  form(11,"Lance").
+  form(10,"a").
+  form(1,"Bradley").
+  first(1).
+}).

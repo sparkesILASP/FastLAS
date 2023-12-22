@@ -1,0 +1,55 @@
+#be(id_594,
+	[
+	 4,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(6).
+  true_split(3).
+  true_split(2).
+  true_split(1).
+  possible_split((1 .. 9)).
+  test_split(1).
+  rel(c_SBJ,1).
+  rel(c_ROOT,2).
+  rel(c_PMOD,9).
+  rel(c_PMOD,6).
+  rel(c_OBJ,3).
+  rel(c_NMOD,7).
+  rel(c_NMOD,5).
+  rel(c_NMOD,4).
+  rel(c_DEP,8).
+  pos(c_VBZ,2).
+  pos(c_NNS,3).
+  pos(c_NNP,5).
+  pos(c_NNP,1).
+  pos(c_NN,6).
+  pos(c_IN,8).
+  pos(c_IN,7).
+  pos(c_IN,4).
+  pos(c_CD,9).
+  last(9).
+  head(root,2).
+  head(9,8).
+  head(7,9).
+  head(6,7).
+  head(6,5).
+  head(4,6).
+  head(3,4).
+  head(2,3).
+  head(2,1).
+  form(9,"-3900").
+  form(8,"over").
+  form(7,"of").
+  form(6,"massacre").
+  form(5,"Houla").
+  form(4,"for").
+  form(3,"rebels").
+  form(2,"blames").
+  form(1,"Syria").
+  first(1).
+}).

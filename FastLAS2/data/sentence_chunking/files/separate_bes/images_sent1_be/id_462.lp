@@ -1,0 +1,58 @@
+#be(id_462,
+	[
+	 4,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(9).
+  true_split(8).
+  true_split(7).
+  true_split(4).
+  possible_split((1 .. 9)).
+  test_split(4).
+  test_split(3).
+  test_split(2).
+  test_split(1).
+  rel(c_ROOT,4).
+  rel(c_PRT,8).
+  rel(c_PMOD,7).
+  rel(c_P,9).
+  rel(c_NMOD,6).
+  rel(c_NMOD,5).
+  rel(c_NMOD,3).
+  rel(c_NMOD,2).
+  rel(c_AMOD,1).
+  pos(c_p,9).
+  pos(c_VBN,2).
+  pos(c_RB,1).
+  pos(c_NN,7).
+  pos(c_NN,6).
+  pos(c_NN,4).
+  pos(c_NN,3).
+  pos(c_IN,8).
+  pos(c_IN,5).
+  last(9).
+  head(root,4).
+  head(7,6).
+  head(5,7).
+  head(4,9).
+  head(4,8).
+  head(4,5).
+  head(4,3).
+  head(4,2).
+  head(2,1).
+  form(9,".").
+  form(8,"on").
+  form(7,"monitor").
+  form(6,"computer").
+  form(5,"with").
+  form(4,"desk").
+  form(3,"office").
+  form(2,"crowded").
+  form(1,"Very").
+  first(1).
+}).

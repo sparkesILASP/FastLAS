@@ -1,0 +1,54 @@
+#be(id_603,
+	[
+	 2,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(3).
+  true_split(2).
+  possible_split((1 .. 9)).
+  test_split(2).
+  test_split(1).
+  rel(c_SBJ,2).
+  rel(c_ROOT,3).
+  rel(c_PMOD,6).
+  rel(c_NMOD,1).
+  rel(c_NAME,8).
+  rel(c_NAME,5).
+  rel(c_LOC,4).
+  rel(c_COORD,7).
+  rel(c_CONJ,9).
+  pos(c_VBD,3).
+  pos(c_NNP,9).
+  pos(c_NNP,8).
+  pos(c_NNP,6).
+  pos(c_NNP,5).
+  pos(c_NN,2).
+  pos(c_NN,1).
+  pos(c_IN,4).
+  pos(c_CC,7).
+  last(9).
+  head(root,3).
+  head(9,8).
+  head(7,9).
+  head(6,7).
+  head(6,5).
+  head(4,6).
+  head(3,4).
+  head(3,2).
+  head(2,1).
+  form(9,"Bay").
+  form(8,"Marina").
+  form(7,"and").
+  form(6,"Place").
+  form(5,"Raffles").
+  form(4,"between").
+  form(3,"disrupted").
+  form(2,"service").
+  form(1,"Train").
+  first(1).
+}).

@@ -1,0 +1,82 @@
+#be(id_240,
+	[
+	 6,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(9).
+  true_split(7).
+  true_split(3).
+  true_split(2).
+  true_split(15).
+  true_split(14).
+  possible_split((1 .. 15)).
+  test_split(2).
+  test_split(1).
+  rel(c_SBJ,2).
+  rel(c_ROOT,8).
+  rel(c_PMOD,14).
+  rel(c_P,15).
+  rel(c_OPRD,9).
+  rel(c_OBJ,5).
+  rel(c_NMOD,4).
+  rel(c_NMOD,13).
+  rel(c_NMOD,12).
+  rel(c_NMOD,1).
+  rel(c_LOC,10).
+  rel(c_COORD,6).
+  rel(c_CONJ,7).
+  rel(c_APPO,3).
+  rel(c_AMOD,11).
+  pos(c_p,15).
+  pos(c_VBZ,8).
+  pos(c_VBG,9).
+  pos(c_VBG,3).
+  pos(c_TO,11).
+  pos(c_NNS,7).
+  pos(c_NNS,5).
+  pos(c_NN,2).
+  pos(c_NN,14).
+  pos(c_JJ,4).
+  pos(c_JJ,13).
+  pos(c_JJ,10).
+  pos(c_DT,12).
+  pos(c_DT,1).
+  pos(c_CC,6).
+  last(15).
+  head(root,8).
+  head(9,10).
+  head(8,9).
+  head(8,2).
+  head(8,15).
+  head(6,7).
+  head(5,6).
+  head(5,4).
+  head(3,5).
+  head(2,3).
+  head(2,1).
+  head(14,13).
+  head(14,12).
+  head(11,14).
+  head(10,11).
+  form(9,"standing").
+  form(8,"is").
+  form(7,"boots").
+  form(6,"and").
+  form(5,"shorts").
+  form(4,"black").
+  form(3,"wearing").
+  form(2,"girl").
+  form(15,".").
+  form(14,"motorcycle").
+  form(13,"blue").
+  form(12,"a").
+  form(11,"to").
+  form(10,"next").
+  form(1,"A").
+  first(1).
+}).

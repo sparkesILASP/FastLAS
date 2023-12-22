@@ -1,0 +1,63 @@
+#be(id_67,
+	[
+	 3,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(8).
+  true_split(4).
+  true_split(2).
+  possible_split((1 .. 11)).
+  test_split(2).
+  test_split(1).
+  rel(c_VC,4).
+  rel(c_SBJ,2).
+  rel(c_ROOT,3).
+  rel(c_PMOD,8).
+  rel(c_PMOD,11).
+  rel(c_NMOD,7).
+  rel(c_NMOD,6).
+  rel(c_NMOD,10).
+  rel(c_NMOD,1).
+  rel(c_LOC,5).
+  rel(c_ADV,9).
+  pos(c_VBZ,3).
+  pos(c_VBN,7).
+  pos(c_VBN,4).
+  pos(c_NNS,11).
+  pos(c_NN,8).
+  pos(c_NN,2).
+  pos(c_IN,9).
+  pos(c_IN,5).
+  pos(c_DT,6).
+  pos(c_DT,10).
+  pos(c_DT,1).
+  last(11).
+  head(root,3).
+  head(9,11).
+  head(8,7).
+  head(8,6).
+  head(5,8).
+  head(4,9).
+  head(4,5).
+  head(3,4).
+  head(3,2).
+  head(2,1).
+  head(11,10).
+  form(9,"without").
+  form(8,"path").
+  form(7,"closed").
+  form(6,"a").
+  form(5,"in").
+  form(4,"contained").
+  form(3,"is").
+  form(2,"battery").
+  form(11,"devices").
+  form(10,"any").
+  form(1,"the").
+  first(1).
+}).

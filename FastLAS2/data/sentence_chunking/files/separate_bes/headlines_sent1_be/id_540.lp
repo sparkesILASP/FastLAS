@@ -1,0 +1,52 @@
+#be(id_540,
+	[
+	 3,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(6).
+  true_split(4).
+  true_split(3).
+  possible_split((1 .. 8)).
+  test_split(3).
+  test_split(2).
+  test_split(1).
+  rel(c_SBJ,3).
+  rel(c_ROOT,4).
+  rel(c_PMOD,8).
+  rel(c_PMOD,7).
+  rel(c_PMOD,6).
+  rel(c_NMOD,2).
+  rel(c_NMOD,1).
+  rel(c_DIR,5).
+  pos(c_VBN,1).
+  pos(c_VBD,4).
+  pos(c_TO,7).
+  pos(c_NN,8).
+  pos(c_NN,6).
+  pos(c_NN,3).
+  pos(c_NN,2).
+  pos(c_IN,5).
+  last(8).
+  head(root,4).
+  head(7,8).
+  head(5,7).
+  head(5,6).
+  head(4,5).
+  head(4,3).
+  head(3,2).
+  head(3,1).
+  form(8,"head").
+  form(7,"to").
+  form(6,"shot").
+  form(5,"from").
+  form(4,"died").
+  form(3,"killer").
+  form(2,"cop").
+  form(1,"Alleged").
+  first(1).
+}).

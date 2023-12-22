@@ -1,0 +1,50 @@
+#be(id_494,
+	[
+	 3,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(6).
+  true_split(2).
+  true_split(1).
+  possible_split((1 .. 8)).
+  test_split(1).
+  rel(c_SBJ,1).
+  rel(c_ROOT,2).
+  rel(c_PMOD,8).
+  rel(c_OBJ,6).
+  rel(c_NMOD,5).
+  rel(c_NMOD,4).
+  rel(c_NMOD,3).
+  rel(c_DIR,7).
+  pos(c_d,3).
+  pos(c_VBZ,2).
+  pos(c_TO,7).
+  pos(c_NNP,8).
+  pos(c_NNP,1).
+  pos(c_NN,6).
+  pos(c_NN,5).
+  pos(c_CD,4).
+  last(8).
+  head(root,2).
+  head(7,8).
+  head(6,5).
+  head(6,3).
+  head(3,4).
+  head(2,7).
+  head(2,6).
+  head(2,1).
+  form(8,"Pacific").
+  form(7,"to").
+  form(6,"link").
+  form(5,"oil").
+  form(4,"-406975bn").
+  form(3,"$").
+  form(2,"unveils").
+  form(1,"Russia").
+  first(1).
+}).

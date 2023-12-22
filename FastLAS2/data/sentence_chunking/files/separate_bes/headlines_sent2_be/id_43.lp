@@ -1,0 +1,60 @@
+#be(id_43,
+	[
+	 5,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(8).
+  true_split(7).
+  true_split(6).
+  true_split(4).
+  true_split(1).
+  possible_split((1 .. 10)).
+  test_split(1).
+  rel(c_SUFFIX,2).
+  rel(c_SBJ,4).
+  rel(c_ROOT,7).
+  rel(c_PMOD,6).
+  rel(c_PMOD,10).
+  rel(c_OBJ,8).
+  rel(c_NMOD,9).
+  rel(c_NMOD,5).
+  rel(c_NMOD,3).
+  rel(c_NMOD,1).
+  pos(c_VBZ,7).
+  pos(c_POS,2).
+  pos(c_NNS,10).
+  pos(c_NNP,6).
+  pos(c_NNP,1).
+  pos(c_NN,8).
+  pos(c_NN,4).
+  pos(c_NN,3).
+  pos(c_IN,9).
+  pos(c_IN,5).
+  last(10).
+  head(root,7).
+  head(9,10).
+  head(8,9).
+  head(7,8).
+  head(7,4).
+  head(5,6).
+  head(4,5).
+  head(4,3).
+  head(4,1).
+  head(1,2).
+  form(9,"of").
+  form(8,"ire").
+  form(7,"draws").
+  form(6,"Sochi").
+  form(5,"for").
+  form(4,"decree").
+  form(3,"security").
+  form(2,"'s").
+  form(10,"critics").
+  form(1,"Putin").
+  first(1).
+}).

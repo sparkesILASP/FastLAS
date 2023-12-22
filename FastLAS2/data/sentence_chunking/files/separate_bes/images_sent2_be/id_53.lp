@@ -1,0 +1,62 @@
+#be(id_53,
+	[
+	 3,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(9).
+  true_split(5).
+  true_split(10).
+  possible_split((1 .. 10)).
+  test_split(5).
+  test_split(4).
+  test_split(3).
+  test_split(2).
+  test_split(1).
+  rel(c_ROOT,5).
+  rel(c_PMOD,9).
+  rel(c_P,10).
+  rel(c_NMOD,8).
+  rel(c_NMOD,7).
+  rel(c_NMOD,4).
+  rel(c_NMOD,3).
+  rel(c_NMOD,2).
+  rel(c_NMOD,1).
+  rel(c_LOC,6).
+  pos(c_p,10).
+  pos(c_NN,9).
+  pos(c_NN,8).
+  pos(c_NN,5).
+  pos(c_NN,4).
+  pos(c_JJ,3).
+  pos(c_JJ,2).
+  pos(c_IN,6).
+  pos(c_DT,7).
+  pos(c_DT,1).
+  last(10).
+  head(root,5).
+  head(9,8).
+  head(9,7).
+  head(6,9).
+  head(5,6).
+  head(5,4).
+  head(5,2).
+  head(5,10).
+  head(5,1).
+  head(4,3).
+  form(9,"street").
+  form(8,"city").
+  form(7,"a").
+  form(6,"on").
+  form(5,"bus").
+  form(4,"decker").
+  form(3,"double").
+  form(2,"red").
+  form(10,".").
+  form(1,"A").
+  first(1).
+}).

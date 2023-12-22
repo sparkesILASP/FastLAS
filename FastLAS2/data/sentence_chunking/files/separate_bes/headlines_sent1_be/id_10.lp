@@ -1,0 +1,60 @@
+#be(id_10,
+	[
+	 4,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(8).
+  true_split(6).
+  true_split(4).
+  true_split(2).
+  possible_split((1 .. 10)).
+  test_split(2).
+  test_split(1).
+  rel(c_ROOT,2).
+  rel(c_OPRD,7).
+  rel(c_OBJ,6).
+  rel(c_OBJ,10).
+  rel(c_NMOD,9).
+  rel(c_NMOD,5).
+  rel(c_NMOD,3).
+  rel(c_NMOD,1).
+  rel(c_IM,8).
+  rel(c_IM,4).
+  pos(c_VBG,5).
+  pos(c_VB,8).
+  pos(c_VB,4).
+  pos(c_TO,7).
+  pos(c_TO,3).
+  pos(c_NNP,6).
+  pos(c_NN,2).
+  pos(c_NN,10).
+  pos(c_JJ,9).
+  pos(c_DT,1).
+  last(10).
+  head(root,2).
+  head(8,10).
+  head(7,8).
+  head(6,5).
+  head(4,7).
+  head(4,6).
+  head(3,4).
+  head(2,3).
+  head(2,1).
+  head(10,9).
+  form(9,"Australian").
+  form(8,"miss").
+  form(7,"to").
+  form(6,"Nadal").
+  form(5,"ailing").
+  form(4,"cause").
+  form(3,"to").
+  form(2,"bug").
+  form(10,"Open").
+  form(1,"Stomach").
+  first(1).
+}).

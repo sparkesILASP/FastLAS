@@ -1,0 +1,72 @@
+#be(id_190,
+	[
+	 5,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(9).
+  true_split(5).
+  true_split(13).
+  true_split(12).
+  true_split(1).
+  possible_split((1 .. 13)).
+  test_split(1).
+  rel(c_ROOT,1).
+  rel(c_PMOD,9).
+  rel(c_PMOD,5).
+  rel(c_PMOD,12).
+  rel(c_P,13).
+  rel(c_NMOD,8).
+  rel(c_NMOD,7).
+  rel(c_NMOD,6).
+  rel(c_NMOD,4).
+  rel(c_NMOD,3).
+  rel(c_NMOD,2).
+  rel(c_NMOD,11).
+  rel(c_LOC,10).
+  pos(c_p,13).
+  pos(c_NN,9).
+  pos(c_NN,8).
+  pos(c_NN,5).
+  pos(c_NN,4).
+  pos(c_NN,12).
+  pos(c_NN,1).
+  pos(c_IN,6).
+  pos(c_IN,2).
+  pos(c_IN,10).
+  pos(c_DT,7).
+  pos(c_DT,3).
+  pos(c_DT,11).
+  last(13).
+  head(root,1).
+  head(9,8).
+  head(9,7).
+  head(9,10).
+  head(6,9).
+  head(5,6).
+  head(5,4).
+  head(5,3).
+  head(2,5).
+  head(12,11).
+  head(10,12).
+  head(1,2).
+  head(1,13).
+  form(9,"room").
+  form(8,"dining").
+  form(7,"a").
+  form(6,"with").
+  form(5,"room").
+  form(4,"living").
+  form(3,"a").
+  form(2,"of").
+  form(13,".").
+  form(12,"background").
+  form(11,"the").
+  form(10,"in").
+  form(1,"View").
+  first(1).
+}).

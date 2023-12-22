@@ -1,0 +1,74 @@
+#be(id_191,
+	[
+	 5,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(9).
+  true_split(5).
+  true_split(3).
+  true_split(13).
+  true_split(12).
+  possible_split((1 .. 13)).
+  test_split(3).
+  test_split(2).
+  test_split(1).
+  rel(c_SBJ,3).
+  rel(c_ROOT,4).
+  rel(c_PMOD,9).
+  rel(c_PMOD,12).
+  rel(c_P,13).
+  rel(c_OPRD,5).
+  rel(c_NMOD,8).
+  rel(c_NMOD,7).
+  rel(c_NMOD,2).
+  rel(c_NMOD,11).
+  rel(c_NMOD,1).
+  rel(c_LOC,6).
+  rel(c_LOC,10).
+  pos(c_p,13).
+  pos(c_VBZ,4).
+  pos(c_VBG,5).
+  pos(c_NN,9).
+  pos(c_NN,3).
+  pos(c_NN,12).
+  pos(c_JJ,8).
+  pos(c_JJ,2).
+  pos(c_IN,6).
+  pos(c_IN,10).
+  pos(c_DT,7).
+  pos(c_DT,11).
+  pos(c_DT,1).
+  last(13).
+  head(root,4).
+  head(9,8).
+  head(9,7).
+  head(9,10).
+  head(6,9).
+  head(5,6).
+  head(4,5).
+  head(4,3).
+  head(4,13).
+  head(3,2).
+  head(3,1).
+  head(12,11).
+  head(10,12).
+  form(9,"floor").
+  form(8,"wooden").
+  form(7,"the").
+  form(6,"on").
+  form(5,"laying").
+  form(4,"is").
+  form(3,"dog").
+  form(2,"white").
+  form(13,".").
+  form(12,"table").
+  form(11,"the").
+  form(10,"underneath").
+  form(1,"The").
+  first(1).
+}).

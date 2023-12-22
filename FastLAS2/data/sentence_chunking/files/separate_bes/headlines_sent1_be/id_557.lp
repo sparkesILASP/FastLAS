@@ -1,0 +1,49 @@
+#be(id_557,
+	[
+	 2,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(3).
+  true_split(1).
+  possible_split((1 .. 8)).
+  test_split(1).
+  rel(c_ROOT,1).
+  rel(c_OBJ,8).
+  rel(c_NMOD,7).
+  rel(c_NMOD,5).
+  rel(c_NAME,6).
+  rel(c_IM,3).
+  rel(c_AMOD,4).
+  rel(c_AMOD,2).
+  pos(c_VB,3).
+  pos(c_TO,2).
+  pos(c_RBS,4).
+  pos(c_NNP,7).
+  pos(c_NNP,6).
+  pos(c_NN,8).
+  pos(c_JJ,5).
+  pos(c_JJ,1).
+  last(8).
+  head(root,1).
+  head(8,7).
+  head(8,5).
+  head(7,6).
+  head(5,4).
+  head(3,8).
+  head(2,3).
+  head(1,2).
+  form(8,"prisoner").
+  form(7,"Taliban").
+  form(6,"Afghan").
+  form(5,"senior").
+  form(4,"most").
+  form(3,"release").
+  form(2,"to").
+  form(1,"Pakistan").
+  first(1).
+}).

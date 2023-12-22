@@ -1,0 +1,58 @@
+#be(id_34,
+	[
+	 3,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(7).
+  true_split(6).
+  true_split(1).
+  possible_split((1 .. 10)).
+  test_split(1).
+  rel(c_TMP,8).
+  rel(c_ROOT,3).
+  rel(c_PMOD,10).
+  rel(c_P,7).
+  rel(c_P,1).
+  rel(c_NMOD,9).
+  rel(c_DEP,2).
+  rel(c_COORD,5).
+  rel(c_COORD,4).
+  rel(c_CONJ,6).
+  pos(c_qq,7).
+  pos(c_qq,1).
+  pos(c_VBN,6).
+  pos(c_NNP,9).
+  pos(c_NN,10).
+  pos(c_JJ,4).
+  pos(c_IN,8).
+  pos(c_IN,2).
+  pos(c_CD,3).
+  pos(c_CC,5).
+  last(10).
+  head(root,3).
+  head(8,10).
+  head(5,6).
+  head(4,5).
+  head(3,8).
+  head(3,7).
+  head(3,4).
+  head(3,2).
+  head(3,1).
+  head(10,9).
+  form(9,"China").
+  form(8,"after").
+  form(7,"'").
+  form(6,"injured").
+  form(5,"or").
+  form(4,"dead").
+  form(3,"-16900").
+  form(2,"Around").
+  form(10,"earthquake").
+  form(1,"`").
+  first(1).
+}).

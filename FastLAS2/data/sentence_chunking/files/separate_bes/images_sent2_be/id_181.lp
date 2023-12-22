@@ -1,0 +1,74 @@
+#be(id_181,
+	[
+	 6,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(8).
+  true_split(4).
+  true_split(2).
+  true_split(13).
+  true_split(12).
+  true_split(10).
+  possible_split((1 .. 13)).
+  test_split(2).
+  test_split(1).
+  rel(c_SBJ,10).
+  rel(c_ROOT,2).
+  rel(c_PRT,12).
+  rel(c_PMOD,6).
+  rel(c_PMOD,4).
+  rel(c_PMOD,11).
+  rel(c_P,13).
+  rel(c_NMOD,3).
+  rel(c_NMOD,1).
+  rel(c_LOC,5).
+  rel(c_COORD,7).
+  rel(c_CONJ,8).
+  rel(c_AMOD,9).
+  pos(c_p,13).
+  pos(c_VBG,11).
+  pos(c_RP,12).
+  pos(c_NNS,4).
+  pos(c_NNS,10).
+  pos(c_NN,2).
+  pos(c_JJ,8).
+  pos(c_JJ,6).
+  pos(c_IN,9).
+  pos(c_IN,5).
+  pos(c_IN,3).
+  pos(c_DT,1).
+  pos(c_CC,7).
+  last(13).
+  head(root,2).
+  head(9,11).
+  head(8,9).
+  head(7,8).
+  head(6,7).
+  head(5,6).
+  head(3,4).
+  head(2,5).
+  head(2,3).
+  head(2,13).
+  head(2,1).
+  head(11,12).
+  head(11,10).
+  form(9,"with").
+  form(8,"white").
+  form(7,"and").
+  form(6,"green").
+  form(5,"in").
+  form(4,"cyclists").
+  form(3,"of").
+  form(2,"group").
+  form(13,".").
+  form(12,"on").
+  form(11,"looking").
+  form(10,"spectators").
+  form(1,"A").
+  first(1).
+}).

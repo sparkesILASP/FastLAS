@@ -1,0 +1,69 @@
+#be(id_115,
+	[
+	 4,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(8).
+  true_split(4).
+  true_split(3).
+  true_split(10).
+  possible_split((1 .. 12)).
+  test_split(3).
+  test_split(2).
+  test_split(1).
+  rel(c_SBJ,3).
+  rel(c_ROOT,1).
+  rel(c_PMOD,7).
+  rel(c_P,8).
+  rel(c_P,5).
+  rel(c_P,2).
+  rel(c_OPRD,9).
+  rel(c_OBJ,12).
+  rel(c_NMOD,4).
+  rel(c_NMOD,11).
+  rel(c_IM,10).
+  rel(c_ADV,6).
+  pos(c_qq,5).
+  pos(c_c,8).
+  pos(c_c,2).
+  pos(c_VBP,4).
+  pos(c_VB,10).
+  pos(c_TO,9).
+  pos(c_NNP,1).
+  pos(c_NN,7).
+  pos(c_NN,3).
+  pos(c_NN,12).
+  pos(c_NN,11).
+  pos(c_IN,6).
+  last(12).
+  head(root,1).
+  head(9,10).
+  head(6,7).
+  head(4,9).
+  head(4,8).
+  head(4,6).
+  head(4,5).
+  head(4,3).
+  head(12,11).
+  head(10,12).
+  head(1,4).
+  head(1,2).
+  form(9,"to").
+  form(8,"'").
+  form(7,"principle").
+  form(6,"in").
+  form(5,"`").
+  form(4,"agree").
+  form(3,"opposition").
+  form(2,",").
+  form(12,"conference").
+  form(11,"peace").
+  form(10,"attend").
+  form(1,"Syria").
+  first(1).
+}).

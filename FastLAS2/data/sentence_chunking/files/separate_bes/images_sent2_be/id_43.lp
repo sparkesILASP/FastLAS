@@ -1,0 +1,63 @@
+#be(id_43,
+	[
+	 4,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(9).
+  true_split(7).
+  true_split(5).
+  true_split(10).
+  possible_split((1 .. 10)).
+  test_split(5).
+  test_split(4).
+  test_split(3).
+  test_split(2).
+  test_split(1).
+  rel(c_SBJ,5).
+  rel(c_ROOT,6).
+  rel(c_PRT,7).
+  rel(c_PMOD,9).
+  rel(c_P,10).
+  rel(c_NMOD,4).
+  rel(c_NMOD,1).
+  rel(c_COORD,2).
+  rel(c_CONJ,3).
+  rel(c_ADV,8).
+  pos(c_p,10).
+  pos(c_VBG,6).
+  pos(c_RP,7).
+  pos(c_NN,9).
+  pos(c_NN,5).
+  pos(c_JJ,4).
+  pos(c_JJ,3).
+  pos(c_JJ,1).
+  pos(c_IN,8).
+  pos(c_CC,2).
+  last(10).
+  head(root,6).
+  head(8,9).
+  head(6,8).
+  head(6,7).
+  head(6,5).
+  head(6,10).
+  head(5,4).
+  head(5,1).
+  head(2,3).
+  head(1,2).
+  form(9,"runway").
+  form(8,"of").
+  form(7,"off").
+  form(6,"taking").
+  form(5,"airliner").
+  form(4,"commercial").
+  form(3,"green").
+  form(2,"and").
+  form(10,".").
+  form(1,"White").
+  first(1).
+}).

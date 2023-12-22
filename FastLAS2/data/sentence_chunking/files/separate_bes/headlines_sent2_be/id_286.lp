@@ -1,0 +1,43 @@
+#be(id_286,
+	[
+	 1,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(4).
+  possible_split((1 .. 6)).
+  test_split(4).
+  test_split(3).
+  test_split(2).
+  test_split(1).
+  rel(c_SBJ,4).
+  rel(c_ROOT,5).
+  rel(c_P,3).
+  rel(c_NMOD,2).
+  rel(c_NAME,1).
+  rel(c_IM,6).
+  pos(c_c,3).
+  pos(c_VB,6).
+  pos(c_TO,5).
+  pos(c_NNP,4).
+  pos(c_NNP,2).
+  pos(c_NNP,1).
+  last(6).
+  head(root,5).
+  head(5,6).
+  head(5,4).
+  head(4,3).
+  head(4,2).
+  head(2,1).
+  form(6,"divorce").
+  form(5,"to").
+  form(4,"Sussanne").
+  form(3,",").
+  form(2,"Roshan").
+  form(1,"Hrithik").
+  first(1).
+}).

@@ -1,0 +1,60 @@
+#be(id_32,
+	[
+	 5,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(8).
+  true_split(4).
+  true_split(3).
+  true_split(2).
+  true_split(1).
+  possible_split((1 .. 10)).
+  test_split(1).
+  rel(c_SBJ,2).
+  rel(c_ROOT,3).
+  rel(c_PMOD,8).
+  rel(c_PMOD,10).
+  rel(c_P,4).
+  rel(c_P,1).
+  rel(c_NMOD,9).
+  rel(c_NMOD,7).
+  rel(c_NMOD,6).
+  rel(c_LOC,5).
+  pos(c_qq,4).
+  pos(c_qq,1).
+  pos(c_VBD,3).
+  pos(c_NNP,2).
+  pos(c_NN,8).
+  pos(c_NN,7).
+  pos(c_NN,10).
+  pos(c_JJ,6).
+  pos(c_IN,9).
+  pos(c_IN,5).
+  last(10).
+  head(root,3).
+  head(9,10).
+  head(8,9).
+  head(8,7).
+  head(8,6).
+  head(5,8).
+  head(3,5).
+  head(3,4).
+  head(3,2).
+  head(3,1).
+  form(9,"on").
+  form(8,"strike").
+  form(7,"air").
+  form(6,"Syrian").
+  form(5,"in").
+  form(4,"'").
+  form(3,"killed").
+  form(2,"Dozens").
+  form(10,"bakery").
+  form(1,"`").
+  first(1).
+}).

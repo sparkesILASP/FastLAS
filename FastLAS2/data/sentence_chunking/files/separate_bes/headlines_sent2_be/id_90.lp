@@ -1,0 +1,65 @@
+#be(id_90,
+	[
+	 6,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(7).
+  true_split(6).
+  true_split(2).
+  true_split(11).
+  true_split(10).
+  true_split(1).
+  possible_split((1 .. 11)).
+  test_split(1).
+  rel(c_SBJ,3).
+  rel(c_SBJ,1).
+  rel(c_ROOT,11).
+  rel(c_PMOD,10).
+  rel(c_P,7).
+  rel(c_P,2).
+  rel(c_OPRD,6).
+  rel(c_OBJ,5).
+  rel(c_NMOD,4).
+  rel(c_NAME,9).
+  rel(c_ADV,8).
+  pos(c_qq,7).
+  pos(c_qq,2).
+  pos(c_WP,3).
+  pos(c_VBZ,11).
+  pos(c_VBD,4).
+  pos(c_VB,6).
+  pos(c_PRP,5).
+  pos(c_NNP,9).
+  pos(c_NNP,10).
+  pos(c_NN,1).
+  pos(c_IN,8).
+  last(11).
+  head(root,11).
+  head(8,10).
+  head(6,8).
+  head(6,7).
+  head(4,6).
+  head(4,5).
+  head(4,3).
+  head(11,1).
+  head(10,9).
+  head(1,4).
+  head(1,2).
+  form(9,"National").
+  form(8,"on").
+  form(7,"'").
+  form(6,"ablaze").
+  form(5,"himself").
+  form(4,"set").
+  form(3,"who").
+  form(2,"`").
+  form(11,"dies").
+  form(10,"Mall").
+  form(1,"Man").
+  first(1).
+}).

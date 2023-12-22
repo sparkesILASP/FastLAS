@@ -1,0 +1,72 @@
+#be(id_215,
+	[
+	 5,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(9).
+  true_split(8).
+  true_split(4).
+  true_split(3).
+  true_split(1).
+  possible_split((1 .. 13)).
+  test_split(1).
+  rel(c_SUB,4).
+  rel(c_SBJ,2).
+  rel(c_ROOT,1).
+  rel(c_PMOD,8).
+  rel(c_PMOD,11).
+  rel(c_NMOD,9).
+  rel(c_NMOD,7).
+  rel(c_NMOD,6).
+  rel(c_NMOD,10).
+  rel(c_COORD,12).
+  rel(c_CONJ,13).
+  rel(c_APPO,3).
+  rel(c_ADV,5).
+  pos(c_VBZ,4).
+  pos(c_NNS,10).
+  pos(c_NNP,3).
+  pos(c_NNP,13).
+  pos(c_NNP,11).
+  pos(c_NN,8).
+  pos(c_NN,2).
+  pos(c_JJ,7).
+  pos(c_IN,9).
+  pos(c_IN,5).
+  pos(c_IN,1).
+  pos(c_DT,6).
+  pos(c_CC,12).
+  last(13).
+  head(root,1).
+  head(9,11).
+  head(8,9).
+  head(8,7).
+  head(8,6).
+  head(5,8).
+  head(4,5).
+  head(4,2).
+  head(2,3).
+  head(12,13).
+  head(11,12).
+  head(11,10).
+  head(1,4).
+  form(9,"than").
+  form(8,"path").
+  form(7,"different").
+  form(6,"a").
+  form(5,"on").
+  form(4,"is").
+  form(3,"A").
+  form(2,"bulb").
+  form(13,"C").
+  form(12,"and").
+  form(11,"B").
+  form(10,"bulbs").
+  form(1,"Because").
+  first(1).
+}).

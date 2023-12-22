@@ -1,0 +1,74 @@
+#be(id_133,
+	[
+	 5,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(9).
+  true_split(5).
+  true_split(3).
+  true_split(11).
+  true_split(10).
+  possible_split((1 .. 13)).
+  test_split(3).
+  test_split(2).
+  test_split(1).
+  rel(c_SBJ,3).
+  rel(c_ROOT,4).
+  rel(c_PRT,5).
+  rel(c_PMOD,9).
+  rel(c_P,10).
+  rel(c_OBJ,13).
+  rel(c_NMOD,8).
+  rel(c_NAME,7).
+  rel(c_NAME,2).
+  rel(c_NAME,12).
+  rel(c_NAME,1).
+  rel(c_ADV,6).
+  rel(c_ADV,11).
+  pos(c_c,10).
+  pos(c_VBP,4).
+  pos(c_VBG,11).
+  pos(c_RP,5).
+  pos(c_NNP,8).
+  pos(c_NNP,7).
+  pos(c_NNP,3).
+  pos(c_NNP,2).
+  pos(c_NNP,13).
+  pos(c_NNP,12).
+  pos(c_NNP,1).
+  pos(c_NN,9).
+  pos(c_IN,6).
+  last(13).
+  head(root,4).
+  head(9,8).
+  head(8,7).
+  head(6,9).
+  head(4,6).
+  head(4,5).
+  head(4,3).
+  head(4,11).
+  head(4,10).
+  head(3,2).
+  head(3,1).
+  head(13,12).
+  head(11,13).
+  form(9,"mayor").
+  form(8,"York").
+  form(7,"New").
+  form(6,"as").
+  form(5,"in").
+  form(4,"sworn").
+  form(3,"Blasio").
+  form(2,"De").
+  form(13,"Bloomberg").
+  form(12,"Michael").
+  form(11,"succeeding").
+  form(10,",").
+  form(1,"Bill").
+  first(1).
+}).

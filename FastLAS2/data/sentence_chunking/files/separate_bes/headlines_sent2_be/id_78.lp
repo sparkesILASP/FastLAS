@@ -1,0 +1,65 @@
+#be(id_78,
+	[
+	 6,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(8).
+  true_split(6).
+  true_split(5).
+  true_split(4).
+  true_split(2).
+  true_split(1).
+  possible_split((1 .. 11)).
+  test_split(1).
+  rel(c_SBJ,2).
+  rel(c_SBJ,1).
+  rel(c_ROOT,6).
+  rel(c_PMOD,11).
+  rel(c_P,5).
+  rel(c_OPRD,7).
+  rel(c_OPRD,3).
+  rel(c_NMOD,10).
+  rel(c_IM,8).
+  rel(c_IM,4).
+  rel(c_ADV,9).
+  pos(c_c,5).
+  pos(c_VBZ,6).
+  pos(c_VBZ,2).
+  pos(c_VB,8).
+  pos(c_VB,4).
+  pos(c_TO,7).
+  pos(c_TO,3).
+  pos(c_NNP,10).
+  pos(c_NNP,1).
+  pos(c_NN,11).
+  pos(c_IN,9).
+  last(11).
+  head(root,6).
+  head(9,11).
+  head(8,9).
+  head(7,8).
+  head(6,7).
+  head(6,2).
+  head(3,4).
+  head(2,5).
+  head(2,3).
+  head(2,1).
+  head(11,10).
+  form(9,"on").
+  form(8,"testify").
+  form(7,"to").
+  form(6,"plans").
+  form(5,",").
+  form(4,"work").
+  form(3,"to").
+  form(2,"returns").
+  form(11,"attack").
+  form(10,"Benghazi").
+  form(1,"Clinton").
+  first(1).
+}).

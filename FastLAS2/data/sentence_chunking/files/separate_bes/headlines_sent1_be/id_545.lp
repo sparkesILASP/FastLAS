@@ -1,0 +1,54 @@
+#be(id_545,
+	[
+	 6,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(8).
+  true_split(7).
+  true_split(6).
+  true_split(5).
+  true_split(3).
+  true_split(2).
+  possible_split((1 .. 8)).
+  test_split(2).
+  test_split(1).
+  rel(c_SBJ,7).
+  rel(c_ROOT,8).
+  rel(c_PMOD,5).
+  rel(c_P,6).
+  rel(c_OBJ,3).
+  rel(c_NMOD,2).
+  rel(c_LOC,4).
+  rel(c_ADV,1).
+  pos(c_c,6).
+  pos(c_VBG,1).
+  pos(c_VBD,8).
+  pos(c_NNS,3).
+  pos(c_NNP,5).
+  pos(c_NN,2).
+  pos(c_IN,4).
+  pos(c_CD,7).
+  last(8).
+  head(root,8).
+  head(8,7).
+  head(8,6).
+  head(8,1).
+  head(4,5).
+  head(3,4).
+  head(3,2).
+  head(1,3).
+  form(8,"killed").
+  form(7,"-343950").
+  form(6,",").
+  form(5,"Russia").
+  form(4,"in").
+  form(3,"crashes").
+  form(2,"airliner").
+  form(1,"Boeing").
+  first(1).
+}).

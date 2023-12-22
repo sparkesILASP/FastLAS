@@ -1,0 +1,60 @@
+#be(id_18,
+	[
+	 5,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(7).
+  true_split(5).
+  true_split(3).
+  true_split(2).
+  true_split(1).
+  possible_split((1 .. 10)).
+  test_split(1).
+  rel(c_SUFFIX,8).
+  rel(c_SBJ,1).
+  rel(c_ROOT,2).
+  rel(c_PMOD,5).
+  rel(c_PMOD,10).
+  rel(c_OBJ,3).
+  rel(c_NMOD,7).
+  rel(c_NAME,9).
+  rel(c_LOC,6).
+  rel(c_ADV,4).
+  pos(c_VBZ,2).
+  pos(c_PRP,3).
+  pos(c_POS,8).
+  pos(c_NNP,9).
+  pos(c_NNP,7).
+  pos(c_NNP,10).
+  pos(c_NN,5).
+  pos(c_NN,1).
+  pos(c_IN,6).
+  pos(c_IN,4).
+  last(10).
+  head(root,2).
+  head(7,8).
+  head(6,10).
+  head(4,5).
+  head(2,6).
+  head(2,4).
+  head(2,3).
+  head(2,1).
+  head(10,9).
+  head(10,7).
+  form(9,"National").
+  form(8,"'s").
+  form(7,"Washington").
+  form(6,"at").
+  form(5,"fire").
+  form(4,"on").
+  form(3,"himself").
+  form(2,"sets").
+  form(10,"Mall").
+  form(1,"Man").
+  first(1).
+}).

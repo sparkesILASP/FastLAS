@@ -1,0 +1,72 @@
+#be(id_228,
+	[
+	 4,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(8).
+  true_split(5).
+  true_split(2).
+  true_split(10).
+  possible_split((1 .. 13)).
+  test_split(2).
+  test_split(1).
+  rel(c_VC,8).
+  rel(c_SBJ,2).
+  rel(c_ROOT,6).
+  rel(c_PMOD,5).
+  rel(c_PMOD,13).
+  rel(c_OBJ,10).
+  rel(c_NMOD,9).
+  rel(c_NMOD,4).
+  rel(c_NMOD,12).
+  rel(c_NMOD,11).
+  rel(c_NMOD,1).
+  rel(c_LOC,3).
+  rel(c_ADV,7).
+  pos(c_VBZ,6).
+  pos(c_VB,8).
+  pos(c_RB,7).
+  pos(c_NN,5).
+  pos(c_NN,2).
+  pos(c_NN,13).
+  pos(c_NN,10).
+  pos(c_IN,3).
+  pos(c_IN,11).
+  pos(c_DT,9).
+  pos(c_DT,4).
+  pos(c_DT,12).
+  pos(c_DT,1).
+  last(13).
+  head(root,6).
+  head(8,10).
+  head(6,8).
+  head(6,7).
+  head(6,2).
+  head(5,4).
+  head(3,5).
+  head(2,3).
+  head(2,1).
+  head(13,12).
+  head(11,13).
+  head(10,9).
+  head(10,11).
+  form(9,"the").
+  form(8,"affect").
+  form(7,"not").
+  form(6,"does").
+  form(5,"circuit").
+  form(4,"the").
+  form(3,"in").
+  form(2,"gap").
+  form(13,"battery.").
+  form(12,"the").
+  form(11,"of").
+  form(10,"voltage").
+  form(1,"a").
+  first(1).
+}).

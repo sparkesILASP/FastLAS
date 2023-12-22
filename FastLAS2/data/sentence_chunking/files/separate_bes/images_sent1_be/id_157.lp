@@ -1,0 +1,71 @@
+#be(id_157,
+	[
+	 5,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(8).
+  true_split(6).
+  true_split(4).
+  true_split(12).
+  true_split(11).
+  possible_split((1 .. 12)).
+  test_split(4).
+  test_split(3).
+  test_split(2).
+  test_split(1).
+  rel(c_TMP,9).
+  rel(c_ROOT,1).
+  rel(c_PMOD,8).
+  rel(c_PMOD,6).
+  rel(c_PMOD,11).
+  rel(c_P,12).
+  rel(c_NMOD,7).
+  rel(c_NMOD,5).
+  rel(c_NMOD,3).
+  rel(c_NMOD,10).
+  rel(c_COORD,2).
+  rel(c_CONJ,4).
+  pos(c_p,12).
+  pos(c_NN,8).
+  pos(c_NN,6).
+  pos(c_NN,4).
+  pos(c_NN,11).
+  pos(c_NN,1).
+  pos(c_JJ,3).
+  pos(c_IN,9).
+  pos(c_IN,7).
+  pos(c_IN,5).
+  pos(c_CD,10).
+  pos(c_CC,2).
+  last(12).
+  head(root,1).
+  head(9,11).
+  head(7,8).
+  head(6,7).
+  head(5,6).
+  head(4,9).
+  head(4,5).
+  head(4,3).
+  head(2,4).
+  head(11,10).
+  head(1,2).
+  head(1,12).
+  form(9,"at").
+  form(8,"purse").
+  form(7,"with").
+  form(6,"couch").
+  form(5,"of").
+  form(4,"photo").
+  form(3,"white").
+  form(2,"and").
+  form(12,".").
+  form(11,"end").
+  form(10,"one").
+  form(1,"Black").
+  first(1).
+}).

@@ -1,0 +1,63 @@
+#be(id_55,
+	[
+	 4,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(9).
+  true_split(7).
+  true_split(5).
+  true_split(10).
+  possible_split((1 .. 10)).
+  test_split(5).
+  test_split(4).
+  test_split(3).
+  test_split(2).
+  test_split(1).
+  rel(c_ROOT,3).
+  rel(c_PMOD,9).
+  rel(c_PMOD,7).
+  rel(c_P,10).
+  rel(c_NMOD,8).
+  rel(c_NMOD,6).
+  rel(c_NMOD,2).
+  rel(c_NMOD,1).
+  rel(c_COORD,4).
+  rel(c_CONJ,5).
+  pos(c_p,10).
+  pos(c_NNS,9).
+  pos(c_NNS,7).
+  pos(c_NN,5).
+  pos(c_NN,3).
+  pos(c_NN,2).
+  pos(c_IN,8).
+  pos(c_IN,6).
+  pos(c_DT,1).
+  pos(c_CC,4).
+  last(10).
+  head(root,3).
+  head(8,9).
+  head(7,8).
+  head(6,7).
+  head(5,6).
+  head(4,5).
+  head(3,4).
+  head(3,2).
+  head(3,10).
+  head(3,1).
+  form(9,"shelves").
+  form(8,"on").
+  form(7,"bowls").
+  form(6,"with").
+  form(5,"countertop").
+  form(4,"and").
+  form(3,"sink").
+  form(2,"kitchen").
+  form(10,".").
+  form(1,"A").
+  first(1).
+}).

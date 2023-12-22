@@ -1,0 +1,56 @@
+#be(id_674,
+	[
+	 5,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(7).
+  true_split(6).
+  true_split(5).
+  true_split(2).
+  true_split(1).
+  possible_split((1 .. 9)).
+  test_split(1).
+  rel(c_SUFFIX,8).
+  rel(c_SBJ,5).
+  rel(c_ROOT,1).
+  rel(c_P,2).
+  rel(c_OBJ,9).
+  rel(c_NMOD,7).
+  rel(c_NMOD,6).
+  rel(c_NMOD,4).
+  rel(c_NMOD,3).
+  pos(c_c,2).
+  pos(c_VBP,6).
+  pos(c_POS,8).
+  pos(c_NNS,5).
+  pos(c_NNP,7).
+  pos(c_NNP,3).
+  pos(c_NN,9).
+  pos(c_NN,4).
+  pos(c_NN,1).
+  last(9).
+  head(root,1).
+  head(9,7).
+  head(7,8).
+  head(6,9).
+  head(6,5).
+  head(5,4).
+  head(5,3).
+  head(1,6).
+  head(1,2).
+  form(9,"sovereignty").
+  form(8,"'s").
+  form(7,"Pakistan").
+  form(6,"violate").
+  form(5,"strikes").
+  form(4,"drone").
+  form(3,"US").
+  form(2,":").
+  form(1,"UN").
+  first(1).
+}).

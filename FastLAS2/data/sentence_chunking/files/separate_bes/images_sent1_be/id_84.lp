@@ -1,0 +1,67 @@
+#be(id_84,
+	[
+	 4,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(6).
+  true_split(5).
+  true_split(11).
+  true_split(10).
+  possible_split((1 .. 11)).
+  test_split(5).
+  test_split(4).
+  test_split(3).
+  test_split(2).
+  test_split(1).
+  rel(c_ROOT,5).
+  rel(c_PMOD,10).
+  rel(c_P,11).
+  rel(c_NMOD,9).
+  rel(c_NMOD,2).
+  rel(c_NMOD,1).
+  rel(c_LOC,7).
+  rel(c_COORD,3).
+  rel(c_CONJ,4).
+  rel(c_APPO,6).
+  rel(c_AMOD,8).
+  pos(c_p,11).
+  pos(c_VBG,6).
+  pos(c_TO,8).
+  pos(c_NN,5).
+  pos(c_NN,4).
+  pos(c_NN,2).
+  pos(c_NN,10).
+  pos(c_JJ,7).
+  pos(c_DT,9).
+  pos(c_DT,1).
+  pos(c_CC,3).
+  last(11).
+  head(root,5).
+  head(8,10).
+  head(7,8).
+  head(6,7).
+  head(5,6).
+  head(5,2).
+  head(5,11).
+  head(5,1).
+  head(3,4).
+  head(2,3).
+  head(10,9).
+  form(9,"a").
+  form(8,"to").
+  form(7,"next").
+  form(6,"sitting").
+  form(5,"motorcycle").
+  form(4,"blue").
+  form(3,"and").
+  form(2,"silver").
+  form(11,".").
+  form(10,"car").
+  form(1,"A").
+  first(1).
+}).

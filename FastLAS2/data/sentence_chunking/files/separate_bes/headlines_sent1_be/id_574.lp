@@ -1,0 +1,53 @@
+#be(id_574,
+	[
+	 6,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(8).
+  true_split(7).
+  true_split(6).
+  true_split(3).
+  true_split(2).
+  true_split(1).
+  possible_split((1 .. 8)).
+  test_split(1).
+  rel(c_SUFFIX,4).
+  rel(c_SBJ,6).
+  rel(c_SBJ,1).
+  rel(c_ROOT,2).
+  rel(c_OBJ,8).
+  rel(c_OBJ,7).
+  rel(c_NMOD,5).
+  rel(c_NMOD,3).
+  pos(c_VBP,7).
+  pos(c_VBP,2).
+  pos(c_POS,4).
+  pos(c_NNS,8).
+  pos(c_NNS,6).
+  pos(c_NNS,1).
+  pos(c_NNP,3).
+  pos(c_NN,5).
+  last(8).
+  head(root,2).
+  head(7,8).
+  head(7,6).
+  head(6,5).
+  head(6,3).
+  head(3,4).
+  head(2,7).
+  head(2,1).
+  form(8,"rights").
+  form(7,"violate").
+  form(6,"restrictions").
+  form(5,"security").
+  form(4,"'s").
+  form(3,"Putin").
+  form(2,"say").
+  form(1,"Critics").
+  first(1).
+}).

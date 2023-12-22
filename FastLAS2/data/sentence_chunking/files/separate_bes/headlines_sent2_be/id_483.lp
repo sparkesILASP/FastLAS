@@ -1,0 +1,52 @@
+#be(id_483,
+	[
+	 3,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(6).
+  true_split(5).
+  true_split(3).
+  possible_split((1 .. 8)).
+  test_split(3).
+  test_split(2).
+  test_split(1).
+  rel(c_ROOT,3).
+  rel(c_PMOD,8).
+  rel(c_NAME,7).
+  rel(c_NAME,6).
+  rel(c_NAME,5).
+  rel(c_NAME,2).
+  rel(c_NAME,1).
+  rel(c_LOC,4).
+  pos(c_NNP,8).
+  pos(c_NNP,7).
+  pos(c_NNP,6).
+  pos(c_NNP,5).
+  pos(c_NNP,3).
+  pos(c_NNP,2).
+  pos(c_NNP,1).
+  pos(c_IN,4).
+  last(8).
+  head(root,3).
+  head(8,7).
+  head(8,6).
+  head(8,5).
+  head(4,8).
+  head(3,4).
+  head(3,2).
+  head(3,1).
+  form(8,"Hopes").
+  form(7,"High").
+  form(6,"Spur").
+  form(5,"Geneva").
+  form(4,"in").
+  form(3,"Talks").
+  form(2,"Nuclear").
+  form(1,"Iran").
+  first(1).
+}).

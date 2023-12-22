@@ -1,0 +1,77 @@
+#be(id_218,
+	[
+	 4,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(3).
+  true_split(14).
+  true_split(13).
+  true_split(10).
+  possible_split((1 .. 14)).
+  test_split(3).
+  test_split(2).
+  test_split(1).
+  rel(c_ROOT,3).
+  rel(c_PMOD,7).
+  rel(c_PMOD,13).
+  rel(c_P,14).
+  rel(c_NMOD,9).
+  rel(c_NMOD,6).
+  rel(c_NMOD,5).
+  rel(c_NMOD,4).
+  rel(c_NMOD,2).
+  rel(c_NMOD,12).
+  rel(c_NMOD,1).
+  rel(c_LOC,11).
+  rel(c_COORD,8).
+  rel(c_CONJ,10).
+  pos(c_p,14).
+  pos(c_NNS,7).
+  pos(c_NN,6).
+  pos(c_NN,3).
+  pos(c_NN,2).
+  pos(c_NN,13).
+  pos(c_NN,10).
+  pos(c_JJ,9).
+  pos(c_IN,4).
+  pos(c_IN,11).
+  pos(c_DT,12).
+  pos(c_DT,1).
+  pos(c_CD,5).
+  pos(c_CC,8).
+  last(14).
+  head(root,3).
+  head(8,10).
+  head(7,8).
+  head(7,6).
+  head(7,5).
+  head(7,11).
+  head(4,7).
+  head(3,4).
+  head(3,2).
+  head(3,14).
+  head(3,1).
+  head(13,12).
+  head(11,13).
+  head(10,9).
+  form(9,"other").
+  form(8,"and").
+  form(7,"monitors").
+  form(6,"computer").
+  form(5,"three").
+  form(4,"with").
+  form(3,"office").
+  form(2,"home").
+  form(14,".").
+  form(13,"desk").
+  form(12,"a").
+  form(11,"on").
+  form(10,"equipment").
+  form(1,"A").
+  first(1).
+}).

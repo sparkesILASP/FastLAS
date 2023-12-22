@@ -1,0 +1,56 @@
+#be(id_619,
+	[
+	 3,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(7).
+  true_split(4).
+  true_split(3).
+  possible_split((1 .. 9)).
+  test_split(3).
+  test_split(2).
+  test_split(1).
+  rel(c_ROOT,1).
+  rel(c_PMOD,9).
+  rel(c_P,2).
+  rel(c_NAME,6).
+  rel(c_NAME,5).
+  rel(c_NAME,4).
+  rel(c_NAME,3).
+  rel(c_LOC,8).
+  rel(c_COORD,7).
+  pos(c_c,2).
+  pos(c_NNP,9).
+  pos(c_NNP,7).
+  pos(c_NNP,6).
+  pos(c_NNP,5).
+  pos(c_NNP,4).
+  pos(c_NNP,3).
+  pos(c_NNP,1).
+  pos(c_IN,8).
+  last(9).
+  head(root,1).
+  head(8,9).
+  head(7,8).
+  head(7,6).
+  head(7,5).
+  head(7,4).
+  head(7,3).
+  head(1,7).
+  head(1,2).
+  form(9,"Syria").
+  form(8,"in").
+  form(7,"Airstrikes").
+  form(6,"Israeli").
+  form(5,"About").
+  form(4,"Concerned").
+  form(3,"China").
+  form(2,",").
+  form(1,"Russia").
+  first(1).
+}).

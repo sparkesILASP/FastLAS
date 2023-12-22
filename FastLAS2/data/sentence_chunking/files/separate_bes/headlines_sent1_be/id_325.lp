@@ -1,0 +1,48 @@
+#be(id_325,
+	[
+	 4,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(7).
+  true_split(6).
+  true_split(3).
+  true_split(2).
+  possible_split((1 .. 7)).
+  test_split(2).
+  test_split(1).
+  rel(c_VC,6).
+  rel(c_ROOT,2).
+  rel(c_P,7).
+  rel(c_P,3).
+  rel(c_NMOD,4).
+  rel(c_NMOD,1).
+  rel(c_IM,5).
+  pos(c_qq,7).
+  pos(c_qq,3).
+  pos(c_VBN,6).
+  pos(c_VB,5).
+  pos(c_TO,4).
+  pos(c_NNS,2).
+  pos(c_JJ,1).
+  last(7).
+  head(root,2).
+  head(5,6).
+  head(4,5).
+  head(2,7).
+  head(2,4).
+  head(2,3).
+  head(2,1).
+  form(7,"'").
+  form(6,"dispersed").
+  form(5,"be").
+  form(4,"to").
+  form(3,"`").
+  form(2,"protesters").
+  form(1,"Egypt").
+  first(1).
+}).

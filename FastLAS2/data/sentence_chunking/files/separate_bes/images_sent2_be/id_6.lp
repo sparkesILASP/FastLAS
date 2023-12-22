@@ -1,0 +1,60 @@
+#be(id_6,
+	[
+	 4,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(9).
+  true_split(4).
+  true_split(2).
+  true_split(10).
+  possible_split((1 .. 10)).
+  test_split(2).
+  test_split(1).
+  rel(c_SBJ,2).
+  rel(c_ROOT,3).
+  rel(c_PMOD,9).
+  rel(c_P,10).
+  rel(c_OPRD,4).
+  rel(c_NMOD,8).
+  rel(c_NMOD,7).
+  rel(c_NMOD,6).
+  rel(c_NMOD,1).
+  rel(c_ADV,5).
+  pos(c_p,10).
+  pos(c_VBZ,3).
+  pos(c_VBG,4).
+  pos(c_NN,9).
+  pos(c_NN,8).
+  pos(c_NN,7).
+  pos(c_NN,2).
+  pos(c_IN,5).
+  pos(c_DT,6).
+  pos(c_DT,1).
+  last(10).
+  head(root,3).
+  head(9,8).
+  head(9,6).
+  head(8,7).
+  head(5,9).
+  head(4,5).
+  head(3,4).
+  head(3,2).
+  head(3,10).
+  head(2,1).
+  form(9,"blanket").
+  form(8,"print").
+  form(7,"animal").
+  form(6,"an").
+  form(5,"on").
+  form(4,"laying").
+  form(3,"is").
+  form(2,"cat").
+  form(10,".").
+  form(1,"The").
+  first(1).
+}).

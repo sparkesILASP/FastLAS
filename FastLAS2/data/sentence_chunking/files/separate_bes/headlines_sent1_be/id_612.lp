@@ -1,0 +1,56 @@
+#be(id_612,
+	[
+	 5,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(7).
+  true_split(4).
+  true_split(3).
+  true_split(2).
+  true_split(1).
+  possible_split((1 .. 9)).
+  test_split(1).
+  rel(c_ROOT,3).
+  rel(c_PMOD,9).
+  rel(c_PMOD,7).
+  rel(c_P,4).
+  rel(c_P,2).
+  rel(c_NMOD,6).
+  rel(c_NMOD,5).
+  rel(c_NMOD,1).
+  rel(c_LOC,8).
+  pos(c_qq,4).
+  pos(c_qq,2).
+  pos(c_NNP,9).
+  pos(c_NN,7).
+  pos(c_NN,3).
+  pos(c_JJ,6).
+  pos(c_JJ,1).
+  pos(c_IN,8).
+  pos(c_IN,5).
+  last(9).
+  head(root,3).
+  head(8,9).
+  head(7,8).
+  head(7,6).
+  head(5,7).
+  head(3,5).
+  head(3,4).
+  head(3,2).
+  head(3,1).
+  form(9,"Gaza").
+  form(8,"in").
+  form(7,"fire").
+  form(6,"Israeli").
+  form(5,"by").
+  form(4,"'").
+  form(3,"hit").
+  form(2,"`").
+  form(1,"Palestinians").
+  first(1).
+}).

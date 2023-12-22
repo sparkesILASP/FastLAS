@@ -1,0 +1,83 @@
+#be(id_235,
+	[
+	 7,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(8).
+  true_split(7).
+  true_split(3).
+  true_split(2).
+  true_split(15).
+  true_split(14).
+  true_split(11).
+  possible_split((1 .. 15)).
+  test_split(2).
+  test_split(1).
+  rel(c_ROOT,2).
+  rel(c_PMOD,7).
+  rel(c_PMOD,5).
+  rel(c_PMOD,14).
+  rel(c_P,8).
+  rel(c_P,3).
+  rel(c_P,15).
+  rel(c_NMOD,9).
+  rel(c_NMOD,6).
+  rel(c_NMOD,4).
+  rel(c_NMOD,13).
+  rel(c_NMOD,10).
+  rel(c_NMOD,1).
+  rel(c_LOC,12).
+  rel(c_APPO,11).
+  pos(c_p,15).
+  pos(c_c,8).
+  pos(c_c,3).
+  pos(c_NNS,2).
+  pos(c_NN,7).
+  pos(c_NN,14).
+  pos(c_JJ,10).
+  pos(c_IN,5).
+  pos(c_IN,4).
+  pos(c_IN,12).
+  pos(c_DT,9).
+  pos(c_DT,6).
+  pos(c_DT,13).
+  pos(c_CD,11).
+  pos(c_CD,1).
+  last(15).
+  head(root,2).
+  head(7,6).
+  head(5,7).
+  head(4,5).
+  head(2,8).
+  head(2,4).
+  head(2,3).
+  head(2,15).
+  head(2,11).
+  head(2,1).
+  head(14,13).
+  head(12,14).
+  head(11,9).
+  head(11,12).
+  head(11,10).
+  form(9,"the").
+  form(8,",").
+  form(7,"floor").
+  form(6,"the").
+  form(5,"on").
+  form(4,"on").
+  form(3,",").
+  form(2,"televisions").
+  form(15,".").
+  form(14,"box").
+  form(13,"a").
+  form(12,"on").
+  form(11,"two").
+  form(10,"other").
+  form(1,"Three").
+  first(1).
+}).

@@ -1,0 +1,62 @@
+#be(id_56,
+	[
+	 6,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(8).
+  true_split(6).
+  true_split(5).
+  true_split(4).
+  true_split(3).
+  true_split(2).
+  possible_split((1 .. 10)).
+  test_split(2).
+  test_split(1).
+  rel(c_SBJ,5).
+  rel(c_SBJ,2).
+  rel(c_ROOT,3).
+  rel(c_OBJ,8).
+  rel(c_OBJ,10).
+  rel(c_NMOD,7).
+  rel(c_NMOD,1).
+  rel(c_COORD,4).
+  rel(c_CONJ,6).
+  rel(c_APPO,9).
+  pos(c_VBZ,3).
+  pos(c_VBP,6).
+  pos(c_VBG,9).
+  pos(c_NNS,8).
+  pos(c_NNS,5).
+  pos(c_NNP,1).
+  pos(c_NN,7).
+  pos(c_NN,2).
+  pos(c_NN,10).
+  pos(c_CC,4).
+  last(10).
+  head(root,3).
+  head(9,10).
+  head(8,9).
+  head(8,7).
+  head(6,8).
+  head(6,5).
+  head(4,6).
+  head(3,4).
+  head(3,2).
+  head(2,1).
+  form(9,"making").
+  form(8,"crews").
+  form(7,"fire").
+  form(6,"say").
+  form(5,"officials").
+  form(4,"but").
+  form(3,"grows").
+  form(2,"wildfire").
+  form(10,"progress").
+  form(1,"California").
+  first(1).
+}).

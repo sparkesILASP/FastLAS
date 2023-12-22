@@ -1,0 +1,50 @@
+#be(id_481,
+	[
+	 3,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(5).
+  true_split(2).
+  true_split(1).
+  possible_split((1 .. 8)).
+  test_split(1).
+  rel(c_ROOT,5).
+  rel(c_PMOD,8).
+  rel(c_NMOD,6).
+  rel(c_NMOD,4).
+  rel(c_NMOD,3).
+  rel(c_NMOD,2).
+  rel(c_NMOD,1).
+  rel(c_NAME,7).
+  pos(c_RB,3).
+  pos(c_NNS,2).
+  pos(c_NNP,8).
+  pos(c_NNP,7).
+  pos(c_NN,5).
+  pos(c_NN,1).
+  pos(c_JJ,4).
+  pos(c_IN,6).
+  last(8).
+  head(root,5).
+  head(8,7).
+  head(6,8).
+  head(5,6).
+  head(5,4).
+  head(5,3).
+  head(5,2).
+  head(2,1).
+  form(8,"Holmes").
+  form(7,"James").
+  form(6,"for").
+  form(5,"plea").
+  form(4,"guilty").
+  form(3,"not").
+  form(2,"enters").
+  form(1,"Judge").
+  first(1).
+}).

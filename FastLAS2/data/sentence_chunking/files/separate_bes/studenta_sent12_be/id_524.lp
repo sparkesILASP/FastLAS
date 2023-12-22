@@ -1,0 +1,56 @@
+#be(id_524,
+	[
+	 3,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(6).
+  true_split(4).
+  true_split(3).
+  possible_split((1 .. 9)).
+  test_split(3).
+  test_split(2).
+  test_split(1).
+  rel(c_SBJ,3).
+  rel(c_ROOT,4).
+  rel(c_PMOD,9).
+  rel(c_OBJ,6).
+  rel(c_NMOD,8).
+  rel(c_NMOD,5).
+  rel(c_NMOD,2).
+  rel(c_NMOD,1).
+  rel(c_LOC,7).
+  pos(c_VBZ,4).
+  pos(c_VBN,2).
+  pos(c_NN,9).
+  pos(c_NN,6).
+  pos(c_NN,3).
+  pos(c_IN,7).
+  pos(c_DT,8).
+  pos(c_DT,5).
+  pos(c_DT,1).
+  last(9).
+  head(root,4).
+  head(9,8).
+  head(7,9).
+  head(6,7).
+  head(6,5).
+  head(4,6).
+  head(4,3).
+  head(3,2).
+  head(3,1).
+  form(9,"path").
+  form(8,"the").
+  form(7,"in").
+  form(6,"gap").
+  form(5,"a").
+  form(4,"creates").
+  form(3,"bulb").
+  form(2,"damaged").
+  form(1,"A").
+  first(1).
+}).

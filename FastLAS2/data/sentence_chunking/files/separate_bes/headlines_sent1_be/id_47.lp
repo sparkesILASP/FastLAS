@@ -1,0 +1,58 @@
+#be(id_47,
+	[
+	 3,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(8).
+  true_split(4).
+  true_split(1).
+  possible_split((1 .. 10)).
+  test_split(1).
+  rel(c_SUFFIX,5).
+  rel(c_SBJ,1).
+  rel(c_ROOT,9).
+  rel(c_PMOD,6).
+  rel(c_OBJ,10).
+  rel(c_NMOD,4).
+  rel(c_NMOD,2).
+  rel(c_NAME,7).
+  rel(c_NAME,3).
+  rel(c_APPO,8).
+  pos(c_VBZ,9).
+  pos(c_POS,5).
+  pos(c_NNP,8).
+  pos(c_NNP,7).
+  pos(c_NNP,4).
+  pos(c_NNP,3).
+  pos(c_NN,6).
+  pos(c_NN,10).
+  pos(c_NN,1).
+  pos(c_IN,2).
+  last(10).
+  head(root,9).
+  head(9,10).
+  head(9,1).
+  head(8,7).
+  head(6,8).
+  head(6,4).
+  head(4,5).
+  head(4,3).
+  head(2,6).
+  head(1,2).
+  form(9,"takes").
+  form(8,"Steenkamp").
+  form(7,"Reeva").
+  form(6,"girlfriend").
+  form(5,"'").
+  form(4,"Pistorius").
+  form(3,"Oscar").
+  form(2,"of").
+  form(10,"place").
+  form(1,"Funeral").
+  first(1).
+}).

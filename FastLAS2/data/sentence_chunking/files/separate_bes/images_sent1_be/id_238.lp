@@ -1,0 +1,81 @@
+#be(id_238,
+	[
+	 5,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(9).
+  true_split(8).
+  true_split(6).
+  true_split(14).
+  true_split(13).
+  possible_split((1 .. 14)).
+  test_split(6).
+  test_split(5).
+  test_split(4).
+  test_split(3).
+  test_split(2).
+  test_split(1).
+  rel(c_ROOT,2).
+  rel(c_PMOD,8).
+  rel(c_PMOD,12).
+  rel(c_P,14).
+  rel(c_NMOD,7).
+  rel(c_NMOD,5).
+  rel(c_NMOD,4).
+  rel(c_NMOD,13).
+  rel(c_NMOD,11).
+  rel(c_NMOD,1).
+  rel(c_COORD,3).
+  rel(c_CONJ,6).
+  rel(c_APPO,9).
+  rel(c_ADV,10).
+  pos(c_p,14).
+  pos(c_VBG,9).
+  pos(c_PRPd,11).
+  pos(c_NNS,8).
+  pos(c_NNS,12).
+  pos(c_NN,6).
+  pos(c_NN,5).
+  pos(c_JJ,2).
+  pos(c_IN,7).
+  pos(c_IN,13).
+  pos(c_IN,10).
+  pos(c_CD,4).
+  pos(c_CD,1).
+  pos(c_CC,3).
+  last(14).
+  head(root,2).
+  head(9,10).
+  head(8,9).
+  head(7,8).
+  head(6,7).
+  head(6,5).
+  head(6,4).
+  head(3,6).
+  head(2,3).
+  head(2,14).
+  head(2,1).
+  head(12,13).
+  head(12,11).
+  head(10,12).
+  form(9,"smiling").
+  form(8,"glasses").
+  form(7,"in").
+  form(6,"woman").
+  form(5,"occasion").
+  form(4,"one").
+  form(3,"and").
+  form(2,"Asian").
+  form(14,".").
+  form(13,"up").
+  form(12,"thumbs").
+  form(11,"their").
+  form(10,"with").
+  form(1,"One").
+  first(1).
+}).

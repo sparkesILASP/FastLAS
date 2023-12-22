@@ -1,0 +1,67 @@
+#be(id_136,
+	[
+	 7,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(8).
+  true_split(7).
+  true_split(6).
+  true_split(4).
+  true_split(2).
+  true_split(11).
+  true_split(10).
+  possible_split((1 .. 11)).
+  test_split(2).
+  test_split(1).
+  rel(c_VC,4).
+  rel(c_SBJ,2).
+  rel(c_ROOT,3).
+  rel(c_P,11).
+  rel(c_OBJ,6).
+  rel(c_OBJ,10).
+  rel(c_NMOD,9).
+  rel(c_NMOD,5).
+  rel(c_NMOD,1).
+  rel(c_COORD,7).
+  rel(c_CONJ,8).
+  pos(c_p,11).
+  pos(c_VBZ,3).
+  pos(c_VBG,8).
+  pos(c_VBG,4).
+  pos(c_NN,6).
+  pos(c_NN,2).
+  pos(c_NN,10).
+  pos(c_DT,9).
+  pos(c_DT,5).
+  pos(c_DT,1).
+  pos(c_CC,7).
+  last(11).
+  head(root,3).
+  head(8,10).
+  head(7,8).
+  head(6,5).
+  head(4,7).
+  head(4,6).
+  head(3,4).
+  head(3,2).
+  head(3,11).
+  head(2,1).
+  head(10,9).
+  form(9,"a").
+  form(8,"performing").
+  form(7,"and").
+  form(6,"bicycle").
+  form(5,"a").
+  form(4,"jumping").
+  form(3,"is").
+  form(2,"person").
+  form(11,".").
+  form(10,"trick").
+  form(1,"A").
+  first(1).
+}).

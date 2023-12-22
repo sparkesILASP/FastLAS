@@ -1,0 +1,52 @@
+#be(id_562,
+	[
+	 4,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(5).
+  true_split(4).
+  true_split(3).
+  true_split(2).
+  possible_split((1 .. 8)).
+  test_split(2).
+  test_split(1).
+  rel(c_TMP,3).
+  rel(c_SBJ,2).
+  rel(c_ROOT,4).
+  rel(c_PRP,6).
+  rel(c_OBJ,8).
+  rel(c_OBJ,5).
+  rel(c_NMOD,1).
+  rel(c_IM,7).
+  pos(c_VBZ,4).
+  pos(c_VB,7).
+  pos(c_TO,6).
+  pos(c_RB,3).
+  pos(c_NNS,8).
+  pos(c_NN,5).
+  pos(c_NN,2).
+  pos(c_JJ,1).
+  last(8).
+  head(root,4).
+  head(7,8).
+  head(6,7).
+  head(4,6).
+  head(4,5).
+  head(4,3).
+  head(4,2).
+  head(2,1).
+  form(8,"protests").
+  form(7,"pro-Morsi").
+  form(6,"to").
+  form(5,"end").
+  form(4,"urges").
+  form(3,"again").
+  form(2,"ministry").
+  form(1,"Egypt").
+  first(1).
+}).

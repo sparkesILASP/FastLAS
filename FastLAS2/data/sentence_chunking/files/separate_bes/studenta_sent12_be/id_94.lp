@@ -1,0 +1,65 @@
+#be(id_94,
+	[
+	 4,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(8).
+  true_split(6).
+  true_split(4).
+  true_split(3).
+  possible_split((1 .. 11)).
+  test_split(3).
+  test_split(2).
+  test_split(1).
+  rel(c_SBJ,6).
+  rel(c_SBJ,3).
+  rel(c_ROOT,4).
+  rel(c_OBJ,7).
+  rel(c_OBJ,11).
+  rel(c_NMOD,9).
+  rel(c_NMOD,5).
+  rel(c_NMOD,2).
+  rel(c_NMOD,10).
+  rel(c_NMOD,1).
+  rel(c_ADV,8).
+  pos(c_VBZ,7).
+  pos(c_VBZ,4).
+  pos(c_VBN,10).
+  pos(c_RB,8).
+  pos(c_NN,6).
+  pos(c_NN,3).
+  pos(c_NN,11).
+  pos(c_JJ,2).
+  pos(c_DT,9).
+  pos(c_DT,5).
+  pos(c_DT,1).
+  last(11).
+  head(root,4).
+  head(7,8).
+  head(7,6).
+  head(7,11).
+  head(6,5).
+  head(4,7).
+  head(4,3).
+  head(3,2).
+  head(3,1).
+  head(11,9).
+  head(11,10).
+  form(9,"a").
+  form(8,"not").
+  form(7,"is").
+  form(6,"circuit").
+  form(5,"the").
+  form(4,"means").
+  form(3,"switch").
+  form(2,"open").
+  form(11,"path.").
+  form(10,"closed").
+  form(1,"An").
+  first(1).
+}).

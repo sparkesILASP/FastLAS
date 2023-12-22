@@ -1,0 +1,87 @@
+#be(id_119,
+	[
+	 7,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(7).
+  true_split(5).
+  true_split(3).
+  true_split(2).
+  true_split(14).
+  true_split(13).
+  true_split(10).
+  possible_split((1 .. 16)).
+  test_split(2).
+  test_split(1).
+  rel(c_SBJ,2).
+  rel(c_ROOT,3).
+  rel(c_PMOD,16).
+  rel(c_PMOD,13).
+  rel(c_PMOD,10).
+  rel(c_OBJ,5).
+  rel(c_NMOD,9).
+  rel(c_NMOD,6).
+  rel(c_NMOD,4).
+  rel(c_NMOD,12).
+  rel(c_NMOD,11).
+  rel(c_NAME,1).
+  rel(c_LOC,15).
+  rel(c_IM,7).
+  rel(c_APPO,14).
+  rel(c_ADV,8).
+  pos(c_VBZ,3).
+  pos(c_VBN,14).
+  pos(c_VB,7).
+  pos(c_TO,6).
+  pos(c_NNS,13).
+  pos(c_NNP,2).
+  pos(c_NNP,16).
+  pos(c_NNP,1).
+  pos(c_NN,5).
+  pos(c_NN,10).
+  pos(c_JJ,9).
+  pos(c_JJ,4).
+  pos(c_IN,8).
+  pos(c_IN,15).
+  pos(c_IN,11).
+  pos(c_DT,12).
+  last(16).
+  head(root,3).
+  head(8,10).
+  head(7,8).
+  head(6,7).
+  head(5,6).
+  head(5,4).
+  head(3,5).
+  head(3,2).
+  head(2,1).
+  head(15,16).
+  head(14,15).
+  head(13,14).
+  head(13,12).
+  head(11,13).
+  head(10,9).
+  head(10,11).
+  form(9,"immediate").
+  form(8,"in").
+  form(7,"assist").
+  form(6,"to").
+  form(5,"opposition").
+  form(4,"Syrian").
+  form(3,"urges").
+  form(2,"FM").
+  form(16,"Syria").
+  form(15,"in").
+  form(14,"captured").
+  form(13,"foreigners").
+  form(12,"all").
+  form(11,"of").
+  form(10,"release").
+  form(1,"RF").
+  first(1).
+}).

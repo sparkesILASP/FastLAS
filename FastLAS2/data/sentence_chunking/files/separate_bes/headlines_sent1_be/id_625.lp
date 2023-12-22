@@ -1,0 +1,55 @@
+#be(id_625,
+	[
+	 4,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(6).
+  true_split(4).
+  true_split(3).
+  true_split(1).
+  possible_split((1 .. 9)).
+  test_split(1).
+  rel(c_SUFFIX,2).
+  rel(c_SBJ,3).
+  rel(c_ROOT,4).
+  rel(c_PMOD,9).
+  rel(c_PMOD,6).
+  rel(c_NMOD,1).
+  rel(c_NAME,8).
+  rel(c_DIR,5).
+  rel(c_ADV,7).
+  pos(c_VBZ,4).
+  pos(c_TO,5).
+  pos(c_POS,2).
+  pos(c_NNP,9).
+  pos(c_NNP,8).
+  pos(c_NNP,1).
+  pos(c_NN,3).
+  pos(c_IN,7).
+  pos(c_CD,6).
+  last(9).
+  head(root,4).
+  head(9,8).
+  head(7,9).
+  head(5,6).
+  head(4,7).
+  head(4,5).
+  head(4,3).
+  head(3,1).
+  head(1,2).
+  form(9,"Thursday").
+  form(8,"USD").
+  form(7,"against").
+  form(6,"-123994.-121233").
+  form(5,"to").
+  form(4,"weakens").
+  form(3,"yuan").
+  form(2,"'s").
+  form(1,"China").
+  first(1).
+}).

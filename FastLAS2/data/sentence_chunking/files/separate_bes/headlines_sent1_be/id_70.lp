@@ -1,0 +1,63 @@
+#be(id_70,
+	[
+	 3,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(5).
+  true_split(4).
+  true_split(2).
+  possible_split((1 .. 11)).
+  test_split(2).
+  test_split(1).
+  rel(c_ROOT,4).
+  rel(c_P,5).
+  rel(c_NMOD,10).
+  rel(c_NAME,9).
+  rel(c_NAME,8).
+  rel(c_NAME,3).
+  rel(c_NAME,2).
+  rel(c_NAME,1).
+  rel(c_COORD,7).
+  rel(c_COORD,6).
+  rel(c_CONJ,11).
+  pos(c_c,5).
+  pos(c_NNS,11).
+  pos(c_NNP,9).
+  pos(c_NNP,8).
+  pos(c_NNP,6).
+  pos(c_NNP,4).
+  pos(c_NNP,3).
+  pos(c_NNP,2).
+  pos(c_NNP,10).
+  pos(c_NNP,1).
+  pos(c_CC,7).
+  last(11).
+  head(root,4).
+  head(7,11).
+  head(6,7).
+  head(4,6).
+  head(4,5).
+  head(4,3).
+  head(4,2).
+  head(4,1).
+  head(11,10).
+  head(10,9).
+  head(10,8).
+  form(9,"Post").
+  form(8,"IBM").
+  form(7,"and").
+  form(6,"Google").
+  form(5,":").
+  form(4,"Up").
+  form(3,"Heats").
+  form(2,"Sector").
+  form(11,"Earnings").
+  form(10,"Strong").
+  form(1,"Tech").
+  first(1).
+}).

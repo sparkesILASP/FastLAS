@@ -1,0 +1,50 @@
+#be(id_458,
+	[
+	 3,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(7).
+  true_split(6).
+  true_split(5).
+  possible_split((1 .. 7)).
+  test_split(5).
+  test_split(4).
+  test_split(3).
+  test_split(2).
+  test_split(1).
+  rel(c_ROOT,2).
+  rel(c_P,3).
+  rel(c_NMOD,6).
+  rel(c_NMOD,5).
+  rel(c_NMOD,4).
+  rel(c_NAME,1).
+  rel(c_APPO,7).
+  pos(c_c,3).
+  pos(c_NNS,7).
+  pos(c_NNP,5).
+  pos(c_NNP,2).
+  pos(c_NNP,1).
+  pos(c_NN,6).
+  pos(c_NN,4).
+  last(7).
+  head(root,2).
+  head(7,6).
+  head(7,4).
+  head(6,5).
+  head(2,7).
+  head(2,3).
+  head(2,1).
+  form(7,"ways").
+  form(6,"part").
+  form(5,"Sussanne").
+  form(4,"wife").
+  form(3,",").
+  form(2,"Roshan").
+  form(1,"Hrithik").
+  first(1).
+}).

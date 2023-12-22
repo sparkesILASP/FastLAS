@@ -1,0 +1,60 @@
+#be(id_37,
+	[
+	 5,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(6).
+  true_split(5).
+  true_split(3).
+  true_split(2).
+  true_split(1).
+  possible_split((1 .. 10)).
+  test_split(1).
+  rel(c_ROOT,1).
+  rel(c_PMOD,5).
+  rel(c_PMOD,10).
+  rel(c_P,2).
+  rel(c_NMOD,9).
+  rel(c_NMOD,4).
+  rel(c_NMOD,3).
+  rel(c_NAME,8).
+  rel(c_LGS,7).
+  rel(c_APPO,6).
+  pos(c_c,2).
+  pos(c_VBN,6).
+  pos(c_NNS,3).
+  pos(c_NNP,9).
+  pos(c_NNP,8).
+  pos(c_NN,10).
+  pos(c_NN,1).
+  pos(c_IN,7).
+  pos(c_IN,4).
+  pos(c_CD,5).
+  last(10).
+  head(root,1).
+  head(9,8).
+  head(7,10).
+  head(6,7).
+  head(5,6).
+  head(4,5).
+  head(3,4).
+  head(10,9).
+  head(1,3).
+  head(1,2).
+  form(9,"volcano").
+  form(8,"Indonesia").
+  form(7,"by").
+  form(6,"killed").
+  form(5,"-255986").
+  form(4,"among").
+  form(3,"Schoolchildren").
+  form(2,":").
+  form(10,"eruption").
+  form(1,"Indonesia").
+  first(1).
+}).

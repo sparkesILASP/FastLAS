@@ -1,0 +1,70 @@
+#be(id_166,
+	[
+	 5,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(8).
+  true_split(7).
+  true_split(3).
+  true_split(12).
+  true_split(11).
+  possible_split((1 .. 12)).
+  test_split(3).
+  test_split(2).
+  test_split(1).
+  rel(c_ROOT,3).
+  rel(c_PMOD,7).
+  rel(c_PMOD,11).
+  rel(c_P,12).
+  rel(c_NMOD,6).
+  rel(c_NMOD,5).
+  rel(c_NMOD,4).
+  rel(c_NMOD,2).
+  rel(c_NMOD,10).
+  rel(c_NMOD,1).
+  rel(c_MNR,9).
+  rel(c_APPO,8).
+  pos(c_p,12).
+  pos(c_VBG,8).
+  pos(c_NNS,7).
+  pos(c_NN,6).
+  pos(c_NN,3).
+  pos(c_NN,11).
+  pos(c_JJ,5).
+  pos(c_JJ,2).
+  pos(c_IN,9).
+  pos(c_IN,4).
+  pos(c_DT,10).
+  pos(c_DT,1).
+  last(12).
+  head(root,3).
+  head(9,11).
+  head(8,9).
+  head(7,8).
+  head(7,6).
+  head(7,5).
+  head(4,7).
+  head(3,4).
+  head(3,2).
+  head(3,12).
+  head(3,1).
+  head(11,10).
+  form(9,"by").
+  form(8,"standing").
+  form(7,"legs").
+  form(6,"orange").
+  form(5,"long").
+  form(4,"with").
+  form(3,"bird").
+  form(2,"white").
+  form(12,".").
+  form(11,"lake").
+  form(10,"a").
+  form(1,"A").
+  first(1).
+}).

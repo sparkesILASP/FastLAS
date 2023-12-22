@@ -1,0 +1,63 @@
+#be(id_105,
+	[
+	 3,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(7).
+  true_split(3).
+  true_split(2).
+  possible_split((1 .. 11)).
+  test_split(2).
+  test_split(1).
+  rel(c_SBJ,2).
+  rel(c_ROOT,3).
+  rel(c_PMOD,11).
+  rel(c_OBJ,7).
+  rel(c_NMOD,9).
+  rel(c_NMOD,8).
+  rel(c_NMOD,6).
+  rel(c_NMOD,5).
+  rel(c_NMOD,4).
+  rel(c_NMOD,10).
+  rel(c_NMOD,1).
+  pos(c_VBZ,3).
+  pos(c_NNS,11).
+  pos(c_NN,7).
+  pos(c_NN,2).
+  pos(c_JJ,6).
+  pos(c_JJ,5).
+  pos(c_IN,8).
+  pos(c_DT,9).
+  pos(c_DT,4).
+  pos(c_DT,1).
+  pos(c_CD,10).
+  last(11).
+  head(root,3).
+  head(8,11).
+  head(7,8).
+  head(7,6).
+  head(7,5).
+  head(7,4).
+  head(3,7).
+  head(3,2).
+  head(2,1).
+  head(11,9).
+  head(11,10).
+  form(9,"any").
+  form(8,"between").
+  form(7,"state").
+  form(6,"electrical").
+  form(5,"same").
+  form(4,"the").
+  form(3,"has").
+  form(2,"voltage").
+  form(11,"terminals.").
+  form(10,"two").
+  form(1,"The").
+  first(1).
+}).

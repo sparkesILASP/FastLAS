@@ -1,0 +1,69 @@
+#be(id_112,
+	[
+	 4,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(9).
+  true_split(8).
+  true_split(4).
+  true_split(3).
+  possible_split((1 .. 12)).
+  test_split(3).
+  test_split(2).
+  test_split(1).
+  rel(c_SBJ,8).
+  rel(c_SBJ,3).
+  rel(c_ROOT,4).
+  rel(c_PMOD,6).
+  rel(c_P,7).
+  rel(c_P,11).
+  rel(c_OBJ,12).
+  rel(c_NMOD,2).
+  rel(c_NMOD,1).
+  rel(c_COORD,9).
+  rel(c_ADV,5).
+  rel(c_ADV,10).
+  pos(c_p,11).
+  pos(c_c,7).
+  pos(c_VBZ,9).
+  pos(c_VBZ,4).
+  pos(c_RB,10).
+  pos(c_NNP,12).
+  pos(c_NN,8).
+  pos(c_NN,6).
+  pos(c_NN,3).
+  pos(c_NN,2).
+  pos(c_NN,1).
+  pos(c_IN,5).
+  last(12).
+  head(root,4).
+  head(9,8).
+  head(9,10).
+  head(5,6).
+  head(4,9).
+  head(4,7).
+  head(4,5).
+  head(4,3).
+  head(4,12).
+  head(4,11).
+  head(3,2).
+  head(2,1).
+  form(9,"batters").
+  form(8,"rain").
+  form(7,",").
+  form(6,"wind").
+  form(5,"as").
+  form(4,"rises").
+  form(3,"toll").
+  form(2,"death").
+  form(12,"Europe").
+  form(11,".").
+  form(10,"north").
+  form(1,"Storm").
+  first(1).
+}).

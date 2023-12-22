@@ -1,0 +1,66 @@
+#be(id_79,
+	[
+	 6,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(9).
+  true_split(8).
+  true_split(6).
+  true_split(5).
+  true_split(3).
+  true_split(2).
+  possible_split((1 .. 11)).
+  test_split(2).
+  test_split(1).
+  rel(c_SBJ,8).
+  rel(c_SBJ,2).
+  rel(c_ROOT,9).
+  rel(c_PMOD,5).
+  rel(c_PMOD,11).
+  rel(c_P,6).
+  rel(c_OBJ,3).
+  rel(c_NMOD,7).
+  rel(c_NAME,1).
+  rel(c_LOC,10).
+  rel(c_ADV,4).
+  pos(c_c,6).
+  pos(c_VBZ,9).
+  pos(c_VBD,3).
+  pos(c_TO,4).
+  pos(c_NNP,2).
+  pos(c_NNP,11).
+  pos(c_NNP,1).
+  pos(c_NN,8).
+  pos(c_NN,7).
+  pos(c_NN,5).
+  pos(c_IN,10).
+  last(11).
+  head(root,9).
+  head(9,8).
+  head(9,6).
+  head(9,3).
+  head(9,10).
+  head(8,7).
+  head(4,5).
+  head(3,4).
+  head(3,2).
+  head(2,1).
+  head(10,11).
+  form(9,"continues").
+  form(8,"crisis").
+  form(7,"power").
+  form(6,",").
+  form(5,"hospital").
+  form(4,"to").
+  form(3,"shifted").
+  form(2,"Reddy").
+  form(11,"Seemandhra").
+  form(10,"in").
+  form(1,"Jagan").
+  first(1).
+}).

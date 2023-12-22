@@ -1,0 +1,69 @@
+#be(id_130,
+	[
+	 5,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(8).
+  true_split(6).
+  true_split(4).
+  true_split(3).
+  true_split(2).
+  possible_split((1 .. 12)).
+  test_split(2).
+  test_split(1).
+  rel(c_VC,8).
+  rel(c_SUB,7).
+  rel(c_SBJ,6).
+  rel(c_SBJ,2).
+  rel(c_ROOT,3).
+  rel(c_OBJ,4).
+  rel(c_OBJ,12).
+  rel(c_NMOD,9).
+  rel(c_NMOD,11).
+  rel(c_NMOD,10).
+  rel(c_NAME,5).
+  rel(c_NAME,1).
+  pos(c_VBZ,7).
+  pos(c_VBZ,3).
+  pos(c_VBN,8).
+  pos(c_NNP,6).
+  pos(c_NNP,5).
+  pos(c_NNP,2).
+  pos(c_NNP,1).
+  pos(c_NN,12).
+  pos(c_JJ,9).
+  pos(c_JJ,11).
+  pos(c_JJ,10).
+  pos(c_IN,4).
+  last(12).
+  head(root,3).
+  head(8,12).
+  head(7,8).
+  head(7,6).
+  head(6,5).
+  head(4,7).
+  head(3,4).
+  head(3,2).
+  head(2,1).
+  head(12,9).
+  head(12,11).
+  head(12,10).
+  form(9,"controversial").
+  form(8,"conducted").
+  form(7,"has").
+  form(6,"Korea").
+  form(5,"North").
+  form(4,"that").
+  form(3,"confirms").
+  form(2,"Korea").
+  form(12,"test").
+  form(11,"nuclear").
+  form(10,"third").
+  form(1,"South").
+  first(1).
+}).

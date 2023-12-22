@@ -1,0 +1,79 @@
+#be(id_287,
+	[
+	 2,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(9).
+  true_split(7).
+  possible_split((1 .. 14)).
+  test_split(7).
+  test_split(6).
+  test_split(5).
+  test_split(4).
+  test_split(3).
+  test_split(2).
+  test_split(1).
+  rel(c_VC,9).
+  rel(c_SBJ,4).
+  rel(c_ROOT,8).
+  rel(c_PMOD,14).
+  rel(c_NMOD,6).
+  rel(c_NMOD,3).
+  rel(c_NMOD,2).
+  rel(c_NMOD,13).
+  rel(c_NMOD,12).
+  rel(c_NMOD,11).
+  rel(c_NMOD,1).
+  rel(c_COORD,5).
+  rel(c_CONJ,7).
+  rel(c_ADV,10).
+  pos(c_VBP,8).
+  pos(c_VBN,9).
+  pos(c_TO,10).
+  pos(c_NN,3).
+  pos(c_NN,14).
+  pos(c_NN,13).
+  pos(c_NN,1).
+  pos(c_JJ,6).
+  pos(c_JJ,12).
+  pos(c_DT,11).
+  pos(c_CD,7).
+  pos(c_CD,4).
+  pos(c_CD,2).
+  pos(c_CC,5).
+  last(14).
+  head(root,8).
+  head(9,10).
+  head(8,9).
+  head(8,4).
+  head(7,6).
+  head(5,7).
+  head(4,5).
+  head(4,3).
+  head(3,2).
+  head(3,1).
+  head(14,13).
+  head(14,12).
+  head(14,11).
+  head(10,14).
+  form(9,"connected").
+  form(8,"are").
+  form(7,"-455994").
+  form(6,"terminal").
+  form(5,"and").
+  form(4,"-455995,").
+  form(3,"terminal").
+  form(2,"-455996,").
+  form(14,"terminal").
+  form(13,"battery").
+  form(12,"positive").
+  form(11,"the").
+  form(10,"to").
+  form(1,"terminal").
+  first(1).
+}).

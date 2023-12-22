@@ -1,0 +1,70 @@
+#be(id_100,
+	[
+	 5,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(8).
+  true_split(7).
+  true_split(6).
+  true_split(4).
+  true_split(3).
+  possible_split((1 .. 12)).
+  test_split(3).
+  test_split(2).
+  test_split(1).
+  rel(c_TMP,1).
+  rel(c_SBJ,6).
+  rel(c_ROOT,11).
+  rel(c_PMOD,3).
+  rel(c_PMOD,2).
+  rel(c_PMOD,10).
+  rel(c_P,7).
+  rel(c_P,4).
+  rel(c_OBJ,12).
+  rel(c_NMOD,5).
+  rel(c_LOC,9).
+  rel(c_APPO,8).
+  pos(c_c,7).
+  pos(c_c,4).
+  pos(c_VBP,11).
+  pos(c_VBN,8).
+  pos(c_TO,2).
+  pos(c_NNS,6).
+  pos(c_NNP,10).
+  pos(c_NN,12).
+  pos(c_JJ,5).
+  pos(c_IN,9).
+  pos(c_IN,1).
+  pos(c_CD,3).
+  last(12).
+  head(root,11).
+  head(9,10).
+  head(8,9).
+  head(6,8).
+  head(6,7).
+  head(6,5).
+  head(2,3).
+  head(11,6).
+  head(11,4).
+  head(11,12).
+  head(11,1).
+  head(1,2).
+  form(9,"in").
+  form(8,"killed").
+  form(7,",").
+  form(6,"foreigners").
+  form(5,"mostly").
+  form(4,",").
+  form(3,"-464979").
+  form(2,"to").
+  form(12,"attack").
+  form(11,"suicide").
+  form(10,"Kabul").
+  form(1,"Up").
+  first(1).
+}).

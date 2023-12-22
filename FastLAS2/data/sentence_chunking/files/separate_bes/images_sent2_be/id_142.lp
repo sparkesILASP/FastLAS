@@ -1,0 +1,71 @@
+#be(id_142,
+	[
+	 4,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(7).
+  true_split(5).
+  true_split(12).
+  true_split(11).
+  possible_split((1 .. 12)).
+  test_split(5).
+  test_split(4).
+  test_split(3).
+  test_split(2).
+  test_split(1).
+  rel(c_ROOT,2).
+  rel(c_PRT,7).
+  rel(c_PMOD,11).
+  rel(c_P,12).
+  rel(c_NMOD,9).
+  rel(c_NMOD,4).
+  rel(c_NMOD,10).
+  rel(c_NMOD,1).
+  rel(c_COORD,3).
+  rel(c_CONJ,5).
+  rel(c_APPO,6).
+  rel(c_ADV,8).
+  pos(c_p,12).
+  pos(c_VBG,6).
+  pos(c_RP,7).
+  pos(c_PRPd,4).
+  pos(c_NN,5).
+  pos(c_NN,2).
+  pos(c_NN,11).
+  pos(c_JJ,10).
+  pos(c_IN,8).
+  pos(c_DT,9).
+  pos(c_DT,1).
+  pos(c_CC,3).
+  last(12).
+  head(root,2).
+  head(8,11).
+  head(6,8).
+  head(6,7).
+  head(5,4).
+  head(3,5).
+  head(2,6).
+  head(2,3).
+  head(2,12).
+  head(2,1).
+  head(11,9).
+  head(11,10).
+  form(9,"the").
+  form(8,"on").
+  form(7,"down").
+  form(6,"laying").
+  form(5,"bicycle").
+  form(4,"his").
+  form(3,"and").
+  form(2,"man").
+  form(12,".").
+  form(11,"grass").
+  form(10,"green").
+  form(1,"A").
+  first(1).
+}).

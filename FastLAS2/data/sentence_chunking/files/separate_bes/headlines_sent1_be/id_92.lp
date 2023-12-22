@@ -1,0 +1,63 @@
+#be(id_92,
+	[
+	 4,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(7).
+  true_split(5).
+  true_split(2).
+  true_split(1).
+  possible_split((1 .. 11)).
+  test_split(1).
+  rel(c_SUFFIX,6).
+  rel(c_SBJ,1).
+  rel(c_ROOT,2).
+  rel(c_PMOD,7).
+  rel(c_PMOD,11).
+  rel(c_NMOD,9).
+  rel(c_NMOD,5).
+  rel(c_NMOD,4).
+  rel(c_NMOD,10).
+  rel(c_LOC,8).
+  rel(c_ADV,3).
+  pos(c_VBZ,2).
+  pos(c_POS,6).
+  pos(c_NNP,4).
+  pos(c_NN,7).
+  pos(c_NN,5).
+  pos(c_NN,11).
+  pos(c_NN,10).
+  pos(c_NN,1).
+  pos(c_JJ,9).
+  pos(c_IN,8).
+  pos(c_IN,3).
+  last(11).
+  head(root,2).
+  head(8,11).
+  head(7,5).
+  head(5,6).
+  head(5,4).
+  head(3,7).
+  head(2,8).
+  head(2,3).
+  head(2,1).
+  head(11,9).
+  head(11,10).
+  form(9,"new").
+  form(8,"amid").
+  form(7,"race").
+  form(6,"'s").
+  form(5,"mayor").
+  form(4,"NYC").
+  form(3,"in").
+  form(2,"stays").
+  form(11,"scandal").
+  form(10,"sexting").
+  form(1,"Weiner").
+  first(1).
+}).

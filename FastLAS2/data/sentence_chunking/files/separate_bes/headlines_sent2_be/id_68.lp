@@ -1,0 +1,64 @@
+#be(id_68,
+	[
+	 5,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(9).
+  true_split(8).
+  true_split(4).
+  true_split(2).
+  true_split(1).
+  possible_split((1 .. 11)).
+  test_split(1).
+  rel(c_SBJ,4).
+  rel(c_ROOT,1).
+  rel(c_PMOD,8).
+  rel(c_PMOD,11).
+  rel(c_P,2).
+  rel(c_NMOD,9).
+  rel(c_NMOD,7).
+  rel(c_NMOD,5).
+  rel(c_NMOD,3).
+  rel(c_NAME,6).
+  rel(c_DIR,10).
+  pos(c_c,2).
+  pos(c_VBZ,9).
+  pos(c_TO,10).
+  pos(c_NNP,7).
+  pos(c_NNP,6).
+  pos(c_NN,8).
+  pos(c_NN,4).
+  pos(c_NN,3).
+  pos(c_NN,1).
+  pos(c_IN,5).
+  pos(c_CD,11).
+  last(11).
+  head(root,1).
+  head(9,4).
+  head(9,10).
+  head(8,7).
+  head(7,6).
+  head(5,8).
+  head(4,5).
+  head(4,3).
+  head(10,11).
+  head(1,9).
+  head(1,2).
+  form(9,"rises").
+  form(8,"fire").
+  form(7,"China").
+  form(6,"NE").
+  form(5,"from").
+  form(4,"toll").
+  form(3,"Death").
+  form(2,":").
+  form(11,"-267888").
+  form(10,"to").
+  form(1,"Urgent").
+  first(1).
+}).

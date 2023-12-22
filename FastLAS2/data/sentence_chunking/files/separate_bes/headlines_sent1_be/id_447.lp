@@ -1,0 +1,46 @@
+#be(id_447,
+	[
+	 3,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(4).
+  true_split(3).
+  true_split(1).
+  possible_split((1 .. 7)).
+  test_split(1).
+  rel(c_SBJ,1).
+  rel(c_ROOT,2).
+  rel(c_PMOD,7).
+  rel(c_PMOD,4).
+  rel(c_NMOD,6).
+  rel(c_LOC,5).
+  rel(c_ADV,3).
+  pos(c_VBZ,2).
+  pos(c_NNS,7).
+  pos(c_NNP,1).
+  pos(c_NN,4).
+  pos(c_JJ,6).
+  pos(c_IN,5).
+  pos(c_IN,3).
+  last(7).
+  head(root,2).
+  head(7,6).
+  head(5,7).
+  head(3,4).
+  head(2,5).
+  head(2,3).
+  head(2,1).
+  form(7,"protests").
+  form(6,"violent").
+  form(5,"amid").
+  form(4,"president").
+  form(3,"in").
+  form(2,"swears").
+  form(1,"Mexico").
+  first(1).
+}).

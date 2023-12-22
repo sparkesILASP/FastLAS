@@ -1,0 +1,77 @@
+#be(id_227,
+	[
+	 4,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(9).
+  true_split(3).
+  true_split(14).
+  true_split(13).
+  possible_split((1 .. 14)).
+  test_split(3).
+  test_split(2).
+  test_split(1).
+  rel(c_ROOT,3).
+  rel(c_PMOD,5).
+  rel(c_PMOD,13).
+  rel(c_P,6).
+  rel(c_P,14).
+  rel(c_NMOD,4).
+  rel(c_NMOD,2).
+  rel(c_NMOD,12).
+  rel(c_NMOD,11).
+  rel(c_NMOD,1).
+  rel(c_LOC,10).
+  rel(c_COORD,8).
+  rel(c_COORD,7).
+  rel(c_CONJ,9).
+  pos(c_p,14).
+  pos(c_c,6).
+  pos(c_VBG,2).
+  pos(c_NN,9).
+  pos(c_NN,7).
+  pos(c_NN,5).
+  pos(c_NN,3).
+  pos(c_NN,13).
+  pos(c_JJ,12).
+  pos(c_IN,4).
+  pos(c_IN,10).
+  pos(c_DT,11).
+  pos(c_DT,1).
+  pos(c_CC,8).
+  last(14).
+  head(root,3).
+  head(8,9).
+  head(7,8).
+  head(5,7).
+  head(5,6).
+  head(4,5).
+  head(3,4).
+  head(3,2).
+  head(3,14).
+  head(3,10).
+  head(3,1).
+  head(13,12).
+  head(13,11).
+  head(10,13).
+  form(9,"sofa").
+  form(8,"and").
+  form(7,"chair").
+  form(6,",").
+  form(5,"table").
+  form(4,"with").
+  form(3,"room").
+  form(2,"living").
+  form(14,".").
+  form(13,"palm").
+  form(12,"large").
+  form(11,"a").
+  form(10,"alongside").
+  form(1,"A").
+  first(1).
+}).

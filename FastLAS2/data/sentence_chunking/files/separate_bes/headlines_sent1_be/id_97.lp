@@ -1,0 +1,68 @@
+#be(id_97,
+	[
+	 4,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(8).
+  true_split(7).
+  true_split(4).
+  true_split(2).
+  possible_split((1 .. 12)).
+  test_split(2).
+  test_split(1).
+  rel(c_SBJ,2).
+  rel(c_ROOT,3).
+  rel(c_PMOD,5).
+  rel(c_PMOD,12).
+  rel(c_P,9).
+  rel(c_P,11).
+  rel(c_NMOD,8).
+  rel(c_NMOD,7).
+  rel(c_NMOD,6).
+  rel(c_NMOD,10).
+  rel(c_NAME,1).
+  rel(c_ADV,4).
+  pos(c_qq,9).
+  pos(c_qq,11).
+  pos(c_VBP,3).
+  pos(c_NNS,8).
+  pos(c_NNP,2).
+  pos(c_NNP,1).
+  pos(c_NN,7).
+  pos(c_NN,12).
+  pos(c_NN,10).
+  pos(c_JJ,6).
+  pos(c_IN,5).
+  pos(c_IN,4).
+  last(12).
+  head(root,3).
+  head(8,7).
+  head(8,6).
+  head(5,12).
+  head(4,5).
+  head(3,4).
+  head(3,2).
+  head(2,1).
+  head(12,8).
+  head(12,10).
+  head(10,9).
+  head(10,11).
+  form(9,"`").
+  form(8,"blasts").
+  form(7,"term").
+  form(6,"seventh").
+  form(5,"for").
+  form(4,"in").
+  form(3,"sworn").
+  form(2,"Mugabe").
+  form(12,"West").
+  form(11,"'").
+  form(10,"vile").
+  form(1,"Defiant").
+  first(1).
+}).

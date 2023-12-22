@@ -1,0 +1,70 @@
+#be(id_113,
+	[
+	 7,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(8).
+  true_split(7).
+  true_split(5).
+  true_split(4).
+  true_split(3).
+  true_split(10).
+  true_split(1).
+  possible_split((1 .. 12)).
+  test_split(1).
+  rel(c_VC,7).
+  rel(c_SUFFIX,2).
+  rel(c_SUB,12).
+  rel(c_SBJ,5).
+  rel(c_SBJ,3).
+  rel(c_ROOT,4).
+  rel(c_PMOD,10).
+  rel(c_OBJ,8).
+  rel(c_OBJ,6).
+  rel(c_NMOD,1).
+  rel(c_DTV,9).
+  rel(c_ADV,11).
+  pos(c_VBZ,4).
+  pos(c_VBN,12).
+  pos(c_VB,7).
+  pos(c_TO,9).
+  pos(c_PRP,5).
+  pos(c_POS,2).
+  pos(c_NNP,3).
+  pos(c_NNP,10).
+  pos(c_NNP,1).
+  pos(c_NN,8).
+  pos(c_MD,6).
+  pos(c_IN,11).
+  last(12).
+  head(root,4).
+  head(9,10).
+  head(7,9).
+  head(7,8).
+  head(7,11).
+  head(6,7).
+  head(6,5).
+  head(4,6).
+  head(4,3).
+  head(3,1).
+  head(11,12).
+  head(1,2).
+  form(9,"to").
+  form(8,"asylum").
+  form(7,"grant").
+  form(6,"would").
+  form(5,"he").
+  form(4,"says").
+  form(3,"Morales").
+  form(2,"'s").
+  form(12,"asked").
+  form(11,"if").
+  form(10,"Snowden").
+  form(1,"Bolivia").
+  first(1).
+}).

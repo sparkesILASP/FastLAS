@@ -1,0 +1,79 @@
+#be(id_113,
+	[
+	 8,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(8).
+  true_split(5).
+  true_split(3).
+  true_split(2).
+  true_split(14).
+  true_split(13).
+  true_split(12).
+  true_split(1).
+  possible_split((1 .. 14)).
+  test_split(1).
+  rel(c_SBJ,1).
+  rel(c_ROOT,2).
+  rel(c_PMOD,12).
+  rel(c_P,13).
+  rel(c_OBJ,8).
+  rel(c_OBJ,3).
+  rel(c_OBJ,14).
+  rel(c_NMOD,7).
+  rel(c_NMOD,6).
+  rel(c_NMOD,4).
+  rel(c_NMOD,11).
+  rel(c_NMOD,10).
+  rel(c_LOC,9).
+  rel(c_IM,5).
+  pos(c_c,13).
+  pos(c_VBZ,2).
+  pos(c_VB,5).
+  pos(c_TO,4).
+  pos(c_NNP,1).
+  pos(c_NN,8).
+  pos(c_NN,7).
+  pos(c_NN,3).
+  pos(c_NN,14).
+  pos(c_NN,12).
+  pos(c_NN,11).
+  pos(c_JJ,6).
+  pos(c_JJ,10).
+  pos(c_IN,9).
+  last(14).
+  head(root,2).
+  head(9,12).
+  head(8,7).
+  head(8,6).
+  head(5,9).
+  head(5,8).
+  head(4,5).
+  head(3,4).
+  head(2,3).
+  head(2,14).
+  head(2,13).
+  head(2,1).
+  head(12,11).
+  head(12,10).
+  form(9,"in").
+  form(8,"net").
+  form(7,"safety").
+  form(6,"social").
+  form(5,"cut").
+  form(4,"to").
+  form(3,"offer").
+  form(2,"renews").
+  form(14,"aide").
+  form(13,":").
+  form(12,"deal").
+  form(11,"budget").
+  form(10,"big").
+  form(1,"Obama").
+  first(1).
+}).

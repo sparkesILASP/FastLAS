@@ -1,0 +1,60 @@
+#be(id_591,
+	[
+	 6,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(9).
+  true_split(8).
+  true_split(7).
+  true_split(6).
+  true_split(5).
+  true_split(4).
+  possible_split((1 .. 9)).
+  test_split(4).
+  test_split(3).
+  test_split(2).
+  test_split(1).
+  rel(c_ROOT,8).
+  rel(c_P,9).
+  rel(c_P,7).
+  rel(c_P,5).
+  rel(c_NMOD,6).
+  rel(c_NMOD,4).
+  rel(c_NAME,3).
+  rel(c_NAME,2).
+  rel(c_NAME,1).
+  pos(c_qq,9).
+  pos(c_qq,5).
+  pos(c_c,7).
+  pos(c_NNP,8).
+  pos(c_NNP,6).
+  pos(c_NNP,4).
+  pos(c_NNP,3).
+  pos(c_NNP,2).
+  pos(c_NNP,1).
+  last(9).
+  head(root,8).
+  head(8,9).
+  head(8,7).
+  head(8,6).
+  head(8,5).
+  head(8,4).
+  head(4,3).
+  head(4,2).
+  head(4,1).
+  form(9,"'").
+  form(8,"Poisoned").
+  form(7,",").
+  form(6,"Beaten").
+  form(5,"`").
+  form(4,"Suspect").
+  form(3,"Rape").
+  form(2,"Gang").
+  form(1,"Delhi").
+  first(1).
+}).

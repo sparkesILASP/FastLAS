@@ -1,0 +1,64 @@
+#be(id_107,
+	[
+	 4,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(5).
+  true_split(4).
+  true_split(3).
+  true_split(2).
+  possible_split((1 .. 11)).
+  test_split(2).
+  test_split(1).
+  rel(c_TMP,1).
+  rel(c_SBJ,7).
+  rel(c_SBJ,4).
+  rel(c_ROOT,5).
+  rel(c_PMOD,2).
+  rel(c_P,6).
+  rel(c_P,3).
+  rel(c_OBJ,8).
+  rel(c_OBJ,11).
+  rel(c_NMOD,9).
+  rel(c_NMOD,10).
+  pos(c_qq,6).
+  pos(c_qq,10).
+  pos(c_c,3).
+  pos(c_VBZ,8).
+  pos(c_VBD,5).
+  pos(c_NNS,4).
+  pos(c_NNP,2).
+  pos(c_NN,11).
+  pos(c_IN,1).
+  pos(c_DT,9).
+  pos(c_DT,7).
+  last(11).
+  head(root,5).
+  head(8,7).
+  head(8,11).
+  head(5,8).
+  head(5,6).
+  head(5,4).
+  head(5,3).
+  head(5,1).
+  head(11,9).
+  head(11,10).
+  head(1,2).
+  form(9,"more").
+  form(8,"is").
+  form(7,"less").
+  form(6,"`").
+  form(5,"used").
+  form(4,"attackers").
+  form(3,",").
+  form(2,"Kenya").
+  form(11,"strategy").
+  form(10,"'").
+  form(1,"In").
+  first(1).
+}).

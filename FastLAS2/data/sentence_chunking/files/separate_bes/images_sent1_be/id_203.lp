@@ -1,0 +1,76 @@
+#be(id_203,
+	[
+	 5,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(9).
+  true_split(8).
+  true_split(5).
+  true_split(13).
+  true_split(12).
+  possible_split((1 .. 13)).
+  test_split(5).
+  test_split(4).
+  test_split(3).
+  test_split(2).
+  test_split(1).
+  rel(c_ROOT,5).
+  rel(c_PMOD,8).
+  rel(c_PMOD,12).
+  rel(c_P,13).
+  rel(c_NMOD,7).
+  rel(c_NMOD,6).
+  rel(c_NMOD,2).
+  rel(c_NMOD,11).
+  rel(c_NMOD,1).
+  rel(c_LOC,10).
+  rel(c_COORD,3).
+  rel(c_CONJ,4).
+  rel(c_APPO,9).
+  pos(c_p,13).
+  pos(c_VBG,9).
+  pos(c_NN,8).
+  pos(c_NN,5).
+  pos(c_NN,12).
+  pos(c_JJ,4).
+  pos(c_JJ,2).
+  pos(c_IN,6).
+  pos(c_IN,10).
+  pos(c_DT,7).
+  pos(c_DT,11).
+  pos(c_DT,1).
+  pos(c_CC,3).
+  last(13).
+  head(root,5).
+  head(9,10).
+  head(8,9).
+  head(8,7).
+  head(6,8).
+  head(5,6).
+  head(5,2).
+  head(5,13).
+  head(5,1).
+  head(3,4).
+  head(2,3).
+  head(12,11).
+  head(10,12).
+  form(9,"laying").
+  form(8,"cat").
+  form(7,"a").
+  form(6,"of").
+  form(5,"image").
+  form(4,"white").
+  form(3,"and").
+  form(2,"black").
+  form(13,".").
+  form(12,"rug").
+  form(11,"a").
+  form(10,"on").
+  form(1,"A").
+  first(1).
+}).

@@ -1,0 +1,64 @@
+#be(id_44,
+	[
+	 9,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(9).
+  true_split(8).
+  true_split(7).
+  true_split(6).
+  true_split(5).
+  true_split(4).
+  true_split(2).
+  true_split(10).
+  true_split(1).
+  possible_split((1 .. 10)).
+  test_split(1).
+  rel(c_SBJ,1).
+  rel(c_ROOT,2).
+  rel(c_PMOD,4).
+  rel(c_P,5).
+  rel(c_OBJ,7).
+  rel(c_OBJ,10).
+  rel(c_COORD,8).
+  rel(c_CONJ,9).
+  rel(c_ADV,6).
+  rel(c_ADV,3).
+  pos(c_c,5).
+  pos(c_VBP,2).
+  pos(c_VBG,9).
+  pos(c_VBG,6).
+  pos(c_NNS,10).
+  pos(c_NNS,1).
+  pos(c_NNP,4).
+  pos(c_IN,3).
+  pos(c_CD,7).
+  pos(c_CC,8).
+  last(10).
+  head(root,2).
+  head(9,10).
+  head(8,9).
+  head(6,8).
+  head(6,7).
+  head(3,4).
+  head(2,6).
+  head(2,5).
+  head(2,3).
+  head(2,1).
+  form(9,"devastating").
+  form(8,"and").
+  form(7,"-205994").
+  form(6,"killing").
+  form(5,",").
+  form(4,"Midwest").
+  form(3,"through").
+  form(2,"rip").
+  form(10,"neighborhoods").
+  form(1,"Tornadoes").
+  first(1).
+}).

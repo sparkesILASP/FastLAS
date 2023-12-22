@@ -1,0 +1,55 @@
+#be(id_650,
+	[
+	 4,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(7).
+  true_split(6).
+  true_split(5).
+  true_split(1).
+  possible_split((1 .. 9)).
+  test_split(1).
+  rel(c_ROOT,1).
+  rel(c_PMOD,9).
+  rel(c_PMOD,6).
+  rel(c_NMOD,5).
+  rel(c_NMOD,4).
+  rel(c_NAME,3).
+  rel(c_LOC,2).
+  rel(c_APPO,7).
+  rel(c_ADV,8).
+  pos(c_VBN,7).
+  pos(c_VBN,1).
+  pos(c_VBG,5).
+  pos(c_NNP,4).
+  pos(c_NNP,3).
+  pos(c_NN,9).
+  pos(c_NN,6).
+  pos(c_IN,8).
+  pos(c_IN,2).
+  last(9).
+  head(root,1).
+  head(8,9).
+  head(7,8).
+  head(6,7).
+  head(6,5).
+  head(6,4).
+  head(4,3).
+  head(2,6).
+  head(1,2).
+  form(9,"film").
+  form(8,"on").
+  form(7,"captured").
+  form(6,"suspect").
+  form(5,"bombing").
+  form(4,"Marathon").
+  form(3,"Boston").
+  form(2,"on").
+  form(1,"Raid").
+  first(1).
+}).

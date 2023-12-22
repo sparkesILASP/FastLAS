@@ -1,0 +1,66 @@
+#be(id_97,
+	[
+	 4,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(8).
+  true_split(7).
+  true_split(6).
+  true_split(4).
+  possible_split((1 .. 11)).
+  test_split(4).
+  test_split(3).
+  test_split(2).
+  test_split(1).
+  rel(c_SBJ,4).
+  rel(c_ROOT,8).
+  rel(c_PMOD,6).
+  rel(c_P,7).
+  rel(c_OBJ,11).
+  rel(c_NMOD,9).
+  rel(c_NMOD,5).
+  rel(c_NMOD,3).
+  rel(c_NMOD,2).
+  rel(c_NMOD,10).
+  rel(c_NMOD,1).
+  pos(c_c,7).
+  pos(c_VBZ,8).
+  pos(c_NNS,4).
+  pos(c_NNS,11).
+  pos(c_NNP,6).
+  pos(c_NNP,1).
+  pos(c_NN,9).
+  pos(c_NN,3).
+  pos(c_NN,2).
+  pos(c_IN,5).
+  pos(c_CD,10).
+  last(11).
+  head(root,8).
+  head(8,4).
+  head(8,11).
+  head(5,6).
+  head(4,7).
+  head(4,5).
+  head(4,3).
+  head(4,1).
+  head(3,2).
+  head(11,10).
+  head(10,9).
+  form(9,"iPhone").
+  form(8,"bans").
+  form(7,",").
+  form(6,"Samsung").
+  form(5,"for").
+  form(4,"rules").
+  form(3,"agency").
+  form(2,"trade").
+  form(11,"imports").
+  form(10,"-422996").
+  form(1,"U.S.").
+  first(1).
+}).

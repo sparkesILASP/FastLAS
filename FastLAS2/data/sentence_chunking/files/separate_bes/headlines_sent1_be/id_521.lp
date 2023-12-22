@@ -1,0 +1,49 @@
+#be(id_521,
+	[
+	 2,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(2).
+  true_split(1).
+  possible_split((1 .. 8)).
+  test_split(1).
+  rel(c_ROOT,8).
+  rel(c_POSTHON,3).
+  rel(c_P,4).
+  rel(c_NMOD,7).
+  rel(c_NMOD,6).
+  rel(c_NMOD,5).
+  rel(c_NMOD,2).
+  rel(c_NAME,1).
+  pos(c_c,4).
+  pos(c_NNS,8).
+  pos(c_NNS,7).
+  pos(c_NNS,2).
+  pos(c_NNP,5).
+  pos(c_NNP,3).
+  pos(c_NNP,1).
+  pos(c_NN,6).
+  last(8).
+  head(root,8).
+  head(8,7).
+  head(7,6).
+  head(7,5).
+  head(7,4).
+  head(7,2).
+  head(2,3).
+  head(2,1).
+  form(8,"claims").
+  form(7,"arms").
+  form(6,"chemical").
+  form(5,"UK").
+  form(4,",").
+  form(3,"US").
+  form(2,"rejects").
+  form(1,"Syria").
+  first(1).
+}).

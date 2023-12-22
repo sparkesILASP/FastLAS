@@ -1,0 +1,69 @@
+#be(id_150,
+	[
+	 5,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(8).
+  true_split(7).
+  true_split(2).
+  true_split(12).
+  true_split(11).
+  possible_split((1 .. 12)).
+  test_split(2).
+  test_split(1).
+  rel(c_ROOT,2).
+  rel(c_PMOD,7).
+  rel(c_PMOD,5).
+  rel(c_PMOD,4).
+  rel(c_PMOD,11).
+  rel(c_P,12).
+  rel(c_NMOD,6).
+  rel(c_NMOD,3).
+  rel(c_NMOD,10).
+  rel(c_NMOD,1).
+  rel(c_APPO,8).
+  rel(c_ADV,9).
+  pos(c_p,12).
+  pos(c_VBG,8).
+  pos(c_TO,4).
+  pos(c_NN,7).
+  pos(c_NN,2).
+  pos(c_NN,11).
+  pos(c_IN,9).
+  pos(c_IN,5).
+  pos(c_IN,3).
+  pos(c_DT,6).
+  pos(c_DT,10).
+  pos(c_CD,1).
+  last(12).
+  head(root,2).
+  head(9,11).
+  head(8,9).
+  head(7,8).
+  head(7,6).
+  head(5,7).
+  head(4,5).
+  head(3,4).
+  head(2,3).
+  head(2,12).
+  head(2,1).
+  head(11,10).
+  form(9,"at").
+  form(8,"looking").
+  form(7,"cliff").
+  form(6,"a").
+  form(5,"of").
+  form(4,"to").
+  form(3,"on").
+  form(2,"sheep").
+  form(12,".").
+  form(11,"camera").
+  form(10,"the").
+  form(1,"Two").
+  first(1).
+}).

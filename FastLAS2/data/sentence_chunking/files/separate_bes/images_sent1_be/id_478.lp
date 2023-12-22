@@ -1,0 +1,56 @@
+#be(id_478,
+	[
+	 5,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(9).
+  true_split(8).
+  true_split(5).
+  true_split(4).
+  true_split(1).
+  possible_split((1 .. 9)).
+  test_split(1).
+  rel(c_SBJ,1).
+  rel(c_ROOT,5).
+  rel(c_PMOD,8).
+  rel(c_PMOD,4).
+  rel(c_P,9).
+  rel(c_NMOD,7).
+  rel(c_NMOD,3).
+  rel(c_NMOD,2).
+  rel(c_LOC,6).
+  pos(c_p,9).
+  pos(c_VBG,5).
+  pos(c_NN,8).
+  pos(c_NN,4).
+  pos(c_NN,1).
+  pos(c_JJ,3).
+  pos(c_IN,6).
+  pos(c_IN,2).
+  pos(c_DT,7).
+  last(9).
+  head(root,5).
+  head(8,7).
+  head(6,8).
+  head(5,9).
+  head(5,6).
+  head(5,1).
+  head(4,3).
+  head(2,4).
+  head(1,2).
+  form(9,".").
+  form(8,"table").
+  form(7,"a").
+  form(6,"around").
+  form(5,"sitting").
+  form(4,"people").
+  form(3,"elderly").
+  form(2,"of").
+  form(1,"Group").
+  first(1).
+}).

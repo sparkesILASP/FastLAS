@@ -1,0 +1,50 @@
+#be(id_436,
+	[
+	 6,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(7).
+  true_split(6).
+  true_split(5).
+  true_split(4).
+  true_split(2).
+  true_split(1).
+  possible_split((1 .. 7)).
+  test_split(2).
+  test_split(1).
+  rel(c_SBJ,1).
+  rel(c_ROOT,2).
+  rel(c_P,5).
+  rel(c_OBJ,7).
+  rel(c_OBJ,4).
+  rel(c_NAME,3).
+  rel(c_ADV,6).
+  pos(c_c,5).
+  pos(c_VBZ,6).
+  pos(c_VBZ,2).
+  pos(c_NNS,7).
+  pos(c_NNP,4).
+  pos(c_NNP,3).
+  pos(c_NNP,1).
+  last(7).
+  head(root,2).
+  head(6,7).
+  head(4,3).
+  head(2,6).
+  head(2,5).
+  head(2,4).
+  head(2,1).
+  form(7,"roads").
+  form(6,"closes").
+  form(5,",").
+  form(4,"Northeast").
+  form(3,"US").
+  form(2,"wallops").
+  form(1,"Blizzard").
+  first(1).
+}).

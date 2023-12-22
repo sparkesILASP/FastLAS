@@ -1,0 +1,80 @@
+#be(id_118,
+	[
+	 5,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(4).
+  true_split(3).
+  true_split(13).
+  true_split(10).
+  true_split(1).
+  possible_split((1 .. 15)).
+  test_split(1).
+  rel(c_TMP,14).
+  rel(c_SUFFIX,2).
+  rel(c_SBJ,5).
+  rel(c_ROOT,7).
+  rel(c_PMOD,15).
+  rel(c_PMOD,12).
+  rel(c_P,6).
+  rel(c_OBJ,10).
+  rel(c_NMOD,13).
+  rel(c_NMOD,1).
+  rel(c_NAME,9).
+  rel(c_NAME,8).
+  rel(c_NAME,4).
+  rel(c_NAME,3).
+  rel(c_ADV,11).
+  pos(c_d,12).
+  pos(c_c,6).
+  pos(c_VBD,7).
+  pos(c_POS,2).
+  pos(c_NNP,9).
+  pos(c_NNP,8).
+  pos(c_NNP,5).
+  pos(c_NNP,4).
+  pos(c_NNP,3).
+  pos(c_NNP,15).
+  pos(c_NNP,10).
+  pos(c_NNP,1).
+  pos(c_IN,14).
+  pos(c_IN,11).
+  pos(c_CD,13).
+  last(15).
+  head(root,7).
+  head(7,5).
+  head(7,14).
+  head(7,11).
+  head(7,10).
+  head(5,6).
+  head(5,4).
+  head(5,3).
+  head(5,1).
+  head(14,15).
+  head(12,13).
+  head(11,12).
+  head(10,9).
+  head(10,8).
+  head(1,2).
+  form(9,"Specialist").
+  form(8,"Firewall").
+  form(7,"Networked").
+  form(6,",").
+  form(5,"Cloud-Based").
+  form(4,"Buys").
+  form(3,"McAfee").
+  form(2,"'s").
+  form(15,"Cash").
+  form(14,"In").
+  form(13,"-498611M").
+  form(12,"$").
+  form(11,"For").
+  form(10,"Stonesoft").
+  form(1,"Intel").
+  first(1).
+}).

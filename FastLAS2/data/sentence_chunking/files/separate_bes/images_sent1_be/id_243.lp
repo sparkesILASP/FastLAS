@@ -1,0 +1,84 @@
+#be(id_243,
+	[
+	 5,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(9).
+  true_split(6).
+  true_split(5).
+  true_split(15).
+  true_split(14).
+  possible_split((1 .. 15)).
+  test_split(5).
+  test_split(4).
+  test_split(3).
+  test_split(2).
+  test_split(1).
+  rel(c_ROOT,2).
+  rel(c_PMOD,9).
+  rel(c_PMOD,14).
+  rel(c_P,15).
+  rel(c_NMOD,8).
+  rel(c_NMOD,4).
+  rel(c_NMOD,13).
+  rel(c_NMOD,12).
+  rel(c_NMOD,11).
+  rel(c_NMOD,1).
+  rel(c_LOC,7).
+  rel(c_LOC,10).
+  rel(c_COORD,3).
+  rel(c_CONJ,5).
+  rel(c_APPO,6).
+  pos(c_p,15).
+  pos(c_VBG,6).
+  pos(c_NN,9).
+  pos(c_NN,5).
+  pos(c_NN,2).
+  pos(c_NN,14).
+  pos(c_NN,13).
+  pos(c_JJ,4).
+  pos(c_JJ,12).
+  pos(c_IN,7).
+  pos(c_IN,10).
+  pos(c_DT,8).
+  pos(c_DT,11).
+  pos(c_DT,1).
+  pos(c_CC,3).
+  last(15).
+  head(root,2).
+  head(9,8).
+  head(9,10).
+  head(7,9).
+  head(6,7).
+  head(5,4).
+  head(3,5).
+  head(2,6).
+  head(2,3).
+  head(2,15).
+  head(2,1).
+  head(14,13).
+  head(14,12).
+  head(14,11).
+  head(10,14).
+  form(9,"blanket").
+  form(8,"a").
+  form(7,"on").
+  form(6,"laying").
+  form(5,"cat").
+  form(4,"white").
+  form(3,"and").
+  form(2,"orange").
+  form(15,".").
+  form(14,"chair").
+  form(13,"leather").
+  form(12,"black").
+  form(11,"a").
+  form(10,"in").
+  form(1,"A").
+  first(1).
+}).

@@ -1,0 +1,69 @@
+#be(id_182,
+	[
+	 3,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(7).
+  true_split(6).
+  true_split(4).
+  possible_split((1 .. 12)).
+  test_split(4).
+  test_split(3).
+  test_split(2).
+  test_split(1).
+  rel(c_VC,6).
+  rel(c_SBJ,2).
+  rel(c_ROOT,5).
+  rel(c_PMOD,12).
+  rel(c_NMOD,9).
+  rel(c_NMOD,11).
+  rel(c_NMOD,10).
+  rel(c_NMOD,1).
+  rel(c_COORD,7).
+  rel(c_COORD,3).
+  rel(c_CONJ,8).
+  rel(c_CONJ,4).
+  pos(c_VBP,5).
+  pos(c_VBN,6).
+  pos(c_NNS,1).
+  pos(c_NN,12).
+  pos(c_JJ,11).
+  pos(c_JJ,10).
+  pos(c_IN,8).
+  pos(c_DT,9).
+  pos(c_CD,4).
+  pos(c_CD,2).
+  pos(c_CC,7).
+  pos(c_CC,3).
+  last(12).
+  head(root,5).
+  head(8,12).
+  head(7,8).
+  head(6,7).
+  head(5,6).
+  head(5,2).
+  head(3,4).
+  head(2,3).
+  head(2,1).
+  head(12,9).
+  head(12,11).
+  head(12,10).
+  form(9,"the").
+  form(8,"in").
+  form(7,"and").
+  form(6,"connected").
+  form(5,"are").
+  form(4,"-68996").
+  form(3,"and").
+  form(2,"-68999").
+  form(12,"state").
+  form(11,"electrical").
+  form(10,"same").
+  form(1,"Terminals").
+  first(1).
+}).

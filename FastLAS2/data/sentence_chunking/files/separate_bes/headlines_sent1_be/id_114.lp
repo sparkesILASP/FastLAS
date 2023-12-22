@@ -1,0 +1,78 @@
+#be(id_114,
+	[
+	 7,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(9).
+  true_split(8).
+  true_split(7).
+  true_split(6).
+  true_split(11).
+  true_split(10).
+  true_split(1).
+  possible_split((1 .. 14)).
+  test_split(1).
+  rel(c_SBJ,1).
+  rel(c_ROOT,5).
+  rel(c_PMOD,4).
+  rel(c_PMOD,14).
+  rel(c_PMOD,10).
+  rel(c_OBJ,6).
+  rel(c_NMOD,2).
+  rel(c_NMOD,13).
+  rel(c_NAME,3).
+  rel(c_LGS,12).
+  rel(c_APPO,8).
+  rel(c_APPO,11).
+  rel(c_ADV,9).
+  rel(c_ADV,7).
+  pos(c_VBN,8).
+  pos(c_VBN,11).
+  pos(c_VBG,5).
+  pos(c_RB,7).
+  pos(c_NNP,4).
+  pos(c_NNP,3).
+  pos(c_NNP,13).
+  pos(c_NN,6).
+  pos(c_NN,14).
+  pos(c_NN,10).
+  pos(c_NN,1).
+  pos(c_IN,9).
+  pos(c_IN,2).
+  pos(c_IN,12).
+  last(14).
+  head(root,5).
+  head(9,10).
+  head(8,9).
+  head(8,7).
+  head(6,8).
+  head(5,6).
+  head(5,1).
+  head(4,3).
+  head(2,4).
+  head(14,13).
+  head(12,14).
+  head(11,12).
+  head(10,11).
+  head(1,2).
+  form(9,"as").
+  form(8,"delayed").
+  form(7,"briefly").
+  form(6,"festival").
+  form(5,"bull-running").
+  form(4,"Fermin").
+  form(3,"San").
+  form(2,"of").
+  form(14,"flag").
+  form(13,"Basque").
+  form(12,"by").
+  form(11,"obstructed").
+  form(10,"view").
+  form(1,"Start").
+  first(1).
+}).

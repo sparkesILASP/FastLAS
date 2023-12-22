@@ -1,0 +1,61 @@
+#be(id_43,
+	[
+	 6,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(9).
+  true_split(5).
+  true_split(4).
+  true_split(2).
+  true_split(10).
+  true_split(1).
+  possible_split((1 .. 10)).
+  test_split(1).
+  rel(c_SBJ,9).
+  rel(c_SBJ,1).
+  rel(c_ROOT,10).
+  rel(c_P,5).
+  rel(c_OBJ,4).
+  rel(c_OBJ,2).
+  rel(c_NMOD,8).
+  rel(c_NMOD,3).
+  rel(c_DEP,7).
+  rel(c_DEP,6).
+  pos(c_c,5).
+  pos(c_VBZ,2).
+  pos(c_VBD,10).
+  pos(c_RBR,6).
+  pos(c_NNP,4).
+  pos(c_NNP,1).
+  pos(c_NN,9).
+  pos(c_JJ,3).
+  pos(c_IN,7).
+  pos(c_CD,8).
+  last(10).
+  head(root,10).
+  head(9,8).
+  head(8,7).
+  head(8,6).
+  head(4,3).
+  head(2,4).
+  head(2,1).
+  head(10,9).
+  head(10,5).
+  head(10,2).
+  form(9,"people").
+  form(8,"-476500").
+  form(7,"than").
+  form(6,"more").
+  form(5,",").
+  form(4,"Russia").
+  form(3,"central").
+  form(2,"hits").
+  form(10,"hurt").
+  form(1,"Meteorite").
+  first(1).
+}).

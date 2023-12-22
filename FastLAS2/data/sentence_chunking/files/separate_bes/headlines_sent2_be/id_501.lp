@@ -1,0 +1,52 @@
+#be(id_501,
+	[
+	 4,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(8).
+  true_split(7).
+  true_split(4).
+  true_split(2).
+  possible_split((1 .. 8)).
+  test_split(2).
+  test_split(1).
+  rel(c_ROOT,2).
+  rel(c_PMOD,8).
+  rel(c_PMOD,4).
+  rel(c_NMOD,5).
+  rel(c_NMOD,3).
+  rel(c_NMOD,1).
+  rel(c_NAME,7).
+  rel(c_NAME,6).
+  pos(c_NNS,2).
+  pos(c_NNP,8).
+  pos(c_NNP,7).
+  pos(c_NNP,6).
+  pos(c_NNP,4).
+  pos(c_IN,5).
+  pos(c_IN,3).
+  pos(c_DT,1).
+  last(8).
+  head(root,2).
+  head(8,7).
+  head(8,6).
+  head(5,8).
+  head(4,5).
+  head(3,4).
+  head(2,3).
+  head(2,1).
+  form(8,"Set").
+  form(7,"Election").
+  form(6,"Venezuela").
+  form(5,"as").
+  form(4,"Capriles").
+  form(3,"on").
+  form(2,"Eyes").
+  form(1,"All").
+  first(1).
+}).

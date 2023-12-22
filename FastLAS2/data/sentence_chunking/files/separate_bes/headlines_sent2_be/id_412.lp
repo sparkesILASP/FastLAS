@@ -1,0 +1,48 @@
+#be(id_412,
+	[
+	 1,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(5).
+  possible_split((1 .. 7)).
+  test_split(5).
+  test_split(4).
+  test_split(3).
+  test_split(2).
+  test_split(1).
+  rel(c_ROOT,1).
+  rel(c_OPRD,6).
+  rel(c_OBJ,5).
+  rel(c_NMOD,4).
+  rel(c_NMOD,3).
+  rel(c_NMOD,2).
+  rel(c_IM,7).
+  pos(c_VBG,1).
+  pos(c_VB,7).
+  pos(c_TO,6).
+  pos(c_NN,5).
+  pos(c_NN,4).
+  pos(c_JJ,3).
+  pos(c_JJ,2).
+  last(7).
+  head(root,1).
+  head(6,7).
+  head(5,4).
+  head(5,2).
+  head(4,3).
+  head(1,6).
+  head(1,5).
+  form(7,"fold").
+  form(6,"to").
+  form(5,"company").
+  form(4,"car").
+  form(3,"electric").
+  form(2,"Israeli").
+  form(1,"Trailblazing").
+  first(1).
+}).

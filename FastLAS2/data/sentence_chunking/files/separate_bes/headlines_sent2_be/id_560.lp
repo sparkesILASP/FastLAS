@@ -1,0 +1,51 @@
+#be(id_560,
+	[
+	 4,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(5).
+  true_split(4).
+  true_split(2).
+  true_split(1).
+  possible_split((1 .. 8)).
+  test_split(1).
+  rel(c_TMP,3).
+  rel(c_SBJ,1).
+  rel(c_ROOT,8).
+  rel(c_PMOD,7).
+  rel(c_PMOD,5).
+  rel(c_OBJ,2).
+  rel(c_NMOD,4).
+  rel(c_ADV,6).
+  pos(c_VBZ,8).
+  pos(c_VBD,2).
+  pos(c_NNP,7).
+  pos(c_NNP,4).
+  pos(c_NNP,1).
+  pos(c_IN,6).
+  pos(c_IN,3).
+  pos(c_CD,5).
+  last(8).
+  head(root,8).
+  head(8,2).
+  head(6,7).
+  head(5,4).
+  head(3,5).
+  head(2,6).
+  head(2,3).
+  head(2,1).
+  form(8,"re-opens").
+  form(7,"Maracana").
+  form(6,"as").
+  form(5,"-12998--12998").
+  form(4,"England").
+  form(3,"by").
+  form(2,"held").
+  form(1,"Brazil").
+  first(1).
+}).

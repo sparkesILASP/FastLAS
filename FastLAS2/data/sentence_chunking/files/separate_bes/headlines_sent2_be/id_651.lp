@@ -1,0 +1,55 @@
+#be(id_651,
+	[
+	 4,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(6).
+  true_split(5).
+  true_split(2).
+  true_split(1).
+  possible_split((1 .. 9)).
+  test_split(1).
+  rel(c_SBJ,1).
+  rel(c_ROOT,6).
+  rel(c_PMOD,9).
+  rel(c_PMOD,5).
+  rel(c_NMOD,8).
+  rel(c_NMOD,4).
+  rel(c_APPO,2).
+  rel(c_ADV,7).
+  rel(c_ADV,3).
+  pos(c_VBP,6).
+  pos(c_VBN,2).
+  pos(c_NNS,9).
+  pos(c_NNS,5).
+  pos(c_NNS,1).
+  pos(c_NNP,4).
+  pos(c_NN,8).
+  pos(c_IN,7).
+  pos(c_IN,3).
+  last(9).
+  head(root,6).
+  head(9,8).
+  head(7,9).
+  head(6,7).
+  head(6,1).
+  head(5,4).
+  head(3,5).
+  head(2,3).
+  head(1,2).
+  form(9,"forces").
+  form(8,"security").
+  form(7,"with").
+  form(6,"clash").
+  form(5,"supporters").
+  form(4,"Morsi").
+  form(3,"as").
+  form(2,"injured").
+  form(1,"Dozens").
+  first(1).
+}).

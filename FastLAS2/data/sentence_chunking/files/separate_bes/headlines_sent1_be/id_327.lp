@@ -1,0 +1,47 @@
+#be(id_327,
+	[
+	 2,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(4).
+  true_split(3).
+  possible_split((1 .. 7)).
+  test_split(3).
+  test_split(2).
+  test_split(1).
+  rel(c_SBJ,3).
+  rel(c_ROOT,4).
+  rel(c_OPRD,7).
+  rel(c_OBJ,6).
+  rel(c_NAME,5).
+  rel(c_NAME,2).
+  rel(c_NAME,1).
+  pos(c_VBD,4).
+  pos(c_NNP,6).
+  pos(c_NNP,5).
+  pos(c_NNP,3).
+  pos(c_NNP,2).
+  pos(c_NNP,1).
+  pos(c_CD,7).
+  last(7).
+  head(root,4).
+  head(6,5).
+  head(4,7).
+  head(4,6).
+  head(4,3).
+  head(3,2).
+  head(3,1).
+  form(7,"-273987").
+  form(6,"America").
+  form(5,"Miss").
+  form(4,"Crowned").
+  form(3,"York").
+  form(2,"New").
+  form(1,"Miss").
+  first(1).
+}).

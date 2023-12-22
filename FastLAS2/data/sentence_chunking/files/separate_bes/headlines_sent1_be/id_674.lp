@@ -1,0 +1,55 @@
+#be(id_674,
+	[
+	 4,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(7).
+  true_split(5).
+  true_split(2).
+  true_split(1).
+  possible_split((1 .. 9)).
+  test_split(1).
+  rel(c_SBJ,1).
+  rel(c_ROOT,2).
+  rel(c_PRP,6).
+  rel(c_OBJ,9).
+  rel(c_OBJ,5).
+  rel(c_NMOD,8).
+  rel(c_NMOD,4).
+  rel(c_NMOD,3).
+  rel(c_IM,7).
+  pos(c_VBZ,2).
+  pos(c_VB,7).
+  pos(c_TO,6).
+  pos(c_NNS,9).
+  pos(c_NNP,3).
+  pos(c_NNP,1).
+  pos(c_NN,8).
+  pos(c_NN,5).
+  pos(c_NN,4).
+  last(9).
+  head(root,2).
+  head(9,8).
+  head(7,9).
+  head(6,7).
+  head(5,4).
+  head(5,3).
+  head(2,6).
+  head(2,5).
+  head(2,1).
+  form(9,"talks").
+  form(8,"peace").
+  form(7,"join").
+  form(6,"to").
+  form(5,"vote").
+  form(4,"opposition").
+  form(3,"Syria").
+  form(2,"hails").
+  form(1,"West").
+  first(1).
+}).

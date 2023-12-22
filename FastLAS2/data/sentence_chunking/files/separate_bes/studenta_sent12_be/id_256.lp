@@ -1,0 +1,75 @@
+#be(id_256,
+	[
+	 4,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(8).
+  true_split(5).
+  true_split(11).
+  true_split(1).
+  possible_split((1 .. 14)).
+  test_split(1).
+  rel(c_VC,8).
+  rel(c_SUB,6).
+  rel(c_SBJ,5).
+  rel(c_ROOT,1).
+  rel(c_PMOD,14).
+  rel(c_PMOD,11).
+  rel(c_NMOD,4).
+  rel(c_NMOD,3).
+  rel(c_NMOD,2).
+  rel(c_NMOD,13).
+  rel(c_NMOD,12).
+  rel(c_NMOD,10).
+  rel(c_LGS,9).
+  rel(c_ADV,7).
+  pos(c_VBZ,6).
+  pos(c_VBN,8).
+  pos(c_RB,7).
+  pos(c_NN,5).
+  pos(c_NN,4).
+  pos(c_NN,13).
+  pos(c_NN,11).
+  pos(c_JJ,3).
+  pos(c_IN,9).
+  pos(c_IN,12).
+  pos(c_IN,1).
+  pos(c_DT,2).
+  pos(c_DT,10).
+  pos(c_CD,14).
+  last(14).
+  head(root,1).
+  head(9,11).
+  head(8,9).
+  head(6,8).
+  head(6,7).
+  head(6,5).
+  head(5,4).
+  head(5,3).
+  head(5,2).
+  head(14,13).
+  head(12,14).
+  head(11,12).
+  head(11,10).
+  head(1,6).
+  form(9,"by").
+  form(8,"separated").
+  form(7,"not").
+  form(6,"is").
+  form(5,"terminal").
+  form(4,"battery").
+  form(3,"positive").
+  form(2,"the").
+  form(14,"-101994.").
+  form(13,"terminal").
+  form(12,"from").
+  form(11,"gap").
+  form(10,"a").
+  form(1,"because").
+  first(1).
+}).

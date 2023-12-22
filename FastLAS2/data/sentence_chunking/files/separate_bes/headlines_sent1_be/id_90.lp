@@ -1,0 +1,68 @@
+#be(id_90,
+	[
+	 8,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(9).
+  true_split(8).
+  true_split(7).
+  true_split(5).
+  true_split(4).
+  true_split(2).
+  true_split(11).
+  true_split(10).
+  possible_split((1 .. 11)).
+  test_split(2).
+  test_split(1).
+  rel(c_SBJ,1).
+  rel(c_ROOT,2).
+  rel(c_P,8).
+  rel(c_P,5).
+  rel(c_OBJ,4).
+  rel(c_NMOD,9).
+  rel(c_NMOD,7).
+  rel(c_NMOD,6).
+  rel(c_NMOD,10).
+  rel(c_NAME,3).
+  rel(c_APPO,11).
+  pos(c_c,8).
+  pos(c_c,5).
+  pos(c_VBZ,2).
+  pos(c_NNP,4).
+  pos(c_NNP,3).
+  pos(c_NNP,1).
+  pos(c_NN,11).
+  pos(c_JJ,7).
+  pos(c_JJ,10).
+  pos(c_CD,9).
+  pos(c_CD,6).
+  last(11).
+  head(root,2).
+  head(4,5).
+  head(4,3).
+  head(4,11).
+  head(2,4).
+  head(2,1).
+  head(11,9).
+  head(11,8).
+  head(11,7).
+  head(11,6).
+  head(11,10).
+  form(9,"-62300,-63000").
+  form(8,",").
+  form(7,"dead").
+  form(6,"five").
+  form(5,",").
+  form(4,"Northeast").
+  form(3,"U.S.").
+  form(2,"hammers").
+  form(11,"power").
+  form(10,"lose").
+  form(1,"Blizzard").
+  first(1).
+}).

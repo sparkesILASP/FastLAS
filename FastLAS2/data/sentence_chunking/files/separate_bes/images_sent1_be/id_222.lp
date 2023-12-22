@@ -1,0 +1,79 @@
+#be(id_222,
+	[
+	 7,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(8).
+  true_split(5).
+  true_split(2).
+  true_split(14).
+  true_split(13).
+  true_split(11).
+  true_split(10).
+  possible_split((1 .. 14)).
+  test_split(2).
+  test_split(1).
+  rel(c_VC,4).
+  rel(c_SBJ,9).
+  rel(c_SBJ,2).
+  rel(c_ROOT,3).
+  rel(c_PRT,5).
+  rel(c_PMOD,8).
+  rel(c_PMOD,13).
+  rel(c_P,14).
+  rel(c_OBJ,11).
+  rel(c_NMOD,7).
+  rel(c_NMOD,12).
+  rel(c_NMOD,10).
+  rel(c_NMOD,1).
+  rel(c_ADV,6).
+  pos(c_p,14).
+  pos(c_WDT,9).
+  pos(c_VBZ,10).
+  pos(c_VBP,3).
+  pos(c_VBG,4).
+  pos(c_RP,5).
+  pos(c_PRP,13).
+  pos(c_NNS,2).
+  pos(c_NNS,11).
+  pos(c_NN,8).
+  pos(c_IN,6).
+  pos(c_IN,12).
+  pos(c_DT,7).
+  pos(c_CD,1).
+  last(14).
+  head(root,3).
+  head(8,7).
+  head(8,10).
+  head(6,8).
+  head(4,6).
+  head(4,5).
+  head(3,4).
+  head(3,2).
+  head(3,14).
+  head(2,1).
+  head(12,13).
+  head(11,12).
+  head(10,9).
+  head(10,11).
+  form(9,"that").
+  form(8,"table").
+  form(7,"a").
+  form(6,"at").
+  form(5,"down").
+  form(4,"sitting").
+  form(3,"are").
+  form(2,"men").
+  form(14,".").
+  form(13,"it").
+  form(12,"on").
+  form(11,"drinks").
+  form(10,"has").
+  form(1,"Three").
+  first(1).
+}).

@@ -1,0 +1,61 @@
+#be(id_33,
+	[
+	 2,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(6).
+  true_split(5).
+  possible_split((1 .. 10)).
+  test_split(5).
+  test_split(4).
+  test_split(3).
+  test_split(2).
+  test_split(1).
+  rel(c_SBJ,5).
+  rel(c_ROOT,6).
+  rel(c_OBJ,10).
+  rel(c_NMOD,9).
+  rel(c_NMOD,8).
+  rel(c_NAME,4).
+  rel(c_NAME,3).
+  rel(c_NAME,2).
+  rel(c_NAME,1).
+  rel(c_AMOD,7).
+  pos(c_VBG,6).
+  pos(c_NNP,5).
+  pos(c_NNP,3).
+  pos(c_NNP,2).
+  pos(c_NNP,1).
+  pos(c_NN,9).
+  pos(c_NN,4).
+  pos(c_NN,10).
+  pos(c_JJ,8).
+  pos(c_JJ,7).
+  last(10).
+  head(root,6).
+  head(8,7).
+  head(6,5).
+  head(6,10).
+  head(5,4).
+  head(5,3).
+  head(5,2).
+  head(5,1).
+  head(10,9).
+  head(10,8).
+  form(9,"test").
+  form(8,"Korean").
+  form(7,"North").
+  form(6,"pressing").
+  form(5,"Richardson").
+  form(4,"Gov.").
+  form(3,"Mexico").
+  form(2,"New").
+  form(10,"ban").
+  form(1,"Former").
+  first(1).
+}).

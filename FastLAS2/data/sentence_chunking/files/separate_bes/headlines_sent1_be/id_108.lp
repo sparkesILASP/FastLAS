@@ -1,0 +1,69 @@
+#be(id_108,
+	[
+	 5,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(8).
+  true_split(7).
+  true_split(6).
+  true_split(5).
+  true_split(2).
+  possible_split((1 .. 12)).
+  test_split(2).
+  test_split(1).
+  rel(c_SUFFIX,3).
+  rel(c_SBJ,5).
+  rel(c_ROOT,6).
+  rel(c_PMOD,12).
+  rel(c_OBJ,7).
+  rel(c_NMOD,4).
+  rel(c_NMOD,2).
+  rel(c_NMOD,11).
+  rel(c_NMOD,10).
+  rel(c_NAME,1).
+  rel(c_AMOD,9).
+  rel(c_ADV,8).
+  pos(c_VBZ,6).
+  pos(c_TO,9).
+  pos(c_RBR,8).
+  pos(c_PRP,7).
+  pos(c_POS,3).
+  pos(c_NNP,2).
+  pos(c_NNP,1).
+  pos(c_NN,5).
+  pos(c_NN,12).
+  pos(c_NN,11).
+  pos(c_JJ,4).
+  pos(c_JJ,10).
+  last(12).
+  head(root,6).
+  head(9,12).
+  head(8,9).
+  head(6,8).
+  head(6,7).
+  head(6,5).
+  head(5,4).
+  head(5,2).
+  head(2,3).
+  head(2,1).
+  head(12,11).
+  head(12,10).
+  form(9,"to").
+  form(8,"closer").
+  form(7,"it").
+  form(6,"brings").
+  form(5,"test").
+  form(4,"third").
+  form(3,"'s").
+  form(2,"Korea").
+  form(12,"status").
+  form(11,"power").
+  form(10,"nuclear").
+  form(1,"North").
+  first(1).
+}).

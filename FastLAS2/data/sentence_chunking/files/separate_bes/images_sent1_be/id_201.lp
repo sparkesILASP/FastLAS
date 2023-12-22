@@ -1,0 +1,75 @@
+#be(id_201,
+	[
+	 7,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(9).
+  true_split(8).
+  true_split(4).
+  true_split(2).
+  true_split(13).
+  true_split(12).
+  true_split(10).
+  possible_split((1 .. 13)).
+  test_split(2).
+  test_split(1).
+  rel(c_VC,4).
+  rel(c_SBJ,2).
+  rel(c_ROOT,3).
+  rel(c_PMOD,8).
+  rel(c_P,13).
+  rel(c_OBJ,12).
+  rel(c_NMOD,7).
+  rel(c_NMOD,6).
+  rel(c_NMOD,11).
+  rel(c_NMOD,1).
+  rel(c_LOC,5).
+  rel(c_COORD,9).
+  rel(c_CONJ,10).
+  pos(c_p,13).
+  pos(c_VBZ,3).
+  pos(c_VBG,4).
+  pos(c_VBG,10).
+  pos(c_NN,8).
+  pos(c_NN,7).
+  pos(c_NN,2).
+  pos(c_NN,12).
+  pos(c_IN,5).
+  pos(c_DT,6).
+  pos(c_DT,11).
+  pos(c_DT,1).
+  pos(c_CC,9).
+  last(13).
+  head(root,3).
+  head(9,10).
+  head(8,7).
+  head(8,6).
+  head(5,8).
+  head(4,9).
+  head(4,5).
+  head(3,4).
+  head(3,2).
+  head(3,13).
+  head(2,1).
+  head(12,11).
+  head(10,12).
+  form(9,"and").
+  form(8,"table").
+  form(7,"messy").
+  form(6,"a").
+  form(5,"at").
+  form(4,"sitting").
+  form(3,"is").
+  form(2,"man").
+  form(13,".").
+  form(12,"laptop").
+  form(11,"a").
+  form(10,"using").
+  form(1,"The").
+  first(1).
+}).

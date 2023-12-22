@@ -1,0 +1,56 @@
+#be(id_616,
+	[
+	 5,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(6).
+  true_split(5).
+  true_split(3).
+  true_split(2).
+  true_split(1).
+  possible_split((1 .. 9)).
+  test_split(1).
+  rel(c_SUFFIX,6).
+  rel(c_SBJ,1).
+  rel(c_ROOT,2).
+  rel(c_PMOD,9).
+  rel(c_P,3).
+  rel(c_OBJ,5).
+  rel(c_NMOD,4).
+  rel(c_NAME,8).
+  rel(c_LOC,7).
+  pos(c_qq,3).
+  pos(c_VBP,2).
+  pos(c_POS,6).
+  pos(c_NNS,5).
+  pos(c_NNS,1).
+  pos(c_NNP,9).
+  pos(c_NNP,8).
+  pos(c_JJ,4).
+  pos(c_IN,7).
+  last(9).
+  head(root,2).
+  head(9,8).
+  head(7,9).
+  head(5,7).
+  head(5,6).
+  head(5,4).
+  head(2,5).
+  head(2,3).
+  head(2,1).
+  form(9,"Marathon").
+  form(8,"Boston").
+  form(7,"at").
+  form(6,"'").
+  form(5,"booms").
+  form(4,"loud").
+  form(3,"`").
+  form(2,"hear").
+  form(1,"Witnesses").
+  first(1).
+}).

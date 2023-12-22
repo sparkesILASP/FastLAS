@@ -1,0 +1,50 @@
+#be(id_512,
+	[
+	 3,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(4).
+  true_split(2).
+  true_split(1).
+  possible_split((1 .. 8)).
+  test_split(1).
+  rel(c_SBJ,1).
+  rel(c_ROOT,2).
+  rel(c_PMOD,8).
+  rel(c_OBJ,4).
+  rel(c_NMOD,7).
+  rel(c_NMOD,6).
+  rel(c_NMOD,3).
+  rel(c_ADV,5).
+  pos(c_VBZ,2).
+  pos(c_TO,5).
+  pos(c_NNP,4).
+  pos(c_NNP,1).
+  pos(c_NN,8).
+  pos(c_NN,7).
+  pos(c_JJ,6).
+  pos(c_JJ,3).
+  last(8).
+  head(root,2).
+  head(8,7).
+  head(8,6).
+  head(5,8).
+  head(4,3).
+  head(2,5).
+  head(2,4).
+  head(2,1).
+  form(8,"ban").
+  form(7,"adoption").
+  form(6,"American").
+  form(5,"to").
+  form(4,"OK").
+  form(3,"initial").
+  form(2,"gives").
+  form(1,"Russia").
+  first(1).
+}).

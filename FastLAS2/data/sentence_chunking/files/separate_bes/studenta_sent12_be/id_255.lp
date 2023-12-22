@@ -1,0 +1,73 @@
+#be(id_255,
+	[
+	 6,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(9).
+  true_split(7).
+  true_split(3).
+  true_split(2).
+  true_split(10).
+  true_split(1).
+  possible_split((1 .. 13)).
+  test_split(1).
+  rel(c_VC,3).
+  rel(c_SBJ,1).
+  rel(c_ROOT,2).
+  rel(c_PRT,6).
+  rel(c_PMOD,9).
+  rel(c_PMOD,13).
+  rel(c_OBJ,7).
+  rel(c_OBJ,10).
+  rel(c_NMOD,5).
+  rel(c_NMOD,4).
+  rel(c_NMOD,12).
+  rel(c_NMOD,11).
+  rel(c_MNR,8).
+  pos(c_VBN,5).
+  pos(c_VBG,9).
+  pos(c_VB,3).
+  pos(c_RP,6).
+  pos(c_PRP,1).
+  pos(c_NNS,13).
+  pos(c_NN,7).
+  pos(c_NN,10).
+  pos(c_MD,2).
+  pos(c_JJ,12).
+  pos(c_IN,8).
+  pos(c_IN,11).
+  pos(c_DT,4).
+  last(13).
+  head(root,2).
+  head(9,10).
+  head(8,9).
+  head(7,5).
+  head(7,4).
+  head(5,6).
+  head(3,8).
+  head(3,7).
+  head(2,3).
+  head(2,1).
+  head(13,12).
+  head(11,13).
+  head(10,11).
+  form(9,"finding").
+  form(8,"by").
+  form(7,"bulb").
+  form(6,"out").
+  form(5,"burnt").
+  form(4,"the").
+  form(3,"find").
+  form(2,"can").
+  form(13,"terminals").
+  form(12,"different").
+  form(11,"between").
+  form(10,"voltage").
+  form(1,"we").
+  first(1).
+}).

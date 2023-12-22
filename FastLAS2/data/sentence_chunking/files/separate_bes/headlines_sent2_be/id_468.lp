@@ -1,0 +1,52 @@
+#be(id_468,
+	[
+	 3,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(6).
+  true_split(4).
+  true_split(3).
+  possible_split((1 .. 8)).
+  test_split(3).
+  test_split(2).
+  test_split(1).
+  rel(c_SBJ,1).
+  rel(c_ROOT,4).
+  rel(c_PMOD,8).
+  rel(c_PMOD,3).
+  rel(c_OBJ,6).
+  rel(c_NMOD,5).
+  rel(c_NMOD,2).
+  rel(c_LOC,7).
+  pos(c_VBP,4).
+  pos(c_NNS,3).
+  pos(c_NNP,8).
+  pos(c_NN,6).
+  pos(c_NN,1).
+  pos(c_IN,7).
+  pos(c_IN,2).
+  pos(c_CD,5).
+  last(8).
+  head(root,4).
+  head(7,8).
+  head(6,5).
+  head(4,7).
+  head(4,6).
+  head(4,1).
+  head(2,3).
+  head(1,2).
+  form(8,"Afghanistan").
+  form(7,"in").
+  form(6,"police").
+  form(5,"-46990").
+  form(4,"kill").
+  form(3,"attacks").
+  form(2,"of").
+  form(1,"Series").
+  first(1).
+}).

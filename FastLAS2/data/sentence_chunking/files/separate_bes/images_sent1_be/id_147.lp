@@ -1,0 +1,68 @@
+#be(id_147,
+	[
+	 4,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(6).
+  true_split(2).
+  true_split(12).
+  true_split(11).
+  possible_split((1 .. 12)).
+  test_split(2).
+  test_split(1).
+  rel(c_ROOT,2).
+  rel(c_PMOD,6).
+  rel(c_PMOD,11).
+  rel(c_P,12).
+  rel(c_NMOD,9).
+  rel(c_NMOD,8).
+  rel(c_NMOD,7).
+  rel(c_NMOD,5).
+  rel(c_NMOD,4).
+  rel(c_NMOD,3).
+  rel(c_NMOD,10).
+  rel(c_NMOD,1).
+  pos(c_p,12).
+  pos(c_NN,6).
+  pos(c_NN,2).
+  pos(c_NN,11).
+  pos(c_NN,10).
+  pos(c_JJ,9).
+  pos(c_JJ,5).
+  pos(c_IN,7).
+  pos(c_IN,3).
+  pos(c_DT,8).
+  pos(c_DT,4).
+  pos(c_DT,1).
+  last(12).
+  head(root,2).
+  head(7,11).
+  head(6,7).
+  head(6,5).
+  head(6,4).
+  head(3,6).
+  head(2,3).
+  head(2,12).
+  head(2,1).
+  head(11,9).
+  head(11,8).
+  head(11,10).
+  form(9,"red").
+  form(8,"a").
+  form(7,"of").
+  form(6,"seat").
+  form(5,"back").
+  form(4,"the").
+  form(3,"on").
+  form(2,"man").
+  form(12,".").
+  form(11,"bicycle").
+  form(10,"tandem").
+  form(1,"A").
+  first(1).
+}).

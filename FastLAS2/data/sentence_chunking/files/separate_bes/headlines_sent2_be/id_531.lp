@@ -1,0 +1,52 @@
+#be(id_531,
+	[
+	 4,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(6).
+  true_split(4).
+  true_split(3).
+  true_split(2).
+  possible_split((1 .. 8)).
+  test_split(2).
+  test_split(1).
+  rel(c_VC,6).
+  rel(c_SBJ,4).
+  rel(c_SBJ,2).
+  rel(c_ROOT,3).
+  rel(c_OBJ,8).
+  rel(c_OBJ,5).
+  rel(c_NMOD,7).
+  rel(c_NMOD,1).
+  pos(c_VBZ,3).
+  pos(c_VB,6).
+  pos(c_NN,8).
+  pos(c_NN,2).
+  pos(c_NN,1).
+  pos(c_MD,5).
+  pos(c_JJ,7).
+  pos(c_JJ,4).
+  last(8).
+  head(root,3).
+  head(8,7).
+  head(6,8).
+  head(5,6).
+  head(5,4).
+  head(3,5).
+  head(3,2).
+  head(2,1).
+  form(8,"crisis").
+  form(7,"political").
+  form(6,"overcome").
+  form(5,"can").
+  form(4,"confident").
+  form(3,"says").
+  form(2,"president").
+  form(1,"Tunisia").
+  first(1).
+}).

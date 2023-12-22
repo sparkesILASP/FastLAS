@@ -1,0 +1,56 @@
+#be(id_553,
+	[
+	 5,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(7).
+  true_split(6).
+  true_split(4).
+  true_split(3).
+  true_split(1).
+  possible_split((1 .. 9)).
+  test_split(1).
+  rel(c_SUB,7).
+  rel(c_SBJ,3).
+  rel(c_ROOT,1).
+  rel(c_PMOD,6).
+  rel(c_OBJ,9).
+  rel(c_NMOD,8).
+  rel(c_NMOD,5).
+  rel(c_NMOD,4).
+  rel(c_NMOD,2).
+  pos(c_VBZ,7).
+  pos(c_NN,9).
+  pos(c_NN,6).
+  pos(c_IN,4).
+  pos(c_IN,1).
+  pos(c_CD,8).
+  pos(c_CD,5).
+  pos(c_CD,3).
+  pos(c_CD,2).
+  last(9).
+  head(root,1).
+  head(9,8).
+  head(7,9).
+  head(7,3).
+  head(6,5).
+  head(4,6).
+  head(3,4).
+  head(3,2).
+  head(1,7).
+  form(9,"v").
+  form(8,"-71999.-71995").
+  form(7,"equals").
+  form(6,"v").
+  form(5,"-72000").
+  form(4,"minus").
+  form(3,"v").
+  form(2,"-71999.-71995").
+  form(1,"because").
+  first(1).
+}).

@@ -1,0 +1,64 @@
+#be(id_48,
+	[
+	 5,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(8).
+  true_split(7).
+  true_split(6).
+  true_split(5).
+  true_split(1).
+  possible_split((1 .. 11)).
+  test_split(1).
+  rel(c_VC,8).
+  rel(c_SUB,6).
+  rel(c_SBJ,3).
+  rel(c_ROOT,1).
+  rel(c_OPRD,9).
+  rel(c_OBJ,11).
+  rel(c_NMOD,2).
+  rel(c_IM,10).
+  rel(c_COORD,4).
+  rel(c_CONJ,5).
+  rel(c_ADV,7).
+  pos(c_VBP,6).
+  pos(c_VBN,8).
+  pos(c_VB,10).
+  pos(c_TO,9).
+  pos(c_RB,7).
+  pos(c_NNP,5).
+  pos(c_NNP,3).
+  pos(c_NNP,11).
+  pos(c_NN,2).
+  pos(c_IN,1).
+  pos(c_CC,4).
+  last(11).
+  head(root,1).
+  head(9,10).
+  head(8,9).
+  head(6,8).
+  head(6,7).
+  head(6,3).
+  head(4,5).
+  head(3,4).
+  head(3,2).
+  head(10,11).
+  head(1,6).
+  form(9,"to").
+  form(8,"connected").
+  form(7,"also").
+  form(6,"are").
+  form(5,"Z").
+  form(4,"and").
+  form(3,"Y").
+  form(2,"switch").
+  form(11,"A.").
+  form(10,"bulb").
+  form(1,"Because").
+  first(1).
+}).

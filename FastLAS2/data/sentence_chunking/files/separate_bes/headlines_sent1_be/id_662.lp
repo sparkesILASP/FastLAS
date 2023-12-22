@@ -1,0 +1,58 @@
+#be(id_662,
+	[
+	 7,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(9).
+  true_split(8).
+  true_split(7).
+  true_split(5).
+  true_split(4).
+  true_split(2).
+  true_split(1).
+  possible_split((1 .. 9)).
+  test_split(1).
+  rel(c_ROOT,2).
+  rel(c_PMOD,9).
+  rel(c_PMOD,4).
+  rel(c_P,5).
+  rel(c_NMOD,8).
+  rel(c_NMOD,7).
+  rel(c_NMOD,3).
+  rel(c_NMOD,1).
+  rel(c_DEP,6).
+  pos(c_c,5).
+  pos(c_TO,3).
+  pos(c_RB,6).
+  pos(c_NNS,4).
+  pos(c_NN,9).
+  pos(c_NN,2).
+  pos(c_JJ,8).
+  pos(c_JJ,1).
+  pos(c_IN,7).
+  last(9).
+  head(root,2).
+  head(9,8).
+  head(7,9).
+  head(7,6).
+  head(3,4).
+  head(2,7).
+  head(2,5).
+  head(2,3).
+  head(2,1).
+  form(9,"loom").
+  form(8,"Taliban").
+  form(7,"as").
+  form(6,"even").
+  form(5,",").
+  form(4,"colleges").
+  form(3,"to").
+  form(2,"flock").
+  form(1,"Afghans").
+  first(1).
+}).

@@ -1,0 +1,70 @@
+#be(id_109,
+	[
+	 7,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(7).
+  true_split(6).
+  true_split(5).
+  true_split(4).
+  true_split(2).
+  true_split(10).
+  true_split(1).
+  possible_split((1 .. 12)).
+  test_split(1).
+  rel(c_TMP,12).
+  rel(c_SBJ,1).
+  rel(c_ROOT,2).
+  rel(c_OPRD,8).
+  rel(c_OBJ,7).
+  rel(c_OBJ,4).
+  rel(c_NMOD,3).
+  rel(c_NMOD,11).
+  rel(c_IM,10).
+  rel(c_COORD,5).
+  rel(c_CONJ,6).
+  rel(c_AMOD,9).
+  pos(c_VBZ,6).
+  pos(c_VBZ,2).
+  pos(c_VB,10).
+  pos(c_TO,9).
+  pos(c_NNS,4).
+  pos(c_NNP,1).
+  pos(c_NN,7).
+  pos(c_NN,3).
+  pos(c_NN,12).
+  pos(c_JJ,8).
+  pos(c_DT,11).
+  pos(c_CC,5).
+  last(12).
+  head(root,2).
+  head(9,10).
+  head(8,9).
+  head(6,8).
+  head(6,7).
+  head(5,6).
+  head(4,3).
+  head(2,5).
+  head(2,4).
+  head(2,1).
+  head(12,11).
+  head(10,12).
+  form(9,"to").
+  form(8,"likely").
+  form(7,"growth").
+  form(6,"warns").
+  form(5,"but").
+  form(4,"profits").
+  form(3,"record").
+  form(2,"reports").
+  form(12,"year").
+  form(11,"this").
+  form(10,"slow").
+  form(1,"Ryanair").
+  first(1).
+}).

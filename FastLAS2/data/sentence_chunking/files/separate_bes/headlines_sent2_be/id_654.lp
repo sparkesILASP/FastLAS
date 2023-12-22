@@ -1,0 +1,56 @@
+#be(id_654,
+	[
+	 5,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(7).
+  true_split(6).
+  true_split(4).
+  true_split(3).
+  true_split(1).
+  possible_split((1 .. 9)).
+  test_split(1).
+  rel(c_TMP,5).
+  rel(c_SBJ,1).
+  rel(c_ROOT,4).
+  rel(c_PMOD,9).
+  rel(c_PMOD,6).
+  rel(c_PMOD,3).
+  rel(c_OBJ,7).
+  rel(c_LOC,2).
+  rel(c_ADV,8).
+  pos(c_VBG,6).
+  pos(c_VBD,4).
+  pos(c_TO,8).
+  pos(c_NNS,7).
+  pos(c_NNP,3).
+  pos(c_NN,9).
+  pos(c_NN,1).
+  pos(c_IN,5).
+  pos(c_IN,2).
+  last(9).
+  head(root,4).
+  head(8,9).
+  head(6,8).
+  head(6,7).
+  head(5,6).
+  head(4,5).
+  head(4,1).
+  head(2,3).
+  head(1,2).
+  form(9,"hotel").
+  form(8,"to").
+  form(7,"girls").
+  form(6,"taking").
+  form(5,"after").
+  form(4,"detained").
+  form(3,"China").
+  form(2,"in").
+  form(1,"Men").
+  first(1).
+}).

@@ -1,0 +1,45 @@
+#be(id_280,
+	[
+	 2,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(6).
+  true_split(5).
+  possible_split((1 .. 6)).
+  test_split(5).
+  test_split(4).
+  test_split(3).
+  test_split(2).
+  test_split(1).
+  rel(c_ROOT,1).
+  rel(c_P,6).
+  rel(c_OBJ,5).
+  rel(c_NMOD,4).
+  rel(c_NMOD,3).
+  rel(c_NMOD,2).
+  pos(c_p,6).
+  pos(c_VBN,1).
+  pos(c_NN,5).
+  pos(c_NN,4).
+  pos(c_JJ,3).
+  pos(c_JJ,2).
+  last(6).
+  head(root,1).
+  head(5,4).
+  head(5,2).
+  head(4,3).
+  head(1,6).
+  head(1,5).
+  form(6,".").
+  form(5,"bus").
+  form(4,"decker").
+  form(3,"double").
+  form(2,"white").
+  form(1,"Parked").
+  first(1).
+}).

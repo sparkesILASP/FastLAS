@@ -1,0 +1,77 @@
+#be(id_277,
+	[
+	 4,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(9).
+  true_split(8).
+  true_split(6).
+  true_split(3).
+  possible_split((1 .. 14)).
+  test_split(3).
+  test_split(2).
+  test_split(1).
+  rel(c_VC,6).
+  rel(c_SBJ,3).
+  rel(c_SBJ,11).
+  rel(c_ROOT,4).
+  rel(c_PRD,14).
+  rel(c_OPRD,12).
+  rel(c_OBJ,8).
+  rel(c_NMOD,7).
+  rel(c_NMOD,2).
+  rel(c_NMOD,10).
+  rel(c_NMOD,1).
+  rel(c_AMOD,13).
+  rel(c_ADV,9).
+  rel(c_ADV,5).
+  pos(c_VBZ,4).
+  pos(c_VBZ,12).
+  pos(c_VBN,2).
+  pos(c_VB,6).
+  pos(c_RB,9).
+  pos(c_RB,5).
+  pos(c_RB,13).
+  pos(c_NN,8).
+  pos(c_NN,3).
+  pos(c_NN,11).
+  pos(c_JJ,14).
+  pos(c_DT,7).
+  pos(c_DT,10).
+  pos(c_DT,1).
+  last(14).
+  head(root,4).
+  head(8,7).
+  head(6,8).
+  head(6,12).
+  head(4,6).
+  head(4,5).
+  head(4,3).
+  head(3,2).
+  head(3,1).
+  head(14,13).
+  head(12,9).
+  head(12,14).
+  head(12,11).
+  head(11,10).
+  form(9,"so").
+  form(8,"connecton").
+  form(7,"a").
+  form(6,"make").
+  form(5,"not").
+  form(4,"does").
+  form(3,"bulb").
+  form(2,"damaged").
+  form(14,"complete").
+  form(13,"not").
+  form(12,"is").
+  form(11,"circut").
+  form(10,"the").
+  form(1,"a").
+  first(1).
+}).

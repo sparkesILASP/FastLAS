@@ -1,0 +1,59 @@
+#be(id_6,
+	[
+	 4,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(6).
+  true_split(4).
+  true_split(2).
+  true_split(1).
+  possible_split((1 .. 10)).
+  test_split(1).
+  rel(c_SBJ,1).
+  rel(c_ROOT,2).
+  rel(c_PMOD,8).
+  rel(c_PMOD,6).
+  rel(c_PMOD,10).
+  rel(c_OBJ,4).
+  rel(c_NMOD,9).
+  rel(c_NMOD,3).
+  rel(c_LOC,7).
+  rel(c_ADV,5).
+  pos(c_VBZ,2).
+  pos(c_TO,5).
+  pos(c_NNS,6).
+  pos(c_NNP,8).
+  pos(c_NNP,10).
+  pos(c_NNP,1).
+  pos(c_NN,4).
+  pos(c_JJ,3).
+  pos(c_IN,9).
+  pos(c_IN,7).
+  last(10).
+  head(root,2).
+  head(9,10).
+  head(8,9).
+  head(7,8).
+  head(6,7).
+  head(5,6).
+  head(4,3).
+  head(2,5).
+  head(2,4).
+  head(2,1).
+  form(9,"of").
+  form(8,"Bank").
+  form(7,"at").
+  form(6,"changes").
+  form(5,"to").
+  form(4,"bar").
+  form(3,"high").
+  form(2,"sets").
+  form(10,"England").
+  form(1,"Carney").
+  first(1).
+}).

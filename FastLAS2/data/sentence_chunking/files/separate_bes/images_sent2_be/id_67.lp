@@ -1,0 +1,62 @@
+#be(id_67,
+	[
+	 4,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(9).
+  true_split(7).
+  true_split(4).
+  true_split(10).
+  possible_split((1 .. 10)).
+  test_split(4).
+  test_split(3).
+  test_split(2).
+  test_split(1).
+  rel(c_SBJ,1).
+  rel(c_ROOT,2).
+  rel(c_PRT,3).
+  rel(c_PMOD,9).
+  rel(c_PMOD,7).
+  rel(c_P,10).
+  rel(c_OBJ,4).
+  rel(c_NMOD,8).
+  rel(c_NMOD,6).
+  rel(c_NMOD,5).
+  pos(c_p,10).
+  pos(c_VBP,2).
+  pos(c_RP,3).
+  pos(c_NN,9).
+  pos(c_NN,7).
+  pos(c_NN,4).
+  pos(c_IN,8).
+  pos(c_IN,5).
+  pos(c_DT,6).
+  pos(c_DT,1).
+  last(10).
+  head(root,2).
+  head(8,9).
+  head(7,8).
+  head(7,6).
+  head(5,7).
+  head(4,5).
+  head(2,4).
+  head(2,3).
+  head(2,10).
+  head(2,1).
+  form(9,"water").
+  form(8,"of").
+  form(7,"bottle").
+  form(6,"a").
+  form(5,"of").
+  form(4,"view").
+  form(3,"up").
+  form(2,"close").
+  form(10,".").
+  form(1,"A").
+  first(1).
+}).

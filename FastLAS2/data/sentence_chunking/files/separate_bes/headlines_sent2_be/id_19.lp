@@ -1,0 +1,59 @@
+#be(id_19,
+	[
+	 3,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(7).
+  true_split(3).
+  true_split(2).
+  possible_split((1 .. 10)).
+  test_split(2).
+  test_split(1).
+  rel(c_SBJ,2).
+  rel(c_ROOT,3).
+  rel(c_PMOD,5).
+  rel(c_PMOD,10).
+  rel(c_NMOD,8).
+  rel(c_NAME,9).
+  rel(c_NAME,1).
+  rel(c_COORD,6).
+  rel(c_CONJ,7).
+  rel(c_ADV,4).
+  pos(c_VBZ,3).
+  pos(c_NNP,9).
+  pos(c_NNP,2).
+  pos(c_NNP,10).
+  pos(c_NNP,1).
+  pos(c_NN,7).
+  pos(c_NN,5).
+  pos(c_IN,8).
+  pos(c_IN,4).
+  pos(c_CC,6).
+  last(10).
+  head(root,3).
+  head(8,10).
+  head(6,7).
+  head(5,8).
+  head(5,6).
+  head(4,5).
+  head(3,4).
+  head(3,2).
+  head(2,1).
+  head(10,9).
+  form(9,"Nelson").
+  form(8,"for").
+  form(7,"song").
+  form(6,"and").
+  form(5,"prayer").
+  form(4,"in").
+  form(3,"unites").
+  form(2,"Africa").
+  form(10,"Mandela").
+  form(1,"South").
+  first(1).
+}).

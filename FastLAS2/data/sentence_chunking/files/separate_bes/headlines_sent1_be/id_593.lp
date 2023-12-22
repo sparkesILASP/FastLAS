@@ -1,0 +1,57 @@
+#be(id_593,
+	[
+	 5,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(9).
+  true_split(8).
+  true_split(6).
+  true_split(3).
+  true_split(2).
+  possible_split((1 .. 9)).
+  test_split(2).
+  test_split(1).
+  rel(c_ROOT,2).
+  rel(c_PMOD,8).
+  rel(c_PMOD,6).
+  rel(c_P,9).
+  rel(c_P,3).
+  rel(c_NMOD,7).
+  rel(c_NMOD,5).
+  rel(c_NMOD,4).
+  rel(c_NMOD,1).
+  pos(c_qq,9).
+  pos(c_qq,3).
+  pos(c_NNP,1).
+  pos(c_NN,8).
+  pos(c_NN,6).
+  pos(c_NN,2).
+  pos(c_IN,7).
+  pos(c_IN,4).
+  pos(c_DT,5).
+  last(9).
+  head(root,2).
+  head(7,8).
+  head(6,7).
+  head(6,5).
+  head(4,6).
+  head(2,9).
+  head(2,4).
+  head(2,3).
+  head(2,1).
+  form(9,"'").
+  form(8,"shutdown").
+  form(7,"of").
+  form(6,"edge").
+  form(5,"the").
+  form(4,"on").
+  form(3,"`").
+  form(2,"government").
+  form(1,"US").
+  first(1).
+}).

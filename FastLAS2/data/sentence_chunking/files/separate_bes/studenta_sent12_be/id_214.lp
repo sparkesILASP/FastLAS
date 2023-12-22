@@ -1,0 +1,73 @@
+#be(id_214,
+	[
+	 6,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(7).
+  true_split(4).
+  true_split(13).
+  true_split(12).
+  true_split(10).
+  true_split(1).
+  possible_split((1 .. 13)).
+  test_split(1).
+  rel(c_VC,7).
+  rel(c_SBJ,4).
+  rel(c_ROOT,5).
+  rel(c_PMOD,12).
+  rel(c_PMOD,10).
+  rel(c_P,13).
+  rel(c_NMOD,9).
+  rel(c_NMOD,3).
+  rel(c_NMOD,2).
+  rel(c_NMOD,11).
+  rel(c_LGS,8).
+  rel(c_DEP,1).
+  rel(c_ADV,6).
+  pos(c_p,13).
+  pos(c_VBN,7).
+  pos(c_VBD,5).
+  pos(c_RB,6).
+  pos(c_NN,4).
+  pos(c_NN,3).
+  pos(c_NN,12).
+  pos(c_NN,10).
+  pos(c_IN,8).
+  pos(c_IN,11).
+  pos(c_IN,1).
+  pos(c_DT,9).
+  pos(c_DT,2).
+  last(13).
+  head(root,5).
+  head(8,10).
+  head(7,8).
+  head(5,7).
+  head(5,6).
+  head(5,4).
+  head(5,13).
+  head(5,1).
+  head(4,3).
+  head(4,2).
+  head(11,12).
+  head(10,9).
+  head(10,11).
+  form(9,"a").
+  form(8,"by").
+  form(7,"separted").
+  form(6,"not").
+  form(5,"was").
+  form(4,"termnal").
+  form(3,"batter").
+  form(2,"the").
+  form(13,".").
+  form(12,"terminal").
+  form(11,"from").
+  form(10,"gap").
+  form(1,"Because").
+  first(1).
+}).

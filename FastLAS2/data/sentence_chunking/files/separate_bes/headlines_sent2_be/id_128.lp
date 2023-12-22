@@ -1,0 +1,68 @@
+#be(id_128,
+	[
+	 5,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(9).
+  true_split(7).
+  true_split(6).
+  true_split(2).
+  true_split(1).
+  possible_split((1 .. 12)).
+  test_split(1).
+  rel(c_SBJ,6).
+  rel(c_SBJ,1).
+  rel(c_ROOT,2).
+  rel(c_PMOD,12).
+  rel(c_OBJ,9).
+  rel(c_OBJ,7).
+  rel(c_NMOD,8).
+  rel(c_NMOD,5).
+  rel(c_NMOD,4).
+  rel(c_NMOD,11).
+  rel(c_NMOD,10).
+  rel(c_NAME,3).
+  pos(c_VBZ,7).
+  pos(c_VBZ,2).
+  pos(c_TO,10).
+  pos(c_NNP,4).
+  pos(c_NNP,3).
+  pos(c_NNP,1).
+  pos(c_NN,9).
+  pos(c_NN,6).
+  pos(c_NN,12).
+  pos(c_NN,11).
+  pos(c_JJ,8).
+  pos(c_JJ,5).
+  last(12).
+  head(root,2).
+  head(9,8).
+  head(9,10).
+  head(7,9).
+  head(7,6).
+  head(6,5).
+  head(6,4).
+  head(4,3).
+  head(2,7).
+  head(2,1).
+  head(12,11).
+  head(10,12).
+  form(9,"threat").
+  form(8,"grave").
+  form(7,"is").
+  form(6,"test").
+  form(5,"nuclear").
+  form(4,"Korea").
+  form(3,"North").
+  form(2,"says").
+  form(12,"peace").
+  form(11,"world").
+  form(10,"to").
+  form(1,"NATO").
+  first(1).
+}).

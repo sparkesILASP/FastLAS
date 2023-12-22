@@ -1,0 +1,71 @@
+#be(id_117,
+	[
+	 8,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(9).
+  true_split(7).
+  true_split(5).
+  true_split(3).
+  true_split(2).
+  true_split(12).
+  true_split(11).
+  true_split(1).
+  possible_split((1 .. 12)).
+  test_split(1).
+  rel(c_TMP,8).
+  rel(c_SBJ,5).
+  rel(c_SBJ,1).
+  rel(c_ROOT,12).
+  rel(c_PMOD,9).
+  rel(c_PMOD,7).
+  rel(c_PMOD,11).
+  rel(c_P,3).
+  rel(c_OBJ,2).
+  rel(c_NMOD,6).
+  rel(c_NMOD,4).
+  rel(c_NMOD,10).
+  pos(c_c,3).
+  pos(c_VBP,2).
+  pos(c_VBD,12).
+  pos(c_NNS,9).
+  pos(c_NNS,11).
+  pos(c_NNP,4).
+  pos(c_NN,7).
+  pos(c_NN,5).
+  pos(c_NN,1).
+  pos(c_IN,8).
+  pos(c_IN,6).
+  pos(c_IN,10).
+  last(12).
+  head(root,12).
+  head(9,10).
+  head(8,9).
+  head(6,7).
+  head(5,8).
+  head(5,6).
+  head(5,4).
+  head(2,3).
+  head(2,1).
+  head(12,5).
+  head(12,2).
+  head(10,11).
+  form(9,"reports").
+  form(8,"after").
+  form(7,"lockdown").
+  form(6,"on").
+  form(5,"Capitol").
+  form(4,"US").
+  form(3,":").
+  form(2,"live").
+  form(12,"fired").
+  form(11,"shots").
+  form(10,"of").
+  form(1,"Watch").
+  first(1).
+}).

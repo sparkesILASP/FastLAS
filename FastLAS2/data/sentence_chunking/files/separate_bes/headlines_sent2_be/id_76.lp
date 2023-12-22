@@ -1,0 +1,63 @@
+#be(id_76,
+	[
+	 4,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(9).
+  true_split(5).
+  true_split(2).
+  true_split(1).
+  possible_split((1 .. 11)).
+  test_split(1).
+  rel(c_SBJ,1).
+  rel(c_ROOT,2).
+  rel(c_PMOD,9).
+  rel(c_PMOD,11).
+  rel(c_OBJ,5).
+  rel(c_NMOD,6).
+  rel(c_NMOD,10).
+  rel(c_NAME,8).
+  rel(c_NAME,7).
+  rel(c_NAME,4).
+  rel(c_NAME,3).
+  pos(c_VBZ,2).
+  pos(c_NNP,9).
+  pos(c_NNP,8).
+  pos(c_NNP,7).
+  pos(c_NNP,5).
+  pos(c_NNP,4).
+  pos(c_NNP,3).
+  pos(c_NNP,11).
+  pos(c_NNP,1).
+  pos(c_IN,6).
+  pos(c_IN,10).
+  last(11).
+  head(root,2).
+  head(9,8).
+  head(9,7).
+  head(9,10).
+  head(6,9).
+  head(5,6).
+  head(5,4).
+  head(5,3).
+  head(2,5).
+  head(2,1).
+  head(10,11).
+  form(9,"Use").
+  form(8,"Arms").
+  form(7,"Chemical").
+  form(6,"of").
+  form(5,"Evidence").
+  form(4,"Conclusive").
+  form(3,"No").
+  form(2,"Sees").
+  form(11,"Syria").
+  form(10,"by").
+  form(1,"U.S.").
+  first(1).
+}).

@@ -1,0 +1,52 @@
+#be(id_455,
+	[
+	 5,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(8).
+  true_split(7).
+  true_split(4).
+  true_split(2).
+  true_split(1).
+  possible_split((1 .. 8)).
+  test_split(1).
+  rel(c_SBJ,1).
+  rel(c_ROOT,3).
+  rel(c_P,8).
+  rel(c_P,2).
+  rel(c_OBJ,7).
+  rel(c_NMOD,6).
+  rel(c_NMOD,5).
+  rel(c_NMOD,4).
+  pos(c_qq,8).
+  pos(c_qq,2).
+  pos(c_VBP,3).
+  pos(c_NNP,1).
+  pos(c_NN,7).
+  pos(c_NN,6).
+  pos(c_NN,4).
+  pos(c_JJ,5).
+  last(8).
+  head(root,3).
+  head(7,6).
+  head(7,5).
+  head(7,4).
+  head(3,8).
+  head(3,7).
+  head(3,2).
+  head(3,1).
+  form(8,"'").
+  form(7,"game").
+  form(6,"tax").
+  form(5,"international").
+  form(4,"playing").
+  form(3,"are").
+  form(2,"`").
+  form(1,"Google").
+  first(1).
+}).

@@ -1,0 +1,62 @@
+#be(id_85,
+	[
+	 3,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(9).
+  true_split(8).
+  true_split(1).
+  possible_split((1 .. 11)).
+  test_split(1).
+  rel(c_SUFFIX,2).
+  rel(c_SBJ,3).
+  rel(c_ROOT,9).
+  rel(c_PMOD,11).
+  rel(c_P,7).
+  rel(c_NMOD,1).
+  rel(c_NAME,5).
+  rel(c_NAME,4).
+  rel(c_APPO,8).
+  rel(c_APPO,6).
+  rel(c_ADV,10).
+  pos(c_c,7).
+  pos(c_VBD,9).
+  pos(c_POS,2).
+  pos(c_NNP,6).
+  pos(c_NNP,5).
+  pos(c_NNP,4).
+  pos(c_NNP,1).
+  pos(c_NN,8).
+  pos(c_NN,3).
+  pos(c_NN,11).
+  pos(c_IN,10).
+  last(11).
+  head(root,9).
+  head(9,3).
+  head(9,10).
+  head(6,5).
+  head(6,4).
+  head(3,8).
+  head(3,7).
+  head(3,6).
+  head(3,1).
+  head(10,11).
+  head(1,2).
+  form(9,"charged").
+  form(8,"wife").
+  form(7,",").
+  form(6,"McDonnell").
+  form(5,"Bob").
+  form(4,".").
+  form(3,"ex-Gov").
+  form(2,"'s").
+  form(11,"corruption").
+  form(10,"with").
+  form(1,"Virginia").
+  first(1).
+}).

@@ -1,0 +1,47 @@
+#be(id_350,
+	[
+	 3,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(5).
+  true_split(3).
+  true_split(2).
+  possible_split((1 .. 7)).
+  test_split(2).
+  test_split(1).
+  rel(c_ROOT,5).
+  rel(c_PMOD,7).
+  rel(c_NMOD,4).
+  rel(c_NMOD,3).
+  rel(c_NMOD,2).
+  rel(c_LOC,6).
+  rel(c_AMOD,1).
+  pos(c_RBS,1).
+  pos(c_NNP,7).
+  pos(c_NN,5).
+  pos(c_NN,4).
+  pos(c_NN,3).
+  pos(c_JJ,2).
+  pos(c_IN,6).
+  last(7).
+  head(root,5).
+  head(6,7).
+  head(5,6).
+  head(5,4).
+  head(5,2).
+  head(4,3).
+  head(2,1).
+  form(7,"Mali").
+  form(6,"in").
+  form(5,"operation").
+  form(4,"military").
+  form(3,"support").
+  form(2,"French").
+  form(1,"Most").
+  first(1).
+}).

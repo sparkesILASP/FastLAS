@@ -1,0 +1,76 @@
+#be(id_202,
+	[
+	 5,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(9).
+  true_split(8).
+  true_split(14).
+  true_split(13).
+  true_split(1).
+  possible_split((1 .. 14)).
+  test_split(1).
+  rel(c_SBJ,1).
+  rel(c_ROOT,9).
+  rel(c_PMOD,5).
+  rel(c_PMOD,13).
+  rel(c_P,14).
+  rel(c_NMOD,7).
+  rel(c_NMOD,4).
+  rel(c_NMOD,3).
+  rel(c_NMOD,2).
+  rel(c_NMOD,12).
+  rel(c_NMOD,11).
+  rel(c_LOC,10).
+  rel(c_COORD,6).
+  rel(c_CONJ,8).
+  pos(c_p,14).
+  pos(c_VBD,9).
+  pos(c_NN,8).
+  pos(c_NN,5).
+  pos(c_NN,13).
+  pos(c_NN,12).
+  pos(c_NN,1).
+  pos(c_JJ,7).
+  pos(c_JJ,4).
+  pos(c_IN,2).
+  pos(c_IN,10).
+  pos(c_DT,3).
+  pos(c_DT,11).
+  pos(c_CC,6).
+  last(14).
+  head(root,9).
+  head(9,14).
+  head(9,10).
+  head(9,1).
+  head(8,7).
+  head(6,8).
+  head(5,6).
+  head(5,4).
+  head(5,3).
+  head(2,5).
+  head(13,12).
+  head(13,11).
+  head(10,13).
+  head(1,2).
+  form(9,"perched").
+  form(8,"chest").
+  form(7,"white").
+  form(6,"and").
+  form(5,"head").
+  form(4,"green").
+  form(3,"a").
+  form(2,"with").
+  form(14,".").
+  form(13,"branch").
+  form(12,"tree").
+  form(11,"a").
+  form(10,"on").
+  form(1,"Bird").
+  first(1).
+}).

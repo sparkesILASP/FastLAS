@@ -1,0 +1,57 @@
+#be(id_428,
+	[
+	 4,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(9).
+  true_split(8).
+  true_split(4).
+  true_split(3).
+  possible_split((1 .. 9)).
+  test_split(3).
+  test_split(2).
+  test_split(1).
+  rel(c_ROOT,4).
+  rel(c_PMOD,8).
+  rel(c_P,9).
+  rel(c_NMOD,7).
+  rel(c_NMOD,6).
+  rel(c_NMOD,5).
+  rel(c_NMOD,3).
+  rel(c_NMOD,2).
+  rel(c_NMOD,1).
+  pos(c_p,9).
+  pos(c_TO,5).
+  pos(c_NNS,4).
+  pos(c_NN,8).
+  pos(c_NN,7).
+  pos(c_JJ,3).
+  pos(c_JJ,2).
+  pos(c_DT,6).
+  pos(c_DT,1).
+  last(9).
+  head(root,4).
+  head(8,7).
+  head(8,6).
+  head(5,8).
+  head(4,9).
+  head(4,5).
+  head(4,3).
+  head(4,2).
+  head(4,1).
+  form(9,".").
+  form(8,"fence").
+  form(7,"wire").
+  form(6,"a").
+  form(5,"to").
+  form(4,"clings").
+  form(3,"bird").
+  form(2,"multi-colored").
+  form(1,"A").
+  first(1).
+}).

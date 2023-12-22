@@ -1,0 +1,65 @@
+#be(id_86,
+	[
+	 5,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(8).
+  true_split(7).
+  true_split(6).
+  true_split(3).
+  true_split(2).
+  possible_split((1 .. 11)).
+  test_split(2).
+  test_split(1).
+  rel(c_SBJ,2).
+  rel(c_ROOT,8).
+  rel(c_PMOD,11).
+  rel(c_P,7).
+  rel(c_P,3).
+  rel(c_NMOD,5).
+  rel(c_NMOD,4).
+  rel(c_NMOD,10).
+  rel(c_NAME,1).
+  rel(c_LOC,9).
+  rel(c_APPO,6).
+  pos(c_c,7).
+  pos(c_c,3).
+  pos(c_VBZ,8).
+  pos(c_NNP,2).
+  pos(c_NNP,1).
+  pos(c_NN,6).
+  pos(c_NN,5).
+  pos(c_NN,11).
+  pos(c_NN,10).
+  pos(c_JJ,4).
+  pos(c_IN,9).
+  last(11).
+  head(root,8).
+  head(9,11).
+  head(8,9).
+  head(8,2).
+  head(6,5).
+  head(6,4).
+  head(2,7).
+  head(2,6).
+  head(2,3).
+  head(2,1).
+  head(11,10).
+  form(9,"in").
+  form(8,"dies").
+  form(7,",").
+  form(6,"star").
+  form(5,"music").
+  form(4,"Mexican").
+  form(3,",").
+  form(2,"Rivera").
+  form(11,"crash").
+  form(10,"plane").
+  form(1,"Jenni").
+  first(1).
+}).

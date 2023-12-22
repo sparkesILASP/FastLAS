@@ -1,0 +1,51 @@
+#be(id_469,
+	[
+	 3,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(5).
+  true_split(4).
+  true_split(2).
+  possible_split((1 .. 8)).
+  test_split(5).
+  test_split(4).
+  rel(c_SUFFIX,3).
+  rel(c_ROOT,5).
+  rel(c_PMOD,8).
+  rel(c_NMOD,6).
+  rel(c_NMOD,2).
+  rel(c_NAME,7).
+  rel(c_NAME,4).
+  rel(c_NAME,1).
+  pos(c_POS,3).
+  pos(c_NNP,8).
+  pos(c_NNP,7).
+  pos(c_NNP,5).
+  pos(c_NNP,4).
+  pos(c_NNP,2).
+  pos(c_NNP,1).
+  pos(c_IN,6).
+  last(8).
+  head(root,5).
+  head(8,7).
+  head(6,8).
+  head(5,6).
+  head(5,4).
+  head(5,2).
+  head(2,3).
+  head(2,1).
+  form(8,"Autonomy").
+  form(7,"Greater").
+  form(6,"for").
+  form(5,"Vote").
+  form(4,"Tamils").
+  form(3,"'s").
+  form(2,"Lanka").
+  form(1,"Sri").
+  first(1).
+}).

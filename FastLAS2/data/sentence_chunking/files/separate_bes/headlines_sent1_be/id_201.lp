@@ -1,0 +1,45 @@
+#be(id_201,
+	[
+	 5,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(6).
+  true_split(5).
+  true_split(4).
+  true_split(3).
+  true_split(2).
+  possible_split((1 .. 6)).
+  test_split(2).
+  test_split(1).
+  rel(c_SBJ,2).
+  rel(c_ROOT,3).
+  rel(c_P,5).
+  rel(c_OBJ,6).
+  rel(c_OBJ,4).
+  rel(c_NMOD,1).
+  pos(c_c,5).
+  pos(c_VBZ,3).
+  pos(c_NNP,4).
+  pos(c_NN,6).
+  pos(c_NN,2).
+  pos(c_JJ,1).
+  last(6).
+  head(root,3).
+  head(3,6).
+  head(3,5).
+  head(3,4).
+  head(3,2).
+  head(2,1).
+  form(6,"CENC").
+  form(5,":").
+  form(4,"Pakistan").
+  form(3,"hits").
+  form(2,"quake").
+  form(1,"-407993.-407998-magnitude").
+  first(1).
+}).

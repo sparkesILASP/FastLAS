@@ -1,0 +1,84 @@
+#be(id_250,
+	[
+	 6,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(6).
+  true_split(4).
+  true_split(15).
+  true_split(14).
+  true_split(11).
+  true_split(10).
+  possible_split((1 .. 15)).
+  test_split(4).
+  test_split(3).
+  test_split(2).
+  test_split(1).
+  rel(c_SBJ,4).
+  rel(c_ROOT,5).
+  rel(c_PMOD,14).
+  rel(c_PMOD,10).
+  rel(c_P,15).
+  rel(c_OPRD,6).
+  rel(c_NMOD,9).
+  rel(c_NMOD,8).
+  rel(c_NMOD,3).
+  rel(c_NMOD,2).
+  rel(c_NMOD,13).
+  rel(c_NMOD,1).
+  rel(c_APPO,11).
+  rel(c_ADV,7).
+  rel(c_ADV,12).
+  pos(c_p,15).
+  pos(c_VBZ,5).
+  pos(c_VBG,6).
+  pos(c_VBG,11).
+  pos(c_NNS,4).
+  pos(c_NN,9).
+  pos(c_NN,14).
+  pos(c_NN,10).
+  pos(c_JJ,3).
+  pos(c_JJ,2).
+  pos(c_IN,7).
+  pos(c_IN,12).
+  pos(c_DT,8).
+  pos(c_DT,13).
+  pos(c_DT,1).
+  last(15).
+  head(root,5).
+  head(7,10).
+  head(6,7).
+  head(5,6).
+  head(5,4).
+  head(5,15).
+  head(4,3).
+  head(4,2).
+  head(4,1).
+  head(14,13).
+  head(12,14).
+  head(11,12).
+  head(10,9).
+  head(10,8).
+  head(10,11).
+  form(9,"bird").
+  form(8,"a").
+  form(7,"from").
+  form(6,"eating").
+  form(5,"is").
+  form(4,"birds").
+  form(3,"brown").
+  form(2,"small").
+  form(15,".").
+  form(14,"tree").
+  form(13,"a").
+  form(12,"from").
+  form(11,"hanging").
+  form(10,"feeder").
+  form(1,"A").
+  first(1).
+}).

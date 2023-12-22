@@ -1,0 +1,65 @@
+#be(id_207,
+	[
+	 2,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(4).
+  true_split(1).
+  possible_split((1 .. 12)).
+  test_split(1).
+  rel(c_SBJ,1).
+  rel(c_ROOT,2).
+  rel(c_PMOD,8).
+  rel(c_OBJ,4).
+  rel(c_NMOD,7).
+  rel(c_NMOD,6).
+  rel(c_NMOD,5).
+  rel(c_NMOD,3).
+  rel(c_NMOD,11).
+  rel(c_NMOD,10).
+  rel(c_COORD,9).
+  rel(c_CONJ,12).
+  pos(c_VBZ,2).
+  pos(c_NN,8).
+  pos(c_NN,7).
+  pos(c_NN,4).
+  pos(c_NN,12).
+  pos(c_NN,11).
+  pos(c_IN,5).
+  pos(c_EX,1).
+  pos(c_DT,6).
+  pos(c_DT,3).
+  pos(c_DT,10).
+  pos(c_CC,9).
+  last(12).
+  head(root,2).
+  head(9,12).
+  head(8,9).
+  head(8,7).
+  head(8,6).
+  head(5,8).
+  head(4,5).
+  head(4,3).
+  head(2,4).
+  head(2,1).
+  head(12,11).
+  head(12,10).
+  form(9,"and").
+  form(8,"terminal").
+  form(7,"bulb").
+  form(6,"the").
+  form(5,"between").
+  form(4,"connection").
+  form(3,"no").
+  form(2,"is").
+  form(12,"terminal.").
+  form(11,"battery").
+  form(10,"the").
+  form(1,"There").
+  first(1).
+}).

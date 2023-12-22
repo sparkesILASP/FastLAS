@@ -1,0 +1,60 @@
+#be(id_42,
+	[
+	 3,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(9).
+  true_split(3).
+  true_split(10).
+  possible_split((1 .. 10)).
+  test_split(3).
+  test_split(2).
+  test_split(1).
+  rel(c_ROOT,3).
+  rel(c_PMOD,9).
+  rel(c_P,10).
+  rel(c_NMOD,6).
+  rel(c_NMOD,5).
+  rel(c_NMOD,4).
+  rel(c_NMOD,2).
+  rel(c_NMOD,1).
+  rel(c_COORD,7).
+  rel(c_CONJ,8).
+  pos(c_p,10).
+  pos(c_NN,9).
+  pos(c_NN,3).
+  pos(c_JJ,8).
+  pos(c_JJ,6).
+  pos(c_JJ,2).
+  pos(c_IN,4).
+  pos(c_DT,5).
+  pos(c_DT,1).
+  pos(c_CC,7).
+  last(10).
+  head(root,3).
+  head(9,6).
+  head(9,5).
+  head(7,8).
+  head(6,7).
+  head(4,9).
+  head(3,4).
+  head(3,2).
+  head(3,10).
+  head(3,1).
+  form(9,"motorcycle").
+  form(8,"purple").
+  form(7,"and").
+  form(6,"white").
+  form(5,"a").
+  form(4,"of").
+  form(3,"picture").
+  form(2,"close-up").
+  form(10,".").
+  form(1,"A").
+  first(1).
+}).

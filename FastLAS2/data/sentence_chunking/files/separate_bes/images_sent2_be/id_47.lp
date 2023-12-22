@@ -1,0 +1,62 @@
+#be(id_47,
+	[
+	 4,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(9).
+  true_split(5).
+  true_split(4).
+  true_split(10).
+  possible_split((1 .. 10)).
+  test_split(4).
+  test_split(3).
+  test_split(2).
+  test_split(1).
+  rel(c_ROOT,1).
+  rel(c_P,10).
+  rel(c_OBJ,7).
+  rel(c_OBJ,4).
+  rel(c_NMOD,6).
+  rel(c_NMOD,3).
+  rel(c_DIR,8).
+  rel(c_APPO,5).
+  rel(c_APPO,2).
+  rel(c_AMOD,9).
+  pos(c_p,10).
+  pos(c_VBG,5).
+  pos(c_VBG,2).
+  pos(c_RP,8).
+  pos(c_NNS,7).
+  pos(c_NNS,4).
+  pos(c_NN,9).
+  pos(c_JJ,3).
+  pos(c_DT,6).
+  pos(c_CD,1).
+  last(10).
+  head(root,1).
+  head(8,9).
+  head(7,6).
+  head(5,8).
+  head(5,7).
+  head(4,5).
+  head(4,3).
+  head(2,4).
+  head(1,2).
+  head(1,10).
+  form(9,"sign").
+  form(8,"up").
+  form(7,"thumbs").
+  form(6,"the").
+  form(5,"giving").
+  form(4,"women").
+  form(3,"young").
+  form(2,"smiling").
+  form(10,".").
+  form(1,"Two").
+  first(1).
+}).

@@ -1,0 +1,52 @@
+#be(id_513,
+	[
+	 5,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(8).
+  true_split(7).
+  true_split(4).
+  true_split(2).
+  true_split(1).
+  possible_split((1 .. 8)).
+  test_split(1).
+  rel(c_SBJ,1).
+  rel(c_ROOT,2).
+  rel(c_PRT,7).
+  rel(c_PMOD,6).
+  rel(c_OBJ,8).
+  rel(c_OBJ,4).
+  rel(c_NMOD,3).
+  rel(c_MNR,5).
+  pos(c_VBP,2).
+  pos(c_VBG,6).
+  pos(c_RP,7).
+  pos(c_NNS,4).
+  pos(c_NNS,1).
+  pos(c_NN,8).
+  pos(c_JJ,3).
+  pos(c_IN,5).
+  last(8).
+  head(root,2).
+  head(6,8).
+  head(6,7).
+  head(5,6).
+  head(4,3).
+  head(2,5).
+  head(2,4).
+  head(2,1).
+  form(8,"anonymity").
+  form(7,"away").
+  form(6,"taking").
+  form(5,"by").
+  form(4,"comments").
+  form(3,"nasty").
+  form(2,"fight").
+  form(1,"Websites").
+  first(1).
+}).

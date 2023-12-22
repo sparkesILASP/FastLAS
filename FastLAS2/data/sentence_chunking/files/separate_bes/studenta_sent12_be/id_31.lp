@@ -1,0 +1,60 @@
+#be(id_31,
+	[
+	 5,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(7).
+  true_split(5).
+  true_split(3).
+  true_split(2).
+  true_split(1).
+  possible_split((1 .. 10)).
+  test_split(1).
+  rel(c_SUB,3).
+  rel(c_SBJ,2).
+  rel(c_ROOT,1).
+  rel(c_PMOD,7).
+  rel(c_PMOD,10).
+  rel(c_OBJ,5).
+  rel(c_NMOD,9).
+  rel(c_NMOD,8).
+  rel(c_NMOD,4).
+  rel(c_LOC,6).
+  pos(c_VBZ,3).
+  pos(c_NN,5).
+  pos(c_NN,10).
+  pos(c_IN,8).
+  pos(c_IN,6).
+  pos(c_IN,1).
+  pos(c_EX,2).
+  pos(c_DT,9).
+  pos(c_DT,4).
+  pos(c_CD,7).
+  last(10).
+  head(root,1).
+  head(8,10).
+  head(7,8).
+  head(6,7).
+  head(5,6).
+  head(5,4).
+  head(3,5).
+  head(3,2).
+  head(10,9).
+  head(1,3).
+  form(9,"the").
+  form(8,"of").
+  form(7,"one").
+  form(6,"in").
+  form(5,"bulb").
+  form(4,"a").
+  form(3,"is").
+  form(2,"there").
+  form(10,"paths.").
+  form(1,"Because").
+  first(1).
+}).

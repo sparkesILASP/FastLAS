@@ -1,0 +1,68 @@
+#be(id_116,
+	[
+	 5,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(7).
+  true_split(5).
+  true_split(4).
+  true_split(10).
+  true_split(1).
+  possible_split((1 .. 12)).
+  test_split(1).
+  rel(c_SUFFIX,11).
+  rel(c_SBJ,1).
+  rel(c_ROOT,5).
+  rel(c_PMOD,4).
+  rel(c_PMOD,12).
+  rel(c_OBJ,7).
+  rel(c_NMOD,6).
+  rel(c_NMOD,3).
+  rel(c_NMOD,2).
+  rel(c_NMOD,10).
+  rel(c_NAME,9).
+  rel(c_ADV,8).
+  pos(c_VBZ,5).
+  pos(c_VBG,6).
+  pos(c_TO,8).
+  pos(c_POS,11).
+  pos(c_NNP,9).
+  pos(c_NNP,3).
+  pos(c_NNP,10).
+  pos(c_NN,7).
+  pos(c_NN,4).
+  pos(c_NN,12).
+  pos(c_NN,1).
+  pos(c_IN,2).
+  last(12).
+  head(root,5).
+  head(8,12).
+  head(7,6).
+  head(5,8).
+  head(5,7).
+  head(5,1).
+  head(4,3).
+  head(2,4).
+  head(12,10).
+  head(10,9).
+  head(10,11).
+  head(1,2).
+  form(9,"North").
+  form(8,"to").
+  form(7,"message").
+  form(6,"chilling").
+  form(5,"sends").
+  form(4,"uncle").
+  form(3,"Kim").
+  form(2,"of").
+  form(12,"elite").
+  form(11,"'s").
+  form(10,"Korea").
+  form(1,"Purge").
+  first(1).
+}).

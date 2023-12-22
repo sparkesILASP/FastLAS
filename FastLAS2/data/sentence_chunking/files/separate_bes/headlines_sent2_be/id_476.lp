@@ -1,0 +1,51 @@
+#be(id_476,
+	[
+	 4,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(6).
+  true_split(4).
+  true_split(2).
+  true_split(1).
+  possible_split((1 .. 8)).
+  test_split(1).
+  rel(c_ROOT,4).
+  rel(c_PMOD,8).
+  rel(c_PMOD,6).
+  rel(c_NMOD,5).
+  rel(c_NMOD,3).
+  rel(c_NMOD,2).
+  rel(c_NMOD,1).
+  rel(c_LOC,7).
+  pos(c_NNS,6).
+  pos(c_NNP,8).
+  pos(c_NN,4).
+  pos(c_NN,3).
+  pos(c_NN,2).
+  pos(c_NN,1).
+  pos(c_IN,7).
+  pos(c_IN,5).
+  last(8).
+  head(root,4).
+  head(7,8).
+  head(6,7).
+  head(5,6).
+  head(4,5).
+  head(4,3).
+  head(3,2).
+  head(2,1).
+  form(8,"Cairo").
+  form(7,"in").
+  form(6,"protesters").
+  form(5,"at").
+  form(4,"gas").
+  form(3,"tear").
+  form(2,"fire").
+  form(1,"Police").
+  first(1).
+}).

@@ -1,0 +1,56 @@
+#be(id_659,
+	[
+	 5,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(7).
+  true_split(6).
+  true_split(4).
+  true_split(2).
+  true_split(1).
+  possible_split((1 .. 9)).
+  test_split(1).
+  rel(c_TMP,5).
+  rel(c_SUB,7).
+  rel(c_SBJ,6).
+  rel(c_SBJ,1).
+  rel(c_ROOT,2).
+  rel(c_PMOD,9).
+  rel(c_OBJ,4).
+  rel(c_NMOD,3).
+  rel(c_ADV,8).
+  pos(c_VBZ,7).
+  pos(c_VBZ,2).
+  pos(c_NNP,3).
+  pos(c_NNP,1).
+  pos(c_NN,9).
+  pos(c_NN,6).
+  pos(c_NN,4).
+  pos(c_IN,8).
+  pos(c_IN,5).
+  last(9).
+  head(root,2).
+  head(8,9).
+  head(7,8).
+  head(7,6).
+  head(5,7).
+  head(4,3).
+  head(2,5).
+  head(2,4).
+  head(2,1).
+  form(9,"hospital").
+  form(8,"in").
+  form(7,"remains").
+  form(6,"icon").
+  form(5,"as").
+  form(4,"family").
+  form(3,"Mandela").
+  form(2,"meets").
+  form(1,"Obama").
+  first(1).
+}).

@@ -1,0 +1,78 @@
+#be(id_228,
+	[
+	 6,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(8).
+  true_split(5).
+  true_split(4).
+  true_split(2).
+  true_split(14).
+  true_split(13).
+  possible_split((1 .. 14)).
+  test_split(2).
+  test_split(1).
+  rel(c_SBJ,2).
+  rel(c_ROOT,5).
+  rel(c_PMOD,8).
+  rel(c_PMOD,4).
+  rel(c_PMOD,13).
+  rel(c_P,14).
+  rel(c_NMOD,9).
+  rel(c_NMOD,7).
+  rel(c_NMOD,3).
+  rel(c_NMOD,12).
+  rel(c_NMOD,11).
+  rel(c_NMOD,10).
+  rel(c_NMOD,1).
+  rel(c_LOC,6).
+  pos(c_p,14).
+  pos(c_VBZ,5).
+  pos(c_VBN,12).
+  pos(c_NN,8).
+  pos(c_NN,4).
+  pos(c_NN,2).
+  pos(c_NN,13).
+  pos(c_NN,11).
+  pos(c_IN,9).
+  pos(c_IN,6).
+  pos(c_IN,3).
+  pos(c_DT,7).
+  pos(c_DT,10).
+  pos(c_DT,1).
+  last(14).
+  head(root,5).
+  head(9,13).
+  head(8,9).
+  head(8,7).
+  head(6,8).
+  head(5,6).
+  head(5,2).
+  head(5,14).
+  head(3,4).
+  head(2,3).
+  head(2,1).
+  head(13,12).
+  head(13,11).
+  head(13,10).
+  form(9,"of").
+  form(8,"center").
+  form(7,"the").
+  form(6,"at").
+  form(5,"is").
+  form(4,"liquid").
+  form(3,"of").
+  form(2,"pot").
+  form(14,".").
+  form(13,"plate").
+  form(12,"covered").
+  form(11,"tinfoil").
+  form(10,"a").
+  form(1,"A").
+  first(1).
+}).

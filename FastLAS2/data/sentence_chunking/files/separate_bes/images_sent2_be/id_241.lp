@@ -1,0 +1,83 @@
+#be(id_241,
+	[
+	 4,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(5).
+  true_split(15).
+  true_split(14).
+  true_split(10).
+  possible_split((1 .. 15)).
+  test_split(5).
+  test_split(4).
+  test_split(3).
+  test_split(2).
+  test_split(1).
+  rel(c_ROOT,5).
+  rel(c_PMOD,14).
+  rel(c_PMOD,10).
+  rel(c_P,15).
+  rel(c_NMOD,9).
+  rel(c_NMOD,8).
+  rel(c_NMOD,7).
+  rel(c_NMOD,6).
+  rel(c_NMOD,2).
+  rel(c_NMOD,13).
+  rel(c_NMOD,12).
+  rel(c_NMOD,1).
+  rel(c_LOC,11).
+  rel(c_COORD,3).
+  rel(c_CONJ,4).
+  pos(c_p,15).
+  pos(c_NN,5).
+  pos(c_NN,14).
+  pos(c_NN,13).
+  pos(c_NN,10).
+  pos(c_JJ,9).
+  pos(c_JJ,8).
+  pos(c_JJ,4).
+  pos(c_JJ,2).
+  pos(c_IN,6).
+  pos(c_IN,11).
+  pos(c_DT,7).
+  pos(c_DT,12).
+  pos(c_DT,1).
+  pos(c_CC,3).
+  last(15).
+  head(root,5).
+  head(6,10).
+  head(5,6).
+  head(5,2).
+  head(5,15).
+  head(5,1).
+  head(3,4).
+  head(2,3).
+  head(14,13).
+  head(14,12).
+  head(11,14).
+  head(10,9).
+  head(10,8).
+  head(10,7).
+  head(10,11).
+  form(9,"wooden").
+  form(8,"old").
+  form(7,"an").
+  form(6,"of").
+  form(5,"photo").
+  form(4,"white").
+  form(3,"and").
+  form(2,"black").
+  form(15,".").
+  form(14,"street").
+  form(13,"dirty").
+  form(12,"a").
+  form(11,"near").
+  form(10,"fence").
+  form(1,"A").
+  first(1).
+}).

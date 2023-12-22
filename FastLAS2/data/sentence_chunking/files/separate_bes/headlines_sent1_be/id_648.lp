@@ -1,0 +1,55 @@
+#be(id_648,
+	[
+	 3,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(5).
+  true_split(3).
+  true_split(2).
+  possible_split((1 .. 9)).
+  test_split(2).
+  test_split(1).
+  rel(c_SBJ,2).
+  rel(c_ROOT,3).
+  rel(c_PRD,5).
+  rel(c_PMOD,9).
+  rel(c_NMOD,8).
+  rel(c_NMOD,7).
+  rel(c_NAME,1).
+  rel(c_AMOD,6).
+  rel(c_ADV,4).
+  pos(c_VBZ,3).
+  pos(c_TO,6).
+  pos(c_RB,4).
+  pos(c_NNS,9).
+  pos(c_NNP,7).
+  pos(c_NNP,2).
+  pos(c_NNP,1).
+  pos(c_NN,8).
+  pos(c_JJ,5).
+  last(9).
+  head(root,3).
+  head(9,8).
+  head(9,7).
+  head(6,9).
+  head(5,6).
+  head(3,5).
+  head(3,4).
+  head(3,2).
+  head(2,1).
+  form(9,"charges").
+  form(8,"bombing").
+  form(7,"Boston").
+  form(6,"to").
+  form(5,"guilty").
+  form(4,"not").
+  form(3,"pleads").
+  form(2,"Tsarnaev").
+  form(1,"Dzhokhar").
+  first(1).
+}).

@@ -1,0 +1,64 @@
+#be(id_87,
+	[
+	 4,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(4).
+  true_split(2).
+  true_split(11).
+  true_split(10).
+  possible_split((1 .. 11)).
+  test_split(2).
+  test_split(1).
+  rel(c_SBJ,2).
+  rel(c_ROOT,3).
+  rel(c_PMOD,10).
+  rel(c_P,11).
+  rel(c_OPRD,4).
+  rel(c_NMOD,9).
+  rel(c_NMOD,8).
+  rel(c_NMOD,7).
+  rel(c_NMOD,1).
+  rel(c_LOC,5).
+  rel(c_AMOD,6).
+  pos(c_p,11).
+  pos(c_VBZ,3).
+  pos(c_VBG,4).
+  pos(c_TO,6).
+  pos(c_NNS,9).
+  pos(c_NN,2).
+  pos(c_NN,10).
+  pos(c_JJ,8).
+  pos(c_JJ,5).
+  pos(c_DT,7).
+  pos(c_DT,1).
+  last(11).
+  head(root,3).
+  head(6,10).
+  head(5,6).
+  head(4,5).
+  head(3,4).
+  head(3,2).
+  head(3,11).
+  head(2,1).
+  head(10,9).
+  head(10,8).
+  head(10,7).
+  form(9,"sports").
+  form(8,"yellow").
+  form(7,"a").
+  form(6,"to").
+  form(5,"next").
+  form(4,"standing").
+  form(3,"is").
+  form(2,"man").
+  form(11,".").
+  form(10,"car").
+  form(1,"A").
+  first(1).
+}).

@@ -1,0 +1,42 @@
+#be(id_224,
+	[
+	 2,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(3).
+  true_split(2).
+  possible_split((1 .. 6)).
+  test_split(2).
+  test_split(1).
+  rel(c_ROOT,5).
+  rel(c_NMOD,4).
+  rel(c_NMOD,1).
+  rel(c_HYPH,3).
+  rel(c_HMOD,2).
+  rel(c_APPO,6).
+  pos(c_NNP,6).
+  pos(c_NNP,4).
+  pos(c_NN,5).
+  pos(c_NN,2).
+  pos(c_JJ,1).
+  pos(c_HYPH,3).
+  last(6).
+  head(root,5).
+  head(5,6).
+  head(5,4).
+  head(5,1).
+  head(4,2).
+  head(2,3).
+  form(6,"April").
+  form(5,"-298973th").
+  form(4,"Saturday").
+  form(3,"-").
+  form(2,"crossword").
+  form(1,"Quiz").
+  first(1).
+}).

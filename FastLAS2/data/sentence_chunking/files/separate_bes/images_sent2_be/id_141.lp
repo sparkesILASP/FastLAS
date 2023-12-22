@@ -1,0 +1,68 @@
+#be(id_141,
+	[
+	 4,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(8).
+  true_split(2).
+  true_split(12).
+  true_split(11).
+  possible_split((1 .. 12)).
+  test_split(2).
+  test_split(1).
+  rel(c_ROOT,2).
+  rel(c_PMOD,4).
+  rel(c_PMOD,11).
+  rel(c_P,12).
+  rel(c_NMOD,7).
+  rel(c_NMOD,6).
+  rel(c_NMOD,3).
+  rel(c_NMOD,10).
+  rel(c_NMOD,1).
+  rel(c_LOC,9).
+  rel(c_COORD,5).
+  rel(c_CONJ,8).
+  pos(c_p,12).
+  pos(c_NNS,8).
+  pos(c_NNS,4).
+  pos(c_NN,2).
+  pos(c_NN,11).
+  pos(c_JJ,7).
+  pos(c_IN,9).
+  pos(c_IN,3).
+  pos(c_DT,10).
+  pos(c_DT,1).
+  pos(c_CD,6).
+  pos(c_CC,5).
+  last(12).
+  head(root,2).
+  head(9,11).
+  head(8,9).
+  head(8,7).
+  head(8,6).
+  head(5,8).
+  head(3,4).
+  head(2,5).
+  head(2,3).
+  head(2,12).
+  head(2,1).
+  head(11,10).
+  form(9,"in").
+  form(8,"bottles").
+  form(7,"plastic").
+  form(6,"two").
+  form(5,"and").
+  form(4,"glasses").
+  form(3,"with").
+  form(2,"man").
+  form(12,".").
+  form(11,"foreground").
+  form(10,"the").
+  form(1,"A").
+  first(1).
+}).

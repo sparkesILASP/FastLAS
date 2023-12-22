@@ -1,0 +1,54 @@
+#be(id_356,
+	[
+	 4,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(8).
+  true_split(7).
+  true_split(5).
+  true_split(4).
+  possible_split((1 .. 8)).
+  test_split(4).
+  test_split(3).
+  test_split(2).
+  test_split(1).
+  rel(c_ROOT,1).
+  rel(c_PMOD,7).
+  rel(c_P,8).
+  rel(c_NMOD,3).
+  rel(c_LOC,6).
+  rel(c_COORD,2).
+  rel(c_CONJ,4).
+  rel(c_APPO,5).
+  pos(c_p,8).
+  pos(c_VBG,5).
+  pos(c_NN,7).
+  pos(c_NN,4).
+  pos(c_NN,1).
+  pos(c_JJ,3).
+  pos(c_IN,6).
+  pos(c_CC,2).
+  last(8).
+  head(root,1).
+  head(6,7).
+  head(5,6).
+  head(4,3).
+  head(2,4).
+  head(1,8).
+  head(1,5).
+  head(1,2).
+  form(8,".").
+  form(7,"bush").
+  form(6,"under").
+  form(5,"lying").
+  form(4,"cat").
+  form(3,"white").
+  form(2,"and").
+  form(1,"Black").
+  first(1).
+}).

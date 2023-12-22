@@ -1,0 +1,70 @@
+#be(id_96,
+	[
+	 7,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(7).
+  true_split(6).
+  true_split(5).
+  true_split(4).
+  true_split(3).
+  true_split(10).
+  true_split(1).
+  possible_split((1 .. 12)).
+  test_split(1).
+  rel(c_VC,4).
+  rel(c_SUFFIX,7).
+  rel(c_SBJ,1).
+  rel(c_ROOT,2).
+  rel(c_PMOD,12).
+  rel(c_OBJ,10).
+  rel(c_NMOD,6).
+  rel(c_NAME,9).
+  rel(c_NAME,8).
+  rel(c_NAME,5).
+  rel(c_LOC,11).
+  rel(c_ADV,3).
+  pos(c_VB,4).
+  pos(c_RB,3).
+  pos(c_POS,7).
+  pos(c_NNP,9).
+  pos(c_NNP,8).
+  pos(c_NNP,6).
+  pos(c_NNP,5).
+  pos(c_NNP,12).
+  pos(c_NNP,10).
+  pos(c_NNP,1).
+  pos(c_MD,2).
+  pos(c_IN,11).
+  last(12).
+  head(root,2).
+  head(9,8).
+  head(6,7).
+  head(6,5).
+  head(4,11).
+  head(4,10).
+  head(2,4).
+  head(2,3).
+  head(2,1).
+  head(11,12).
+  head(10,9).
+  head(10,6).
+  form(9,"Weapons").
+  form(8,"Chemical").
+  form(7,"'").
+  form(6,"Determine").
+  form(5,"Conclusively").
+  form(4,"`").
+  form(3,"not").
+  form(2,"Can").
+  form(12,"Syria").
+  form(11,"in").
+  form(10,"Use").
+  form(1,"US").
+  first(1).
+}).

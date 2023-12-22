@@ -1,0 +1,68 @@
+#be(id_130,
+	[
+	 5,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(9).
+  true_split(6).
+  true_split(2).
+  true_split(10).
+  true_split(1).
+  possible_split((1 .. 12)).
+  test_split(1).
+  rel(c_ROOT,2).
+  rel(c_PMOD,4).
+  rel(c_PMOD,10).
+  rel(c_NMOD,9).
+  rel(c_NMOD,5).
+  rel(c_NMOD,3).
+  rel(c_NMOD,1).
+  rel(c_NAME,8).
+  rel(c_NAME,7).
+  rel(c_NAME,6).
+  rel(c_NAME,11).
+  rel(c_APPO,12).
+  pos(c_NNS,4).
+  pos(c_NNP,9).
+  pos(c_NNP,8).
+  pos(c_NNP,7).
+  pos(c_NNP,6).
+  pos(c_NNP,2).
+  pos(c_NNP,12).
+  pos(c_NNP,11).
+  pos(c_NN,10).
+  pos(c_IN,5).
+  pos(c_IN,3).
+  pos(c_DT,1).
+  last(12).
+  head(root,2).
+  head(9,8).
+  head(9,7).
+  head(7,6).
+  head(5,10).
+  head(4,5).
+  head(3,4).
+  head(2,3).
+  head(2,1).
+  head(12,11).
+  head(10,9).
+  head(10,12).
+  form(9,"C").
+  form(8,"AND").
+  form(7,"B").
+  form(6,"PATH").
+  form(5,"ON").
+  form(4,"ITS").
+  form(3,"ON").
+  form(2,"IS").
+  form(12,"PATH").
+  form(11,"A").
+  form(10,"SHARE").
+  form(1,"A").
+  first(1).
+}).

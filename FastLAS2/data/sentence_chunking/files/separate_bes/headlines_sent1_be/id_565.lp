@@ -1,0 +1,52 @@
+#be(id_565,
+	[
+	 3,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(6).
+  true_split(5).
+  true_split(3).
+  possible_split((1 .. 8)).
+  test_split(3).
+  test_split(2).
+  test_split(1).
+  rel(c_TMP,4).
+  rel(c_SBJ,1).
+  rel(c_ROOT,2).
+  rel(c_PRD,3).
+  rel(c_PMOD,8).
+  rel(c_PMOD,6).
+  rel(c_NMOD,7).
+  rel(c_NMOD,5).
+  pos(c_VBD,2).
+  pos(c_NNS,6).
+  pos(c_NN,8).
+  pos(c_JJR,5).
+  pos(c_JJ,3).
+  pos(c_IN,7).
+  pos(c_IN,4).
+  pos(c_CD,1).
+  last(8).
+  head(root,2).
+  head(7,8).
+  head(6,7).
+  head(6,5).
+  head(4,6).
+  head(2,4).
+  head(2,3).
+  head(2,1).
+  form(8,"pub").
+  form(7,"into").
+  form(6,"crashes").
+  form(5,"helicopter").
+  form(4,"after").
+  form(3,"dead").
+  form(2,"feared").
+  form(1,"Three").
+  first(1).
+}).

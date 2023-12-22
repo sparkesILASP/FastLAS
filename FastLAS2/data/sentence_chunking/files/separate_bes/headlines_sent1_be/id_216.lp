@@ -1,0 +1,42 @@
+#be(id_216,
+	[
+	 2,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(4).
+  true_split(2).
+  possible_split((1 .. 6)).
+  test_split(2).
+  test_split(1).
+  rel(c_SBJ,2).
+  rel(c_ROOT,3).
+  rel(c_PRT,4).
+  rel(c_OBJ,6).
+  rel(c_NMOD,1).
+  rel(c_NAME,5).
+  pos(c_VBZ,3).
+  pos(c_RP,4).
+  pos(c_NNPS,6).
+  pos(c_NNP,5).
+  pos(c_NN,2).
+  pos(c_CD,1).
+  last(6).
+  head(root,3).
+  head(6,5).
+  head(3,6).
+  head(3,4).
+  head(3,2).
+  head(2,1).
+  form(6,"Islands").
+  form(5,"Solomon").
+  form(4,"off").
+  form(3,"strikes").
+  form(2,"quake").
+  form(1,"-6994.-6992").
+  first(1).
+}).

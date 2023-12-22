@@ -1,0 +1,50 @@
+#be(id_417,
+	[
+	 2,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(7).
+  true_split(6).
+  possible_split((1 .. 7)).
+  test_split(6).
+  test_split(5).
+  test_split(4).
+  test_split(3).
+  test_split(2).
+  test_split(1).
+  rel(c_SBJ,4).
+  rel(c_ROOT,7).
+  rel(c_NMOD,3).
+  rel(c_NMOD,2).
+  rel(c_NAME,5).
+  rel(c_NAME,1).
+  rel(c_APPO,6).
+  pos(c_VBZ,7).
+  pos(c_VBG,3).
+  pos(c_NNP,6).
+  pos(c_NNP,5).
+  pos(c_NNP,2).
+  pos(c_NNP,1).
+  pos(c_NN,4).
+  last(7).
+  head(root,7).
+  head(7,4).
+  head(6,5).
+  head(4,6).
+  head(4,3).
+  head(4,2).
+  head(2,1).
+  form(7,"dies").
+  form(6,"Lessing").
+  form(5,"Doris").
+  form(4,"author").
+  form(3,"winning").
+  form(2,"Prize").
+  form(1,"Nobel").
+  first(1).
+}).

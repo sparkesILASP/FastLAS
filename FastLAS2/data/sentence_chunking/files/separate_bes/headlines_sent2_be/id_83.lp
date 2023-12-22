@@ -1,0 +1,65 @@
+#be(id_83,
+	[
+	 6,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(7).
+  true_split(6).
+  true_split(5).
+  true_split(4).
+  true_split(2).
+  true_split(1).
+  possible_split((1 .. 11)).
+  test_split(1).
+  rel(c_TMP,6).
+  rel(c_ROOT,2).
+  rel(c_PMOD,11).
+  rel(c_OBJ,5).
+  rel(c_NMOD,9).
+  rel(c_NMOD,3).
+  rel(c_NMOD,10).
+  rel(c_NMOD,1).
+  rel(c_LOC,8).
+  rel(c_IM,4).
+  rel(c_APPO,7).
+  pos(c_VBN,7).
+  pos(c_VB,4).
+  pos(c_TO,3).
+  pos(c_RB,6).
+  pos(c_NNP,9).
+  pos(c_NN,2).
+  pos(c_NN,11).
+  pos(c_NN,10).
+  pos(c_JJ,1).
+  pos(c_IN,8).
+  pos(c_CD,5).
+  last(11).
+  head(root,2).
+  head(8,11).
+  head(7,8).
+  head(7,6).
+  head(5,7).
+  head(4,5).
+  head(3,4).
+  head(2,3).
+  head(2,1).
+  head(11,9).
+  head(11,10).
+  form(9,"India").
+  form(8,"in").
+  form(7,"trapped").
+  form(6,"still").
+  form(5,"-353980").
+  form(4,"find").
+  form(3,"to").
+  form(2,"race").
+  form(11,"collapse").
+  form(10,"building").
+  form(1,"Rescuers").
+  first(1).
+}).

@@ -1,0 +1,54 @@
+#be(id_666,
+	[
+	 3,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(3).
+  true_split(2).
+  true_split(1).
+  possible_split((1 .. 9)).
+  test_split(1).
+  rel(c_SBJ,1).
+  rel(c_ROOT,2).
+  rel(c_PMOD,9).
+  rel(c_P,8).
+  rel(c_P,5).
+  rel(c_OBJ,3).
+  rel(c_NMOD,7).
+  rel(c_NMOD,6).
+  rel(c_ADV,4).
+  pos(c_qq,8).
+  pos(c_qq,5).
+  pos(c_VBZ,2).
+  pos(c_NNP,1).
+  pos(c_NN,9).
+  pos(c_NN,7).
+  pos(c_NN,6).
+  pos(c_IN,4).
+  pos(c_CD,3).
+  last(9).
+  head(root,2).
+  head(9,7).
+  head(7,8).
+  head(7,6).
+  head(7,5).
+  head(4,9).
+  head(2,4).
+  head(2,3).
+  head(2,1).
+  form(9,"scandal").
+  form(8,"''").
+  form(7,"sister").
+  form(6,"house").
+  form(5,"``").
+  form(4,"for").
+  form(3,"-8993").
+  form(2,"detains").
+  form(1,"China").
+  first(1).
+}).

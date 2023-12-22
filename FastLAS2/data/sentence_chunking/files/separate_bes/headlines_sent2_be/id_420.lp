@@ -1,0 +1,48 @@
+#be(id_420,
+	[
+	 2,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(5).
+  true_split(4).
+  possible_split((1 .. 7)).
+  test_split(4).
+  test_split(3).
+  test_split(2).
+  test_split(1).
+  rel(c_SBJ,4).
+  rel(c_ROOT,2).
+  rel(c_P,3).
+  rel(c_OBJ,7).
+  rel(c_NMOD,6).
+  rel(c_NMOD,5).
+  rel(c_NMOD,1).
+  pos(c_c,3).
+  pos(c_VBP,5).
+  pos(c_NNS,4).
+  pos(c_NNS,2).
+  pos(c_NN,7).
+  pos(c_NN,1).
+  pos(c_JJ,6).
+  last(7).
+  head(root,2).
+  head(7,6).
+  head(5,7).
+  head(5,4).
+  head(2,5).
+  head(2,3).
+  head(2,1).
+  form(7,"immunity").
+  form(6,"human").
+  form(5,"boost").
+  form(4,"blueberries").
+  form(3,",").
+  form(2,"grapes").
+  form(1,"Red").
+  first(1).
+}).

@@ -1,0 +1,65 @@
+#be(id_84,
+	[
+	 6,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(8).
+  true_split(5).
+  true_split(4).
+  true_split(3).
+  true_split(2).
+  true_split(1).
+  possible_split((1 .. 11)).
+  test_split(1).
+  rel(c_SBJ,3).
+  rel(c_ROOT,5).
+  rel(c_PMOD,11).
+  rel(c_P,4).
+  rel(c_OPRD,8).
+  rel(c_OBJ,6).
+  rel(c_NMOD,2).
+  rel(c_NMOD,10).
+  rel(c_NMOD,1).
+  rel(c_LOC,9).
+  rel(c_AMOD,7).
+  pos(c_c,4).
+  pos(c_VBP,5).
+  pos(c_RBR,7).
+  pos(c_NNP,10).
+  pos(c_NN,3).
+  pos(c_NN,2).
+  pos(c_NN,11).
+  pos(c_NN,1).
+  pos(c_JJ,8).
+  pos(c_IN,9).
+  pos(c_CD,6).
+  last(11).
+  head(root,5).
+  head(9,11).
+  head(8,7).
+  head(5,9).
+  head(5,8).
+  head(5,6).
+  head(5,3).
+  head(3,4).
+  head(3,2).
+  head(2,1).
+  head(11,10).
+  form(9,"in").
+  form(8,"dead").
+  form(7,"more").
+  form(6,"-387997").
+  form(5,"find").
+  form(4,",").
+  form(3,"gunman").
+  form(2,"kill").
+  form(11,"home").
+  form(10,"Colo.").
+  form(1,"Police").
+  first(1).
+}).

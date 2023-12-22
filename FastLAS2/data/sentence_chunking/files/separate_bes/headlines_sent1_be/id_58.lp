@@ -1,0 +1,60 @@
+#be(id_58,
+	[
+	 5,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(6).
+  true_split(5).
+  true_split(3).
+  true_split(2).
+  true_split(1).
+  possible_split((1 .. 10)).
+  test_split(1).
+  rel(c_SBJ,1).
+  rel(c_ROOT,2).
+  rel(c_PMOD,10).
+  rel(c_P,6).
+  rel(c_P,3).
+  rel(c_OBJ,5).
+  rel(c_NMOD,9).
+  rel(c_NMOD,8).
+  rel(c_NMOD,4).
+  rel(c_LOC,7).
+  pos(c_qq,6).
+  pos(c_qq,3).
+  pos(c_VBZ,2).
+  pos(c_NNS,10).
+  pos(c_NNP,1).
+  pos(c_NN,9).
+  pos(c_NN,8).
+  pos(c_NN,5).
+  pos(c_JJ,4).
+  pos(c_IN,7).
+  last(10).
+  head(root,2).
+  head(9,8).
+  head(7,10).
+  head(5,7).
+  head(5,6).
+  head(5,4).
+  head(5,3).
+  head(2,5).
+  head(2,1).
+  head(10,9).
+  form(9,"ceiling").
+  form(8,"debt").
+  form(7,"in").
+  form(6,"'").
+  form(5,"progress").
+  form(4,"tremendous").
+  form(3,"`").
+  form(2,"cites").
+  form(10,"talks").
+  form(1,"Reid").
+  first(1).
+}).

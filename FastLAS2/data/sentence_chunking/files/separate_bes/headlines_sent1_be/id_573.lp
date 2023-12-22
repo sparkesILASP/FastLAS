@@ -1,0 +1,55 @@
+#be(id_573,
+	[
+	 2,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(8).
+  true_split(7).
+  possible_split((1 .. 8)).
+  test_split(7).
+  test_split(6).
+  test_split(5).
+  test_split(4).
+  test_split(3).
+  test_split(2).
+  test_split(1).
+  rel(c_ROOT,3).
+  rel(c_NMOD,7).
+  rel(c_NMOD,6).
+  rel(c_NMOD,2).
+  rel(c_NMOD,1).
+  rel(c_COORD,5).
+  rel(c_CONJ,8).
+  rel(c_APPO,4).
+  pos(c_NNP,4).
+  pos(c_NN,8).
+  pos(c_NN,7).
+  pos(c_NN,3).
+  pos(c_NN,2).
+  pos(c_JJ,6).
+  pos(c_JJ,1).
+  pos(c_CC,5).
+  last(8).
+  head(root,3).
+  head(8,7).
+  head(8,6).
+  head(5,8).
+  head(3,5).
+  head(3,4).
+  head(3,2).
+  head(3,1).
+  form(8,"resign").
+  form(7,"government").
+  form(6,"entire").
+  form(5,"and").
+  form(4,"Azarov").
+  form(3,"Minister").
+  form(2,"Prime").
+  form(1,"Ukrainian").
+  first(1).
+}).

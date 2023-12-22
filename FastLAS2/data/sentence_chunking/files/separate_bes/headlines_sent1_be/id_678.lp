@@ -1,0 +1,56 @@
+#be(id_678,
+	[
+	 4,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(6).
+  true_split(4).
+  true_split(3).
+  true_split(2).
+  possible_split((1 .. 9)).
+  test_split(2).
+  test_split(1).
+  rel(c_VC,9).
+  rel(c_VC,8).
+  rel(c_TMP,3).
+  rel(c_SBJ,6).
+  rel(c_ROOT,7).
+  rel(c_P,4).
+  rel(c_NMOD,5).
+  rel(c_NMOD,2).
+  rel(c_NMOD,1).
+  pos(c_c,4).
+  pos(c_VBN,9).
+  pos(c_VB,8).
+  pos(c_NNS,3).
+  pos(c_NNP,1).
+  pos(c_NN,6).
+  pos(c_NN,2).
+  pos(c_MD,7).
+  pos(c_JJ,5).
+  last(9).
+  head(root,7).
+  head(8,9).
+  head(7,8).
+  head(7,6).
+  head(7,4).
+  head(7,3).
+  head(6,5).
+  head(3,2).
+  head(3,1).
+  form(9,"trapped").
+  form(8,"be").
+  form(7,"may").
+  form(6,"people").
+  form(5,"-445992--445990").
+  form(4,",").
+  form(3,"collapses").
+  form(2,"building").
+  form(1,"Philadelphia").
+  first(1).
+}).

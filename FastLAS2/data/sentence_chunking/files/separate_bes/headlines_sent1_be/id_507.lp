@@ -1,0 +1,50 @@
+#be(id_507,
+	[
+	 2,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(4).
+  true_split(2).
+  possible_split((1 .. 8)).
+  test_split(2).
+  test_split(1).
+  rel(c_SBJ,1).
+  rel(c_ROOT,2).
+  rel(c_PMOD,8).
+  rel(c_OBJ,4).
+  rel(c_NMOD,7).
+  rel(c_NMOD,3).
+  rel(c_NAME,6).
+  rel(c_LOC,5).
+  pos(c_VBD,2).
+  pos(c_NNS,4).
+  pos(c_NNP,7).
+  pos(c_NNP,6).
+  pos(c_NNP,1).
+  pos(c_NN,8).
+  pos(c_NN,3).
+  pos(c_IN,5).
+  last(8).
+  head(root,2).
+  head(8,7).
+  head(7,6).
+  head(5,8).
+  head(4,5).
+  head(4,3).
+  head(2,4).
+  head(2,1).
+  form(8,"airport").
+  form(7,"Francisco").
+  form(6,"San").
+  form(5,"at").
+  form(4,"lands").
+  form(3,"crash").
+  form(2,"jet").
+  form(1,"Asiana").
+  first(1).
+}).

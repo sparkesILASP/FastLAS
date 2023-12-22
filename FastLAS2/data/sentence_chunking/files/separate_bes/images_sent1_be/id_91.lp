@@ -1,0 +1,67 @@
+#be(id_91,
+	[
+	 4,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(7).
+  true_split(5).
+  true_split(11).
+  true_split(10).
+  possible_split((1 .. 11)).
+  test_split(5).
+  test_split(4).
+  test_split(3).
+  test_split(2).
+  test_split(1).
+  rel(c_SBJ,4).
+  rel(c_ROOT,5).
+  rel(c_PRT,7).
+  rel(c_PMOD,10).
+  rel(c_P,11).
+  rel(c_OPRD,6).
+  rel(c_NMOD,9).
+  rel(c_NMOD,1).
+  rel(c_COORD,2).
+  rel(c_CONJ,3).
+  rel(c_ADV,8).
+  pos(c_p,11).
+  pos(c_VBN,5).
+  pos(c_VBG,6).
+  pos(c_RP,7).
+  pos(c_NN,10).
+  pos(c_JJ,4).
+  pos(c_JJ,3).
+  pos(c_JJ,1).
+  pos(c_IN,8).
+  pos(c_DT,9).
+  pos(c_CC,2).
+  last(11).
+  head(root,5).
+  head(8,10).
+  head(6,8).
+  head(6,7).
+  head(5,6).
+  head(5,4).
+  head(5,11).
+  head(4,1).
+  head(2,3).
+  head(10,9).
+  head(1,2).
+  form(9,"a").
+  form(8,"on").
+  form(7,"down").
+  form(6,"lying").
+  form(5,"kitten").
+  form(4,"domestic").
+  form(3,"white").
+  form(2,"and").
+  form(11,".").
+  form(10,"desk").
+  form(1,"Grey").
+  first(1).
+}).

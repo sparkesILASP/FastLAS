@@ -1,0 +1,65 @@
+#be(id_46,
+	[
+	 10,
+	{
+	 cost(1,split(N,t)) :- not split(N) : true_split(N).
+	 cost(1,split(N,f)) :- not true_split(N) : split(N).
+	 0 { split(N) } 1 :- possible_split(N).
+	}
+	],
+{
+  true_split(9).
+  true_split(8).
+  true_split(7).
+  true_split(6).
+  true_split(5).
+  true_split(4).
+  true_split(3).
+  true_split(2).
+  true_split(10).
+  true_split(1).
+  possible_split((1 .. 10)).
+  test_split(1).
+  rel(c_SBJ,7).
+  rel(c_SBJ,3).
+  rel(c_SBJ,1).
+  rel(c_ROOT,2).
+  rel(c_P,6).
+  rel(c_OPRD,9).
+  rel(c_OBJ,5).
+  rel(c_OBJ,4).
+  rel(c_OBJ,10).
+  rel(c_COORD,8).
+  pos(c_c,6).
+  pos(c_VBZ,8).
+  pos(c_VBZ,4).
+  pos(c_VBZ,2).
+  pos(c_VBG,9).
+  pos(c_PRP,3).
+  pos(c_NNP,7).
+  pos(c_NNP,1).
+  pos(c_NN,5).
+  pos(c_CD,10).
+  last(10).
+  head(root,2).
+  head(9,10).
+  head(8,9).
+  head(8,7).
+  head(4,5).
+  head(4,3).
+  head(2,8).
+  head(2,6).
+  head(2,4).
+  head(2,1).
+  form(9,"losing").
+  form(8,"denies").
+  form(7,"U.S.").
+  form(6,";").
+  form(5,"drone").
+  form(4,"captures").
+  form(3,"it").
+  form(2,"says").
+  form(10,"one").
+  form(1,"Iran").
+  first(1).
+}).
