@@ -1,12 +1,8 @@
 #be(id_166,
 	[
-	 2,
-	{
-	 cost(1,split(N,t)) :- not split(N) : true_split(N).
-	 cost(1,split(N,f)) :- not true_split(N) : split(N).
-	 0 { split(N) } 1 :- possible_split(N).
-	}
-	],
+	2,
+{ }
+],
 {
   true_split(3).
   true_split(2).

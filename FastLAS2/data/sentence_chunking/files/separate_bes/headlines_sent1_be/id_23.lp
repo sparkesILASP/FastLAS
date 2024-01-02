@@ -1,12 +1,8 @@
 #be(id_23,
 	[
-	 6,
-	{
-	 cost(1,split(N,t)) :- not split(N) : true_split(N).
-	 cost(1,split(N,f)) :- not true_split(N) : split(N).
-	 0 { split(N) } 1 :- possible_split(N).
-	}
-	],
+	6,
+{ }
+],
 {
   true_split(9).
   true_split(6).
@@ -53,7 +49,7 @@
   form(6,"third").
   form(5,"a").
   form(4,"by").
-  form(3,"costs").
+  form(3,"penaltys").
   form(2,"cuts").
   form(10,"bites").
   form(1,"Bollywood").

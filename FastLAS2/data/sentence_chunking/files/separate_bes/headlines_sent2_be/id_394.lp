@@ -1,12 +1,8 @@
 #be(id_394,
 	[
-	 5,
-	{
-	 cost(1,split(N,t)) :- not split(N) : true_split(N).
-	 cost(1,split(N,f)) :- not true_split(N) : split(N).
-	 0 { split(N) } 1 :- possible_split(N).
-	}
-	],
+	5,
+{ }
+],
 {
   true_split(7).
   true_split(6).
@@ -41,7 +37,7 @@
   form(6,"crisis").
   form(5,"rupee").
   form(4,"as").
-  form(3,"costs").
+  form(3,"penaltys").
   form(2,"cuts").
   form(1,"Bollywood").
   first(1).
