@@ -10,7 +10,7 @@ void Possible_Penalties();
 
 namespace Penalty {
 std::string make_lua_possibility_script_for(int bound);
-const std::string asp_predicate = "cost";
+const std::string asp_predicate = "penalty";
 } // namespace Penalty
 
 std::string possibility_program(Example *example);

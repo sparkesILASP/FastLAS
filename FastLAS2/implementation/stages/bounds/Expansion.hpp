@@ -34,6 +34,8 @@ std::stringstream penalty_yes_no_stream(std::map<std::string, std::set<std::vect
 
 std::stringstream heuristic_stream(std::map<std::string, std::set<std::vector<std::shared_ptr<NLiteral>>>> &head_body_map);
 
+std::stringstream consistency_stream();
+
 std::string domain_string_for_head(std::set<std::vector<std::shared_ptr<NLiteral>>> &associated_body, std::string prefix);
 
 /*

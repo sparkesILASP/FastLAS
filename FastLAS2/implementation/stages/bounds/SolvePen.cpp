@@ -126,7 +126,8 @@ void FastLAS::solve_pen() {
       solve_pen_stream << "% " << eg->id << " : " << sub_eg->id << endl
                        << "possibility_cost(" << sub_eg->get_penalty() << ", " << sub_eg->id << ", " << eg->id << ")"
                        << " :- "
-                       << "cov(" << sub_eg->id << ", " << eg->id << ")." << endl;
+                      //  << "cov(" << sub_eg->id << ", " << eg->id << ")." << endl;
+                      << "not n_cov(" << sub_eg->id << "," << eg->id << ")." << endl;
       // Insert the optimised rule disjunctions (optimised ruleschemas from characteristic ruleset).
 
       std::string cov_string_disjunctions{};
@@ -159,7 +160,7 @@ void FastLAS::solve_pen() {
       // if (cov_string_disjunctions.size() > 0) {
       //   ss << "cov(" << sub_eg->id << ") :- " << cov_string_disjunctions << "#true." << endl;
       // }
-      solve_pen_stream << "cov(" << sub_eg->id << "," << eg->id << ") :- not n_cov(" << sub_eg->id << "," << eg->id << ")." << endl;
+      // solve_pen_stream << "cov(" << sub_eg->id << "," << eg->id << ") :- not n_cov(" << sub_eg->id << "," << eg->id << ")." << endl;
       // Violation disjunction
       auto disj = sub_eg->get_optimised_rule_violations();
       // Check to see if the disjunction is cached
@@ -184,7 +185,6 @@ void FastLAS::solve_pen() {
     if (eg->get_possibilities().size() == 0) {
       cout << "Oops, no possibilities for example: " << eg->id << endl;
     } else {
-
       solve_pen_stream << "n_cov(" << eg->id << "," << eg->id << ") :- #true";
       for (auto sub_eg : eg->get_possibilities()) {
         solve_pen_stream << ", n_cov(" << sub_eg->id << "," << eg->id << ")";

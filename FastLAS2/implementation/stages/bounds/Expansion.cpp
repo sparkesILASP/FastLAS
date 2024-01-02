@@ -6,12 +6,14 @@
 #include <boost/regex.hpp>
 
 #include <iostream>
+#include <ostream>
 #include <sstream>
 #include <vector>
 
 using namespace std;
 extern std::set<Example *> examples;
 int rep_count{1};
+std::set<std::string> negated_literals{};
 
 // Map of penalty predicates to sets of bodies (themselves as sets)
 // predicates are stored as strings as
@@ -30,7 +32,8 @@ void expand_penalty_rule_to_for(std::stringstream &stream, Example *example) {
   stream << converse_stream(head_body_map).str() << endl
          << converse_complement_stream(head_body_map).str() << endl
          << penalty_yes_no_stream(head_body_map).str() << endl
-         << heuristic_stream(head_body_map).str() << endl;
+         << heuristic_stream(head_body_map).str() << endl
+         << consistency_stream().str() << endl;
 
   // to inspect the stream…
 
@@ -241,6 +244,8 @@ std::stringstream converse_complement_stream(std::map<std::string, std::set<std:
 
   for (std::map<std::string, std::set<std::vector<std::shared_ptr<NLiteral>>>>::iterator iter = head_body_map.begin(); iter != head_body_map.end(); ++iter) {
 
+    // Choice of failure for absence of penalty
+    // At least one antecedent must fail
     for (std::vector<std::shared_ptr<NLiteral>> body_vec : iter->second) {
 
       if (body_vec.size() > 1) {
@@ -267,8 +272,9 @@ std::stringstream converse_complement_stream(std::map<std::string, std::set<std:
         converse_complement_stream << body_singular;
       }
 
+      std::string head{iter->first};
       converse_complement_stream << " :- "
-                                 << "not\'" << iter->first
+                                 << add_negation_prefix(head)
                                  << domain_string_for_head(iter->second, std::string(", "))
                                  << "." << endl;
     }
@@ -334,13 +340,15 @@ std::stringstream penalty_yes_no_stream(std::map<std::string, std::set<std::vect
   return penalty_yes_no_stream;
 }
 
-// std::stringstream penalty_sum_stream(std::map<std::string, std::set<std::vector<std::string>>> &head_body_map) {
+std::stringstream consistency_stream() {
 
-//   std::stringstream penalty_sum_stream{};
+  std::stringstream consistency_stream{};
 
-//       for (std::map<std::string, std::set<std::vector<std::string>>>::iterator iter = head_body_map.begin(); iter != head_body_map.end(); ++iter) {
-//   }
-// }
+  for (std::string literal: negated_literals) {
+    consistency_stream << ":- " << literal << ", " << add_negation_prefix(literal) << "." << std::endl;
+  }
+  return consistency_stream;
+}
 
 /*
 Non-ideal way to deal with not literals.
@@ -353,18 +361,8 @@ void negation_as_prefix(std::string &literal) {
   boost::regex re("not (.*)");
   boost::smatch m;
   if (boost::regex_search(literal, m, re)) {
+    negated_literals.insert(std::string(m[1]));
     literal = std::string("not\'") + std::string(m[1]);
-  }
-}
-
-/*
-I shouldn't need this…
-*/
-void negation_as_failure(std::string &literal) {
-  boost::regex re("not'\\([^\\)]+\\)");
-  boost::smatch m;
-  if (boost::regex_search(literal, m, re)) {
-    literal = std::string("not ") + std::string(m[1]);
   }
 }
 
@@ -377,11 +375,13 @@ void negate_with_prefix(std::string &literal) {
   if (boost::regex_search(literal, m, re)) {
     literal = std::string(m[1]);
   } else {
+    negated_literals.insert(literal);
     literal = std::string("not\'") + literal;
   }
 }
 
 std::string add_negation_prefix(std::string &literal) {
+  negated_literals.insert(literal);
   return std::string("not\'") + literal;
 }
 
