@@ -344,7 +344,7 @@ std::stringstream consistency_stream() {
 
   std::stringstream consistency_stream{};
 
-  for (std::string literal: negated_literals) {
+  for (std::string literal : negated_literals) {
     consistency_stream << ":- " << literal << ", " << add_negation_prefix(literal) << "." << std::endl;
   }
   return consistency_stream;

@@ -126,8 +126,8 @@ void FastLAS::solve_pen() {
       solve_pen_stream << "% " << eg->id << " : " << sub_eg->id << endl
                        << "possibility_cost(" << sub_eg->get_penalty() << ", " << sub_eg->id << ", " << eg->id << ")"
                        << " :- "
-                      //  << "cov(" << sub_eg->id << ", " << eg->id << ")." << endl;
-                      << "not n_cov(" << sub_eg->id << "," << eg->id << ")." << endl;
+                       //  << "cov(" << sub_eg->id << ", " << eg->id << ")." << endl;
+                       << "not n_cov(" << sub_eg->id << "," << eg->id << ")." << endl;
       // Insert the optimised rule disjunctions (optimised ruleschemas from characteristic ruleset).
 
       std::string cov_string_disjunctions{};
